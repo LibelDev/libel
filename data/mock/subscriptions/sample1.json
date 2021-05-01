@@ -1,0 +1,20 @@
+{
+  "name": "Sample 1",
+  "version": "1.0",
+  "homepage": "https://github.com/kitce/libel",
+  "data": {
+    "23094": [
+      {
+        "text": "Test 1.1",
+        "reason": "Test 1.1 Reason",
+        "url": "https://lihkg.com/profile/23094",
+        "date": 0,
+        "source": {
+          "thread": "1880412",
+          "page": 1,
+          "messageNumber": "1"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+.toggle-button {
+  @apply flex items-center;
+  @apply relative;
+
+  input {
+    @apply absolute;
+    @apply h-full w-full;
+    @apply m-0 p-0;
+    @apply opacity-0;
+  
+    + label {
+      @apply cursor-pointer;
+      @apply inline-block;
+      @apply h-6 w-12;
+      @apply relative;
+      @apply rounded-2xl;
+      @apply m-0 p-0;
+      background: rgba(128, 128, 128, .2);
+  
+      > span {
+        @apply sr-only;
+      }
+  
+      &,
+      &:after {
+        transition-property: all;
+        transition-timing-function: ease-out;
+        transition-duration: 200ms;
+      }
+  
+      &:after {
+        @apply block;
+        @apply bg-white;
+        @apply rounded-2xl;
+        @apply absolute;
+        @apply top-1/2;
+        @apply left-0;
+        @apply transform;
+        @apply -translate-y-1/2;
+        box-shadow: 1px 2px 6px -1px rgba(0, 0, 0, .3);
+        content: '';
+        height: 1.3rem;
+        width: 1.3rem;
+      }
+    }
+  
+    &:checked {
+      + label {
+        background: #fbc308;
+  
+        &:after {
+          left: 53%;
+          box-shadow: -3px 2px 6px -1px rgba(0, 0, 0, .3);
+        }
+      }
+    }
+
+    &:disabled {
+      + label {
+        @apply cursor-not-allowed;
+        @apply opacity-20;
+      }
+    }
+  }
+}

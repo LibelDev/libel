@@ -1,0 +1,5 @@
+@mixin dark-mode() {
+  body[data-app-dm] & {
+    @content;
+  }
+}

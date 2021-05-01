@@ -1,0 +1,10 @@
+@import './base';
+
+/**
+ * override
+ */
+:global {
+  .#{$lihkg-class-reply-item} {
+    @apply overflow-visible;
+  }
+}

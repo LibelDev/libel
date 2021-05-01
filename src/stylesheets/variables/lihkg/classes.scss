@@ -1,0 +1,20 @@
+@import '../classes/lihkg';
+
+:export {
+  modal-content: $lihkg-class-modal-content;
+  modal-title: $lihkg-class-modal-title;
+  modal: $lihkg-class-modal;
+  nickname: $lihkg-class-nickname;
+  reply-item: $lihkg-class-reply-item;
+  reply-toolbar-button: $lihkg-class-reply-toolbar-button;
+  setting-option-button: $lihkg-class-setting-option-button;
+  setting-options-item: $lihkg-class-setting-options-item;
+  setting-options-list: $lihkg-class-setting-options-list;
+  setting-section-title: $lihkg-class-setting-section-title;
+  submission-form: $lihkg-class-submission-form;
+  thread-heading-text: $lihkg-class-thread-heading-text;
+  thread-link: $lihkg-class-thread-link;
+  thread-username: $lihkg-class-thread-username;
+  thread: $lihkg-class-thread;
+  user-card-buttons-container: $lihkg-class-user-card-buttons-container;
+}

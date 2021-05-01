@@ -1,0 +1,13 @@
+{
+  "name": "Sample 2 (Invalid)",
+  "version": "1.0",
+  "homepage": "https://github.com/kitce/libel",
+  "data": {
+    "23094": [
+      {
+        "text": "",
+        "url": "`text` cannot be empty, `url` has to be URL"
+      }
+    ]
+  }
+}

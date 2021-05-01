@@ -1,0 +1,5 @@
+@mixin text-ellipsis() {
+  @apply overflow-hidden;
+  @apply whitespace-nowrap;
+  @apply overflow-ellipsis;
+}

@@ -1,0 +1,56 @@
+@import '../../../stylesheets/base';
+
+.label-info {
+  @apply mb-2 p-2;
+  @apply border border-solid rounded;
+  @apply text-center;
+  @apply invisible;
+  @apply opacity-0;
+  @apply absolute;
+  @apply bottom-1/2;
+  @apply left-1/2;
+  @apply w-max;
+  @apply -translate-x-1/2 transform;
+  @apply transition-all;
+  @apply duration-300;
+  @apply delay-300;
+  background-color: #ffffff;
+  border-color: #aaaaaa;
+  max-width: 12rem;
+  
+  @include dark-mode() {
+    background-color: #222222;
+    border-color: #444443;
+  }
+
+  .reason,
+  .buttons > a {
+    @apply text-base;
+    @apply leading-none;
+  }
+
+  .reason + .buttons {
+    @apply mt-2;
+  }
+
+  .buttons {
+    @apply flex items-center justify-center;
+
+    > .button {
+      @apply no-underline;
+      color: #aaaaaa;
+
+      &:hover {
+        color: #000000;
+
+        @include dark-mode() {
+          color: #ffffff;
+        }
+      }
+    }
+
+    > * + * {
+      @apply ml-1;
+    }
+  }
+}

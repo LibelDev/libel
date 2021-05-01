@@ -1,0 +1,15 @@
+.import {
+  @apply hidden;
+
+  + label {
+    &:hover {
+      @apply cursor-pointer;
+      @apply no-underline;
+    }
+
+    + small {
+      @apply block;
+      @apply mt-1;
+    }
+  }
+}

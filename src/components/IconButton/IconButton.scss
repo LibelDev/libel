@@ -1,0 +1,21 @@
+.icon-button {
+  @apply inline-flex items-center;
+  // color: #aaaaaa;
+  transition-property: all;
+  transition-timing-function: ease-out;
+  transition-duration: 200ms;
+
+  &:disabled {
+    @apply opacity-20;
+  }
+  
+  &:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  .icon {
+    &:not(:only-child) {
+      @apply mr-1;
+    }
+  }
+}

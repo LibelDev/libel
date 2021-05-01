@@ -1,0 +1,50 @@
+import classnames from 'classnames';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styles from './SnipeButton.scss';
+import IconButton, { IconName } from '../IconButton/IconButton';
+import SubmissionForm from '../SubmissionForm/SubmissionForm';
+import * as TEXTS from '../../constants/texts';
+import { generateSnipeBody } from '../../helpers/label';
+import { waitForSubmissionForm } from '../../helpers/lihkg';
+import { findReactComponent } from '../../helpers/react';
+import { filterPersonal, filterSubscriptions } from '../../store/selectors';
+import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.scss';
+
+interface IProps {
+  user: string;
+}
+
+const SnipeButton: React.FunctionComponent<IProps> = (props) => {
+  const { user } = props;
+  const buttonRef = React.createRef<HTMLButtonElement>();
+  const personal = useSelector(filterPersonal(user));
+  const subscriptions = useSelector(filterSubscriptions(user));
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault();
+    const awaiter = waitForSubmissionForm();
+    const replyButton = buttonRef.current!.parentNode!.parentNode!.querySelector<HTMLLIElement>('.i-reply');
+    replyButton!.click();
+    const node = await awaiter;
+    const formComponent = findReactComponent(node, 1) as SubmissionForm;
+    const body = generateSnipeBody(user, personal, subscriptions);
+    if (formComponent && body) {
+      formComponent.replaceEditorContent(body);
+    }
+  };
+
+  return (
+    <IconButton
+      ref={buttonRef}
+      className={classnames(lihkgCssClasses.replyToolbarButton, styles.snipeButton)}
+      icon={IconName.Hot}
+      aria-label={TEXTS.SNIPE_BUTTON_TEXT}
+      data-tip={TEXTS.SNIPE_BUTTON_TEXT}
+      title={TEXTS.SNIPE_BUTTON_TEXT}
+      onClick={handleClick}
+    />
+  );
+};
+
+export default SnipeButton;

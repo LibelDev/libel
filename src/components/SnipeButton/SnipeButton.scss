@@ -1,0 +1,7 @@
+.snipe-button {
+  @apply text-current;
+  
+  &:hover {
+    @apply no-underline;
+  }
+}
