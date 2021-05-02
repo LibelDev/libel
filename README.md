@@ -49,7 +49,7 @@ If you are a developer, pull requests are welcome.
 
 If you have installed any version of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) before, please export the data (for backup purpose) and uninstall it before preceeding to the following installation steps.
 
-Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will be migrated into Libel automatically, it is also recommended to always backup your data before updating or uninstalling any software.
+Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will be migrated into Libel automatically, we still recommend to always backup your data before updating or uninstalling any software.
 
 ### Steps
 
@@ -112,7 +112,7 @@ Please refer to the following format and sample.
 ##### Format
 
 ```ts
-interface Subscription {
+interface ISubscription {
   // the display name
   name: string;
   // the current version (for future use)
@@ -122,11 +122,11 @@ interface Subscription {
   // the main labels data
   data: {
     // `user` is the user ID on LIHKG
-    [user: string]: Label[];
+    [user: string]: ILabel[];
   };
 }
 
-interface Label {
+interface ILabel {
   // label text
   text: string;
   // (optional) a short text describing the reason
@@ -138,14 +138,16 @@ interface Label {
   date?: number;
   // (optional) the precise source for referring to the reason
   // NOTE: this has replaced the above `url` property
-  source?: {
-    // the thread number
-    thread: string;
-    // the page number
-    page: number;
-    // the comment number
-    messageNumber: string;
-  };
+  source?: ISource;
+}
+
+interface ISource {
+  // the thread number
+  thread: string;
+  // the page number
+  page: number;
+  // the comment number
+  messageNumber: string;
 }
 ```
 
