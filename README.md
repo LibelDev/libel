@@ -1,10 +1,20 @@
 # Libel
 
-Label users on LIHKG
+Label users on [LIHKG](https://lihkg.com/)
+
+This project is derived from my previous LIHKG userscript project [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba).
+
+In view of the features that I want to add being more and more, it is not easy to keep developing on the previous project codebase, so I decided to rewrite it from scratch.
+
+If you are a general user, please jump to the [Installation](#installation) section and follow the steps to install the plugin. Please also read the [Subscrption](#subscription) section if you are interested.
+
+If you are a developer, pull requests are welcome.
 
 - [Libel](#libel)
   - [Features](#features)
   - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
   - [Why](#why)
   - [Philosophy](#philosophy)
   - [Subscription](#subscription)
@@ -14,6 +24,7 @@ Label users on LIHKG
         - [Sample](#sample)
     - [Consumer](#consumer)
   - [Development](#development)
+    - [Install dependencies](#install-dependencies)
     - [Build](#build)
     - [SCSS module typings](#scss-module-typings)
     - [Mock data](#mock-data)
@@ -31,6 +42,16 @@ Label users on LIHKG
 - [ ] Cloud drive sync
 
 ## Installation
+
+### Prerequisites
+
+⚠ [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will no longer be in maintenance. ⚠
+
+If you have installed any version of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) before, please export the data (for backup purpose) and uninstall it before preceeding to the following installation steps.
+
+Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will be migrated into Libel automatically, it is also recommended to always backup your data before updating or uninstalling any software.
+
+### Steps
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
 2. Visit [https://kitce.github.io/libel/dist/libel.user.js](https://kitce.github.io/libel/dist/libel.user.js)
@@ -62,21 +83,27 @@ Every label should come with a reason and a source, otherwise it will just be a 
 
 ## Subscription
 
+The **subscription** feature is a way to share labels data with others.
+
+Think of it as the **filter lists** feature of your favorite ad block plugins (e.g. **Adblock Plus**, **uBlock Origin**). A filter list contains the definitions of some known ads on the internet, so that the plugin could know what should be blocked when you visit a website. There may be some built-in filter lists, or you could import some custom ones.
+
+In Libel, **filter list** becomes **label list** (a.k.a **subscription**), someone creates a label list, then someone subscribe to it. A label list contains the labels that the provider puts on certain persons, so that the plugin will know what to display when you see them.
+
 If you want to share your findings and contribute to the community, you may want to be a label list **[provider](#provider)**.
 
-If you want to know more about some (in)famous users from others, you may want to subscribe to some label lists, i.e. becoming a label list **[consumer](#consumer)**.
+If you want to know more about some (in)famous users from others, you may want to subscribe to some label lists, i.e. to become a label list **[consumer](#consumer)**.
 
 (or you could be both at the same time.)
 
-If you think labels provided by others could be biased, you may want to build up your personal labels database.
+If you think the labels data provided by others could be biased, you may want to build up your personal labels database.
 
-**Note: To boost the growth of the community, we hope to have a directory of verified subscrptions in the future, but it definitely needs your help. (The word "verified" means the "integrity", not the "quality". the [provider](#provider) should be responsible to it.)**
+**Note: To boost the growth of the community, we hope to have a directory of verified subscrptions in the future, but it definitely needs your help. (The word "verified" means the "integrity", not the "quality". The [provider](#provider) should be responsible to the quality of their label lists.)**
 
 ### Provider
 
-To be a **provider**, you have to prepare a label list file (a.k.a **subscription**) in [JSON](https://www.json.org/json-en.html) format, and host it on the internet publicly for others to subscribe.
+As a **provider**, you have to prepare a label list file in [JSON](https://www.json.org/json-en.html) format, and host it on the internet publicly for others to subscribe.
 
-Please follow the following format and take reference from the sample.
+Please refer to the following format and sample.
 
 **Note: There will be a [content management system](https://en.wikipedia.org/wiki/Content_management_system) soon**
 
@@ -107,7 +134,7 @@ interface Label {
   // (optional) the page link of the label
   // NOTE: deprecated, for backward compatability only
   url?: string;
-  // the date of the label being added (for future use)
+  // (optional) the date of adding the label, in unix time (for future use)
   date?: number;
   // (optional) the precise source for referring to the reason
   // NOTE: this has replaced the above `url` property
@@ -135,7 +162,7 @@ interface Label {
         "text": "Test 1.1",
         "reason": "Test 1.1 Reason",
         "url": "https://lihkg.com/profile/23094",
-        "date": 0,
+        "date": 1619969602283,
         "source": {
           "thread": "1880412",
           "page": 1,
@@ -151,11 +178,17 @@ More samples can be found in [`data/mock/subscriptions`](https://github.com/kitc
 
 ### Consumer
 
-As a consumer, you just need to find the available subscriptions and add them into settings.
+As a consumer, you just need to find the available subscriptions and add them in the LIHKG settings menu.
 
 ## Development
 
-For a smooth development experience, you may want to execute these commands simultaneously
+### Install dependencies
+
+```bash
+$ yarn
+```
+
+For a smooth development experience, you may want to execute the following commands simultaneously:
 
 ### Build
 
@@ -163,10 +196,12 @@ For a smooth development experience, you may want to execute these commands simu
 $ yarn dev
 ```
 
+When `webpack-dev-server` completed the first compilation, follow these steps to test on [LIHKG](https://lihkg.com/):
+
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
 2. Visit [http://localhost:8080/libel.proxy.user.js](http://localhost:8080/libel.proxy.user.js)
 3. Click **Install** / **Reinstall**
-4. Go back to LIHKG and reload the page
+4. Go back to [LIHKG](https://lihkg.com/) and reload the page
 
 Whenever you made changes and `webpack-dev-server` recompiled the files, repeat step 2 to 4.
 
@@ -196,7 +231,7 @@ To memorize [the death of Hong Kong](https://en.wikipedia.org/wiki/Hong_Kong_nat
 yarn build
 ```
 
-Distributable files will be available in `/dist`
+Distributable files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
 
 ## Disclaimer
 
