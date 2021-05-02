@@ -6,7 +6,7 @@ import storage from '../../storage';
 const persistor = (): Middleware<{}, RootState> => (store) => (next) => (action) => {
   const value = next(action);
   const state = store.getState();
-  storage.update(state as IStorage);
+  storage.update(state as IStorage).save();
   return value;
 };
 

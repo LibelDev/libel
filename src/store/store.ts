@@ -2,9 +2,10 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { StateType } from 'typesafe-actions';
 import { DeepReadonly } from 'utility-types';
 import persistor from './middleware/persistor';
-import personal from './slices/personal';
+import personal, * as personalActions from './slices/personal';
 import subscriptions, * as subscriptionsActions from './slices/subscriptions';
 import * as env from '../helpers/env';
+import Storage from '../models/Storage';
 
 export const reducer = combineReducers({
   personal: personal.reducer,
@@ -20,6 +21,15 @@ const store = configureStore({
     persistor()
   )
 });
+
+export const loadStorageIntoStore = (storage: Storage) => {
+  const { personal, subscriptions } = storage;
+  store.dispatch(personalActions.update(personal));
+  store.dispatch(subscriptionsActions.update(subscriptions));
+  for (let i = 0; i < subscriptions.length; i++) {
+    store.dispatch(subscriptionsActions.load(i));
+  }
+};
 
 export type RootState = DeepReadonly<StateType<typeof reducer>>;
 

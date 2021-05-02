@@ -34,7 +34,7 @@ class Storage implements IStorage {
     this.key = keys[0];
     const json = Storage.load(keys);
     const data = Storage.parse(json);
-    this.load(data);
+    this.update(data);
   }
 
   private static load (keys: string[]) {
@@ -42,7 +42,7 @@ class Storage implements IStorage {
     for (const key of keys) {
       const json = storage.getItem(key);
       if (json) {
-        if (fallbackDataKeys.indexOf(key) >= 0) {
+        if (fallbackDataKeys && fallbackDataKeys.indexOf(key) >= 0) {
           storage.removeItem(key);
         }
         return json;
@@ -111,6 +111,10 @@ class Storage implements IStorage {
     };
   }
 
+  matchKey (key: string) {
+    return this.key === key;
+  }
+
   serialize () {
     return Storage.serialize(this);
   }
@@ -120,21 +124,25 @@ class Storage implements IStorage {
     return JSON.stringify(data);
   }
 
-  private load (data: IStorage) {
-    const { personal, subscriptions } = data;
-    this.personal = personal;
-    this.subscriptions = subscriptions;
+  load () {
+    const keys = [this.key];
+    const json = Storage.load(keys);
+    const data = Storage.parse(json);
+    this.update(data);
     return this;
   }
 
-  private save () {
+  save () {
     const json = this.json();
     storage.setItem(this.key, json);
     return this;
   }
 
   update (state: IStorage) {
-    return this.load(state).save();
+    const { personal, subscriptions } = state;
+    this.personal = personal;
+    this.subscriptions = subscriptions;
+    return this;
   }
 }
 

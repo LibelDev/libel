@@ -4,9 +4,7 @@ import * as REGEXES from './constants/regexes';
 import { intercept } from './helpers/xhr';
 import * as LIHKG from './helpers/lihkg';
 import storage from './storage';
-import * as personalActions from './store/slices/personal';
-import * as subscriptionsActions from './store/slices/subscriptions';
-import store from './store/store';
+import store, { loadStorageIntoStore } from './store/store';
 import { IQuoteListResponseData, IReplyListResponseData } from './types/post';
 import { IThreadListResponseData } from './types/thread';
 import './stylesheets/main.scss';
@@ -45,13 +43,17 @@ intercept('load', function () {
   }
 });
 
-async function main () {
-  const { personal, subscriptions } = storage;
-  store.dispatch(personalActions.update(personal));
-  store.dispatch(subscriptionsActions.update(subscriptions));
-  for (let i = 0; i < subscriptions.length; i++) {
-    store.dispatch(subscriptionsActions.load(i));
+// sync store between browser tabs
+window.addEventListener('storage', (event) => {
+  const { key } = event;
+  if (key && storage.matchKey(key)) {
+    storage.load();
+    loadStorageIntoStore(storage);
   }
+});
+
+async function main () {
+  loadStorageIntoStore(storage);
 
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
