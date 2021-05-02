@@ -155,7 +155,7 @@ interface ISource {
 
 ```json
 {
-  "name": "Libel認證【戇鳩】會員名單",
+  "name": "(Sample) Libel認證【戇鳩】會員名單",
   "version": "1.0",
   "homepage": "https://github.com/kitce/libel",
   "data": {
