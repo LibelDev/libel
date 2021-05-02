@@ -153,18 +153,18 @@ interface Label {
 
 ```json
 {
-  "name": "Sample 1",
+  "name": "Libel認證【戇鳩】會員名單",
   "version": "1.0",
   "homepage": "https://github.com/kitce/libel",
   "data": {
-    "23094": [
+    "35092": [
       {
-        "text": "Test 1.1",
-        "reason": "Test 1.1 Reason",
-        "url": "https://lihkg.com/profile/23094",
-        "date": 1619969602283,
+        "text": "戇鳩",
+        "reason": "認為「安心出行」冇問題",
+        "url": "https://lihkg.com/thread/2412564/page/1",
+        "date": 1619968323508,
         "source": {
-          "thread": "1880412",
+          "thread": "2412564",
           "page": 1,
           "messageNumber": "1"
         }
