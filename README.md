@@ -33,7 +33,7 @@ Label users on LIHKG
 ## Installation
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
-2. Visit https://kitce.github.io/libel/dist/libel.user.js
+2. Visit [https://kitce.github.io/libel/dist/libel.user.js](https://kitce.github.io/libel/dist/libel.user.js)
 3. Click **Install** / **Reinstall**
 4. Go back to LIHKG and reload the page
 
@@ -164,7 +164,7 @@ $ yarn dev
 ```
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
-2. Visit http://localhost:8080/libel.proxy.user.js
+2. Visit [http://localhost:8080/libel.proxy.user.js](http://localhost:8080/libel.proxy.user.js)
 3. Click **Install** / **Reinstall**
 4. Go back to LIHKG and reload the page
 
