@@ -20,8 +20,8 @@ If you are a developer, pull requests are welcome.
   - [Subscription](#subscription)
     - [Provider](#provider)
       - [Label list](#label-list)
-        - [Format](#format)
         - [Sample](#sample)
+        - [Format](#format)
     - [Consumer](#consumer)
   - [Development](#development)
     - [Install dependencies](#install-dependencies)
@@ -47,7 +47,7 @@ If you are a developer, pull requests are welcome.
 
 ⚠ [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will no longer be in maintenance. ⚠
 
-If you have installed any version of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) before, please export the data (for backup purpose) and uninstall it before preceeding to the following installation steps.
+If you have installed any version of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) before, please export the data (for backup purpose) and disable/uninstall it before preceeding to the following installation steps.
 
 Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will be migrated into Libel automatically, we still recommend to always backup your data before updating or uninstalling any software.
 
@@ -56,7 +56,7 @@ Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe9
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
 2. Visit [https://kitce.github.io/libel/dist/libel.user.js](https://kitce.github.io/libel/dist/libel.user.js)
 3. Click **Install** / **Reinstall**
-4. Go back to LIHKG and reload the page
+4. Go back to [LIHKG](https://lihkg.com/) and reload the page
 
 ## Why
 
@@ -97,17 +97,43 @@ If you want to know more about some (in)famous users from others, you may want t
 
 If you think the labels data provided by others could be biased, you may want to build up your personal labels database.
 
-**Note: To boost the growth of the community, we hope to have a directory of verified subscrptions in the future, but it definitely needs your help. (The word "verified" means the "integrity", not the "quality". The [provider](#provider) should be responsible to the quality of their label lists.)**
+**Note: To boost the growth of the community, we hope to have a directory of verified subscrptions in the future, but it definitely needs your help. (The word "verified" does not mean "quality" but "integrity". You, as the [provider](#provider), should be responsible to the quality of the label lists.)**
 
 ### Provider
 
 As a **provider**, you have to prepare a label list file in [JSON](https://www.json.org/json-en.html) format, and host it on the internet publicly for others to subscribe.
 
-Please refer to the following format and sample.
+Please refer to the following sample and format.
 
 **Note: There will be a [content management system](https://en.wikipedia.org/wiki/Content_management_system) soon**
 
 #### Label list
+
+##### Sample
+
+```json
+// https://kitce.github.io/libel/data/mock/subscriptions/sample1.json
+{
+  "name": "(Sample) Libel認證【戇鳩】會員名單",
+  "version": "1.0",
+  "homepage": "https://github.com/kitce/libel",
+  "data": {
+    "35092": [
+      {
+        "text": "戇鳩",
+        "reason": "認為【安心出行】冇問題",
+        "url": "https://lihkg.com/thread/2412564/page/1",
+        "date": 1619968323508,
+        "source": {
+          "thread": "2412564",
+          "page": 1,
+          "messageNumber": "1"
+        }
+      }
+    ]
+  }
+}
+```
 
 ##### Format
 
@@ -151,36 +177,13 @@ interface ISource {
 }
 ```
 
-##### Sample
-
-```json
-{
-  "name": "(Sample) Libel認證【戇鳩】會員名單",
-  "version": "1.0",
-  "homepage": "https://github.com/kitce/libel",
-  "data": {
-    "35092": [
-      {
-        "text": "戇鳩",
-        "reason": "認為「安心出行」冇問題",
-        "url": "https://lihkg.com/thread/2412564/page/1",
-        "date": 1619968323508,
-        "source": {
-          "thread": "2412564",
-          "page": 1,
-          "messageNumber": "1"
-        }
-      }
-    ]
-  }
-}
-```
-
 More samples can be found in [`data/mock/subscriptions`](https://github.com/kitce/libel/tree/master/data/mock/subscriptions)
 
 ### Consumer
 
 As a consumer, you just need to find the available subscriptions and add them in the LIHKG settings menu.
+
+For example, here is a [subscription sample](https://kitce.github.io/libel/data/mock/subscriptions/sample1.json), you may add this to the LIHKG settings menu and visit [this thread](https://lihkg.com/thread/2412564/page/1) to see how it works.
 
 ## Development
 
