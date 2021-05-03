@@ -10,6 +10,7 @@ const plugin = new WebpackUserscript({
     description,
     homepage,
     namespace: repository.url,
+    noframes: true,
     include: 'https://lihkg.com/*',
     grant: 'none',
     'run-at': 'document-start'
