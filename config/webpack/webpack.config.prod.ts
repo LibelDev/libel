@@ -6,7 +6,6 @@ import common from './webpack.config';
 
 const prod: webpack.Configuration = {
   mode: 'production',
-  devtool: 'source-map',
   output: {
     filename: '[name].js',
     path: path.join(process.cwd(), '/dist')
