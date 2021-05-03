@@ -3,7 +3,7 @@ import data from './data';
 import { ISerializedSubscription, IRemoteSubscription } from './../models/Subscription';
 
 export const serialized = joi.object<ISerializedSubscription>({
-  url: joi.string().uri().required(),
+  url: joi.string().required(),
   enabled: joi.boolean().required(),
   name: joi.string().required()
 });
@@ -12,7 +12,7 @@ export const remote = joi.object<IRemoteSubscription>({
   data: data.required(),
   name: joi.string().required(),
   version: joi.string().required(),
-  homepage: joi.string().uri()
+  homepage: joi.string()
 });
 
 // const schema = joi.object({
