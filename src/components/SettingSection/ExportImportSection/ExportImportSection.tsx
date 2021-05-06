@@ -7,10 +7,9 @@ import * as PLACEHOLDERS from '../../../constants/placeholders';
 import * as TEXTS from '../../../constants/texts';
 import { download } from '../../../helpers/file';
 import { aggregate } from '../../../helpers/label';
-import Storage, { ISerializedStorage, TMassagedStorage } from '../../../models/Storage';
+import Storage, { TMassagedStorage } from '../../../models/Storage';
 import storage from '../../../storage';
-import * as personalActions from '../../../store/slices/personal';
-import * as subscriptionsActions from '../../../store/slices/subscriptions';
+import { loadStorageIntoStore } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
@@ -29,9 +28,8 @@ const ExportImportSection: React.FunctionComponent = () => {
       try {
         const storage = await _import(file);
         if (storage) {
-          const { personal, subscriptions } = Storage.deserialize(storage);
-          dispatch(personalActions.update(personal));
-          dispatch(subscriptionsActions.update(subscriptions));
+          const _storage = Storage.deserialize(storage);
+          loadStorageIntoStore(_storage);
         }
       } catch (err) {
         if (typeof err === 'string') {
@@ -85,7 +83,7 @@ function _export () {
   window.alert(message);
 }
 
-function _import (file: File): Promise<ISerializedStorage | TMassagedStorage | null> {
+function _import (file: File): Promise<TMassagedStorage | null> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsText(file, 'UTF-8');
