@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import styles from './ToggleButton.scss';
 import { counter } from '../../helpers/counter';
@@ -11,7 +12,7 @@ const idPrefix = 'toogle-button-';
 const count = counter();
 
 const ToggleButton: React.FunctionComponent<IProps> = (props) => {
-  const { children, ...otherProps } = props;
+  const { className, children, ...otherProps } = props;
 
   const id = useMemo(() => {
     const { value } = count.next();
@@ -19,7 +20,7 @@ const ToggleButton: React.FunctionComponent<IProps> = (props) => {
   }, [count]);
 
   return (
-    <div className={styles.toggleButton}>
+    <div className={classNames(className, styles.toggleButton)}>
       <input id={id} type="checkbox" {...otherProps} />
       <label htmlFor={id}>
         <span>{children}</span>

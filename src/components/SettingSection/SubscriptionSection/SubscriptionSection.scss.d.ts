@@ -1,9 +1,5 @@
 export type Styles = {
-  'buttons': string;
-  'info': string;
   'name': string;
-  'reload': string;
-  'remove': string;
   'sectionTitle': string;
   'subscription': string;
 };

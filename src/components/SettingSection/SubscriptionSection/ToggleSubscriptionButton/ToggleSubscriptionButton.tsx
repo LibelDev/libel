@@ -1,10 +1,9 @@
-import classnames from 'classnames';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import ToggleButton from '../../../ToggleButton/ToggleButton';
 import * as TEXTS from '../../../../constants/texts';
 import Subscription from '../../../../models/Subscription';
-import { remove, toggle } from '../../../../store/slices/subscriptions';
+import { toggle } from '../../../../store/slices/subscriptions';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   subscription: Subscription;
@@ -20,7 +19,7 @@ const ToggleSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <ToggleButton
-      className={classnames(className)}
+      className={className}
       disabled={subscription.loading}
       defaultChecked={subscription.enabled}
       onChange={(event) => handleToggle(subscription, event.target.checked)}

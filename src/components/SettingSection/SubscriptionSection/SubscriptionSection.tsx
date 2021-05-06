@@ -31,54 +31,47 @@ const SubscriptionSection: React.FunctionComponent = () => {
         {
           subscriptions.map((subscription, index) => (
             <li key={index} className={classnames(lihkgCssClasses.settingOptionsItem, styles.subscription)}>
-              <div className={styles.info}>
-                {
-                  subscription.error ? (
-                    <Icon
-                      icon={IconName.CommentAlert}
-                      aria-label={subscription.error}
-                      data-tip={subscription.error}
-                      title={subscription.error}
-                    />
+              {
+                subscription.error ? (
+                  <Icon
+                    icon={IconName.CommentAlert}
+                    aria-label={subscription.error}
+                    data-tip={subscription.error}
+                    title={subscription.error}
+                  />
+                ) : (
+                  subscription.loading ? (
+                    <LoadingSpinner />
                   ) : (
-                    subscription.loading ? (
-                      <LoadingSpinner />
-                    ) : (
-                      subscription.version && (
-                        <Icon
-                          icon={IconName.Verified}
-                          aria-label={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                          data-tip={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                          title={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                        />
-                      )
+                    subscription.version && (
+                      <Icon
+                        icon={IconName.Verified}
+                        aria-label={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
+                        data-tip={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
+                        title={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
+                      />
                     )
                   )
-                }
-                <div className={styles.name}>
-                  <div>
-                    {subscription.name || subscription.url}
-                  </div>
-                  <IconButton
-                    className={classnames(lihkgCssClasses.settingOptionButton, styles.reload)}
-                    disabled={subscription.loading}
-                    icon={IconName.Refresh}
-                    aria-label={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-                    data-tip={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-                    title={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-                    onClick={() => handleReload(index)}
-                  />
-                </div>
-              </div>
-              <div className={styles.buttons}>
-                <RemoveSubscriptionButton
-                  className={styles.remove}
-                  subscription={subscription}
-                />
-                <ToggleSubscriptionButton
-                  subscription={subscription}
-                />
-              </div>
+                )
+              }
+              <a className={styles.name} href={subscription.url} target="_blank">
+                {subscription.name || subscription.url}
+              </a>
+              <IconButton
+                className={lihkgCssClasses.settingOptionButton}
+                disabled={subscription.loading}
+                icon={IconName.Refresh}
+                aria-label={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
+                data-tip={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
+                title={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
+                onClick={() => handleReload(index)}
+              />
+              <RemoveSubscriptionButton
+                subscription={subscription}
+              />
+              <ToggleSubscriptionButton
+                subscription={subscription}
+              />
             </li>
           ))
         }

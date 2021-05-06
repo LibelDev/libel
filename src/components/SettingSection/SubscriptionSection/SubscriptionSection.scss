@@ -5,34 +5,21 @@
 }
 
 .subscription {
-  @apply justify-start;
+  @apply flex items-center;
+  @apply items-center justify-start;
 
-  > div {
-    @apply flex items-center;
-  }
-
-  .info {
+  .name {
     @apply flex-1;
+    @apply mx-2;
+    @apply break-all;
+    @apply text-white;
 
-    .name {
-      @apply flex items-center;
-      @apply flex-1;
-      @apply mx-2;
-      max-width: 200px;
-
-      > div {
-        @include text-ellipsis();
-      }
-
-      .reload {
-        @apply ml-2;
-      }
+    @screen md {
+      @apply max-w-xs;
     }
   }
 
-  .buttons {
-    .remove {
-      @apply mr-2;
-    }
+  > * + * {
+    @apply ml-2;
   }
 }
