@@ -7,9 +7,9 @@ export interface IPersonal extends ISerializedPersonal { }
 class Personal extends DataSet implements IPersonal {
   /**
    * prepare for storage
-   * @returns {IDataSet}
+   * @returns {ISerializedPersonal}
    */
-  serialize (): IDataSet {
+  serialize (): ISerializedPersonal {
     const { data } = this;
     return { data };
   }

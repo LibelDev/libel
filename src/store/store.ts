@@ -5,7 +5,9 @@ import persistor from './middleware/persistor';
 import personal, * as personalActions from './slices/personal';
 import subscriptions, * as subscriptionsActions from './slices/subscriptions';
 import * as env from '../helpers/env';
-import Storage from '../models/Storage';
+import { IStorage } from '../models/Storage';
+import storage from '../storage';
+
 
 export const reducer = combineReducers({
   personal: personal.reducer,
@@ -22,12 +24,20 @@ const store = configureStore({
   )
 });
 
-export const loadStorageIntoStore = (storage: Storage) => {
+export const loadStorageIntoStore = (storage: IStorage) => {
   const { personal, subscriptions } = storage;
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
   for (let i = 0; i < subscriptions.length; i++) {
     store.dispatch(subscriptionsActions.load(i));
+  }
+};
+
+export const createStorageListener = () => (event: StorageEvent) => {
+  const { key } = event;
+  if (key && storage.is(key)) {
+    storage.load();
+    loadStorageIntoStore(storage);
   }
 };
 

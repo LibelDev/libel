@@ -4,7 +4,7 @@ import * as REGEXES from './constants/regexes';
 import { intercept } from './helpers/xhr';
 import * as LIHKG from './helpers/lihkg';
 import storage from './storage';
-import store, { loadStorageIntoStore } from './store/store';
+import store, { loadStorageIntoStore, createStorageListener } from './store/store';
 import { IQuoteListResponseData, IReplyListResponseData } from './types/post';
 import { IThreadListResponseData } from './types/thread';
 import './stylesheets/main.scss';
@@ -44,23 +44,11 @@ intercept('load', function () {
 });
 
 // sync store between browser tabs
-window.addEventListener('storage', (event) => {
-  const { key } = event;
-  if (key && storage.matchKey(key)) {
-    storage.load();
-    loadStorageIntoStore(storage);
-  }
-});
+window.addEventListener('storage', createStorageListener());
 
 async function main () {
-  loadStorageIntoStore(storage);
-
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
-
-      // const { type, target, addedNodes, removedNodes } = mutation;
-      // console.info(type, target, addedNodes, removedNodes);
-
       window.requestAnimationFrame(() => {
         switch (mutation.type) {
           case 'childList': {
@@ -75,8 +63,8 @@ async function main () {
                   LIHKG.handleSettingsModal(node, store);
                 } else {
                   const nicknames = Array.from(LIHKG.querySelectorNickname(node));
-                  for (const nickname of nicknames) {
-                    LIHKG.handleNickname(nickname, store);
+                  for (const node of nicknames) {
+                    LIHKG.handleNickname(node, store);
                   }
                 }
               }
@@ -105,4 +93,5 @@ async function main () {
   });
 }
 
+loadStorageIntoStore(storage);
 main();

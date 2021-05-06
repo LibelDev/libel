@@ -111,12 +111,12 @@ class Storage implements IStorage {
     };
   }
 
-  matchKey (key: string) {
-    return this.key === key;
-  }
-
   serialize () {
     return Storage.serialize(this);
+  }
+
+  is (key: string) {
+    return this.key === key;
   }
 
   json () {
