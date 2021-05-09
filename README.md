@@ -13,7 +13,7 @@ If you are a developer, pull requests are welcome.
 - [Libel](#libel)
   - [Features](#features)
   - [Installation](#installation)
-    - [Prerequisites](#prerequisites)
+    - [Caveats](#caveats)
     - [Steps](#steps)
   - [Why](#why)
   - [Philosophy](#philosophy)
@@ -43,7 +43,7 @@ If you are a developer, pull requests are welcome.
 
 ## Installation
 
-### Prerequisites
+### Caveats
 
 ⚠ [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will no longer be in maintenance. ⚠
 
@@ -183,7 +183,7 @@ More samples can be found in [`data/mock/subscriptions`](https://github.com/kitc
 
 As a consumer, you just need to find the available subscriptions and add them in the LIHKG settings menu.
 
-For example, here is a [subscription sample](https://kitce.github.io/libel/data/mock/subscriptions/sample1.json), you may add this to the LIHKG settings menu and visit [this thread](https://lihkg.com/thread/2412564/page/1) to see how it works.
+For example, you may visit [this thread](https://lihkg.com/thread/2412564/page/1) and add [this subscription sample](https://kitce.github.io/libel/data/mock/subscriptions/sample1.json) in the LIHKG settings menu to see how it works.
 
 ## Development
 
