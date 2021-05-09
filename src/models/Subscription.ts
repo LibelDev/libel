@@ -51,14 +51,25 @@ class Subscription extends DataSet implements ISubscription {
     return null;
   }
 
-  static is (object: any): object is ISerializedSubscription & IRemoteSubscription {
+  static implements (object: any): object is ISerializedSubscription & IRemoteSubscription {
     return (
-      super.is(object)
-      && 'url' in object
-      && 'enabled' in object
-      && 'name' in object
-      && 'version' in object
+      object instanceof this
+      || (
+        super.implements(object)
+        && 'url' in object
+        && 'enabled' in object
+        && 'name' in object
+        && 'version' in object
+      )
     );
+  }
+
+  static deserialize (data: Subscription | ISerializedSubscription) {
+    if (data instanceof Subscription) {
+      return data;
+    }
+    const { name, url, enabled } = data;
+    return new Subscription(name, url, enabled);
   }
 
   /**

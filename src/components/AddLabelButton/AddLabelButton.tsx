@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './AddLabelButton.scss';
 import { prompt } from '../../helpers/label';
-import { add } from '../../store/slices/personal';
+import { actions as personalActions } from '../../store/slices/personal';
 import { IPost } from '../../types/post';
 
 interface IProps {
@@ -14,14 +14,14 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
   const dispatch = useDispatch();
   const { user, source } = props;
 
-  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
+  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     const data = prompt();
     if (data) {
       const { text, reason } = data;
-      dispatch(add({ user, text, reason, source }));
+      dispatch(personalActions.add({ user, text, reason, source }));
     }
-  };
+  }, [user, source]);
 
   return (
     <a className={styles.addLabelButton} href="#" onClick={handleClick}>

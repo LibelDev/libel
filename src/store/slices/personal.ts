@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import Personal from '../../models/Personal';
+import { createTransform } from 'redux-persist';
+import { StateType } from 'typesafe-actions';
+import Personal, { ISerializedPersonal, IPersonal } from '../../models/Personal';
 import { IPost } from '../../types/post';
 
 interface IAddLabelPayload {
@@ -39,13 +41,29 @@ const slice = createSlice({
       const { user, index } = action.payload;
       state.remove(user, index);
     },
-    update: (state, action: PayloadAction<Personal>) => {
+    update: (state, action: PayloadAction<Personal | IPersonal>) => {
       const { payload: personal } = action;
-      return personal;
+      return personal instanceof Personal ? personal : Personal.deserialize(personal);
     }
   },
 });
 
-export const { add, edit, remove, update } = slice.actions;
+type State = StateType<typeof slice.reducer>;
+
+export const SetTransform = createTransform<State, ISerializedPersonal>(
+  (personal, key) => {
+    return personal.serialize();
+  },
+  (outboundState, key) => {
+    return Personal.deserialize(outboundState);
+  },
+  {
+    whitelist: ['personal']
+  }
+);
+
+export const actions = {
+  ...slice.actions
+};
 
 export default slice;

@@ -1,9 +1,9 @@
-import { dataKey, fallbackDataKeys } from './constants/storage';
+import { dataKey, deprecatedLocalStorageKeys } from './constants/storage';
 import Storage from './models/Storage';
 
 const keys = [
   dataKey,
-  ...fallbackDataKeys
+  ...deprecatedLocalStorageKeys
 ];
 
 const storage = new Storage(keys);

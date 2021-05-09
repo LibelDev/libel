@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './SubscriptionSection.scss';
 import AddSubscriptionButton from './AddSubscriptionButton/AddSubscriptionButton';
+import ReloadSubscriptionButton from './ReloadSubscriptionButton/ReloadSubscriptionButton';
 import RemoveSubscriptionButton from './RemoveSubscriptionButton/RemoveSubscriptionButton';
 import ToggleSubscriptionButton from './ToggleSubscriptionButton/ToggleSubscriptionButton';
 import Icon, { IconName } from '../../Icon/Icon';
@@ -30,7 +31,7 @@ const SubscriptionSection: React.FunctionComponent = () => {
       <ul className={lihkgCssClasses.settingOptionsList}>
         {
           subscriptions.map((subscription, index) => (
-            <li key={index} className={classnames(lihkgCssClasses.settingOptionsItem, styles.subscription)}>
+            <li key={subscription.url} className={classnames(lihkgCssClasses.settingOptionsItem, styles.subscription)}>
               {
                 subscription.error ? (
                   <Icon
@@ -57,20 +58,17 @@ const SubscriptionSection: React.FunctionComponent = () => {
               <a className={styles.name} href={subscription.url} target="_blank">
                 {subscription.name || subscription.url}
               </a>
-              <IconButton
-                className={lihkgCssClasses.settingOptionButton}
-                disabled={subscription.loading}
-                icon={IconName.Refresh}
-                aria-label={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-                data-tip={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-                title={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-                onClick={() => handleReload(index)}
-              />
               <RemoveSubscriptionButton
                 subscription={subscription}
+                index={index}
+              />
+              <ReloadSubscriptionButton
+                subscription={subscription}
+                index={index}
               />
               <ToggleSubscriptionButton
                 subscription={subscription}
+                index={index}
               />
             </li>
           ))

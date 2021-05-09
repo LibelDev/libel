@@ -69,9 +69,12 @@ abstract class DataSet implements IDataSet {
     return null;
   }
 
-  static is (object: any): object is IDataSet {
+  static implements (object: any): object is IDataSet {
     return (
-      'data' in object
+      object instanceof this
+      || (
+        'data' in object
+      )
     );
   }
 
@@ -127,15 +130,6 @@ abstract class DataSet implements IDataSet {
     }
     return this;
   }
-
-  // async load (data: IData) {
-  //   const dataSet = DataSet.validate(data);
-  //   if (dataSet) {
-  //     this.data = dataSet.data;
-  //     return true;
-  //   }
-  //   return false;
-  // }
 }
 
 export default DataSet;

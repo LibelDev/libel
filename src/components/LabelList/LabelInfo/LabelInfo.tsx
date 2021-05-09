@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useMemo } from 'react';
+import React from 'react';
 import styles from './LabelInfo.scss';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
@@ -29,13 +29,13 @@ const LabelInfo: React.FunctionComponent<IProps> = (props) => {
       }
       <div className={styles.buttons}>
         {
-          !Subscription.is(dataSet) && (
+          !Subscription.implements(dataSet) && (
             <EditLabelButton className={styles.button} user={user} label={label} index={index} />
           )
         }
         <LabelSourceButton className={styles.button} label={label} />
         {
-          Subscription.is(dataSet) ?
+          Subscription.implements(dataSet) ?
             <LabelProviderIcon className={styles.button} subscription={dataSet} /> :
             <RemoveLabelButton className={styles.button} user={user} label={label} index={index} />
         }

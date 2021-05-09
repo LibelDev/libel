@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './SnipeButton.scss';
 import IconButton, { IconName } from '../IconButton/IconButton';
@@ -21,7 +21,7 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
   const personal = useSelector(filterPersonal(user));
   const subscriptions = useSelector(filterSubscriptions(user));
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
     const awaiter = waitForSubmissionForm();
     const replyButton = buttonRef.current!.parentNode!.parentNode!.querySelector<HTMLLIElement>('.i-reply');
@@ -32,7 +32,7 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
     if (formComponent && body) {
       formComponent.replaceEditorContent(body);
     }
-  };
+  }, [personal, subscriptions]);
 
   return (
     <IconButton

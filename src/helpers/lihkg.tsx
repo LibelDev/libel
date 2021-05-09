@@ -3,6 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM, { Renderer } from 'react-dom';
+import { PersistGate } from 'redux-persist/integration/react';
 import { insertAfter } from './dom';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
@@ -13,6 +14,7 @@ import labelListStyles from '../components/LabelList/LabelList.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
 import * as TEXTS from '../constants/texts';
 import * as REGEXES from '../constants/regexes';
+import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
 
@@ -59,41 +61,49 @@ const isModalTitleMatched = (node: Node, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = <C extends Parameters<Renderer>[1]> (user: string, store: Store, container: C) => {
+const renderAddLabelButton = <C extends Parameters<Renderer>[1]> (user: string, store: Store, componentWrapper: C) => {
   ReactDOM.render(
     <Provider store={store}>
-      <AddLabelButton user={user} source={cache.currentReply}>
-        {TEXTS.ADD_LABEL_BUTTON_TEXT}
-      </AddLabelButton>
+      <PersistGate persistor={persistor}>
+        <AddLabelButton user={user} source={cache.currentReply}>
+          {TEXTS.ADD_LABEL_BUTTON_TEXT}
+        </AddLabelButton>
+      </PersistGate>
     </Provider>,
-    container
+    componentWrapper
   );
 };
 
-const renderLabelList = <C extends Parameters<Renderer>[1]> (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: C) => {
+const renderLabelList = <C extends Parameters<Renderer>[1]> (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, componentWrapper: C) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LabelList user={user} hasInfo={hasInfo} hasSnipeButton={hasSnipeButton} />
+      <PersistGate persistor={persistor}>
+        <LabelList user={user} hasInfo={hasInfo} hasSnipeButton={hasSnipeButton} />
+      </PersistGate>
     </Provider>,
-    container
+    componentWrapper
   );
 };
 
-const renderLabelBook = <C extends Parameters<Renderer>[1]> (user: string, store: Store, container: C) => {
+const renderLabelBook = <C extends Parameters<Renderer>[1]> (user: string, store: Store, componentWrapper: C) => {
   ReactDOM.render(
     <Provider store={store}>
-      <LabelBook user={user} />
+      <PersistGate persistor={persistor}>
+        <LabelBook user={user} />
+      </PersistGate>
     </Provider>,
-    container
+    componentWrapper
   );
 };
 
-const renderSettingSection = <C extends Parameters<Renderer>[1]> (store: Store, container: C) => {
+const renderSettingSection = <C extends Parameters<Renderer>[1]> (store: Store, componentWrapper: C) => {
   ReactDOM.render(
     <Provider store={store}>
-      <SettingSection />
+      <PersistGate persistor={persistor}>
+        <SettingSection />
+      </PersistGate>
     </Provider>,
-    container
+    componentWrapper
   );
 };
 
@@ -123,9 +133,9 @@ export const handleUserCardModal = (node: Node, store: Store) => {
     const [, user] = matched;
     const modelContentInner = _node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
-    labelListContainer.classList.add(labelListStyles.container);
+    labelListContainer.classList.add(labelListStyles.componentWrapper);
     modelContentInner.appendChild(labelListContainer);
-    renderLabelList(user, store, false, false, labelListContainer);
+    renderLabelList(user, store, true, false, labelListContainer);
     const userCardButtonsContainer = _node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
     const addLabelButtonContainer = document.createElement('div');
     userCardButtonsContainer.appendChild(addLabelButtonContainer);
@@ -141,21 +151,26 @@ export const handleSettingsModal = (node: Node, store: Store) => {
   renderSettingSection(store, settingSectionContainer);
 };
 
-export const handleNickname = (node: Node, store: Store) => {
+export const handleNicknames = (nodes: NodeList, store: Store) => {
+  const _nodes = Array.from(nodes);
+  for (const node of _nodes) {
+    handleNickname(node, store);
+  }
+};
+
+const handleNickname = (node: Node, store: Store) => {
   const nicknameLink = querySelectorNicknameLink(node);
   if (nicknameLink) {
     const href = nicknameLink.getAttribute('href')!;
     const matched = href.match(REGEXES.PROFILE_URL);
     if (matched) {
       const [, user] = matched;
-      // const labelBookContainer = document.createElement('div');
-      // labelBookContainer.classList.add(labelBookStyles.container);
-      // insertAfter(labelBookContainer, node);
-      // renderLabelBook(user, store, labelBookContainer);
-      const labelListContainer = document.createElement('div');
-      labelListContainer.classList.add(labelListStyles.container);
-      insertAfter(labelListContainer, node);
-      renderLabelList(user, store, false, true, labelListContainer);
+      (node as any).componentWrapper?.remove();
+      const componentWrapper = document.createElement('div');
+      componentWrapper.classList.add(labelListStyles.componentWrapper);
+      insertAfter(componentWrapper, node);
+      renderLabelList(user, store, true, true, componentWrapper);
+      (node as any).componentWrapper = componentWrapper;
     }
   }
 };

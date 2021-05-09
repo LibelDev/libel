@@ -1,18 +1,13 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { StateType } from 'typesafe-actions';
 import { DeepReadonly } from 'utility-types';
-import persistor from './middleware/persistor';
-import personal, * as personalActions from './slices/personal';
-import subscriptions, * as subscriptionsActions from './slices/subscriptions';
+import reducer, { rootReducer } from './reducer';
+import { actions as subscriptionsActions } from './slices/subscriptions';
 import * as env from '../helpers/env';
-import { IStorage } from '../models/Storage';
 import storage from '../storage';
-
-
-export const reducer = combineReducers({
-  personal: personal.reducer,
-  subscriptions: subscriptions.reducer
-});
+import { namespace } from '../../package.json';
 
 const store = configureStore({
   devTools: env.dev,
@@ -20,28 +15,28 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
   }).concat(
-    persistor()
+    createStateSyncMiddleware({
+      channel: namespace,
+      blacklist: [
+        // subscriptionsActions.load.pending.type,
+        FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER
+      ]
+    })
   )
 });
 
-export const loadStorageIntoStore = (storage: IStorage) => {
-  const { personal, subscriptions } = storage;
-  store.dispatch(personalActions.update(personal));
-  store.dispatch(subscriptionsActions.update(subscriptions));
+initMessageListener(store);
+
+export const persistor = persistStore(store, null, async () => {
+  await storage.ready();
+  const { dispatch } = store;
+  const { subscriptions } = storage;
   for (let i = 0; i < subscriptions.length; i++) {
-    store.dispatch(subscriptionsActions.load(i));
+    dispatch(subscriptionsActions.load(i));
   }
-};
+});
 
-export const createStorageListener = () => (event: StorageEvent) => {
-  const { key } = event;
-  if (key && storage.is(key)) {
-    storage.load();
-    loadStorageIntoStore(storage);
-  }
-};
-
-export type RootState = DeepReadonly<StateType<typeof reducer>>;
+export type RootState = DeepReadonly<StateType<typeof rootReducer>>;
 
 export type AppDispatch = typeof store.dispatch;
 

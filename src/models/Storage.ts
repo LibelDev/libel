@@ -2,7 +2,8 @@ import { Optional } from 'utility-types';
 import DataSet from '../models/DataSet';
 import Personal, { ISerializedPersonal } from '../models/Personal';
 import Subscription, { ISerializedSubscription } from '../models/Subscription';
-import storage from '../helpers/storage';
+import storage, { localStorage } from '../helpers/storage';
+import { deprecatedLocalStorageKeys } from '../constants/storage';
 import { defaultSubscriptions } from '../constants/subscriptions';
 import * as storageSchemas from '../schemas/storage';
 
@@ -25,26 +26,33 @@ export function isISerializedStorageImplemented (object: any): object is ISerial
   );
 }
 
+const key = Symbol('key');
+const ready = Symbol('ready');
+
 class Storage implements IStorage {
-  private readonly key!: string;
+  private readonly [key]!: string;
+  private readonly [ready]!: Promise<this>;
   personal: Personal = new Personal();
   subscriptions: Subscription[] = [];
 
   constructor (keys: string[]) {
-    this.key = keys[0];
-    const json = Storage.load(keys);
-    const data = Storage.parse(json);
-    this.update(data);
+    this[key] = keys[0];
+    this[ready] = this.load();
   }
 
-  private static load (keys: string[]) {
+  private static clean (keys: string[]) {
+    for (const key of deprecatedLocalStorageKeys) {
+      storage.removeItem(key);
+      localStorage.removeItem(key);
+    }
+  }
+
+  private static async load (keys: string[]) {
     const [, ...fallbackDataKeys] = keys;
     for (const key of keys) {
-      const json = storage.getItem(key);
+      const json = await storage.getItem<string>(key);
       if (json) {
-        if (fallbackDataKeys && fallbackDataKeys.indexOf(key) >= 0) {
-          storage.removeItem(key);
-        }
+        this.clean(fallbackDataKeys);
         return json;
       }
     }
@@ -53,7 +61,11 @@ class Storage implements IStorage {
 
   private static parse (json: string) {
     const object = JSON.parse(json);
-    const data = this.massage(object);
+    const { personal, subscriptions } = object;
+    const data = this.massage({
+      personal: personal ? JSON.parse(personal) : Personal.factory(),
+      subscriptions: subscriptions ? JSON.parse(subscriptions) : []
+    });
     data.subscriptions = data.subscriptions || defaultSubscriptions;
     return this.deserialize(data);
   }
@@ -71,7 +83,7 @@ class Storage implements IStorage {
     if (personal) {
       return { personal };
     }
-    return { personal: DataSet.factory() };
+    return { personal: Personal.factory() };
   }
 
   /**
@@ -95,7 +107,7 @@ class Storage implements IStorage {
     return null;
   }
 
-  private static serialize (data: IStorage): ISerializedStorage {
+  static serialize (data: IStorage): ISerializedStorage {
     const { personal, subscriptions } = data;
     return {
       personal: personal.serialize(),
@@ -106,17 +118,17 @@ class Storage implements IStorage {
   static deserialize (data: TMassagedStorage): IStorage {
     const { personal, subscriptions } = data;
     return {
-      personal: new Personal(personal.data),
-      subscriptions: subscriptions ? subscriptions.map(({ name, url, enabled }) => new Subscription(name, url, enabled)) : []
+      personal: Personal.deserialize(personal),
+      subscriptions: subscriptions ? subscriptions.map(Subscription.deserialize) : []
     };
+  }
+
+  ready () {
+    return this[ready];
   }
 
   serialize () {
     return Storage.serialize(this);
-  }
-
-  is (key: string) {
-    return this.key === key;
   }
 
   json () {
@@ -124,22 +136,22 @@ class Storage implements IStorage {
     return JSON.stringify(data);
   }
 
-  load () {
-    const keys = [this.key];
-    const json = Storage.load(keys);
+  async load () {
+    const keys = [this[key]];
+    const json = await Storage.load(keys);
     const data = Storage.parse(json);
     this.update(data);
     return this;
   }
 
-  save () {
-    const json = this.json();
-    storage.setItem(this.key, json);
+  async save () {
+    const data = this.serialize();
+    await storage.setItem(this[key], data);
     return this;
   }
 
-  update (state: IStorage) {
-    const { personal, subscriptions } = state;
+  update (data: IStorage) {
+    const { personal, subscriptions } = data;
     this.personal = personal;
     this.subscriptions = subscriptions;
     return this;

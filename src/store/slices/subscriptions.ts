@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice, original, PayloadAction } from '@reduxjs/toolkit';
+import { createTransform } from 'redux-persist';
+import { StateType } from 'typesafe-actions';
 import { selectSubscriptions } from '../selectors';
 import { RootState } from '../store';
 import * as TEXTS from '../../constants/texts';
-import Subscription from '../../models/Subscription';
+import Subscription, { ISerializedSubscription } from '../../models/Subscription';
 
 interface ITogglePayload {
-  subscription: Subscription;
+  index: number;
   enabled?: boolean;
 }
 
@@ -14,18 +16,19 @@ const initialState: Subscription[] = [];
 export const load = createAsyncThunk(
   'subscriptions/load',
   async (index: number, thunk) => {
-    const subscriptions = selectSubscriptions(thunk.getState() as RootState);
+    const state = thunk.getState() as RootState;
+    const subscriptions = selectSubscriptions(state);
     const subscription = subscriptions[index];
     try {
       const remoteSubscription = await subscription.fetch();
       if (remoteSubscription) {
         return remoteSubscription;
       }
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_VALIDATION_ERROR);
     } catch (err) {
       console.error(err);
       return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_FETCH_ERROR);
     }
-    return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_VALIDATION_ERROR);
   }
 );
 
@@ -33,22 +36,22 @@ const slice = createSlice({
   name: 'subscriptions',
   initialState,
   reducers: {
-    add: (state, action: PayloadAction<Subscription>) => {
-      const { payload: subscription } = action;
+    add: (state, action: PayloadAction<Subscription | ISerializedSubscription>) => {
+      const { payload } = action;
+      const subscription = Subscription.deserialize(payload);
       state.push(subscription);
     },
-    remove: (state, action: PayloadAction<Subscription>) => {
-      const { payload: subscription } = action;
-      const index = original(state)?.indexOf(subscription)!;
+    remove: (state, action: PayloadAction<number>) => {
+      const { payload: index } = action;
       state.splice(index, 1);
     },
     toggle: (state, action: PayloadAction<ITogglePayload>) => {
-      const { subscription, enabled } = action.payload;
-      const index = original(state)?.indexOf(subscription)!;
+      const { index, enabled } = action.payload;
       state[index].enabled = enabled ?? !state[index].enabled;
     },
-    update: (state, action: PayloadAction<Subscription[]>) => {
-      const { payload: subscriptions } = action;
+    update: (state, action: PayloadAction<(Subscription | ISerializedSubscription)[]>) => {
+      const { payload } = action;
+      const subscriptions = payload.map(Subscription.deserialize);
       return subscriptions;
     }
   },
@@ -80,7 +83,23 @@ const slice = createSlice({
   }
 });
 
+type State = StateType<typeof slice.reducer>;
 
-export const { add, remove, toggle, update } = slice.actions;
+export const SetTransform = createTransform<State, ISerializedSubscription[]>(
+  (subscriptions, key) => {
+    return subscriptions.map((subscription) => subscription.serialize());
+  },
+  (outboundState, key) => {
+    return outboundState.map(Subscription.deserialize);
+  },
+  {
+    whitelist: ['subscriptions']
+  }
+);
+
+export const actions = {
+  ...slice.actions,
+  load
+};
 
 export default slice;

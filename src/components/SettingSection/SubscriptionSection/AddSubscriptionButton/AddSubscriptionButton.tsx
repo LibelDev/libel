@@ -5,7 +5,7 @@ import * as TEXTS from '../../../../constants/texts';
 import * as PLACEHOLDERS from '../../../../constants/placeholders';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
-import { add, load } from '../../../../store/slices/subscriptions';
+import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { selectSubscriptions } from '../../../../store/selectors';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 
@@ -21,8 +21,8 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
       const subscription = subscriptions.find((subscription) => subscription.url === _url);
       if (!subscription) {
         const subscription = new Subscription('', _url, true);
-        dispatch(add(subscription));
-        dispatch(load(subscriptions.length));
+        dispatch(subscriptionsActions.add(subscription));
+        dispatch(subscriptionsActions.load(subscriptions.length));
       } else {
         const message = TEXTS.ADD_SUBSCRIPTION_ALREADY_SUBSCRIBED_ERROR
           .replace(PLACEHOLDERS.SUBSCRIPTION_NAME, subscription.name || subscription.url)

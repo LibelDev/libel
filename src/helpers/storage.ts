@@ -1,4 +1,13 @@
-// backup localStorage
-const storage = window.localStorage;
+import localForage from 'localforage';
+import { namespace } from '../../package.json';
 
-export default storage;
+const main = localForage.createInstance({
+  name: namespace,
+  storeName: 'main',
+  version: 1
+});
+
+// backup localStorage
+export const { localStorage } = window;
+
+export default main;

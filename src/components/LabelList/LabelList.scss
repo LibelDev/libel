@@ -1,6 +1,6 @@
 @import '../../stylesheets/base';
 
-.container {
+.component-wrapper {
   @apply inline-flex items-center;
 
   &:empty {

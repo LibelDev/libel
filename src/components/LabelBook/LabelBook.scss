@@ -1,11 +1,5 @@
 @import '../../stylesheets/base';
 
-.container {
-  :global(.#{$lihkg-class-nickname}) ~ & {
-    @apply ml-2;
-  }
-}
-
 .label-book {
   @apply inline-flex items-center justify-center;
   @apply relative;

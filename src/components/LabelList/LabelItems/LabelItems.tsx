@@ -19,7 +19,7 @@ const LabelItems: React.FunctionComponent<IProps> = (props) => {
         labels.map((label, index) => (
           <li className={styles.labelItem} key={index} tabIndex={0} aria-label={label.text}>
             {
-              !hasInfo && (
+              hasInfo && (
                 <LabelInfo
                   className={styles.labelInfo}
                   user={user}

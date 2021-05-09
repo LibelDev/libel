@@ -1,8 +1,5 @@
-import { namespace } from '../../package.json';
+export const dataKey = 'data';
 
-export const dataKey = `${namespace}-data`;
-
-// deprecated storage keys
-export const fallbackDataKeys = [
+export const deprecatedLocalStorageKeys = [
   'LIHKG-Label-Users-data'
 ];

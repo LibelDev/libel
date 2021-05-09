@@ -1,5 +1,5 @@
 export type Styles = {
-  'container': string;
+  'componentWrapper': string;
   'labelList': string;
 };
 

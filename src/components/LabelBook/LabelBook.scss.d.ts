@@ -1,5 +1,4 @@
 export type Styles = {
-  'container': string;
   'labelBook': string;
 };
 

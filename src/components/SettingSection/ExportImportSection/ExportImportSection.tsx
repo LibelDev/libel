@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './ExportImportSection.scss';
 import * as ATTRIBUTES from '../../../constants/attributes';
@@ -9,18 +9,19 @@ import { download } from '../../../helpers/file';
 import { aggregate } from '../../../helpers/label';
 import Storage, { TMassagedStorage } from '../../../models/Storage';
 import storage from '../../../storage';
-import { loadStorageIntoStore } from '../../../store/store';
+import { actions as personalActions } from '../../../store/slices/personal';
+import { actions as subscriptionsActions } from '../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
   const dispatch = useDispatch();
 
-  const handleExport: React.MouseEventHandler<HTMLAnchorElement> = (event) => {
+  const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     _export();
-  };
+  }, []);
 
-  const handleImport: React.ChangeEventHandler<HTMLInputElement> = async (event) => {
+  const handleImport: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (event) => {
     event.preventDefault();
     const { files } = event.target;
     const file = files!.item(0);
@@ -28,19 +29,24 @@ const ExportImportSection: React.FunctionComponent = () => {
       try {
         const storage = await _import(file);
         if (storage) {
-          const _storage = Storage.deserialize(storage);
-          loadStorageIntoStore(_storage);
+          const { personal, subscriptions } = Storage.deserialize(storage);
+          dispatch(personalActions.update(personal));
+          dispatch(subscriptionsActions.update(subscriptions));
+          for (let i = 0; i < subscriptions.length; i++) {
+            dispatch(subscriptionsActions.load(i));
+          }
         }
       } catch (err) {
         if (typeof err === 'string') {
           window.alert(err);
         } else {
           // TODO display error
+          console.error(err);
         }
       }
     }
     event.target.value = '';
-  };
+  }, []);
 
   return (
     <React.Fragment>

@@ -4,7 +4,7 @@ import * as REGEXES from './constants/regexes';
 import { intercept } from './helpers/xhr';
 import * as LIHKG from './helpers/lihkg';
 import storage from './storage';
-import store, { loadStorageIntoStore, createStorageListener } from './store/store';
+import store from './store/store';
 import { IQuoteListResponseData, IReplyListResponseData } from './types/post';
 import { IThreadListResponseData } from './types/thread';
 import './stylesheets/main.scss';
@@ -43,10 +43,7 @@ intercept('load', function () {
   }
 });
 
-// sync store between browser tabs
-window.addEventListener('storage', createStorageListener());
-
-async function main () {
+async function init () {
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       window.requestAnimationFrame(() => {
@@ -62,24 +59,21 @@ async function main () {
                 } else if (LIHKG.isSettingsModal(node)) {
                   LIHKG.handleSettingsModal(node, store);
                 } else {
-                  const nicknames = Array.from(LIHKG.querySelectorNickname(node));
-                  for (const node of nicknames) {
-                    LIHKG.handleNickname(node, store);
-                  }
+                  const nodes = LIHKG.querySelectorNickname(node);
+                  LIHKG.handleNicknames(nodes, store);
                 }
               }
             }
             break;
           }
-          // case 'attributes': {
-          //   if (mutation.attributeName === ATTRIBUTES.dataPostId) {
-          //     const { target } = mutation;
-          //     const nickname = target.querySelector(SELECTORS.nickname);
-          //     unrenderNickname(nickname);
-          //     renderNickname(nickname);
-          //   }
-          //   break;
-          // }
+          case 'attributes': {
+            if (mutation.attributeName === ATTRIBUTES.dataPostId) {
+              const { target } = mutation;
+              const nodes = LIHKG.querySelectorNickname(target);
+              LIHKG.handleNicknames(nodes, store);
+            }
+            break;
+          }
         }
       });
     }
@@ -93,5 +87,4 @@ async function main () {
   });
 }
 
-loadStorageIntoStore(storage);
-main();
+storage.ready().then(init);
