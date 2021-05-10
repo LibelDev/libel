@@ -8,7 +8,6 @@ import { insertAfter } from './dom';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
 import LabelBook from '../components/LabelBook/LabelBook';
-// import labelBookStyles from '../components/LabelBook/LabelBook.scss';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
