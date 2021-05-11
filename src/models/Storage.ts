@@ -136,7 +136,7 @@ class Storage implements IStorage {
     return JSON.stringify(data);
   }
 
-  async load () {
+  private async load () {
     const keys = [this[key]];
     const json = await Storage.load(keys);
     const data = Storage.parse(json);
@@ -144,18 +144,18 @@ class Storage implements IStorage {
     return this;
   }
 
-  async save () {
-    const data = this.serialize();
-    await storage.setItem(this[key], data);
-    return this;
-  }
-
-  update (data: IStorage) {
+  private update (data: IStorage) {
     const { personal, subscriptions } = data;
     this.personal = personal;
     this.subscriptions = subscriptions;
     return this;
   }
+
+  // private async save () {
+  //   const data = this.serialize();
+  //   await storage.setItem(this[key], data);
+  //   return this;
+  // }
 }
 
 export default Storage;
