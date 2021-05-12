@@ -11,12 +11,12 @@ If you are a general user, please jump to the [Installation](#installation) sect
 If you are a developer, pull requests are welcome.
 
 - [Libel](#libel)
+  - [Why](#why)
+  - [Philosophy](#philosophy)
   - [Features](#features)
   - [Installation](#installation)
     - [Caveats](#caveats)
     - [Steps](#steps)
-  - [Why](#why)
-  - [Philosophy](#philosophy)
   - [Subscription](#subscription)
     - [Provider](#provider)
       - [Label list](#label-list)
@@ -34,30 +34,6 @@ If you are a developer, pull requests are welcome.
   - [Disclaimer](#disclaimer)
   - [License](#license)
   
-## Features
-- [x] Labelling
-- [x] Sniping
-- [x] [Subscription](#subscription)
-- [x] Export / import
-- [ ] Cloud drive sync
-
-## Installation
-
-### Caveats
-
-⚠ [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will no longer be in maintenance. ⚠
-
-If you have installed any version of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) before, please export the data (for backup purpose) and disable/uninstall it before preceeding to the following installation steps.
-
-Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will be migrated into Libel automatically, we still recommend to always backup your data before updating or uninstalling any software.
-
-### Steps
-
-1. Install [Tampermonkey](https://www.tampermonkey.net/)
-2. Visit [https://kitce.github.io/libel/dist/libel.user.js](https://kitce.github.io/libel/dist/libel.user.js)
-3. Click **Install** / **Reinstall**
-4. Go back to [LIHKG](https://lihkg.com/) and reload the page
-
 ## Why
 
 We can't always remember the names of the (in)famous users and their histories, including what they had done or said.
@@ -81,13 +57,37 @@ You could also become a label list provider, others may subscribe to your label 
 
 Every label should come with a reason and a source, otherwise it will just be a libel.
 
+## Features
+- [x] Labelling
+- [x] Sniping
+- [x] [Subscription](#subscription)
+- [x] Export / import
+- [ ] Cloud drive sync
+
+## Installation
+
+### Caveats
+
+⚠ [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will no longer be in maintenance. ⚠
+
+If you have installed any version of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) before, please export the data (for backup purpose) and uninstall it before preceeding to the following installation steps to avoid conflicts between **Libel** and [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba).
+
+Although the data of [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba) will not be deleted after the uninstallation and will be migrated into **Libel** automatically, it is stil a good practice to always backup your data before updating or uninstalling any software.
+
+### Steps
+
+1. Install [Tampermonkey](https://www.tampermonkey.net/)
+2. Visit [https://kitce.github.io/libel/dist/libel.user.js](https://kitce.github.io/libel/dist/libel.user.js)
+3. Click **Install** in the popup [Tampermonkey](https://www.tampermonkey.net/) page
+4. Go back to [LIHKG](https://lihkg.com/) and reload the page
+
 ## Subscription
 
 The **subscription** feature is a way to share labels data with others.
 
 Think of it as the **filter lists** feature of your favorite ad block plugins (e.g. **Adblock Plus**, **uBlock Origin**). A filter list contains the definitions of some known ads on the internet, so that the plugin could know what should be blocked when you visit a website. There may be some built-in filter lists, or you could import some custom ones.
 
-In Libel, **filter list** becomes **label list** (a.k.a **subscription**), someone creates a label list, then someone subscribe to it. A label list contains the labels that the provider puts on certain persons, so that the plugin will know what to display when you see them.
+In **Libel**, **filter list** becomes **label list** (a.k.a **subscription**), someone creates a label list, then someone subscribe to it. A label list contains the labels that the provider puts on certain persons, so that the plugin will know what to display when you see them.
 
 If you want to share your findings and contribute to the community, you may want to be a label list **[provider](#provider)**.
 
