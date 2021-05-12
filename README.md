@@ -135,6 +135,8 @@ Please refer to the following sample and format.
 }
 ```
 
+More samples can be found in [`data/mock/subscriptions`](https://github.com/kitce/libel/tree/master/data/mock/subscriptions)
+
 ##### Format
 
 ```ts
@@ -176,8 +178,6 @@ interface ISource {
   messageNumber: string;
 }
 ```
-
-More samples can be found in [`data/mock/subscriptions`](https://github.com/kitce/libel/tree/master/data/mock/subscriptions)
 
 ### Subscriber
 
