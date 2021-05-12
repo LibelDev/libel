@@ -22,7 +22,7 @@ If you are a developer, pull requests are welcome.
       - [Label list](#label-list)
         - [Sample](#sample)
         - [Format](#format)
-    - [Consumer](#consumer)
+    - [Subscriber](#subscriber)
   - [Development](#development)
     - [Install dependencies](#install-dependencies)
     - [Build](#build)
@@ -91,7 +91,7 @@ In **Libel**, **filter list** becomes **label list** (a.k.a **subscription**), s
 
 If you want to share your findings and contribute to the community, you may want to be a label list **[provider](#provider)**.
 
-If you want to know more about some (in)famous users from others, you may want to subscribe to some label lists, i.e. to become a label list **[consumer](#consumer)**.
+If you want to know more about some (in)famous users from others, you may want to subscribe to some label lists, i.e. to become a label list **[subscriber](#subscriber)**.
 
 (or you could be both at the same time.)
 
@@ -179,9 +179,9 @@ interface ISource {
 
 More samples can be found in [`data/mock/subscriptions`](https://github.com/kitce/libel/tree/master/data/mock/subscriptions)
 
-### Consumer
+### Subscriber
 
-As a consumer, you just need to find the available subscriptions and add them in the LIHKG settings menu.
+As a subscriber, you just need to find the available subscriptions and add them in the LIHKG settings menu.
 
 For example, you may visit [this thread](https://lihkg.com/thread/2412564/page/1) and add [this subscription sample](https://kitce.github.io/libel/data/mock/subscriptions/sample1.json) in the LIHKG settings menu to see how it works.
 
