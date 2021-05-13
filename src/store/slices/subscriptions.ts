@@ -13,7 +13,7 @@ interface ITogglePayload {
 
 const initialState: Subscription[] = [];
 
-export const load = createAsyncThunk(
+const load = createAsyncThunk(
   'subscriptions/load',
   async (index: number, thunk) => {
     const state = thunk.getState() as RootState;
@@ -70,6 +70,7 @@ const slice = createSlice({
       subscription.name = remoteSubscription.name;
       subscription.version = remoteSubscription.version;
       subscription.homepage = remoteSubscription.homepage;
+      subscription.color = remoteSubscription.color;
       subscription.loading = false;
       subscription.error = undefined;
     });

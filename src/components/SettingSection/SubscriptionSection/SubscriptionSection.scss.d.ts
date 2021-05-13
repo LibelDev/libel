@@ -1,4 +1,5 @@
 export type Styles = {
+  'bar': string;
   'name': string;
   'sectionTitle': string;
   'subscription': string;

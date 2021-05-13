@@ -23,10 +23,12 @@
     display: inline;
   }
 
-  &:focus-within > .label-info,
-  &:hover > .label-info {
-    @apply visible;
-    @apply opacity-100;
-    @apply bottom-full;
+  &:focus-within,
+  &:hover {
+    > .label-info {
+      @apply visible;
+      @apply opacity-100;
+      @apply bottom-full;
+    }
   }
 }

@@ -8,6 +8,13 @@
   @apply flex items-center;
   @apply items-center justify-start;
 
+  .bar {
+    @apply w-1;
+    @apply self-stretch;
+    @apply rounded-sm;
+    background-color: #444443;
+  }
+
   .name {
     @apply flex-1;
     // @apply mx-2;

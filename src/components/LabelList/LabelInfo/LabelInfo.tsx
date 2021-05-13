@@ -1,10 +1,11 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './LabelInfo.scss';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
 import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
+import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 import { ILabel } from '../../../models/Label';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
@@ -18,8 +19,11 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const LabelInfo: React.FunctionComponent<IProps> = (props) => {
   const { className, user, label, index, dataSet } = props;
+
+  const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, 'borderColor');
+ 
   return (
-    <div className={classnames(className, styles.labelInfo)}>
+    <div className={classnames(className, styles.labelInfo)} style={dataSetThemeColorStyle}>
       {
         label.reason && (
           <div className={styles.reason}>

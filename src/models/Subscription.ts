@@ -10,6 +10,7 @@ export interface ISerializedSubscription {
 export interface IRemoteSubscription extends IDataSet, Pick<ISerializedSubscription, 'name'> {
   version: string;
   homepage?: string;
+  color?: string;
 }
 
 export interface ISubscription extends ISerializedSubscription, IRemoteSubscription {
@@ -23,6 +24,7 @@ class Subscription extends DataSet implements ISubscription {
   enabled!: boolean;
   version!: string;
   homepage?: string;
+  color?: string;
   loading: boolean = false;
   error?: string;
 
