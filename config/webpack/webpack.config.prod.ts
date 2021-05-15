@@ -1,7 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
-// import miniCssExtractPlugin from './plugins/mini-css-extract-plugin';
 import common from './webpack.config';
 
 const prod: webpack.Configuration = {
