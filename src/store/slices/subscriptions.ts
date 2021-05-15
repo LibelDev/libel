@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, original, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
-import { selectSubscriptions } from '../selectors';
-import { TRootState } from '../store';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { ISerializedSubscription } from '../../models/Subscription';
+import { selectSubscriptions } from '../selectors';
+import { TRootState } from '../store';
 
 interface ITogglePayload {
   index: number;

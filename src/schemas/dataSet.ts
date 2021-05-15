@@ -1,6 +1,6 @@
 import joi from 'joi';
-import data from './data';
 import { IDataSet } from './../models/DataSet';
+import data from './data';
 
 const schema = joi.object<IDataSet>({
   data: data.required()

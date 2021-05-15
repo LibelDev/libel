@@ -1,6 +1,6 @@
 import WebpackUserscript from 'webpack-userscript';
+import { author, description, displayName, homepage, repository, version } from '../../../package.json';
 import { dev } from '../../config';
-import { displayName, version, description, author, repository, homepage } from '../../../package.json';
 
 const plugin = new WebpackUserscript({
   headers: {

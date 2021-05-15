@@ -1,5 +1,5 @@
 import { IPost } from './post';
-import { IUser, IMe, Gender } from './user';
+import { Gender, IMe, IUser } from './user';
 
 export interface IThreadListResponseData {
   success: number;

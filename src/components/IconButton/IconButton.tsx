@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
-import styles from './IconButton.scss';
 import Icon, { IconName } from '../Icon/Icon';
+import styles from './IconButton.scss';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: IconName;
@@ -28,3 +28,4 @@ const IconButton = React.forwardRef<HTMLButtonElement, IProps>((props, ref) => {
 export default IconButton;
 
 export { IconName };
+

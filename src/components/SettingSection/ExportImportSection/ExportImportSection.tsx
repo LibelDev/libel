@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import styles from './ExportImportSection.scss';
 import * as ATTRIBUTES from '../../../constants/attributes';
 import * as PLACEHOLDERS from '../../../constants/placeholders';
 import * as TEXTS from '../../../constants/texts';
@@ -12,6 +11,7 @@ import storage from '../../../storage';
 import { actions as personalActions } from '../../../store/slices/personal';
 import { actions as subscriptionsActions } from '../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import styles from './ExportImportSection.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
   const dispatch = useDispatch();

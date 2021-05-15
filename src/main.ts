@@ -1,5 +1,5 @@
 import app from './app';
-import './stylesheets/main.scss';
 import './stylesheets/lihkg.scss';
+import './stylesheets/main.scss';
 
 app.start();

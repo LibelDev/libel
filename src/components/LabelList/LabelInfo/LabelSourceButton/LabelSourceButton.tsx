@@ -1,8 +1,8 @@
 import React from 'react';
-import Icon, { IconName } from '../../../Icon/Icon';
 import * as TEXTS from '../../../../constants/texts';
 import { getSourceURL } from '../../../../helpers/label';
 import { ILabel } from '../../../../models/Label';
+import Icon, { IconName } from '../../../Icon/Icon';
 
 interface IProps extends React.HTMLAttributes<HTMLAnchorElement> {
   label: ILabel;

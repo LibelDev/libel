@@ -1,5 +1,5 @@
 import { IThread } from './thread';
-import { IUser, IMe, Gender } from './user';
+import { Gender, IMe, IUser } from './user';
 
 export interface IQuoteListResponseData {
   success: number;

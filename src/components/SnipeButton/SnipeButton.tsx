@@ -1,15 +1,15 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './SnipeButton.scss';
-import IconButton, { IconName } from '../IconButton/IconButton';
-import SubmissionForm from '../SubmissionForm/SubmissionForm';
 import * as TEXTS from '../../constants/texts';
 import { generateSnipeBody } from '../../helpers/label';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { filterPersonal, filterSubscriptions } from '../../store/selectors';
 import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.scss';
+import IconButton, { IconName } from '../IconButton/IconButton';
+import SubmissionForm from '../SubmissionForm/SubmissionForm';
+import styles from './SnipeButton.scss';
 
 interface IProps {
   user: string;

@@ -1,5 +1,5 @@
+import { displayName, namespace } from '../../package.json';
 import * as PLACEHOLDERS from './placeholders';
-import { namespace, displayName } from '../../package.json';
 
 // thread
 export const THREAD_USER_LABELS = '會員標籤';

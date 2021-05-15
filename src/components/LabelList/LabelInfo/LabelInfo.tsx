@@ -1,14 +1,14 @@
 import classnames from 'classnames';
-import React, { useMemo } from 'react';
-import styles from './LabelInfo.scss';
-import EditLabelButton from './EditLabelButton/EditLabelButton';
-import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
-import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
-import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
+import React from 'react';
 import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 import { ILabel } from '../../../models/Label';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
+import EditLabelButton from './EditLabelButton/EditLabelButton';
+import styles from './LabelInfo.scss';
+import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
+import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
+import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   user: string;

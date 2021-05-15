@@ -1,10 +1,10 @@
 import joi from 'joi';
+import { ILabelDatum } from '../models/Label';
+import { ISerializedStorage } from '../models/Storage';
 import data from './data';
 import dataSet from './dataSet';
 import label from './label';
 import * as subscription from './subscription';
-import { ILabelDatum } from '../models/Label';
-import { ISerializedStorage } from '../models/Storage';
 
 export const deprecated = joi.alternatives().try(
   data,

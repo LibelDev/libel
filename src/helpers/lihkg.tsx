@@ -1,22 +1,22 @@
 import { Store } from '@reduxjs/toolkit';
 import React from 'react';
-import { Provider } from 'react-redux';
 import ReactDOM, { Renderer } from 'react-dom';
+import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { insertAfter } from './dom';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
 import Announcement, { styles as announcementStyles } from '../components/Announcement/Announcement';
-import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
+import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import SettingSection from '../components/SettingSection/SettingSection';
-import * as TEXTS from '../constants/texts';
 import * as REGEXES from '../constants/regexes';
+import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
+import { insertAfter } from './dom';
 
 type TContainer = Parameters<Renderer>[1];
 

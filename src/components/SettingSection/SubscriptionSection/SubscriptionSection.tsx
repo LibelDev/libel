@@ -1,17 +1,17 @@
 import classnames from 'classnames';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './SubscriptionSection.scss';
+import * as TEXTS from '../../../constants/texts';
+import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
+import { selectSubscriptions } from '../../../store/selectors';
+import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import Icon, { IconName } from '../../Icon/Icon';
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 import AddSubscriptionButton from './AddSubscriptionButton/AddSubscriptionButton';
 import ReloadSubscriptionButton from './ReloadSubscriptionButton/ReloadSubscriptionButton';
 import RemoveSubscriptionButton from './RemoveSubscriptionButton/RemoveSubscriptionButton';
+import styles from './SubscriptionSection.scss';
 import ToggleSubscriptionButton from './ToggleSubscriptionButton/ToggleSubscriptionButton';
-import Icon, { IconName } from '../../Icon/Icon';
-import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
-import * as TEXTS from '../../../constants/texts';
-import { selectSubscriptions } from '../../../store/selectors';
-import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
-import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 
 const SubscriptionSection: React.FunctionComponent = () => {
   const subscriptions = useSelector(selectSubscriptions);

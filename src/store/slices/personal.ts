@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
-import Personal, { ISerializedPersonal, IPersonal } from '../../models/Personal';
+import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
 import { IPost } from '../../types/post';
 
 interface IAddLabelPayload {

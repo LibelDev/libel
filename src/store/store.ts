@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { StateType } from 'typesafe-actions';
 import { DeepReadonly } from 'utility-types';
-import reducer, { rootReducer } from './reducer';
-import { actions as subscriptionsActions } from './slices/subscriptions';
+import { namespace } from '../../package.json';
 import * as env from '../helpers/env';
 import storage from '../storage';
-import { namespace } from '../../package.json';
+import reducer, { rootReducer } from './reducer';
+import { actions as subscriptionsActions } from './slices/subscriptions';
 
 const store = configureStore({
   devTools: env.dev,

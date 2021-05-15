@@ -1,10 +1,10 @@
 import { Optional } from 'utility-types';
+import { deprecatedLocalStorageKeys } from '../constants/storage';
+import { defaultSubscriptions } from '../constants/subscriptions';
+import storage, { localStorage } from '../helpers/storage';
 import DataSet from '../models/DataSet';
 import Personal, { ISerializedPersonal } from '../models/Personal';
 import Subscription, { ISerializedSubscription } from '../models/Subscription';
-import storage, { localStorage } from '../helpers/storage';
-import { deprecatedLocalStorageKeys } from '../constants/storage';
-import { defaultSubscriptions } from '../constants/subscriptions';
 import * as storageSchemas from '../schemas/storage';
 
 export interface ISerializedStorage {

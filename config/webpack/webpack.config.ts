@@ -1,8 +1,8 @@
 import webpack from 'webpack';
+import { namespace } from '../../package.json';
+import userscript from './plugins/userscript';
 import scss from './rules/scss';
 import typescript from './rules/typescript';
-import userscript from './plugins/userscript';
-import { namespace } from '../../package.json';
 
 const config: webpack.Configuration = {
   entry: {

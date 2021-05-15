@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import React, { useState, useRef } from 'react';
-import IconButton, { IconName } from '../IconButton/IconButton';
+import React, { useRef, useState } from 'react';
 import * as TEXTS from '../../constants/texts';
 import useRemoveParentElement from '../../hooks/useRemoveParentElement';
+import IconButton, { IconName } from '../IconButton/IconButton';
 import styles from './Announcement.scss';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> { }
@@ -39,3 +39,4 @@ const Announcement: React.FunctionComponent<IProps> = (props) => {
 export default Announcement;
 
 export { styles };
+

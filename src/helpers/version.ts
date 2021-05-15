@@ -1,8 +1,8 @@
 import coerce from 'semver/functions/coerce';
 import gt from 'semver/functions/gt';
+import { repository, version as currentVersion } from '../../package.json';
 import { fetchLatestRelease } from '../apis/github';
 import { IRelease } from '../types/github';
-import { version as currentVersion, repository } from '../../package.json';
 
 type TCheckUpdateResult = [boolean, string, string, IRelease] | [false, string, null, null];
 

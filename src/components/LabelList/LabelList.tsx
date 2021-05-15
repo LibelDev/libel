@@ -1,11 +1,11 @@
 import flatMap from 'lodash/flatMap';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './LabelList.scss';
-import LabelItems from './LabelItems/LabelItems';
-import SnipeButton from '../SnipeButton/SnipeButton';
-import { filterPersonal, filterSubscriptions } from '../../store/selectors';
 import { aggregate } from '../../helpers/label';
+import { filterPersonal, filterSubscriptions } from '../../store/selectors';
+import SnipeButton from '../SnipeButton/SnipeButton';
+import LabelItems from './LabelItems/LabelItems';
+import styles from './LabelList.scss';
 
 interface IProps {
   user: string;

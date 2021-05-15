@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import IconButton, { IconName } from '../../../IconButton/IconButton';
 import cache from '../../../../cache';
-import * as TEXTS from '../../../../constants/texts';
 import * as PLACEHOLDERS from '../../../../constants/placeholders';
+import * as TEXTS from '../../../../constants/texts';
 import { ILabel } from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
+import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   user: string;

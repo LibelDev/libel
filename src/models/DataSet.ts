@@ -1,9 +1,9 @@
-import defaultTo from 'lodash/defaultTo';
 import { immerable } from 'immer';
-import { ILabel, ILabelDatum } from './Label';
+import defaultTo from 'lodash/defaultTo';
 import * as dataSchemas from '../schemas/data';
 import * as dataSetSchemas from '../schemas/dataSet';
 import { IPost } from '../types/post';
+import { ILabel, ILabelDatum } from './Label';
 
 export interface IData {
   [user: string]: ILabel[] | undefined;

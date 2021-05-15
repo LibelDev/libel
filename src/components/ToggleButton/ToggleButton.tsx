@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
-import styles from './ToggleButton.scss';
 import useCount from '../../hooks/useCount';
+import styles from './ToggleButton.scss';
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> { }
 

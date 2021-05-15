@@ -1,11 +1,11 @@
 import flatMap from 'lodash/flatMap';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './LabelBook.scss';
 import { THREAD_USER_LABELS } from '../../constants/texts';
 import { aggregate } from '../../helpers/label';
 import { ILabel } from '../../models/Label';
 import { filterPersonal, filterSubscriptions } from '../../store/selectors';
+import styles from './LabelBook.scss';
 
 interface IProps extends React.HTMLAttributes<HTMLElement> {
   user: string;

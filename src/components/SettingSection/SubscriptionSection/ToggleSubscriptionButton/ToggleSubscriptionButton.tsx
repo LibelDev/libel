@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import ToggleButton from '../../../ToggleButton/ToggleButton';
 import * as TEXTS from '../../../../constants/texts';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
+import ToggleButton from '../../../ToggleButton/ToggleButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   subscription: Subscription;

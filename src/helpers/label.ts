@@ -1,12 +1,12 @@
 import cache from '../cache';
 import * as PLACEHOLDERS from '../constants/placeholders';
-import * as TEXTS from '../constants/texts';
 import * as TEMPLATES from '../constants/templates';
+import * as TEXTS from '../constants/texts';
 import { format, Format } from '../helpers/date';
 import { getUserRegistrationDate } from '../helpers/lihkg';
 import { IDataSet } from '../models/DataSet';
-import { IPersonal } from '../models/Personal';
 import { ILabel } from '../models/Label';
+import { IPersonal } from '../models/Personal';
 import { ISubscription } from '../models/Subscription';
 
 export const prompt = (defaultText = '', defaultReason = '') => {

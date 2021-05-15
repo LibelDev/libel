@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'react';
+import { RefObject, useEffect } from 'react';
 
 const useRemoveParentElement = <T extends HTMLElement> (ref: RefObject<T>, enabled: boolean) => {
   useEffect(() => {

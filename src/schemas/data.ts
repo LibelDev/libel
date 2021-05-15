@@ -1,6 +1,6 @@
 import joi from 'joi';
-import label from './label';
 import { IData } from './../models/DataSet';
+import label from './label';
 
 const schema = joi.object<IData>().pattern(
   joi.string().pattern(/^\d+$/),

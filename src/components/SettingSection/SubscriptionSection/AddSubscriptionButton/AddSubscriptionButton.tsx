@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import IconButton, { IconName } from '../../../IconButton/IconButton';
-import * as TEXTS from '../../../../constants/texts';
+import { useDispatch, useSelector } from 'react-redux';
 import * as PLACEHOLDERS from '../../../../constants/placeholders';
+import * as TEXTS from '../../../../constants/texts';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
-import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { selectSubscriptions } from '../../../../store/selectors';
+import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 const AddSubscriptionButton: React.FunctionComponent = () => {
   const dispatch = useDispatch();

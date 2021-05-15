@@ -1,7 +1,7 @@
 import joi from 'joi';
-import data from './data';
 import { HEX_COLOR } from '../constants/regexes';
-import { ISerializedSubscription, IRemoteSubscription } from './../models/Subscription';
+import { IRemoteSubscription, ISerializedSubscription } from './../models/Subscription';
+import data from './data';
 
 export const serialized = joi.object<ISerializedSubscription>({
   url: joi.string().required(),

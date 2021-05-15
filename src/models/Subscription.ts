@@ -1,5 +1,5 @@
-import DataSet, { IDataSet } from './DataSet';
 import * as subscriptionSchemas from '../schemas/subscription';
+import DataSet, { IDataSet } from './DataSet';
 
 export interface ISerializedSubscription {
   name: string;

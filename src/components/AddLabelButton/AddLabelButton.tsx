@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import styles from './AddLabelButton.scss';
 import { prompt } from '../../helpers/label';
 import { actions as personalActions } from '../../store/slices/personal';
 import { IPost } from '../../types/post';
+import styles from './AddLabelButton.scss';
 
 interface IProps {
   user: string;
