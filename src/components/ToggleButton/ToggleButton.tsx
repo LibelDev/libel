@@ -1,19 +1,15 @@
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import styles from './ToggleButton.scss';
-import { counter } from '../../helpers/counter';
+import useCount from '../../hooks/useCount';
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> { }
-
-const count = counter();
 
 const ToggleButton: React.FunctionComponent<IProps> = (props) => {
   const { className, children, ...otherProps } = props;
 
-  const id = useMemo(() => {
-    const { value } = count.next();
-    return `${ToggleButton.displayName}-${value}`;
-  }, []);
+  const count = useCount();
+  const id = useMemo(() => `${ToggleButton.displayName}-${count}`, [count]);
 
   return (
     <div className={classNames(className, styles.toggleButton)}>
