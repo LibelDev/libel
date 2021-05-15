@@ -26,8 +26,8 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
     const awaiter = waitForSubmissionForm();
     const replyButton = buttonRef.current!.parentNode!.parentNode!.querySelector<HTMLLIElement>('.i-reply');
     replyButton!.click();
-    const node = await awaiter;
-    const formComponent = findReactComponent(node, 1) as SubmissionForm;
+    const element = await awaiter;
+    const formComponent = findReactComponent(element, 1) as SubmissionForm;
     const body = generateSnipeBody(user, personal, subscriptions);
     if (formComponent && body) {
       formComponent.replaceEditorContent(body);
