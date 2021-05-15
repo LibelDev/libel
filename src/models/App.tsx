@@ -1,7 +1,10 @@
+import React from 'react';
 import cache from '../cache';
+import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as LIHKG from '../helpers/lihkg';
+import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
 import storage from '../storage';
 import store from '../store/store';
@@ -18,6 +21,7 @@ class App {
     await storage.ready();
     this.bindEvents();
     this.bootstrap();
+    this.checkUpdate();
     return this;
   }
 
@@ -123,6 +127,23 @@ class App {
         }
       }
     });
+  }
+
+  async checkUpdate () {
+    try {
+      const [available, currentVersion, newVersion, latestRelease] = await checkUpdate();
+      if (available) {
+        LIHKG.renderAnnouncement(
+          <NewVersionAnnouncement
+            currentVersion={currentVersion}
+            newVersion={newVersion!}
+            release={latestRelease!}
+          />
+        );
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

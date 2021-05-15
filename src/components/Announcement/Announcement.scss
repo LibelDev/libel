@@ -1,0 +1,56 @@
+@import '../../stylesheets/base';
+
+.container {
+  @apply fixed;
+  @apply w-full;
+  @apply left-0;
+  top: 3rem; // header height
+  transition: top .3s ease;
+  will-change: top;
+  z-index: 4; // {pinned reply z-index} + 1
+
+  :global(.#{$lihkg-class-nav-sticky-hidden} ~ #splitView) & {
+    @apply top-0;
+  }
+
+  + :global(#rightPanel) {
+    margin-top: 33px;
+  }
+
+  @screen md {
+    @include mobile-mode() {
+      @apply absolute;
+      @apply top-0;
+    }
+
+    + :global(#rightPanel) {
+      height: calc(100vh - 3rem - 33px);
+    }
+  }
+}
+
+.announcement {
+  @apply flex items-center;
+  backdrop-filter: saturate(180%) blur(5px);
+  background-color: rgba(#f6f6f6, .8);
+  border-bottom: 1px solid #d9d9d9;
+  padding: .25rem .8rem;
+
+  @include dark-mode() {
+    background-color: rgba(#151515, .8);
+    border-bottom-color: #3b3a39;
+  }
+
+  .message {
+    @apply mr-auto;
+    @apply pr-2;
+
+    a {
+      color: #2574a9;
+
+      @include dark-mode() {
+        color: #3498db;
+      }
+    }
+  }
+}

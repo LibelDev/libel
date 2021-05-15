@@ -18,3 +18,4 @@ export const NUM_USERS = '{NUM_USERS}';
 export const NUM_LABELS = '{NUM_LABELS}';
 export const NUM_SUBSCRIPTIONS = '{NUM_SUBSCRIPTIONS}';
 export const TIMESTAMP = '{UNIX_TIMESTAMP}';
+export const VERSION = '{VERSION}';

@@ -7,4 +7,8 @@
   .#{$lihkg-class-reply-item} {
     @apply overflow-visible;
   }
+
+  .#{$lihkg-class-right-panel-container} {
+    @apply relative;
+  }
 }

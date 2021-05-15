@@ -1,6 +1,7 @@
 export type Styles = {
+  'announcement': string;
   'container': string;
-  'labelList': string;
+  'message': string;
 };
 
 export type ClassNames = keyof Styles;

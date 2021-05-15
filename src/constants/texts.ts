@@ -1,5 +1,5 @@
 import * as PLACEHOLDERS from './placeholders';
-import { namespace } from '../../package.json';
+import { namespace, displayName } from '../../package.json';
 
 // thread
 export const THREAD_USER_LABELS = '會員標籤';
@@ -53,3 +53,7 @@ export const RELOAD_SUBSCRIPTION_BUTTON_TEXT = '重新載入';
 export const SUBSCRIPTION_LOAD_SUCCESS = '成功載入名單';
 export const SUBSCRIPTION_FETCH_ERROR = '無法取得標籤名單，請檢查連結是否正確。';
 export const SUBSCRIPTION_VALIDATION_ERROR = '標籤名單格式錯誤，無法載入，請聯絡名單作者。';
+
+// announcement
+export const ANNOUNCEMENT_CLOSE_BUTTON_TEXT = '關閉公告';
+export const ANNOUNCEMENT_NEW_VERSION_TEXT = `【${displayName}】新版本 ${PLACEHOLDERS.VERSION} 已推出`;

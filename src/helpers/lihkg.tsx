@@ -7,6 +7,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { insertAfter } from './dom';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
+import Announcement, { styles as announcementStyles } from '../components/Announcement/Announcement';
+import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
@@ -16,6 +18,8 @@ import * as REGEXES from '../constants/regexes';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
+
+type Container = Parameters<Renderer>[1];
 
 export const getUserRegistrationDate = (user: IUser) => {
   return moment(user.create_time * 1000);
@@ -31,10 +35,6 @@ export const isUserCardModal = (node: Node) => {
 
 export const isSettingsModal = (node: Node) => {
   return isModalTitleMatched(node, TEXTS.SETTINGS_MODAL_TITLE);
-};
-
-export const isSubmissionForm = (node: Node) => {
-  return (node as Element).matches(`.${lihkgCssClasses.submissionForm}`);
 };
 
 export const isNickname = (node: Node) => {
@@ -60,7 +60,7 @@ const isModalTitleMatched = (node: Node, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = <C extends Parameters<Renderer>[1]> (user: string, store: Store, componentWrapper: C) => {
+const renderAddLabelButton = (user: string, store: Store, container: Container) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -69,41 +69,51 @@ const renderAddLabelButton = <C extends Parameters<Renderer>[1]> (user: string, 
         </AddLabelButton>
       </PersistGate>
     </Provider>,
-    componentWrapper
+    container
   );
 };
 
-const renderLabelList = <C extends Parameters<Renderer>[1]> (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, componentWrapper: C) => {
+const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: Container) => {
+  (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <LabelList user={user} hasInfo={hasInfo} hasSnipeButton={hasSnipeButton} />
       </PersistGate>
     </Provider>,
-    componentWrapper
+    container
   );
 };
 
-const renderLabelBook = <C extends Parameters<Renderer>[1]> (user: string, store: Store, componentWrapper: C) => {
+const renderLabelBook = (user: string, store: Store, container: Container) => {
+  (container as Element).classList.add(lihkgCssClasses.threadHeadingText);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <LabelBook user={user} />
       </PersistGate>
     </Provider>,
-    componentWrapper
+    container
   );
 };
 
-const renderSettingSection = <C extends Parameters<Renderer>[1]> (store: Store, componentWrapper: C) => {
+const renderSettingSection = (store: Store, container: Container) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <SettingSection />
       </PersistGate>
     </Provider>,
-    componentWrapper
+    container
   );
+};
+
+export const renderAnnouncement = async (announcement: ReturnType<typeof Announcement | typeof NewVersionAnnouncement>) => {
+  const container = document.createElement('div');
+  container.classList.add(announcementStyles.container);
+  const rightPanelContainer = await waitForRightPanelContainer();
+  rightPanelContainer?.insertBefore(container, rightPanelContainer.firstChild);
+  ReactDOM.render(announcement!, container);
 };
 
 export const handleThread = (node: Node, store: Store) => {
@@ -116,7 +126,6 @@ export const handleThread = (node: Node, store: Store) => {
     const { user_id: user } = thread;
     const threadUsername = _node.querySelector(`.${lihkgCssClasses.threadUsername}`)!;
     const labelBookContainer = document.createElement('div');
-    labelBookContainer.classList.add(lihkgCssClasses.threadHeadingText);
     insertAfter(labelBookContainer, threadUsername);
     renderLabelBook(user, store, labelBookContainer);
   }
@@ -132,7 +141,6 @@ export const handleUserCardModal = (node: Node, store: Store) => {
     const [, user] = matched;
     const modelContentInner = _node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
-    labelListContainer.classList.add(labelListStyles.componentWrapper);
     modelContentInner.appendChild(labelListContainer);
     renderLabelList(user, store, true, false, labelListContainer);
     const userCardButtonsContainer = _node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
@@ -164,20 +172,19 @@ const handleNickname = (node: Node, store: Store) => {
     const matched = href.match(REGEXES.PROFILE_URL);
     if (matched) {
       const [, user] = matched;
-      (node as any).componentWrapper?.remove();
-      const componentWrapper = document.createElement('div');
-      componentWrapper.classList.add(labelListStyles.componentWrapper);
-      insertAfter(componentWrapper, node);
-      renderLabelList(user, store, true, true, componentWrapper);
-      (node as any).componentWrapper = componentWrapper;
+      (node as any).container?.remove();
+      const container = document.createElement('div');
+      insertAfter(container, node);
+      renderLabelList(user, store, true, true, container);
+      (node as any).container = container;
     }
   }
 };
 
-export const waitForSubmissionForm = (): Promise<Node> => {
-  const element = document.querySelector(`.${lihkgCssClasses.submissionForm}`);
+const waitForElement = (selector: string): Promise<Element> => {
+  const element = document.querySelector(selector);
   if (element) {
-    return Promise.resolve(element as Node);
+    return Promise.resolve(element);
   }
   return new Promise((resolve) => {
     const observer = new MutationObserver((mutations) => {
@@ -187,9 +194,9 @@ export const waitForSubmissionForm = (): Promise<Node> => {
             const nodes = Array.from(mutation.addedNodes);
             for (const node of nodes) {
               if (node.nodeType === document.ELEMENT_NODE) {
-                if (isSubmissionForm(node)) {
+                if ((node as Element).matches(selector)) {
                   observer.disconnect();
-                  return resolve(node);
+                  return resolve(node as Element);
                 }
               }
             }
@@ -203,4 +210,13 @@ export const waitForSubmissionForm = (): Promise<Node> => {
       childList: true
     });
   });
+};
+
+export const waitForSubmissionForm = () => {
+  return waitForElement(`.${lihkgCssClasses.submissionForm}`);
+};
+
+const waitForRightPanelContainer = async () => {
+  const splitView = await waitForElement('#splitView');
+  return splitView.querySelector(`.${lihkgCssClasses.rightPanelContainer}`)!;
 };
