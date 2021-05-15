@@ -2,14 +2,14 @@ import { IPost, IQuoteListResponseData, IReplyListResponseData } from '../types/
 import { IThread, IThreadListResponseData } from '../types/thread';
 import { IUser } from '../types/user';
 
-type Threads = { [thread: string]: IThread | undefined; };
-type Replies = { [post: string]: IPost | undefined; };
-type Users = { [user: string]: IUser | undefined; };
+type TThreads = { [thread: string]: IThread | undefined; };
+type TReplies = { [post: string]: IPost | undefined; };
+type TUsers = { [user: string]: IUser | undefined; };
 
 class Cache {
-  private threads: Threads = {};
-  private replies: Replies = {};
-  private users: Users = {};
+  private threads: TThreads = {};
+  private replies: TReplies = {};
+  private users: TUsers = {};
   currentReply?: IPost;
 
   getThread (id: string) {

@@ -18,7 +18,7 @@ import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
 
-type Container = Parameters<Renderer>[1];
+type TContainer = Parameters<Renderer>[1];
 
 export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
@@ -59,7 +59,7 @@ const isModalTitleMatched = (node: Node, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = (user: string, store: Store, container: Container) => {
+const renderAddLabelButton = (user: string, store: Store, container: TContainer) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -72,7 +72,7 @@ const renderAddLabelButton = (user: string, store: Store, container: Container) 
   );
 };
 
-const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: Container) => {
+const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TContainer) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
@@ -84,7 +84,7 @@ const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeB
   );
 };
 
-const renderLabelBook = (user: string, store: Store, container: Container) => {
+const renderLabelBook = (user: string, store: Store, container: TContainer) => {
   (container as Element).classList.add(lihkgCssClasses.threadHeadingText);
   ReactDOM.render(
     <Provider store={store}>
@@ -96,7 +96,7 @@ const renderLabelBook = (user: string, store: Store, container: Container) => {
   );
 };
 
-const renderSettingSection = (store: Store, container: Container) => {
+const renderSettingSection = (store: Store, container: TContainer) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>

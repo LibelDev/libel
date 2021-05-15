@@ -48,9 +48,9 @@ const slice = createSlice({
   },
 });
 
-type State = StateType<typeof slice.reducer>;
+type TState = StateType<typeof slice.reducer>;
 
-export const SetTransform = createTransform<State, ISerializedPersonal>(
+export const SetTransform = createTransform<TState, ISerializedPersonal>(
   (personal, key) => {
     return personal.serialize();
   },

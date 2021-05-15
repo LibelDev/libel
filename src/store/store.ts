@@ -36,8 +36,8 @@ export const persistor = persistStore(store, null, async () => {
   }
 });
 
-export type RootState = DeepReadonly<StateType<typeof rootReducer>>;
+export type TRootState = DeepReadonly<StateType<typeof rootReducer>>;
 
-export type AppDispatch = typeof store.dispatch;
+export type TAppDispatch = typeof store.dispatch;
 
 export default store;

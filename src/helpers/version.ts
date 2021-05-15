@@ -4,9 +4,9 @@ import { fetchLatestRelease } from '../apis/github';
 import { IRelease } from '../types/github';
 import { version as currentVersion, repository } from '../../package.json';
 
-type CheckUpdateResult = [boolean, string, string, IRelease] | [false, string, null, null];
+type TCheckUpdateResult = [boolean, string, string, IRelease] | [false, string, null, null];
 
-export const checkUpdate = async (): Promise<CheckUpdateResult> => {
+export const checkUpdate = async (): Promise<TCheckUpdateResult> => {
   const path = repository.url.replace('https://github.com/', '');
   const [owner, repo] = path.split('/');
   const latestRelease = await fetchLatestRelease(owner, repo);

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, original, PayloadAction } from '@reduxjs
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
 import { selectSubscriptions } from '../selectors';
-import { RootState } from '../store';
+import { TRootState } from '../store';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { ISerializedSubscription } from '../../models/Subscription';
 
@@ -16,7 +16,7 @@ const initialState: Subscription[] = [];
 const load = createAsyncThunk(
   'subscriptions/load',
   async (index: number, thunk) => {
-    const state = thunk.getState() as RootState;
+    const state = thunk.getState() as TRootState;
     const subscriptions = selectSubscriptions(state);
     const subscription = subscriptions[index];
     try {
@@ -84,9 +84,9 @@ const slice = createSlice({
   }
 });
 
-type State = StateType<typeof slice.reducer>;
+type TState = StateType<typeof slice.reducer>;
 
-export const SetTransform = createTransform<State, ISerializedSubscription[]>(
+export const SetTransform = createTransform<TState, ISerializedSubscription[]>(
   (subscriptions, key) => {
     return subscriptions.map((subscription) => subscription.serialize());
   },

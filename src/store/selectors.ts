@@ -1,12 +1,12 @@
-import { original, produce } from 'immer';
+import { produce } from 'immer';
 import { createSelector } from 'reselect';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { RootState } from './store';
+import { TRootState } from './store';
 
-export const selectPersonal = (state: RootState) => state.personal as Personal;
+export const selectPersonal = (state: TRootState) => state.personal as Personal;
 
-export const selectSubscriptions = (state: RootState) => state.subscriptions as Subscription[];
+export const selectSubscriptions = (state: TRootState) => state.subscriptions as Subscription[];
 
 export const filterPersonal = (user: string) => createSelector(
   selectPersonal,
