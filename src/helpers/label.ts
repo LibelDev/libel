@@ -2,6 +2,7 @@ import cache from '../cache';
 import * as PLACEHOLDERS from '../constants/placeholders';
 import * as TEXTS from '../constants/texts';
 import * as TEMPLATES from '../constants/templates';
+import { format, Format } from '../helpers/date';
 import { getUserRegistrationDate } from '../helpers/lihkg';
 import { IDataSet } from '../models/DataSet';
 import { IPersonal } from '../models/Personal';
@@ -61,7 +62,7 @@ export const generateSnipeBody = (user: string, personal: IPersonal, subscriptio
     const body = TEMPLATES.SNIPE_BODY_TEMPLATE
       .replace(PLACEHOLDERS.USER_ID, _user.user_id)
       .replace(PLACEHOLDERS.USERNAME, _user.nickname)
-      .replace(PLACEHOLDERS.REGISTRATION_DATE, registrationDate.format(TEXTS.REGISTRATION_DATE_TEMPLATE))
+      .replace(PLACEHOLDERS.REGISTRATION_DATE, format(registrationDate, Format.Display))
       .replace(PLACEHOLDERS.SNIPE_LABELS_CONTENT, content);
     return body;
   }

@@ -1,10 +1,10 @@
-import moment from 'moment';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './ExportImportSection.scss';
 import * as ATTRIBUTES from '../../../constants/attributes';
 import * as PLACEHOLDERS from '../../../constants/placeholders';
 import * as TEXTS from '../../../constants/texts';
+import { format, Format } from '../../../helpers/date';
 import { download } from '../../../helpers/file';
 import { aggregate } from '../../../helpers/label';
 import Storage, { TMassagedStorage } from '../../../models/Storage';
@@ -76,7 +76,7 @@ const ExportImportSection: React.FunctionComponent = () => {
 // Helper functions
 function _export () {
   const json = storage.json();
-  const timestamp = moment().format('YYYYMMDDHHmmss');
+  const timestamp = format(new Date(), Format.Timestamp);
   const filename = TEXTS.EXPORT_FILE_NAME_TEMPLATE.replace(PLACEHOLDERS.TIMESTAMP, timestamp);
   // TODO so sad, there is no way to detect whether the user has downloaded the file or not
   download(json, filename);

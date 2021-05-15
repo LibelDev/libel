@@ -1,5 +1,4 @@
 import { Store } from '@reduxjs/toolkit';
-import moment from 'moment';
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM, { Renderer } from 'react-dom';
@@ -22,7 +21,7 @@ import { IUser } from '../types/user';
 type Container = Parameters<Renderer>[1];
 
 export const getUserRegistrationDate = (user: IUser) => {
-  return moment(user.create_time * 1000);
+  return new Date(user.create_time * 1000);
 };
 
 export const isThread = (node: Node) => {
