@@ -5,11 +5,11 @@ export interface ISerializedPersonal extends IDataSet { }
 export interface IPersonal extends ISerializedPersonal { }
 
 class Personal extends DataSet implements IPersonal {
-  static deserialize (data: Personal | ISerializedPersonal) {
-    if (data instanceof Personal) {
-      return data;
+  static deserialize (personal: Personal | ISerializedPersonal) {
+    if (personal instanceof Personal) {
+      return personal;
     }
-    return new Personal(data.data);
+    return new Personal(personal);
   }
 
   /**

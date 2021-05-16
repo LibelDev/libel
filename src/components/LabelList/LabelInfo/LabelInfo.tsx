@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
-import { ILabel } from '../../../models/Label';
+import Label from '../../../models/Label';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
@@ -12,7 +12,7 @@ import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   user: string;
-  label: ILabel;
+  label: Label;
   index: number;
   dataSet: Personal | Subscription;
 }

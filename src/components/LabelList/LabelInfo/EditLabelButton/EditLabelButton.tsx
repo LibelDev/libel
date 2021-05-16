@@ -2,13 +2,13 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
 import { prompt } from '../../../../helpers/label';
-import { ILabel } from '../../../../models/Label';
+import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
 import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   user: string;
-  label: ILabel;
+  label: Label;
   index: number;
 }
 

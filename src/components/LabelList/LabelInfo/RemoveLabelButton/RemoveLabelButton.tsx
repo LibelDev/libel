@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 import cache from '../../../../cache';
 import * as PLACEHOLDERS from '../../../../constants/placeholders';
 import * as TEXTS from '../../../../constants/texts';
-import { ILabel } from '../../../../models/Label';
+import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
 import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   user: string;
-  label: ILabel;
+  label: Label;
   index: number;
 }
 

@@ -1,4 +1,5 @@
 import * as subscriptionSchemas from '../schemas/subscription';
+import Data from './Data';
 import DataSet, { IDataSet } from './DataSet';
 
 export interface ISerializedSubscription {
@@ -66,11 +67,11 @@ class Subscription extends DataSet implements ISubscription {
     );
   }
 
-  static deserialize (data: Subscription | ISerializedSubscription) {
-    if (data instanceof Subscription) {
-      return data;
+  static deserialize (subscription: Subscription | ISerializedSubscription) {
+    if (subscription instanceof Subscription) {
+      return subscription;
     }
-    const { name, url, enabled } = data;
+    const { name, url, enabled } = subscription;
     return new Subscription(name, url, enabled);
   }
 
@@ -98,6 +99,15 @@ class Subscription extends DataSet implements ISubscription {
     const object = await response.json();
     const subscription = Subscription.validate(object);
     return subscription;
+  }
+
+  update (subscription: IRemoteSubscription) {
+    this.data = new Data(subscription.data);
+    this.name = subscription.name;
+    this.version = subscription.version;
+    this.homepage = subscription.homepage;
+    this.color = subscription.color;
+    return this;
   }
 }
 

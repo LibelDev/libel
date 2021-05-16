@@ -64,13 +64,9 @@ const slice = createSlice({
     });
     builder.addCase(load.fulfilled, (state, action) => {
       const { arg: index } = action.meta;
-      const { payload: remoteSubscription } = action;
+      const { payload } = action;
       const subscription = state[index];
-      subscription.data = remoteSubscription.data;
-      subscription.name = remoteSubscription.name;
-      subscription.version = remoteSubscription.version;
-      subscription.homepage = remoteSubscription.homepage;
-      subscription.color = remoteSubscription.color;
+      subscription.update(payload);
       subscription.loading = false;
       subscription.error = undefined;
     });

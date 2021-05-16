@@ -1,24 +1,21 @@
-import { immerable } from 'immer';
+import produce, { immerable } from 'immer';
 import defaultTo from 'lodash/defaultTo';
 import * as dataSchemas from '../schemas/data';
 import * as dataSetSchemas from '../schemas/dataSet';
 import { IPost } from '../types/post';
-import { ILabel, ILabelDatum } from './Label';
-
-export interface IData {
-  [user: string]: ILabel[] | undefined;
-}
+import Data, { IData } from './Data';
+import Label, { ILabelDatum } from './Label';
 
 export interface IDataSet {
-  data: IData;
+  data: Data;
 }
 
-abstract class DataSet implements IDataSet {
+class DataSet implements IDataSet {
   [immerable] = true;
-  data!: IData;
+  data!: Data;
 
-  constructor (data: IData = {}) {
-    this.data = data;
+  constructor (dataSet?: IDataSet) {
+    this.data = new Data(dataSet?.data);
   }
 
   static factory (): IDataSet {
@@ -38,9 +35,11 @@ abstract class DataSet implements IDataSet {
         data[user] = labels.map((label) => {
           if (typeof label === 'string') {
             // backward compatible
-            return { text: label };
+            const text = label;
+            return new Label(text);
           }
-          return label;
+          const { text, reason, url, date, source } = label;
+          return new Label(text, reason, url, date, source);
         });
         return dataSet;
       }, this.factory());
@@ -82,39 +81,36 @@ abstract class DataSet implements IDataSet {
    * prepare for storage
    * @abstract
    */
-  abstract serialize (): void;
+  serialize (): void { };
 
   add (user: string, text: string, reason: string, source?: IPost) {
     const labels = (this.data[user] || (this.data[user] = []));
     const index = labels.findIndex((label) => label.text === text);
     if (index === -1) {
-      const label: ILabel = {
+      const label = new Label(
         text,
         reason,
-        url: window.location.href,
-        date: Date.now(),
-      };
-      if (source) {
-        label.source = {
+        window.location.href,
+        Date.now(),
+        source && {
           thread: source.thread_id,
           page: source.page,
           messageNumber: source.msg_num
-        };
-      }
+        }
+      );
       labels.push(label);
     }
     return this;
   }
 
   edit (user: string, index: number, text: string, reason: string) {
-    const labels = (this.data[user] || (this.data[user] = []));
-    if (index >= 0) {
+    const labels = this.data[user];
+    if (labels && index >= 0) {
       const label = labels[index];
-      const _label = {
-        ...label,
-        text: defaultTo(text, label.text),
-        reason: defaultTo(reason, label.reason)
-      };
+      const _label = produce(label, (label) => {
+        label.text = defaultTo(text, label.text);
+        label.reason = defaultTo(reason, label.reason);
+      });
       labels.splice(index, 1, _label);
     }
     return this;

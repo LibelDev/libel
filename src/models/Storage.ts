@@ -115,8 +115,8 @@ class Storage implements IStorage {
     };
   }
 
-  static deserialize (data: TMassagedStorage): IStorage {
-    const { personal, subscriptions } = data;
+  static deserialize (storage: TMassagedStorage): IStorage {
+    const { personal, subscriptions } = storage;
     return {
       personal: Personal.deserialize(personal),
       subscriptions: subscriptions ? subscriptions.map(Subscription.deserialize) : []

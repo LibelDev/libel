@@ -1,20 +1,19 @@
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import { getSourceURL } from '../../../../helpers/label';
-import { ILabel } from '../../../../models/Label';
+import Label from '../../../../models/Label';
 import Icon, { IconName } from '../../../Icon/Icon';
 
 interface IProps extends React.HTMLAttributes<HTMLAnchorElement> {
-  label: ILabel;
+  label: Label;
 }
 
 const LabelSourceButton: React.FunctionComponent<IProps> = (props) => {
   const { className, label } = props;
-  const href = getSourceURL(label);
-  return href ? (
+  const { sourceURL } = label;
+  return sourceURL ? (
     <a
       className={className}
-      href={href}
+      href={sourceURL}
       target="_blank"
       aria-label={TEXTS.SOURCE_BUTTON_TEXT}
       data-tip={TEXTS.SOURCE_BUTTON_TEXT}

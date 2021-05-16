@@ -1,5 +1,5 @@
 import joi from 'joi';
-import { IData } from './../models/DataSet';
+import { IData } from './../models/Data';
 import label from './label';
 
 const schema = joi.object<IData>().pattern(
