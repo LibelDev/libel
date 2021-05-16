@@ -1,4 +1,4 @@
-import { produce } from 'immer';
+import produce from 'immer';
 import { createSelector } from 'reselect';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
@@ -10,24 +10,25 @@ export const selectSubscriptions = (state: TRootState) => state.subscriptions as
 
 export const filterPersonal = (user: string) => createSelector(
   selectPersonal,
-  (personal) => filterDataSets(personal, user)
+  (personal) => filterDataSetForUser(personal, user)
 );
 
 export const filterSubscriptions = (user: string) => createSelector(
   selectSubscriptions,
   (subscriptions) => (
-    subscriptions
-      .filter((subscription) => subscription.enabled)
-      .map((subscription) => filterDataSets(subscription, user))
+    filterEnabledSubscriptions(subscriptions)
+      .map((subscription) => filterDataSetForUser(subscription, user))
   )
 );
 
-const filterDataSets = <T extends Personal | Subscription> (dataSet: T, user: string) => (
+const filterEnabledSubscriptions = (subscriptions: Subscription[]) => (
+  subscriptions.filter((subscription) => subscription.enabled)
+);
+
+export const filterDataSetForUser = <T extends Personal | Subscription> (dataSet: T, user: string) => (
   produce(dataSet, (dataSet) => {
     dataSet.data = {
       [user]: dataSet.data[user]
     };
   })
 );
-
-// const filterDataSets = <T extends Personal | Subscription> (dataSet: T, user: string) => dataSet;

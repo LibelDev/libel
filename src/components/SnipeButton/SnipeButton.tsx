@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import * as TEXTS from '../../constants/texts';
-import { generateSnipeBody } from '../../helpers/label';
+import { renderSnipeBody } from '../../helpers/label';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { filterPersonal, filterSubscriptions } from '../../store/selectors';
@@ -28,7 +28,7 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
     replyButton!.click();
     const element = await awaiter;
     const formComponent = findReactComponent(element, 1) as SubmissionForm;
-    const body = generateSnipeBody(user, personal, subscriptions);
+    const body = renderSnipeBody(user, personal, subscriptions);
     if (formComponent && body) {
       formComponent.replaceEditorContent(body);
     }
