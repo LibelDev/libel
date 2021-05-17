@@ -1,9 +1,6 @@
 .icon-button {
   @apply inline-flex items-center;
-  // color: #aaaaaa;
-  transition-property: all;
-  transition-timing-function: ease-out;
-  transition-duration: 200ms;
+  transition: all .2s ease-out;
 
   &:disabled {
     @apply opacity-20;
