@@ -1,8 +1,10 @@
-.icon-button {
+.base-icon-button {
   @apply inline-flex items-center;
-  transition: all .2s ease-out;
+  transition: opacity .2s ease-out;
+  will-change: opacity;
 
-  &:disabled {
+  &:disabled,
+  &.disabled {
     @apply opacity-20;
   }
   

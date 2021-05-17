@@ -1,31 +1,18 @@
-import classnames from 'classnames';
 import React from 'react';
-import Icon, { IconName } from '../Icon/Icon';
-import styles from './IconButton.scss';
+import BaseIconButton, { TProps as TBaseIconButtonProps } from '../BaseIconButton/BaseIconButton';
 
-interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  icon: IconName;
-}
+interface IProps extends TBaseIconButtonProps<React.ButtonHTMLAttributes<HTMLButtonElement>> { }
 
 const IconButton = React.forwardRef<HTMLButtonElement, IProps>((props, ref) => {
-  const { className, icon, children, ...otherProps } = props;
+  const { children, ...otherProps } = props;
   return (
-    <button
-      ref={ref}
-      className={classnames(className, styles.iconButton)}
-      {...otherProps}
-    >
-      <Icon className={styles.icon} icon={icon} />
-      {
-        children && (
-          <span>{children}</span>
-        )
-      }
-    </button>
+    <BaseIconButton {...otherProps} as='button' ref={ref}>
+      {children}
+    </BaseIconButton>
   );
 });
 
 export default IconButton;
 
-export { IconName };
+export * from '../BaseIconButton/BaseIconButton';
 

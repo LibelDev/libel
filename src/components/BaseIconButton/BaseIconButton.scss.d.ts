@@ -1,6 +1,7 @@
 export type Styles = {
+  'baseIconButton': string;
+  'disabled': string;
   'icon': string;
-  'iconButton': string;
 };
 
 export type ClassNames = keyof Styles;
