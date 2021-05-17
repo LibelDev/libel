@@ -5,7 +5,7 @@ import * as TEXTS from '../../constants/texts';
 import { renderSnipeBody } from '../../helpers/label';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
-import { filterPersonal, filterSubscriptions } from '../../store/selectors';
+import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
 import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.scss';
 import IconButton, { IconName } from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
@@ -18,8 +18,8 @@ interface IProps {
 const SnipeButton: React.FunctionComponent<IProps> = (props) => {
   const { user } = props;
   const buttonRef = React.createRef<HTMLButtonElement>();
-  const personal = useSelector(filterPersonal(user));
-  const subscriptions = useSelector(filterSubscriptions(user));
+  const personal = useSelector(filterPersonalForUser(user));
+  const subscriptions = useSelector(filterSubscriptionsForUser(user));
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();

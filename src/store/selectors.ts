@@ -1,5 +1,6 @@
 import produce from 'immer';
 import { createSelector } from 'reselect';
+import Data from '../models/Data';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
 import { TRootState } from './store';
@@ -8,12 +9,12 @@ export const selectPersonal = (state: TRootState) => state.personal as Personal;
 
 export const selectSubscriptions = (state: TRootState) => state.subscriptions as Subscription[];
 
-export const filterPersonal = (user: string) => createSelector(
+export const filterPersonalForUser = (user: string) => createSelector(
   selectPersonal,
   (personal) => filterDataSetForUser(personal, user)
 );
 
-export const filterSubscriptions = (user: string) => createSelector(
+export const filterSubscriptionsForUser = (user: string) => createSelector(
   selectSubscriptions,
   (subscriptions) => (
     filterEnabledSubscriptions(subscriptions)
@@ -27,8 +28,8 @@ const filterEnabledSubscriptions = (subscriptions: Subscription[]) => (
 
 export const filterDataSetForUser = <T extends Personal | Subscription> (dataSet: T, user: string) => (
   produce(dataSet, (dataSet) => {
-    dataSet.data = {
+    dataSet.data = new Data({
       [user]: dataSet.data[user]
-    };
+    });
   })
 );

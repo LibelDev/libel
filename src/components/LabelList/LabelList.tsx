@@ -2,7 +2,7 @@ import flatMap from 'lodash/flatMap';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { aggregate } from '../../helpers/label';
-import { filterPersonal, filterSubscriptions } from '../../store/selectors';
+import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
 import SnipeButton from '../SnipeButton/SnipeButton';
 import LabelItems from './LabelItems/LabelItems';
 import styles from './LabelList.scss';
@@ -15,9 +15,9 @@ interface IProps {
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
   const { user, hasInfo, hasSnipeButton } = props;
-  const personal = useSelector(filterPersonal(user));
+  const personal = useSelector(filterPersonalForUser(user));
   const { labels: personalLabels } = aggregate(personal);
-  const subscriptions = useSelector(filterSubscriptions(user));
+  const subscriptions = useSelector(filterSubscriptionsForUser(user));
   const subscriptionLabels = flatMap(subscriptions.map(aggregate), ({ labels }) => labels);
   return (personalLabels.length || subscriptionLabels.length) ? (
     <React.Fragment>

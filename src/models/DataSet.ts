@@ -19,7 +19,7 @@ class DataSet implements IDataSet {
   }
 
   static factory (): IDataSet {
-    return { data: {} };
+    return { data: new Data() };
   }
 
   /**
@@ -44,7 +44,7 @@ class DataSet implements IDataSet {
         return dataSet;
       }, this.factory());
     }
-    return { data: object };
+    return { data: new Data(object) };
   }
 
   /**
@@ -107,11 +107,8 @@ class DataSet implements IDataSet {
     const labels = this.data[user];
     if (labels && index >= 0) {
       const label = labels[index];
-      const _label = produce(label, (label) => {
-        label.text = defaultTo(text, label.text);
-        label.reason = defaultTo(reason, label.reason);
-      });
-      labels.splice(index, 1, _label);
+      label.text = defaultTo(text, label.text);
+      label.reason = defaultTo(reason, label.reason);
     }
     return this;
   }

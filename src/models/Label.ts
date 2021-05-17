@@ -1,3 +1,5 @@
+import { immerable } from 'immer';
+
 export interface ILabel {
   text: string;
   reason?: string;
@@ -19,6 +21,7 @@ export interface ILabelDatum {
 }
 
 class Label implements ILabel {
+  [immerable] = true;
   text!: string;
   reason?: string;
   url?: string;

@@ -1,3 +1,4 @@
+import { immerable } from 'immer';
 import Label from './Label';
 
 export interface IData {
@@ -5,6 +6,7 @@ export interface IData {
 }
 
 class Data implements IData {
+  [immerable] = true;
   [user: string]: Label[] | undefined;
 
   constructor (data: IData = {}) {
