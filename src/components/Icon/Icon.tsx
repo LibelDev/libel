@@ -133,7 +133,11 @@ interface IProps extends React.HTMLAttributes<HTMLElement> {
 const Icon: React.FunctionComponent<IProps> = (props) => {
   const { className, icon, ...otherProps } = props;
   return (
-    <i className={classnames(className, icon)} {...otherProps} />
+    <i
+      className={classnames(className, icon)}
+      aria-hidden={true}
+      {...otherProps}
+    />
   );
 };
 

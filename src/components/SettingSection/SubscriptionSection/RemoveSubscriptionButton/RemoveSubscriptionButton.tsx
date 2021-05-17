@@ -15,7 +15,7 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const RemoveSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, subscription, index, ...otherProps } = props;
+  const { className, subscription, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
@@ -37,7 +37,6 @@ const RemoveSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
       data-tip={TEXTS.REMOVE_SUBSCRIPTION_BUTTON_TEXT}
       title={TEXTS.REMOVE_SUBSCRIPTION_BUTTON_TEXT}
       onClick={handleClick}
-      {...otherProps}
     />
   );
 };

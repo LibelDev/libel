@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
@@ -14,7 +15,7 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const ReloadSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, subscription, index, ...otherProps } = props;
+  const { className, subscription, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
@@ -23,14 +24,13 @@ const ReloadSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <IconButton
-      className={lihkgCssClasses.settingOptionButton}
+      className={classnames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Refresh}
       aria-label={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
       data-tip={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
       title={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
       onClick={handleClick}
-      {...otherProps}
     />
   );
 };

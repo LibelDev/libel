@@ -23,8 +23,8 @@ const LabelBook: React.FunctionComponent<IProps> = (props) => {
   return labels.length ? (
     <div
       className={styles.labelBook}
-      aria-hidden={true}
       data-tip={THREAD_USER_LABELS_TOOLTIP}
+      aria-hidden={true}
     >
       <span>{labels.length}</span>
     </div>
