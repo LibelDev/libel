@@ -47,6 +47,7 @@ export const REMOVE_SUBSCRIPTION_QUESTION = `確認取消訂閱【${PLACEHOLDERS
 export const ENABLE_SUBSCRIPTION_BUTTON_TEXT = '啟用訂閱';
 export const DISABLE_SUBSCRIPTION_BUTTON_TEXT = '停用訂閱';
 export const RELOAD_SUBSCRIPTION_BUTTON_TEXT = '重新載入';
+export const SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT = '標籤名單主頁';
 export const SUBSCRIPTION_LOAD_SUCCESS = '成功載入名單';
 export const SUBSCRIPTION_FETCH_ERROR = '無法取得標籤名單，請檢查連結是否正確。';
 export const SUBSCRIPTION_VALIDATION_ERROR = '標籤名單格式錯誤，無法載入，請聯絡名單作者。';

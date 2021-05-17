@@ -1,0 +1,34 @@
+@import '../../../../stylesheets/base';
+
+.subscription {
+  @apply flex items-center;
+  @apply items-center justify-start;
+
+  .bar {
+    @apply w-1;
+    @apply self-stretch;
+    @apply rounded-sm;
+    background-color: #444443;
+  }
+
+  .name {
+    @apply flex-1;
+    @apply break-all;
+
+    @screen md {
+      @apply max-w-xs;
+    }
+
+    > a {
+      @apply text-white;
+    }
+  }
+
+  .icon-button {
+    @apply text-base;
+  }
+
+  > * + * {
+    @apply ml-2;
+  }
+}

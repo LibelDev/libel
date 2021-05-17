@@ -1,6 +1,6 @@
 export type Styles = {
-  'sectionTitle': string;
-  'subscription': string;
+  'disabled': string;
+  'subscriptionHomepageButton': string;
 };
 
 export type ClassNames = keyof Styles;

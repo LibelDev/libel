@@ -1,5 +1,7 @@
 export type Styles = {
-  'sectionTitle': string;
+  'bar': string;
+  'iconButton': string;
+  'name': string;
   'subscription': string;
 };
 
