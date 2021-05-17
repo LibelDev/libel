@@ -1,14 +1,14 @@
-import { displayName, namespace } from '../../package.json';
+import { namespace } from '../../package.json';
 import * as PLACEHOLDERS from './placeholders';
 
 // thread
-export const THREAD_USER_LABELS = '會員標籤';
+export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 
 // title
 export const USER_CARD_MODAL_TITLE = '會員資料';
 export const SETTINGS_MODAL_TITLE = '設定';
-export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱會員標籤';
-export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入會員標籤';
+export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
+export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入標籤記錄';
 
 // add
 export const ADD_LABEL_BUTTON_TEXT = '標籤';
@@ -25,25 +25,22 @@ export const SOURCE_BUTTON_TEXT = '來源';
 
 // snipe
 export const SNIPE_BUTTON_TEXT = '狙擊';
-export const SNIPE_EMPTY_REASON_FALLBACK = '（沒有記錄原因）';
-export const SNIPE_EMPTY_SOURCE_URL_FALLBACK = '（沒有來源）';
-export const REGISTRATION_DATE_TEMPLATE = 'YYYY年M月D日';
 
 // import
-export const IMPORT_FILE_BUTTON_TEXT = '匯入標籤';
+export const IMPORT_FILE_BUTTON_TEXT = '匯入記錄';
 export const IMPORT_FILE_BUTTON_REMINDER = '所有記錄將會被覆蓋，建議先匯出一次作備份。';
 export const IMPORT_FILE_SUCCESS_MESSAGE = `檔案匯入成功，共 ${PLACEHOLDERS.NUM_USERS} 個會員、${PLACEHOLDERS.NUM_LABELS} 個標籤、${PLACEHOLDERS.NUM_SUBSCRIPTIONS} 個訂閱`;
 export const IMPORT_FILE_GENERIC_ERROR_MESSAGE = '檔案匯入失敗';
 export const IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE = '檔案內容格式錯誤';
 
 // export
-export const EXPORT_FILE_BUTTON_TEXT = '匯出標籤';
+export const EXPORT_FILE_BUTTON_TEXT = '匯出記錄';
 export const EXPORT_FILE_SUCCESS_MESSAGE = `檔案匯出成功，共 ${PLACEHOLDERS.NUM_USERS} 個會員、${PLACEHOLDERS.NUM_LABELS} 個標籤、${PLACEHOLDERS.NUM_SUBSCRIPTIONS} 個訂閱`;
 export const EXPORT_FILE_NAME_TEMPLATE = `${namespace}-${PLACEHOLDERS.TIMESTAMP}.json`;
 
 // subscription
 export const ADD_SUBSCRIPTION_BUTTON_TEXT = '新增訂閱';
-export const ADD_SUBSCRIPTION_QUESTION = '請輸入標籤訂閱連結';
+export const ADD_SUBSCRIPTION_QUESTION = '請輸入標籤名單訂閱連結';
 export const ADD_SUBSCRIPTION_ALREADY_SUBSCRIBED_ERROR = `已訂閱此標籤名單【${PLACEHOLDERS.SUBSCRIPTION_NAME}】\n\n${PLACEHOLDERS.SUBSCRIPTION_URL}`;
 export const REMOVE_SUBSCRIPTION_BUTTON_TEXT = '取消訂閱';
 export const REMOVE_SUBSCRIPTION_QUESTION = `確認取消訂閱【${PLACEHOLDERS.SUBSCRIPTION_NAME}】？\n\n${PLACEHOLDERS.SUBSCRIPTION_URL}`;
@@ -56,4 +53,3 @@ export const SUBSCRIPTION_VALIDATION_ERROR = '標籤名單格式錯誤，無法�
 
 // announcement
 export const ANNOUNCEMENT_CLOSE_BUTTON_TEXT = '關閉公告';
-export const ANNOUNCEMENT_NEW_VERSION_TEXT = `【${displayName}】新版本 ${PLACEHOLDERS.VERSION} 已推出`;

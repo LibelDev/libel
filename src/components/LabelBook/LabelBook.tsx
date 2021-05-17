@@ -1,7 +1,7 @@
 import flatMap from 'lodash/flatMap';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { THREAD_USER_LABELS } from '../../constants/texts';
+import { THREAD_USER_LABELS_TOOLTIP } from '../../constants/texts';
 import { aggregate } from '../../helpers/label';
 import { ILabel } from '../../models/Label';
 import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
@@ -22,7 +22,7 @@ const LabelBook: React.FunctionComponent<IProps> = (props) => {
     <div
       className={styles.labelBook}
       aria-hidden={true}
-      data-tip={THREAD_USER_LABELS}
+      data-tip={THREAD_USER_LABELS_TOOLTIP}
     >
       <span>{labels.length}</span>
     </div>
