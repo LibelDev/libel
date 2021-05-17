@@ -5,7 +5,7 @@ import * as PLACEHOLDERS from '../../../constants/placeholders';
 import * as TEXTS from '../../../constants/texts';
 import { format, Format } from '../../../helpers/date';
 import { download } from '../../../helpers/file';
-import { aggregate } from '../../../helpers/label';
+import Personal from '../../../models/Personal';
 import Storage, { TMassagedStorage } from '../../../models/Storage';
 import storage from '../../../storage';
 import { actions as personalActions } from '../../../store/slices/personal';
@@ -27,9 +27,9 @@ const ExportImportSection: React.FunctionComponent = () => {
     const file = files!.item(0);
     if (file) {
       try {
-        const storage = await _import(file);
-        if (storage) {
-          const { personal, subscriptions } = Storage.deserialize(storage);
+        const data = await _import(file);
+        if (data) {
+          const { personal, subscriptions } = Storage.deserialize(data);
           dispatch(personalActions.update(personal));
           dispatch(subscriptionsActions.update(subscriptions));
           for (let i = 0; i < subscriptions.length; i++) {
@@ -74,14 +74,15 @@ const ExportImportSection: React.FunctionComponent = () => {
 };
 
 // Helper functions
-function _export () {
+async function _export () {
+  await storage.load();
   const json = storage.json();
   const timestamp = format(new Date(), Format.Timestamp);
   const filename = TEXTS.EXPORT_FILE_NAME_TEMPLATE.replace(PLACEHOLDERS.TIMESTAMP, timestamp);
   // TODO so sad, there is no way to detect whether the user has downloaded the file or not
   download(json, filename);
-  const { personal, subscriptions } = storage.serialize();
-  const { users, labels } = aggregate(personal);
+  const { personal, subscriptions } = storage;
+  const { users, labels } = personal.aggregate();
   const message = TEXTS.EXPORT_FILE_SUCCESS_MESSAGE
     .replace(PLACEHOLDERS.NUM_USERS, users.length as unknown as string)
     .replace(PLACEHOLDERS.NUM_LABELS, labels.length as unknown as string)
@@ -107,7 +108,8 @@ function _import (file: File): Promise<TMassagedStorage | null> {
           const storage = Storage.validate(object);
           if (storage) {
             const { personal, subscriptions } = storage;
-            const { users, labels } = aggregate(personal);
+            const _personal = Personal.deserialize(personal);
+            const { users, labels } = _personal.aggregate();
             const message = TEXTS.IMPORT_FILE_SUCCESS_MESSAGE
               .replace(PLACEHOLDERS.NUM_USERS, users.length as unknown as string)
               .replace(PLACEHOLDERS.NUM_LABELS, labels.length as unknown as string)

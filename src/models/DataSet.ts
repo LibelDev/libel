@@ -1,4 +1,4 @@
-import produce, { immerable } from 'immer';
+import { immerable } from 'immer';
 import defaultTo from 'lodash/defaultTo';
 import * as dataSchemas from '../schemas/data';
 import * as dataSetSchemas from '../schemas/dataSet';
@@ -82,6 +82,17 @@ class DataSet implements IDataSet {
    * @abstract
    */
   serialize (): void { };
+
+  aggregate () {
+    const { data } = this;
+    const users = Object.keys(data);
+    const labels = users.reduce<Label[]>((labels, user) => {
+      const _labels = data[user] || [];
+      labels = labels.concat(_labels);
+      return labels;
+    }, []);
+    return { users, labels };
+  }
 
   add (user: string, text: string, reason: string, source?: IPost) {
     const labels = (this.data[user] || (this.data[user] = []));

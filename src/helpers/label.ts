@@ -3,11 +3,9 @@ import cache from '../cache';
 import * as TEXTS from '../constants/texts';
 import { format, Format } from '../helpers/date';
 import { getUserRegistrationDate } from '../helpers/lihkg';
-import { IDataSet } from '../models/DataSet';
-import { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { snipeBody, snipeLabelItem, subscriptionItem, snipeFooter } from '../templates/snipe';
+import { snipeBody, snipeFooter, snipeLabelItem, subscriptionItem } from '../templates/snipe';
 import { filterDataSetForUser } from './../store/selectors';
 
 export const prompt = (defaultText = '', defaultReason = '') => {
@@ -21,17 +19,6 @@ export const prompt = (defaultText = '', defaultReason = '') => {
       };
     }
   }
-};
-
-export const aggregate = (dataSet: IDataSet) => {
-  const { data } = dataSet;
-  const users = Object.keys(data);
-  const labels = users.reduce<ILabel[]>((labels, user) => {
-    const _labels = data[user] || [];
-    labels = labels.concat(_labels);
-    return labels;
-  }, []);
-  return { users, labels };
 };
 
 export const renderSnipeBody = (userID: string, personal: Personal, subscriptions: Subscription[]) => {
