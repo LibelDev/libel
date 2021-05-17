@@ -1,5 +1,4 @@
 export type Styles = {
-  'disabled': string;
   'subscriptionHomepageButton': string;
 };
 
