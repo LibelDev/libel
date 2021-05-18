@@ -10,11 +10,17 @@ export type TProps<A = React.HTMLAttributes<HTMLElement>> = A & {
 };
 
 const BaseIconButton = React.forwardRef<HTMLElement, TProps>((props, ref) => {
-  const { className, as = 'button', icon, children, ...otherProps } = props;
+  const { className, as = 'button', icon, disabled, children, ...otherProps } = props;
   const _props = {
     ...otherProps,
     ref,
-    className: classnames(className, styles.baseIconButton)
+    className: classnames(
+      className,
+      styles.baseIconButton,
+      {
+        [styles.disabled]: disabled
+      }
+    )
   };
   const _children = (
     <React.Fragment>
