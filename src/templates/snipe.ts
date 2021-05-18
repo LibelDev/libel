@@ -7,25 +7,25 @@ export const snipeBody = `
 {{ #labels }}
 {{ >snipeLabelItem }}
 {{ /labels }}
-
+[size=2][right]
 {{ #subscriptions.length }}
 -------------
 {{ #subscriptions }}
 {{ >subscriptionItem }}
 {{ /subscriptions }}
 {{ /subscriptions.length }}
-[right][size=2]
+-------------
 {{ >snipeFooter }}
-[/size=2][/right]
+[/right][/size=2]
 `.trim();
 
 export const snipeLabelItem = `
 -------------【{{ text }}】-------------
 {{ #reason }}
-[size=3]原因：{{ reason }}[/size=3]
+[size=3]事蹟：{{ reason }}[/size=3]
 {{ /reason }}
 {{ #sourceURL }}
-[size=3]來源：{{{ sourceURL }}}[/size=3]
+[size=3]出處：{{{ sourceURL }}}[/size=3]
 {{ /sourceURL }}
 {{ #subscription }}
 [size=2]由 [b][orange]{{ subscription.name }}[/orange][/b] 提供[/size=2]
@@ -34,8 +34,8 @@ export const snipeLabelItem = `
 
 export const subscriptionItem = `
 {{ #homepage }}
-[size=2][b][orange]{{ name }}[/orange][/b]
-{{{ homepage }}}[/size=2]
+[orange][b]{{ name }}[/b][/orange]
+{{{ homepage }}}
 {{ /homepage }}
 `.trim();
 
