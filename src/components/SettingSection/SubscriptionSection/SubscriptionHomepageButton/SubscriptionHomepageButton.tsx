@@ -12,8 +12,8 @@ interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 
 const SubscriptionHomepageButton: React.FunctionComponent<IProps> = (props) => {
   const { className, subscription, ...otherProps } = props;
-
-  return subscription.homepage ? (
+  const { homepage, loading } = subscription;
+  return (
     <IconLink
       className={
         classnames(
@@ -23,15 +23,15 @@ const SubscriptionHomepageButton: React.FunctionComponent<IProps> = (props) => {
         )
       }
       icon={IconName.Link}
-      href={subscription.homepage}
+      href={homepage}
       target="_blank"
-      disabled={subscription.loading}
+      disabled={loading || !homepage}
       aria-label={TEXTS.SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT}
       data-tip={TEXTS.SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT}
       title={TEXTS.SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT}
       {...otherProps}
     />
-  ) : null;
+  );
 };
 
 export default SubscriptionHomepageButton;
