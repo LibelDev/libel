@@ -14,6 +14,7 @@ const BaseIconButton = React.forwardRef<HTMLElement, TProps>((props, ref) => {
   const _props = {
     ...otherProps,
     ref,
+    disabled,
     className: classnames(
       className,
       styles.baseIconButton,
