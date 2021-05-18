@@ -15,6 +15,7 @@ export interface IRemoteSubscription extends IDataSet, Pick<ISerializedSubscript
 }
 
 export interface ISubscription extends ISerializedSubscription, IRemoteSubscription {
+  loaded: boolean;
   loading: boolean;
   error?: string;
 }
@@ -26,6 +27,7 @@ class Subscription extends DataSet implements ISubscription {
   version!: string;
   homepage?: string;
   color?: string;
+  loaded: boolean = false;
   loading: boolean = false;
   error?: string;
 
@@ -107,6 +109,7 @@ class Subscription extends DataSet implements ISubscription {
     this.version = subscription.version;
     this.homepage = subscription.homepage;
     this.color = subscription.color;
+    this.loaded = true;
     return this;
   }
 }

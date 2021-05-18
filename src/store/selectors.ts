@@ -17,13 +17,10 @@ export const filterPersonalForUser = (user: string) => createSelector(
 export const filterSubscriptionsForUser = (user: string) => createSelector(
   selectSubscriptions,
   (subscriptions) => (
-    filterEnabledSubscriptions(subscriptions)
+    subscriptions
+      .filter((subscription) => subscription.enabled && subscription.loaded)
       .map((subscription) => filterDataSetForUser(subscription, user))
   )
-);
-
-const filterEnabledSubscriptions = (subscriptions: Subscription[]) => (
-  subscriptions.filter((subscription) => subscription.enabled)
 );
 
 export const filterDataSetForUser = <T extends Personal | Subscription> (dataSet: T, user: string) => (
