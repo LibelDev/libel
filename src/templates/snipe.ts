@@ -27,6 +27,9 @@ export const snipeLabelItem = `
 {{ #sourceURL }}
 [size=3]出處：{{{ sourceURL }}}[/size=3]
 {{ /sourceURL }}
+{{ #image }}
+[img]{{{ image }}}[/img]
+{{ /image }}
 {{ #subscription }}
 [size=2]由 [b][orange]{{ subscription.name }}[/orange][/b] 提供[/size=2]
 {{ /subscription }}
