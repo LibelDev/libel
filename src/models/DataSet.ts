@@ -38,8 +38,8 @@ class DataSet implements IDataSet {
             const text = label;
             return new Label(text);
           }
-          const { text, reason, url, date, source } = label;
-          return new Label(text, reason, url, date, source);
+          const { text, reason, url, date, source, image } = label;
+          return new Label(text, reason, url, date, source, image);
         });
         return dataSet;
       }, this.factory());
@@ -94,7 +94,7 @@ class DataSet implements IDataSet {
     return { users, labels };
   }
 
-  add (user: string, text: string, reason: string, source?: IPost) {
+  add (user: string, text: string, reason: string, source: IPost, image?: string) {
     const labels = (this.data[user] || (this.data[user] = []));
     const index = labels.findIndex((label) => label.text === text);
     if (index === -1) {
@@ -107,19 +107,21 @@ class DataSet implements IDataSet {
           thread: source.thread_id,
           page: source.page,
           messageNumber: source.msg_num
-        }
+        },
+        image
       );
       labels.push(label);
     }
     return this;
   }
 
-  edit (user: string, index: number, text: string, reason: string) {
+  edit (user: string, index: number, text: string, reason: string, image?: string) {
     const labels = this.data[user];
     if (labels && index >= 0) {
       const label = labels[index];
       label.text = defaultTo(text, label.text);
       label.reason = defaultTo(reason, label.reason);
+      label.image = defaultTo(image, label.image);
     }
     return this;
   }

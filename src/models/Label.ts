@@ -6,6 +6,7 @@ export interface ILabel {
   url?: string;
   date?: number;
   source?: ISource;
+  image?: string;
 }
 
 interface ISource {
@@ -27,21 +28,23 @@ class Label implements ILabel {
   url?: string;
   date?: number;
   source?: ISource;
+  image?: string;
 
-  constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource) {
+  constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource, image?: string) {
     this.text = text;
     this.reason = reason;
     this.url = url;
     this.date = date;
     this.source = source;
+    this.image = image;
   }
 
   static deserialize (label: Label | ILabel) {
     if (label instanceof Label) {
       return label;
     }
-    const { text, reason, url, date, source } = label;
-    return new Label(text, reason, url, date, source);
+    const { text, reason, url, date, source, image } = label;
+    return new Label(text, reason, url, date, source, image);
   }
 
   get sourceURL () {

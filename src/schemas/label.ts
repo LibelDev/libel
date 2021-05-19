@@ -10,7 +10,8 @@ const schema = joi.object<ILabel>({
     thread: joi.string().required(),
     page: joi.number().required(),
     messageNumber: joi.string().required()
-  })
+  }),
+  image: joi.string().allow('')
 });
 
 export default schema;
