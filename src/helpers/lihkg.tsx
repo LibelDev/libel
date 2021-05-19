@@ -11,6 +11,7 @@ import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import SettingSection from '../components/SettingSection/SettingSection';
+import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
@@ -60,16 +61,20 @@ const isModalTitleMatched = (node: Node, title: string) => {
 };
 
 const renderAddLabelButton = (user: string, store: Store, container: TContainer) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <AddLabelButton user={user} source={cache.currentReply}>
-          {TEXTS.ADD_LABEL_BUTTON_TEXT}
-        </AddLabelButton>
-      </PersistGate>
-    </Provider>,
-    container
-  );
+  const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
+  const source = cache.getReply(postID);
+  if (source) {
+    ReactDOM.render(
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <AddLabelButton user={user} source={source}>
+            {TEXTS.ADD_LABEL_BUTTON_TEXT}
+          </AddLabelButton>
+        </PersistGate>
+      </Provider>,
+      container
+    );
+  }
 };
 
 const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TContainer) => {

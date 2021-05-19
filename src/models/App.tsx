@@ -83,7 +83,7 @@ class App {
   }
 
   /**
-   * cache the current clicked reply
+   * cache the target reply
    * @private
    */
   private bindCurrentReplyCacher () {
@@ -93,12 +93,11 @@ class App {
         const { parentElement } = event.target as Element;
         if (parentElement && LIHKG.isNickname(parentElement)) {
           const { parentElement: replyElement } = parentElement.parentElement!.parentElement!;
-          const postID = replyElement!.getAttribute(ATTRIBUTES.dataPostId)!;
-          cache.currentReply = cache.getReply(postID);
+          cache.targetReply = replyElement;
         }
       } catch (err) {
         console.error(err);
-        cache.currentReply = undefined;
+        cache.targetReply = null;
       }
     });
   }

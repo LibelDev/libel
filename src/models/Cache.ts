@@ -10,7 +10,7 @@ class Cache {
   private threads: TThreads = {};
   private replies: TReplies = {};
   private users: TUsers = {};
-  currentReply?: IPost;
+  targetReply: HTMLElement | null = null;
 
   getThread (id: string) {
     return this.threads[id];
