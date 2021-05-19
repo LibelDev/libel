@@ -6,7 +6,7 @@ import data from './data';
 export const serialized = joi.object<ISerializedSubscription>({
   url: joi.string().required(),
   enabled: joi.boolean().required(),
-  name: joi.string().required()
+  name: joi.string().allow('')
 });
 
 export const remote = joi.object<IRemoteSubscription>({
