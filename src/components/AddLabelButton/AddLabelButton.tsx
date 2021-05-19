@@ -17,7 +17,7 @@ interface IProps {
 }
 
 const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
   const { user, source, children } = props;
 
