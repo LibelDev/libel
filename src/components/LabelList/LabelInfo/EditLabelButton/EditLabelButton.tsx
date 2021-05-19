@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
-import { prompt } from '../../../../helpers/label';
+import { promptEdit } from '../../../../helpers/label';
 import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
 import IconButton, { IconName } from '../../../IconButton/IconButton';
@@ -18,11 +18,11 @@ const EditLabelButton: React.FunctionComponent<IProps> = (props) => {
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const { text, reason } = label;
-    const data = prompt(text, reason);
+    const { text, reason, image } = label;
+    const data = promptEdit(text, reason, image);
     if (data) {
-      const { text, reason } = data;
-      dispatch(personalActions.edit({ user, index, text, reason }));
+      const { text, reason, image } = data;
+      dispatch(personalActions.edit({ user, index, text, reason, image }));
     }
   }, [user, label, index]);
 
