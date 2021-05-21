@@ -1,9 +1,9 @@
-import { dataKey, deprecatedLocalStorageKeys } from './constants/storage';
+import { DATA_KEY, DEPRECATED_LOCAL_STORAGE_KEYS } from './constants/storage';
 import Storage from './models/Storage';
 
 const keys = [
-  dataKey,
-  ...deprecatedLocalStorageKeys
+  DATA_KEY,
+  ...DEPRECATED_LOCAL_STORAGE_KEYS
 ];
 
 const storage = new Storage(keys);
