@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import * as ATTRIBUTES from '../../../constants/attributes';
 import * as PLACEHOLDERS from '../../../constants/placeholders';
 import * as TEXTS from '../../../constants/texts';
-import { format, Format } from '../../../helpers/date';
+import { getCurrentTimestamp } from '../../../helpers/date';
 import { download } from '../../../helpers/file';
 import Personal from '../../../models/Personal';
 import Storage, { TMassagedStorage } from '../../../models/Storage';
@@ -77,7 +77,7 @@ const ExportImportSection: React.FunctionComponent = () => {
 async function _export () {
   await storage.load();
   const json = storage.json();
-  const timestamp = format(new Date(), Format.Timestamp);
+  const timestamp = getCurrentTimestamp();
   const filename = TEXTS.EXPORT_FILE_NAME_TEMPLATE.replace(PLACEHOLDERS.TIMESTAMP, timestamp);
   // TODO so sad, there is no way to detect whether the user has downloaded the file or not
   download(json, filename);

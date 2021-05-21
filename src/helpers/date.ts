@@ -26,3 +26,7 @@ export const format = (date: Date, format: Format) => {
     }
   }
 };
+
+export const getCurrentTimestamp = () => {
+  return format(new Date(), Format.Timestamp);
+}
