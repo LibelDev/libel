@@ -1,12 +1,13 @@
+import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as PLACEHOLDERS from '../../../../constants/placeholders';
 import * as TEXTS from '../../../../constants/texts';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
 import { selectSubscriptions } from '../../../../store/selectors';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import * as errors from '../../../../templates/errors';
 import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 const AddSubscriptionButton: React.FunctionComponent = () => {
@@ -24,10 +25,8 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
         dispatch(subscriptionsActions.add(subscription));
         dispatch(subscriptionsActions.load(subscriptions.length));
       } else {
-        const message = TEXTS.ADD_SUBSCRIPTION_ALREADY_SUBSCRIBED_ERROR
-          .replace(PLACEHOLDERS.SUBSCRIPTION_NAME, subscription.name || subscription.url)
-          .replace(PLACEHOLDERS.SUBSCRIPTION_URL, subscription.url);
-        window.alert(message);
+        const _message = render(errors.subscription.subscribed, { subscription });
+        window.alert(_message);
       }
     }
   }, [subscriptions]);

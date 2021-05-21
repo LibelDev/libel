@@ -5,7 +5,7 @@ import { getUserRegistrationDate } from '../helpers/lihkg';
 import Label, { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { snipeBody, snipeFooter, snipeHeader, snipeLabelItem, subscriptionItem } from '../templates/snipe';
+import { snipingBody, snipingFooter, snipingHeader, snipingLabelItem, subscriptionItem } from '../templates/sniping';
 import { filterDataSetForUser } from './../store/selectors';
 import { format, Format } from './date';
 
@@ -51,7 +51,7 @@ interface ISnipeLabelItem extends ILabel {
   subscription: Subscription | null;
 }
 
-export const renderSnipeBody = (userID: string, personal: Personal, subscriptions: Subscription[]) => {
+export const renderSnipingBody = (userID: string, personal: Personal, subscriptions: Subscription[]) => {
   const user = cache.getUser(userID);
   if (user) {
     const dataSets = ([] as (Personal | Subscription)[])
@@ -73,7 +73,7 @@ export const renderSnipeBody = (userID: string, personal: Personal, subscription
       labels,
       subscriptions
     };
-    const partials = { snipeHeader, snipeLabelItem, subscriptionItem, snipeFooter };
-    return render(snipeBody.trim(), view, partials).trim();
+    const partials = { snipingHeader, snipingLabelItem, subscriptionItem, snipingFooter };
+    return render(snipingBody.trim(), view, partials);
   }
 };

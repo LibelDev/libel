@@ -5,11 +5,10 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
-import Announcement, { styles as announcementStyles } from '../components/Announcement/Announcement';
+import { styles as announcementStyles } from '../components/Announcement/Announcement';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
-import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import SettingSection from '../components/SettingSection/SettingSection';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
@@ -19,7 +18,7 @@ import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
 import { insertAfter } from './dom';
 
-type TContainer = Parameters<Renderer>[1];
+type TRendererContainer = Parameters<Renderer>[1];
 
 export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
@@ -60,7 +59,7 @@ const isModalTitleMatched = (node: Node, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = (user: string, store: Store, container: TContainer) => {
+const renderAddLabelButton = (user: string, store: Store, container: TRendererContainer) => {
   const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
   const source = cache.getReply(postID);
   if (source) {
@@ -77,7 +76,7 @@ const renderAddLabelButton = (user: string, store: Store, container: TContainer)
   }
 };
 
-const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TContainer) => {
+const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TRendererContainer) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
@@ -89,7 +88,7 @@ const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeB
   );
 };
 
-const renderLabelBook = (user: string, store: Store, container: TContainer) => {
+const renderLabelBook = (user: string, store: Store, container: TRendererContainer) => {
   (container as Element).classList.add(lihkgCssClasses.threadHeadingText);
   ReactDOM.render(
     <Provider store={store}>
@@ -101,7 +100,7 @@ const renderLabelBook = (user: string, store: Store, container: TContainer) => {
   );
 };
 
-const renderSettingSection = (store: Store, container: TContainer) => {
+const renderSettingSection = (store: Store, container: TRendererContainer) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -112,7 +111,7 @@ const renderSettingSection = (store: Store, container: TContainer) => {
   );
 };
 
-export const renderAnnouncement = async (announcement: ReturnType<typeof Announcement | typeof NewVersionAnnouncement>) => {
+export const renderAnnouncement = async (announcement: React.ReactElement) => {
   const container = document.createElement('div');
   container.classList.add(announcementStyles.container);
   const rightPanelContainer = await waitForRightPanelContainer();
