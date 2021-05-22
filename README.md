@@ -2,6 +2,8 @@
 
 Label users on [LIHKG](https://lihkg.com/)
 
+<img src="./assets/images/demo.png" alt="Demo" />
+
 ***
 
 ## Wiki
