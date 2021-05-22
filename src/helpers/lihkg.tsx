@@ -61,12 +61,12 @@ const isModalTitleMatched = (node: Node, title: string) => {
 
 const renderAddLabelButton = (user: string, store: Store, container: TRendererContainer) => {
   const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
-  const source = cache.getReply(postID);
-  if (source) {
+  const targetReply = cache.getReply(postID);
+  if (targetReply) {
     ReactDOM.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <AddLabelButton user={user} source={source}>
+          <AddLabelButton user={user} targetReply={targetReply}>
             {TEXTS.ADD_LABEL_BUTTON_TEXT}
           </AddLabelButton>
         </PersistGate>

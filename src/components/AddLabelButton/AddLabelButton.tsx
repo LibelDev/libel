@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../apis/nacx';
 import cache from '../../cache';
@@ -13,13 +13,13 @@ import styles from './AddLabelButton.scss';
 
 interface IProps {
   user: string;
-  source: IPost;
+  targetReply: IPost;
 }
 
 const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
-  const { user, source, children } = props;
+  const { user, targetReply, children } = props;
 
   const handleClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -28,6 +28,11 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
       const data = promptAdd();
       if (data) {
         const { text, reason, isScreenshotEnabled } = data;
+        const source = {
+          thread: targetReply.thread_id,
+          page: targetReply.page,
+          messageNumber: targetReply.msg_num
+        };
         const payload: IAddLabelPayload = { user, text, reason, source };
         if (isScreenshotEnabled) {
           try {
@@ -55,7 +60,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
       }
       setDisabled(false);
     }
-  }, [disabled, user, source]);
+  }, [disabled, user, targetReply]);
 
   return (
     <a

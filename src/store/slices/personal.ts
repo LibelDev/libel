@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
+import { ISource } from '../../models/Label';
 import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
-import { IPost } from '../../types/post';
 
 export interface IAddLabelPayload {
   user: string;
   text: string;
   reason: string;
-  source: IPost;
+  source: ISource;
   image?: string;
 }
 

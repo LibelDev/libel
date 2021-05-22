@@ -9,7 +9,7 @@ export interface ILabel {
   image?: string;
 }
 
-interface ISource {
+export interface ISource {
   thread: string;
   page: number;
   messageNumber: string;
