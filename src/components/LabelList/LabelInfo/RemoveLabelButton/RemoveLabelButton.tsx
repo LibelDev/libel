@@ -1,10 +1,11 @@
+import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import cache from '../../../../cache';
-import * as PLACEHOLDERS from '../../../../constants/placeholders';
 import * as TEXTS from '../../../../constants/texts';
 import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
+import * as questions from '../../../../templates/questions';
 import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,21 +14,19 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   index: number;
 }
 
-const DeleteLabelButton: React.FunctionComponent<IProps> = (props) => {
+const RemoveLabelButton: React.FunctionComponent<IProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, user, label, index } = props;
+  const { className, user: userID, label, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const _user = cache.getUser(user);
-    const question = TEXTS.REMOVE_LABEL_QUESTION
-      .replace(PLACEHOLDERS.USERNAME, _user!.nickname)
-      .replace(PLACEHOLDERS.LABEL_TEXT, label.text);
+    const user = cache.getUser(userID);
+    const question = render(questions.remove.label, { user, label });
     const confirmed = window.confirm(question);
     if (confirmed) {
-      dispatch(personalActions.remove({ user, index }));
+      dispatch(personalActions.remove({ user: userID, index }));
     }
-  }, [user, label, index]);
+  }, [userID, label, index]);
 
   return (
     <IconButton
@@ -41,4 +40,4 @@ const DeleteLabelButton: React.FunctionComponent<IProps> = (props) => {
   );
 };
 
-export default DeleteLabelButton;
+export default RemoveLabelButton;

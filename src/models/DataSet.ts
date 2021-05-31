@@ -2,9 +2,8 @@ import { immerable } from 'immer';
 import defaultTo from 'lodash/defaultTo';
 import * as dataSchemas from '../schemas/data';
 import * as dataSetSchemas from '../schemas/dataSet';
-import { IPost } from '../types/post';
 import Data, { IData } from './Data';
-import Label, { ILabelDatum } from './Label';
+import Label, { ILabelDatum, ISource } from './Label';
 
 export interface IDataSet {
   data: Data;
@@ -38,8 +37,8 @@ class DataSet implements IDataSet {
             const text = label;
             return new Label(text);
           }
-          const { text, reason, url, date, source } = label;
-          return new Label(text, reason, url, date, source);
+          const { text, reason, url, date, source, image } = label;
+          return new Label(text, reason, url, date, source, image);
         });
         return dataSet;
       }, this.factory());
@@ -94,32 +93,22 @@ class DataSet implements IDataSet {
     return { users, labels };
   }
 
-  add (user: string, text: string, reason: string, source?: IPost) {
+  add (user: string, text: string, reason: string, source: ISource, image?: string) {
     const labels = (this.data[user] || (this.data[user] = []));
-    const index = labels.findIndex((label) => label.text === text);
-    if (index === -1) {
-      const label = new Label(
-        text,
-        reason,
-        window.location.href,
-        Date.now(),
-        source && {
-          thread: source.thread_id,
-          page: source.page,
-          messageNumber: source.msg_num
-        }
-      );
-      labels.push(label);
-    }
+    const { href: url } = window.location;
+    const date = Date.now();
+    const label = new Label(text, reason, url, date, source, image);
+    labels.push(label);
     return this;
   }
 
-  edit (user: string, index: number, text: string, reason: string) {
+  edit (user: string, index: number, text: string, reason: string, image?: string) {
     const labels = this.data[user];
     if (labels && index >= 0) {
       const label = labels[index];
       label.text = defaultTo(text, label.text);
       label.reason = defaultTo(reason, label.reason);
+      label.image = defaultTo(image, label.image);
     }
     return this;
   }

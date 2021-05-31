@@ -1,6 +1,6 @@
 import { render } from 'mustache';
 import React from 'react';
-import * as templates from '../../templates/new-version-annnouncement';
+import * as annnouncements from '../../templates/annnouncements';
 import { IRelease } from '../../types/github';
 import Announcement from '../Announcement/Announcement';
 
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
-  const message = render(templates.message, props);
+  const message = render(annnouncements.newVersion, props);
   return (
     <Announcement dangerouslySetInnerHTML={{ __html: message }} />
   );

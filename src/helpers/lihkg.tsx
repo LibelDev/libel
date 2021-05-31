@@ -5,12 +5,13 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
-import Announcement, { styles as announcementStyles } from '../components/Announcement/Announcement';
+import { styles as announcementStyles } from '../components/Announcement/Announcement';
+import CandleLight, { styles as candleLightStyles } from '../components/CandleLight/CandleLight';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
-import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import SettingSection from '../components/SettingSection/SettingSection';
+import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
@@ -18,7 +19,7 @@ import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
 import { insertAfter } from './dom';
 
-type TContainer = Parameters<Renderer>[1];
+type TRendererContainer = Parameters<Renderer>[1];
 
 export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
@@ -59,20 +60,24 @@ const isModalTitleMatched = (node: Node, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = (user: string, store: Store, container: TContainer) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <AddLabelButton user={user} source={cache.currentReply}>
-          {TEXTS.ADD_LABEL_BUTTON_TEXT}
-        </AddLabelButton>
-      </PersistGate>
-    </Provider>,
-    container
-  );
+const renderAddLabelButton = (user: string, store: Store, container: TRendererContainer) => {
+  const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
+  const targetReply = cache.getReply(postID);
+  if (targetReply) {
+    ReactDOM.render(
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <AddLabelButton user={user} targetReply={targetReply}>
+            {TEXTS.ADD_LABEL_BUTTON_TEXT}
+          </AddLabelButton>
+        </PersistGate>
+      </Provider>,
+      container
+    );
+  }
 };
 
-const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TContainer) => {
+const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TRendererContainer) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
@@ -84,7 +89,7 @@ const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeB
   );
 };
 
-const renderLabelBook = (user: string, store: Store, container: TContainer) => {
+const renderLabelBook = (user: string, store: Store, container: TRendererContainer) => {
   (container as Element).classList.add(lihkgCssClasses.threadHeadingText);
   ReactDOM.render(
     <Provider store={store}>
@@ -96,7 +101,7 @@ const renderLabelBook = (user: string, store: Store, container: TContainer) => {
   );
 };
 
-const renderSettingSection = (store: Store, container: TContainer) => {
+const renderSettingSection = (store: Store, container: TRendererContainer) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -107,7 +112,7 @@ const renderSettingSection = (store: Store, container: TContainer) => {
   );
 };
 
-export const renderAnnouncement = async (announcement: ReturnType<typeof Announcement | typeof NewVersionAnnouncement>) => {
+export const renderAnnouncement = async (announcement: React.ReactElement) => {
   const container = document.createElement('div');
   container.classList.add(announcementStyles.container);
   const rightPanelContainer = await waitForRightPanelContainer();
@@ -176,6 +181,20 @@ const handleNickname = (node: Node, store: Store) => {
       insertAfter(container, node);
       renderLabelList(user, store, true, true, container);
       (node as any).container = container;
+      // easter egg
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const date = now.getDate();
+      if (month === 6 && date === 4) {
+        (node as any).candleLightContainer?.remove();
+        const candleLightContainer = document.createElement('a');
+        candleLightContainer.setAttribute('href', 'https://www.youtube.com/watch?v=ExqqdUXXdgA');
+        candleLightContainer.setAttribute('target', '_blank');
+        candleLightContainer.classList.add(candleLightStyles.container);
+        node.parentNode!.insertBefore(candleLightContainer, node);
+        ReactDOM.render(<CandleLight />, candleLightContainer);
+        (node as any).candleLightContainer = container;
+      }
     }
   }
 };

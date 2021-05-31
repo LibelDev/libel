@@ -5,6 +5,7 @@ import Label from '../../../models/Label';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
+import LabelImageButton from './LabelImageButton/LabelImageButton';
 import styles from './LabelInfo.scss';
 import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
 import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
@@ -21,7 +22,7 @@ const LabelInfo: React.FunctionComponent<IProps> = (props) => {
   const { className, user, label, index, dataSet } = props;
 
   const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, 'borderColor');
- 
+
   return (
     <div className={classnames(className, styles.labelInfo)} style={dataSetThemeColorStyle}>
       {
@@ -38,6 +39,7 @@ const LabelInfo: React.FunctionComponent<IProps> = (props) => {
           )
         }
         <LabelSourceButton className={styles.button} label={label} />
+        <LabelImageButton className={styles.button} label={label} />
         {
           Subscription.implements(dataSet) ?
             <LabelProviderIcon className={styles.button} subscription={dataSet} /> :

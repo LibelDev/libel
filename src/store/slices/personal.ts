@@ -1,14 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
+import { ISource } from '../../models/Label';
 import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
-import { IPost } from '../../types/post';
 
-interface IAddLabelPayload {
+export interface IAddLabelPayload {
   user: string;
   text: string;
   reason: string;
-  source?: IPost;
+  source: ISource;
+  image?: string;
 }
 
 interface IEditLabelPayload {
@@ -16,6 +17,7 @@ interface IEditLabelPayload {
   index: number;
   text: string;
   reason: string;
+  image?: string;
 }
 
 interface IRemoveLabelPayload {
@@ -30,12 +32,12 @@ const slice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<IAddLabelPayload>) => {
-      const { user, text, reason, source } = action.payload;
-      state.add(user, text, reason, source);
+      const { user, text, reason, source, image } = action.payload;
+      state.add(user, text, reason, source, image);
     },
     edit: (state, action: PayloadAction<IEditLabelPayload>) => {
-      const { user, index, text, reason } = action.payload;
-      state.edit(user, index, text, reason);
+      const { user, index, text, reason, image } = action.payload;
+      state.edit(user, index, text, reason, image);
     },
     remove: (state, action: PayloadAction<IRemoveLabelPayload>) => {
       const { user, index } = action.payload;

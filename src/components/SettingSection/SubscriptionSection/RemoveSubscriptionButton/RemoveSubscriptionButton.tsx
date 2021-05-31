@@ -1,11 +1,12 @@
 import classnames from 'classnames';
+import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import * as PLACEHOLDERS from '../../../../constants/placeholders';
 import * as TEXTS from '../../../../constants/texts';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import * as questions from '../../../../templates/questions';
 import IconButton, { IconName } from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,9 +20,7 @@ const RemoveSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const question = TEXTS.REMOVE_SUBSCRIPTION_QUESTION
-      .replace(PLACEHOLDERS.SUBSCRIPTION_NAME, subscription.name || subscription.url)
-      .replace(PLACEHOLDERS.SUBSCRIPTION_URL, subscription.url);
+    const question = render(questions.remove.subscription, { subscription });
     const confirmed = window.confirm(question);
     if (confirmed) {
       dispatch(subscriptionsActions.remove(index));

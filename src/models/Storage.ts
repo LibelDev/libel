@@ -1,5 +1,4 @@
 import { Optional } from 'utility-types';
-import { deprecatedLocalStorageKeys } from '../constants/storage';
 import { defaultSubscriptions } from '../constants/subscriptions';
 import storage, { localStorage } from '../helpers/storage';
 import DataSet from '../models/DataSet';
@@ -26,22 +25,22 @@ export function isISerializedStorageImplemented (object: any): object is ISerial
   );
 }
 
-const key = Symbol('key');
-const ready = Symbol('ready');
+const _keys = Symbol('keys');
+const _ready = Symbol('ready');
 
 class Storage implements IStorage {
-  private readonly [key]!: string;
-  private readonly [ready]!: Promise<this>;
+  private readonly [_keys]!: string[];
+  private readonly [_ready]!: Promise<this>;
   personal: Personal = new Personal();
   subscriptions: Subscription[] = [];
 
   constructor (keys: string[]) {
-    this[key] = keys[0];
-    this[ready] = this.load();
+    this[_keys] = keys;
+    this[_ready] = this.load();
   }
 
   private static clean (keys: string[]) {
-    for (const key of deprecatedLocalStorageKeys) {
+    for (const key of keys) {
       storage.removeItem(key);
       localStorage.removeItem(key);
     }
@@ -124,7 +123,7 @@ class Storage implements IStorage {
   }
 
   ready () {
-    return this[ready];
+    return this[_ready];
   }
 
   serialize () {
@@ -137,7 +136,7 @@ class Storage implements IStorage {
   }
 
   async load () {
-    const keys = [this[key]];
+    const keys = [this[_keys][0]];
     const json = await Storage.load(keys);
     const data = Storage.parse(json);
     this.update(data);

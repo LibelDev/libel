@@ -1,9 +1,9 @@
+import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import * as ATTRIBUTES from '../../../constants/attributes';
-import * as PLACEHOLDERS from '../../../constants/placeholders';
 import * as TEXTS from '../../../constants/texts';
-import { format, Format } from '../../../helpers/date';
+import { getCurrentTimestamp } from '../../../helpers/date';
 import { download } from '../../../helpers/file';
 import Personal from '../../../models/Personal';
 import Storage, { TMassagedStorage } from '../../../models/Storage';
@@ -11,6 +11,8 @@ import storage from '../../../storage';
 import { actions as personalActions } from '../../../store/slices/personal';
 import { actions as subscriptionsActions } from '../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import * as filenames from '../../../templates/filenames';
+import * as messages from '../../../templates/messages';
 import styles from './ExportImportSection.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
@@ -65,7 +67,7 @@ const ExportImportSection: React.FunctionComponent = () => {
             <label htmlFor={ATTRIBUTES.importFileInputId} className={lihkgCssClasses.settingOptionButton}>
               {TEXTS.IMPORT_FILE_BUTTON_TEXT}
             </label>
-            <small>{TEXTS.IMPORT_FILE_BUTTON_REMINDER}</small>
+            <small>{TEXTS.IMPORT_FILE_REMINDER}</small>
           </div>
         </li>
       </ul>
@@ -77,17 +79,14 @@ const ExportImportSection: React.FunctionComponent = () => {
 async function _export () {
   await storage.load();
   const json = storage.json();
-  const timestamp = format(new Date(), Format.Timestamp);
-  const filename = TEXTS.EXPORT_FILE_NAME_TEMPLATE.replace(PLACEHOLDERS.TIMESTAMP, timestamp);
+  const timestamp = getCurrentTimestamp();
+  const filename = render(filenames.data.export, { timestamp });
   // TODO so sad, there is no way to detect whether the user has downloaded the file or not
   download(json, filename);
   const { personal, subscriptions } = storage;
   const { users, labels } = personal.aggregate();
-  const message = TEXTS.EXPORT_FILE_SUCCESS_MESSAGE
-    .replace(PLACEHOLDERS.NUM_USERS, users.length as unknown as string)
-    .replace(PLACEHOLDERS.NUM_LABELS, labels.length as unknown as string)
-    .replace(PLACEHOLDERS.NUM_SUBSCRIPTIONS, subscriptions.length as unknown as string);
-  window.alert(message);
+  const _message = render(messages.success.export, { users, labels, subscriptions });
+  window.alert(_message);
 }
 
 function _import (file: File): Promise<TMassagedStorage | null> {
@@ -110,11 +109,8 @@ function _import (file: File): Promise<TMassagedStorage | null> {
             const { personal, subscriptions } = storage;
             const _personal = Personal.deserialize(personal);
             const { users, labels } = _personal.aggregate();
-            const message = TEXTS.IMPORT_FILE_SUCCESS_MESSAGE
-              .replace(PLACEHOLDERS.NUM_USERS, users.length as unknown as string)
-              .replace(PLACEHOLDERS.NUM_LABELS, labels.length as unknown as string)
-              .replace(PLACEHOLDERS.NUM_SUBSCRIPTIONS, (subscriptions?.length || 0) as unknown as string);
-            window.alert(message);
+            const _message = render(messages.success.import, { users, labels, subscriptions });
+            window.alert(_message);
             resolve(storage);
           } else {
             // storage validation error
