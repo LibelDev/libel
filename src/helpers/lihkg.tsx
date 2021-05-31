@@ -193,7 +193,7 @@ const handleNickname = (node: Node, store: Store) => {
         candleLightContainer.classList.add(candleLightStyles.container);
         node.parentNode!.insertBefore(candleLightContainer, node);
         ReactDOM.render(<CandleLight />, candleLightContainer);
-        (node as any).candleLightContainer = container;
+        (node as any).candleLightContainer = candleLightContainer;
       }
     }
   }
