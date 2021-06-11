@@ -1,9 +1,7 @@
 <p align="center">
   <img src="./assets/images/libel.png" alt="Libel" width="100"/>
   <h1 align="center">Libel</h1>
-  Label users on <a href="https://lihkg.com" target="_blank">LIHKG</a><br />
-  在 <a href="https://lihkg.com" target="_blank">LIHKG</a> 對會員配上標籤<br />
-  <img src="./assets/images/demo.png" alt="Demo" />
+  <img src="./assets/images/demo.png" alt="Label users on LIHKG" />
 </p>
 
 ***
@@ -12,16 +10,6 @@
 
 For the installation steps, usage and more details, please visit [Wiki](https://github.com/kitce/libel/wiki).  
 關於詳細介紹、安裝教學及使用教學，請閱讀 [Wiki](https://github.com/kitce/libel/wiki)。
-
-***
-
-## Introduction
-
-This project is derived from my previous LIHKG userscript project [**LIHKG Label Users**](https://gist.github.com/kitce/c7fe972b1657120919f0fb05047569ba).
-
-In view of the features that I want to add being more and more, it is not easy to keep developing on the previous project codebase, so I decided to rewrite it from scratch.
-
-Pull requests are welcome.
 
 ***
 
