@@ -1,8 +1,10 @@
-# Libel
-
-Label users on [LIHKG](https://lihkg.com/)
-
-<img src="./assets/images/demo.png" alt="Demo" />
+<p align="center">
+  <img src="./assets/images/libel.png" alt="Libel" width="100"/>
+  <h1 align="center">Libel</h1>
+  Label users on <a href="https://lihkg.com" target="_blank">LIHKG</a><br />
+  在 <a href="https://lihkg.com" target="_blank">LIHKG</a> 對會員配上標籤<br />
+  <img src="./assets/images/demo.png" alt="Demo" />
+</p>
 
 ***
 
