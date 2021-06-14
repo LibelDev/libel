@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/images/libel.png" alt="Libel" width="100"/>  
+  <img src="./assets/images/libel.png" alt="Libel" width="100"/>
 </p>
 <h1 align="center">Libel</h1>
 <p align="center">
@@ -8,7 +8,7 @@
 
 ***
 
-## Wiki
+## Installation / Usage
 
 For the installation steps, usage and more details, please visit [Wiki](https://github.com/kitce/libel/wiki).  
 關於詳細介紹、安裝教學及使用教學，請閱讀 [Wiki](https://github.com/kitce/libel/wiki)。
@@ -16,6 +16,8 @@ For the installation steps, usage and more details, please visit [Wiki](https://
 ***
 
 ## Development
+
+*This section is for developers only. Pull requests are welcome.*
 
 ### Install dependencies
 
@@ -31,6 +33,8 @@ For a smooth development experience, you may want to execute the following comma
 $ yarn dev
 ```
 
+### Install
+
 When `webpack-dev-server` completed the first compilation, follow these steps to test on [LIHKG](https://lihkg.com/):
 
 1. Install [Tampermonkey](https://www.tampermonkey.net/)
@@ -43,20 +47,17 @@ Whenever you made changes and `webpack-dev-server` recompiled the files, repeat 
 ### SCSS module typings
 
 ```bash
-$ yarn type:scss
-# or
-$ yarn type:scss:watch
+$ yarn type:scss[:watch]
 ```
 
-### Mock data
+### Mock data hosting
 
 ```bash
 $ yarn mock
 ```
 
-#### Why the mock data is hosted on port `20630`?
-
-To memorize [the death of Hong Kong](https://en.wikipedia.org/wiki/Hong_Kong_national_security_law) on 30/6/2020
+*Why the mock data is hosted on port `20630`?*  
+*To memorize [**the death of Hong Kong**](https://en.wikipedia.org/wiki/Hong_Kong_national_security_law) on 30/6/2020*
 
 ***
 
@@ -65,10 +66,10 @@ To memorize [the death of Hong Kong](https://en.wikipedia.org/wiki/Hong_Kong_nat
 ### Build
 
 ```bash
-yarn build
+$ yarn build
 ```
 
-Distributable files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
+The production-ready files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
 
 ***
 
