@@ -17,7 +17,8 @@ For the installation steps, usage and more details, please visit [Wiki](https://
 
 ## Development
 
-*This section is for developers only. Pull requests are welcome.*
+*This section is for developers only.  
+此章節只供開發者瀏覽。*
 
 ### Install dependencies
 
