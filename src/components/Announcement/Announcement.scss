@@ -18,10 +18,8 @@
   }
 
   @screen md {
-    @include mobile-mode() {
-      @apply absolute;
-      @apply top-0;
-    }
+    @apply absolute;
+    @apply top-0;
 
     + :global(#rightPanel) {
       height: calc(100vh - 3rem - 33px);

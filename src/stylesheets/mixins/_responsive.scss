@@ -1,5 +1,5 @@
 @mixin mobile-mode() {
-  body:not([data-app-mb]) & {
+  body[data-app-mb] & {
     @content;
   }
 }
