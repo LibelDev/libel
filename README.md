@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/images/libel.png" alt="Libel" width="100"/>
+  <img src="./assets/logos/libel.png" alt="Libel" width="100"/>
 </p>
 <h1 align="center">Libel</h1>
 <p align="center">
