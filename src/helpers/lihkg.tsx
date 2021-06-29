@@ -6,7 +6,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
 import { styles as announcementStyles } from '../components/Announcement/Announcement';
-import CandleLight, { styles as candleLightStyles } from '../components/CandleLight/CandleLight';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
@@ -181,20 +180,6 @@ const handleNickname = (node: Node, store: Store) => {
       insertAfter(container, node);
       renderLabelList(user, store, true, true, container);
       (node as any).container = container;
-      // easter egg
-      const now = new Date();
-      const month = now.getMonth() + 1;
-      const date = now.getDate();
-      if (month === 6 && date === 4) {
-        (node as any).candleLightContainer?.remove();
-        const candleLightContainer = document.createElement('a');
-        candleLightContainer.setAttribute('href', 'https://www.youtube.com/watch?v=ExqqdUXXdgA');
-        candleLightContainer.setAttribute('target', '_blank');
-        candleLightContainer.classList.add(candleLightStyles.container);
-        node.parentNode!.insertBefore(candleLightContainer, node);
-        ReactDOM.render(<CandleLight />, candleLightContainer);
-        (node as any).candleLightContainer = candleLightContainer;
-      }
     }
   }
 };
