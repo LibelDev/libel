@@ -5,9 +5,10 @@ import { getUserRegistrationDate } from '../helpers/lihkg';
 import Label, { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { snipingBody, snipingFooter, snipingHeader, snipingLabelItem, subscriptionItem } from '../templates/sniping';
+import { snipingFooter, snipingHeader, snipingLabelItem, subscriptionItem } from '../templates/sniping';
 import { filterDataSetForUser } from './../store/selectors';
 import { format, Format } from './date';
+import { getSnipingTemplate } from './sniping';
 
 const prompt = (defaultText = '', defaultReason = '') => {
   const text = (window.prompt(TEXTS.ADD_LABEL_QUESTION, defaultText) || '').trim();
@@ -54,8 +55,9 @@ interface ISnipeLabelItem extends ILabel {
 export const renderSnipingBody = (userID: string, personal: Personal, subscriptions: Subscription[]) => {
   const user = cache.getUser(userID);
   if (user) {
+    const _subscriptions = subscriptions.filter((subscription) => !!subscription.data[userID])
     const dataSets = ([] as (Personal | Subscription)[])
-      .concat(personal, subscriptions)
+      .concat(personal, _subscriptions)
       .map((dataSet) => filterDataSetForUser(dataSet, userID));
     const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
       const _labels = (dataSet.data[userID] || []).map((label) => ({
@@ -71,9 +73,10 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
         registrationDate: format(getUserRegistrationDate(user), Format.Display)
       },
       labels,
-      subscriptions
+      subscriptions: _subscriptions
     };
+    const snipingTemplate = getSnipingTemplate();
     const partials = { snipingHeader, snipingLabelItem, subscriptionItem, snipingFooter };
-    return render(snipingBody.trim(), view, partials);
+    return render(snipingTemplate, view, partials);
   }
 };

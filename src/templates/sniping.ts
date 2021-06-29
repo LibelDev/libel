@@ -1,6 +1,6 @@
 import { displayName, homepage } from '../../package.json';
 
-export const snipingBody = `
+export const snipingTemplate = `
 {{ >snipingHeader }}
 
 {{ #labels }}
@@ -49,7 +49,7 @@ export const subscriptionItem = `
 `.trim();
 
 export const snipingFooter = `
-[orange]【[b]${displayName}[/b]】LIHKG 會員標籤插件[/orange]
+[orange]LIHKG 會員標籤插件【[b]${displayName}[/b]】[/orange]
 ${homepage}
 討論：https://lih.kg/2536496
 `.trim();
