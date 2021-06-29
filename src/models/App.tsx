@@ -1,27 +1,32 @@
 import React from 'react';
-import cache from '../cache';
+import { Store } from 'redux';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as LIHKG from '../helpers/lihkg';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
-import storage from '../storage';
-import store from '../store/store';
 import { IQuoteListResponseData, IReplyListResponseData } from '../types/post';
 import { IThreadListResponseData } from '../types/thread';
+import Cache from './Cache';
+import EasterEgg from './EasterEgg';
 
 class App {
-  private cache = cache;
-  private storage = storage;
-  private store = store;
+  private cache!: Cache;
+  private store!: Store;
+  private eggs!: EasterEgg[];
+
+  constructor (cache: Cache, store: Store, eggs: EasterEgg[]) {
+    this.cache = cache;
+    this.store = store;
+    this.eggs = eggs;
+  }
 
   async start () {
-    const { storage } = this;
-    await storage.ready();
     this.bindEvents();
     this.bootstrap();
     this.checkUpdate();
+    this.hatchEggs();
     return this;
   }
 
@@ -32,9 +37,9 @@ class App {
 
   /**
    * bootstrap the app
-   * @returns {this}
+   * @private
    */
-  private bootstrap (): this {
+  private bootstrap () {
     const { store } = this;
 
     const observer = new MutationObserver((mutations) => {
@@ -78,8 +83,6 @@ class App {
       attributes: true,
       attributeFilter: [ATTRIBUTES.dataPostId]
     });
-
-    return this;
   }
 
   /**
@@ -128,7 +131,7 @@ class App {
     });
   }
 
-  async checkUpdate () {
+  private async checkUpdate () {
     try {
       const [available, currentVersion, newVersion, latestRelease] = await checkUpdate();
       if (available) {
@@ -142,6 +145,13 @@ class App {
       }
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  private hatchEggs () {
+    const { eggs } = this;
+    for (const egg of eggs) {
+      egg.hatch();
     }
   }
 }

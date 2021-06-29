@@ -1,5 +1,9 @@
 import app from './app';
+import storage from './storage';
 import './stylesheets/lihkg.scss';
 import './stylesheets/main.scss';
 
-app.start();
+(async () => {
+  await storage.ready();
+  app.start();
+})();

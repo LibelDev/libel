@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import { namespace } from '../../package.json';
 import userscript from './plugins/userscript';
+import asset from './rules/asset';
 import scss from './rules/scss';
 import typescript from './rules/typescript';
 
@@ -13,6 +14,7 @@ const config: webpack.Configuration = {
   },
   module: {
     rules: [
+      asset,
       scss,
       typescript
     ]
