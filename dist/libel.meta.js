@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Libel
-// @version     1.0.8
+// @version     1.0.9
 // @author      kitce <kitce.dev@gmail.com>
 // @description Label users on LIHKG
 // @homepage    https://kitce.github.io/libel
