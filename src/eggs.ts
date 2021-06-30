@@ -7,7 +7,8 @@ const eggs: EasterEgg[] = [
     const month = now.getMonth() + 1;
     const date = now.getDate();
     if (month === 7 && date === 1) {
-      document.body.classList.add(styles.handoverOfHongKong);
+      const app = document.querySelector('#app');
+      app!.classList.add(styles.handoverOfHongKong);
     }
   })
 ];

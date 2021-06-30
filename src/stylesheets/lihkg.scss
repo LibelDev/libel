@@ -22,6 +22,7 @@
     @apply fixed top-0 left-0;
     @apply h-full w-full;
     @apply filter;
+    --tw-blur: blur(2px);
     --tw-drop-shadow: drop-shadow(0 0 1rem black);
     @apply opacity-30;
     @apply bg-center bg-contain bg-no-repeat;
@@ -34,7 +35,8 @@
     }
 
     @include dark-mode() {
-      @apply opacity-10;
+      @apply blur-sm;
+      @apply opacity-20;
     }
   }
 }
