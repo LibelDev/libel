@@ -1,7 +1,7 @@
 import * as env from '../helpers/env';
 import { ISerializedSubscription } from '../models/Subscription';
 
-export const defaultSubscriptions: ISerializedSubscription[] = !env ? [] : [
+export const defaultSubscriptions: ISerializedSubscription[] = !env.dev ? [] : [
   {
     url: 'http://localhost:20630/subscriptions/sample1.json',
     enabled: true,
