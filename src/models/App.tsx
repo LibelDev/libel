@@ -9,24 +9,20 @@ import { intercept } from '../helpers/xhr';
 import { IQuoteListResponseData, IReplyListResponseData } from '../types/post';
 import { IThreadListResponseData } from '../types/thread';
 import Cache from './Cache';
-import EasterEgg from './EasterEgg';
 
 class App {
   private cache!: Cache;
   private store!: Store;
-  private eggs!: EasterEgg[];
 
-  constructor (cache: Cache, store: Store, eggs: EasterEgg[]) {
+  constructor (cache: Cache, store: Store) {
     this.cache = cache;
     this.store = store;
-    this.eggs = eggs;
   }
 
   async start () {
     this.bindEvents();
     this.bootstrap();
     this.checkUpdate();
-    this.hatchEggs();
     return this;
   }
 
@@ -145,13 +141,6 @@ class App {
       }
     } catch (err) {
       console.error(err);
-    }
-  }
-
-  private hatchEggs () {
-    const { eggs } = this;
-    for (const egg of eggs) {
-      egg.hatch();
     }
   }
 }

@@ -1,7 +1,8 @@
 import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
-import common from './webpack.config';
+import egg from './webpack.config.egg';
+import main from './webpack.config.main';
 
 const prod: webpack.Configuration = {
   mode: 'production',
@@ -11,6 +12,6 @@ const prod: webpack.Configuration = {
   }
 };
 
-const config = merge(common, prod);
+const config = merge(main, prod);
 
-export default config;
+export default [config, egg];

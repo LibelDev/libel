@@ -1,0 +1,28 @@
+@import '../../stylesheets/base';
+
+.handover-of-hong-kong :global(#leftPanel) {
+  @apply relative;
+
+  &:before {
+    content: '';
+    @apply fixed top-0 left-0;
+    @apply h-full w-full;
+    @apply filter;
+    --tw-blur: blur(2px);
+    --tw-drop-shadow: drop-shadow(0 0 1rem black);
+    @apply opacity-30;
+    @apply bg-center bg-contain bg-no-repeat;
+    background-image: $image-black-bauhinia;
+
+    @screen md {
+      width: 30%;
+      min-width: 300px;
+      max-width: 480px;
+    }
+
+    @include dark-mode() {
+      @apply blur-sm;
+      @apply opacity-20;
+    }
+  }
+}
