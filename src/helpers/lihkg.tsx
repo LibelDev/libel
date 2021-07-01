@@ -184,7 +184,7 @@ const handleNickname = (node: Node, store: Store) => {
   }
 };
 
-const waitForElement = (selector: string): Promise<Element> => {
+export const waitForElement = (selector: string): Promise<Element> => {
   const element = document.querySelector(selector);
   if (element) {
     return Promise.resolve(element);
