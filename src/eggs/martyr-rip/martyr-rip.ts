@@ -1,7 +1,7 @@
-import { waitForElement } from './../../helpers/lihkg';
-import EasterEgg from '../../models/EasterEgg';
 import flowerIconSrc from '../../../assets/images/lihkg/emotes/flower.webp';
+import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import { waitForElement } from './../../helpers/dom';
 import styles from './martyr-rip.scss';
 
 const egg = new EasterEgg(async () => {
