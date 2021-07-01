@@ -12,3 +12,5 @@ const egg = new EasterEgg(() => {
 });
 
 export default egg;
+
+// Reference: https://en.wikipedia.org/wiki/Handover_of_Hong_Kong
