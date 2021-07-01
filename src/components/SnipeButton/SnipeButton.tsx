@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import * as TEXTS from '../../constants/texts';
-import { renderSnipingBody } from '../../helpers/label';
+import { renderSnipingBody } from '../../helpers/sniping';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';

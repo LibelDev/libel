@@ -41,6 +41,12 @@ export const snipingLabelItem = `
 {{ /subscription }}
 `.trim();
 
+export const snipingLabelScreenshot = `
+{{ #image }}
+[img]{{{ image }}}[/img]
+{{ /image }}
+`.trim();
+
 export const subscriptionItem = `
 {{ #homepage }}
 [orange][b]{{ name }}[/b][/orange]

@@ -1,14 +1,4 @@
-import { render } from 'mustache';
-import cache from '../cache';
 import * as TEXTS from '../constants/texts';
-import { getUserRegistrationDate } from '../helpers/lihkg';
-import Label, { ILabel } from '../models/Label';
-import Personal from '../models/Personal';
-import Subscription from '../models/Subscription';
-import { snipingFooter, snipingHeader, snipingLabelItem, subscriptionItem } from '../templates/sniping';
-import { filterDataSetForUser } from './../store/selectors';
-import { format, Format } from './date';
-import { getSnipingTemplate } from './sniping';
 
 const prompt = (defaultText = '', defaultReason = '') => {
   const text = (window.prompt(TEXTS.ADD_LABEL_QUESTION, defaultText) || '').trim();
@@ -44,39 +34,5 @@ export const promptEdit = (text: string, reason?: string, image = '') => {
         image: _image?.trim()
       };
     }
-  }
-};
-
-interface ISnipeLabelItem extends ILabel {
-  sourceURL: Label['sourceURL'];
-  subscription: Subscription | null;
-}
-
-export const renderSnipingBody = (userID: string, personal: Personal, subscriptions: Subscription[]) => {
-  const user = cache.getUser(userID);
-  if (user) {
-    const _subscriptions = subscriptions.filter((subscription) => !!subscription.data[userID])
-    const dataSets = ([] as (Personal | Subscription)[])
-      .concat(personal, _subscriptions)
-      .map((dataSet) => filterDataSetForUser(dataSet, userID));
-    const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
-      const _labels = (dataSet.data[userID] || []).map((label) => ({
-        ...label,
-        sourceURL: label.sourceURL,
-        subscription: Subscription.implements(dataSet) ? dataSet : null
-      }));
-      return labels.concat(_labels);
-    }, []);
-    const view = {
-      user: {
-        ...user,
-        registrationDate: format(getUserRegistrationDate(user), Format.Display)
-      },
-      labels,
-      subscriptions: _subscriptions
-    };
-    const snipingTemplate = getSnipingTemplate();
-    const partials = { snipingHeader, snipingLabelItem, subscriptionItem, snipingFooter };
-    return render(snipingTemplate, view, partials);
   }
 };
