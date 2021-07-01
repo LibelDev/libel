@@ -16,7 +16,7 @@ import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import { IUser } from '../types/user';
-import { insertAfter } from './dom';
+import { insertAfter, waitForElement } from './dom';
 
 type TRendererContainer = Parameters<Renderer>[1];
 
@@ -182,37 +182,6 @@ const handleNickname = (node: Node, store: Store) => {
       (node as any).container = container;
     }
   }
-};
-
-export const waitForElement = (selector: string): Promise<Element> => {
-  const element = document.querySelector(selector);
-  if (element) {
-    return Promise.resolve(element);
-  }
-  return new Promise((resolve) => {
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        switch (mutation.type) {
-          case 'childList': {
-            const nodes = Array.from(mutation.addedNodes);
-            for (const node of nodes) {
-              if (node.nodeType === document.ELEMENT_NODE) {
-                if ((node as Element).matches(selector)) {
-                  observer.disconnect();
-                  return resolve(node as Element);
-                }
-              }
-            }
-            break;
-          }
-        }
-      }
-    });
-    observer.observe(document.body, {
-      subtree: true,
-      childList: true
-    });
-  });
 };
 
 export const waitForSubmissionForm = () => {
