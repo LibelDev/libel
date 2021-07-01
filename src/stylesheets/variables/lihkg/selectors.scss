@@ -1,0 +1,6 @@
+@import '../selectors/lihkg';
+
+:export {
+  nav: $lihkg-selector-nav;
+  nav-category: $lihkg-selector-nav-category;
+}

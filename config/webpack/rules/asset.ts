@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 
 const rule: webpack.RuleSetRule = {
-  test: /\.(svg|png|jpg|gif)$/i,
+  test: /\.(gif|jpg|png|svg|webp)$/i,
   type: 'asset/resource'
 };
 

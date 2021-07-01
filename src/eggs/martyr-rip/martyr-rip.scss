@@ -1,0 +1,9 @@
+@import '../../stylesheets/base';
+
+:global(#{$lihkg-selector-nav-category}) {
+  @apply flex items-center justify-center;
+
+  .flower-icon {
+    @apply ml-2;
+  }
+}
