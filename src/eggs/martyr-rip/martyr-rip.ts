@@ -1,20 +1,37 @@
-import flowerIconSrc from '../../../assets/images/lihkg/emotes/flower.webp';
+import random from 'lodash/random';
+import catIconSrc from '../../../assets/images/lihkg/emotes/rip/cat.webp';
+import cowIconSrc from '../../../assets/images/lihkg/emotes/rip/cow.webp';
+import dogIconSrc from '../../../assets/images/lihkg/emotes/rip/dog.webp';
+import flowerIconSrc from '../../../assets/images/lihkg/emotes/rip/flower.webp';
+import mouseIconSrc from '../../../assets/images/lihkg/emotes/rip/mouse.gif';
+import pigIconSrc from '../../../assets/images/lihkg/emotes/rip/pig.webp';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
 import { waitForElement } from './../../helpers/dom';
 import styles from './martyr-rip.scss';
 
+const iconSrcs = [
+  catIconSrc,
+  cowIconSrc,
+  dogIconSrc,
+  flowerIconSrc,
+  mouseIconSrc,
+  pigIconSrc
+];
+
 const egg = new EasterEgg(async () => {
   const now = new Date();
   const month = now.getMonth() + 1;
   if (month === 7) {
+    const index = random(0, iconSrcs.length - 1);
+    const iconSrc = iconSrcs[index];
     const nav = await waitForElement(lihkgSelectors.nav);
     const navCategory = nav.querySelector(lihkgSelectors.navCategory)!;
-    const flowerIcon = document.createElement('img');
-    flowerIcon.classList.add(styles.flowerIcon);
-    flowerIcon.setAttribute('src', flowerIconSrc);
-    flowerIcon.setAttribute('alt', '毋忘義士');
-    navCategory.appendChild(flowerIcon);
+    const icon = document.createElement('img');
+    icon.classList.add(styles.icon);
+    icon.setAttribute('src', iconSrc);
+    icon.setAttribute('alt', '毋忘義士');
+    navCategory.appendChild(icon);
   }
 });
 

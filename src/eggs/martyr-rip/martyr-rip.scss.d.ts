@@ -1,5 +1,5 @@
 export type Styles = {
-  'flowerIcon': string;
+  'icon': string;
 };
 
 export type ClassNames = keyof Styles;
