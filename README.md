@@ -1,8 +1,6 @@
 <p align="center">
   <img src="./assets/logos/libel.png" alt="Libel" width="100"/>
-</p>
-<h1 align="center">Libel</h1>
-<p align="center">
+  <h1 align="center">Libel</h1>
   <img src="./assets/demo.gif" alt="Demo" />
 </p>
 
