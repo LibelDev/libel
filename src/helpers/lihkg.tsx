@@ -15,6 +15,7 @@ import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
+import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.scss';
 import { IUser } from '../types/user';
 import { insertAfter, waitForElement } from './dom';
 
@@ -189,6 +190,6 @@ export const waitForSubmissionForm = () => {
 };
 
 const waitForRightPanelContainer = async () => {
-  const splitView = await waitForElement('#splitView');
+  const splitView = await waitForElement(lihkgSelectors.splitView);
   return splitView.querySelector(`.${lihkgCssClasses.rightPanelContainer}`)!;
 };

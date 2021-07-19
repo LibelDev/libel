@@ -1,6 +1,9 @@
 @import '../selectors/lihkg';
 
 :export {
-  nav: $lihkg-selector-nav;
+  app: $lihkg-app;
+  left-panel: $lihkg-left-panel;
   nav-category: $lihkg-selector-nav-category;
+  nav: $lihkg-selector-nav;
+  split-view: $lihkg-split-view;
 }
