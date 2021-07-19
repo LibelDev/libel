@@ -30,7 +30,6 @@ const egg = new EasterEgg(async () => {
     const icon = document.createElement('img');
     icon.classList.add(styles.icon);
     icon.setAttribute('src', iconSrc);
-    icon.setAttribute('alt', '毋忘義士');
     navCategory.appendChild(icon);
   }
 });

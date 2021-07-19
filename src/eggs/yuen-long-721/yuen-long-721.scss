@@ -1,6 +1,6 @@
 @import '../../stylesheets/base';
 
-.handover-of-hong-kong :global(#leftPanel) {
+.yuen-long-721 :global(#leftPanel) {
   @apply relative;
 
   .underlay {
@@ -9,19 +9,18 @@
     @apply filter;
     --tw-blur: blur(2px);
     --tw-drop-shadow: drop-shadow(0 0 1rem black);
-    @apply opacity-30;
-    @apply bg-center bg-contain bg-no-repeat;
-    background-image: $image-black-bauhinia;
-
+    @apply opacity-10;
+    @apply bg-center bg-cover bg-no-repeat;
+    background-image: $image-721-yuen-long-mtr;
+  
     @screen md {
       width: 30%;
       min-width: 300px;
       max-width: 480px;
     }
-
+  
     @include dark-mode() {
       @apply blur-sm;
-      @apply opacity-20;
     }
   }
 }

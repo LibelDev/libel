@@ -1,6 +1,6 @@
 export type Styles = {
-  'handoverOfHongKong': string;
   'underlay': string;
+  'yuenLong721': string;
 };
 
 export type ClassNames = keyof Styles;
