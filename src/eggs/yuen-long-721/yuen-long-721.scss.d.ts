@@ -1,6 +1,6 @@
 export type Styles = {
+  'egg': string;
   'underlay': string;
-  'yuenLong721': string;
 };
 
 export type ClassNames = keyof Styles;

@@ -1,5 +1,5 @@
 export type Styles = {
-  'handoverOfHongKong': string;
+  'egg': string;
   'underlay': string;
 };
 
