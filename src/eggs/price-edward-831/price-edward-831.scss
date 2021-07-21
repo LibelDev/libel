@@ -1,0 +1,51 @@
+@import '../../stylesheets/base';
+
+.egg :global(#{$lihkg-selector-notice}) {
+  $image-ratio: percentage(500 / 1024);
+  $logo-margin: 0.5rem;
+  $logo-size: 2rem;
+
+  .slideshow {
+    @apply relative;
+    @apply inline-block;
+    @apply w-full;
+    padding-top: $image-ratio;
+
+    &:after {
+      content: '';
+      @apply absolute top-0 right-0;
+      @apply h-16 w-16;
+      @apply p-2;
+      @apply bg-no-repeat;
+      background-image: (
+        $image-logo,
+        linear-gradient(225deg, #000, transparent 50%)
+      );
+      background-position: (
+        calc(100% - #{$logo-margin}) $logo-margin,
+        top right
+      );
+      background-size: (
+        $logo-size,
+        100%
+      );
+    }
+
+    .image {
+      @apply absolute top-0 left-0;
+      @apply h-full w-full;
+      @apply bg-center bg-cover;
+      @apply transition-opacity;
+      @apply duration-500;
+
+      &:not(.active) {
+        @apply opacity-0;
+      }
+    }
+  }
+
+  // hide original image
+  img {
+    @apply hidden;
+  }
+}
