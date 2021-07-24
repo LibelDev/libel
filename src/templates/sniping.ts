@@ -33,12 +33,16 @@ export const snipingLabelItem = `
 {{ #sourceURL }}
 [size=3]詳情：{{{ sourceURL }}}[/size=3]
 {{ /sourceURL }}
-{{ #image }}
-[img]{{{ image }}}[/img]
-{{ /image }}
+{{ > snipingLabelScreenshot }}
 {{ #subscription }}
 [size=2]由 [b][orange]{{ subscription.name }}[/orange][/b] 提供[/size=2]
 {{ /subscription }}
+`.trim();
+
+export const snipingLabelScreenshot = `
+{{ #image }}
+[img]{{{ image }}}[/img]
+{{ /image }}
 `.trim();
 
 export const subscriptionItem = `
