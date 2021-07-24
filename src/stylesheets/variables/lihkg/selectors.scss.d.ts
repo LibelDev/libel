@@ -3,6 +3,7 @@ export type Styles = {
   'leftPanel': string;
   'nav': string;
   'navCategory': string;
+  'notice': string;
   'splitView': string;
 };
 

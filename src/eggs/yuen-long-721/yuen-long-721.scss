@@ -1,6 +1,6 @@
 @import '../../stylesheets/base';
 
-.yuen-long-721 :global(#leftPanel) {
+.egg :global(#{$lihkg-selector-left-panel}) {
   @apply relative;
 
   .underlay {

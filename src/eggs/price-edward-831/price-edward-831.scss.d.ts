@@ -1,6 +1,8 @@
 export type Styles = {
+  'active': string;
   'egg': string;
-  'underlay': string;
+  'image': string;
+  'slideshow': string;
 };
 
 export type ClassNames = keyof Styles;
