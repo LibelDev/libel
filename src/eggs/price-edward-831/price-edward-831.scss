@@ -9,11 +9,16 @@
     @apply relative;
     @apply inline-block;
     @apply w-full;
+    @apply overflow-hidden;
     padding-top: $image-ratio;
 
-    &:after {
+    &:before, &:after {
+      @apply absolute;
+    }
+
+    &:before {
       content: '';
-      @apply absolute top-0 right-0;
+      @apply top-0 right-0;
       @apply h-16 w-16;
       @apply p-2;
       @apply bg-no-repeat;
@@ -29,6 +34,26 @@
         $logo-size,
         100%
       );
+      z-index: 1;
+    }
+
+    &:after {
+      content: attr(aria-label);
+      @apply bottom-0 left-0;
+      @apply w-full;
+      @apply p-4;
+      @apply box-border;
+      @apply text-center text-white text-xl;
+      @apply transform translate-y-full;
+      @apply transition-transform;
+      @apply duration-500;
+      background-image: linear-gradient(transparent, #000);
+    }
+
+    &:hover {
+      &:after {
+        @apply translate-y-0;
+      }
     }
 
     .image {

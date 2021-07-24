@@ -43,13 +43,16 @@ const egg = new EasterEgg(async () => {
     const notice = await waitForElement(lihkgSelectors.notice);
     const image = notice.querySelector('img')!;
 
-    const slideshow = document.createElement('div');
-    slideshow.setAttribute('aria-hidden', 'true');
+    const slideshow = document.createElement('a');
+    slideshow.setAttribute('aria-label', '點擊以勾起更多記憶');
+    slideshow.setAttribute('href', 'https://www.youtube.com/watch?v=vIau2kwxzZA&has_verified=1');
+    slideshow.setAttribute('target', '_blank');
     slideshow.classList.add(styles.slideshow);
 
     const images: HTMLDivElement[] = [];
     for (const imageSrc of imageSrcs) {
       const image = document.createElement('div');
+      image.setAttribute('aria-hidden', 'true');
       image.classList.add(styles.image);
       image.style.backgroundImage = `url(${imageSrc})`;
       slideshow.appendChild(image);
