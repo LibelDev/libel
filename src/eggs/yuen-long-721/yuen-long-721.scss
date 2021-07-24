@@ -1,6 +1,6 @@
 @import '../../stylesheets/base';
 
-.egg :global(#leftPanel) {
+.egg :global(#{$lihkg-selector-left-panel}) {
   @apply relative;
 
   .underlay {
