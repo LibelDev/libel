@@ -5,10 +5,7 @@ import { waitForElement } from './../../helpers/dom';
 import styles from './handover-of-hongkong.scss';
 
 const egg = new EasterEgg(async () => {
-  const now = new Date();
-  const month = now.getMonth() + 1;
-  const date = now.getDate();
-  if (config.debugEgg || (month === 7 && date === 1)) {
+  if (validate()) {
     const splitView = await waitForElement(lihkgSelectors.splitView);
     const leftPanel = splitView.querySelector(lihkgSelectors.leftPanel);
     const underlay = document.createElement('div');
@@ -18,6 +15,19 @@ const egg = new EasterEgg(async () => {
     app?.classList.add(styles.egg);
   }
 });
+
+function validate () {
+  if (config.debugEgg) {
+    return true;
+  }
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+  return (
+    month === 7 &&
+    date === 1
+  );
+}
 
 export default egg;
 

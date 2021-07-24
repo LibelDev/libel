@@ -21,9 +21,7 @@ const imageSrcs = [
 ];
 
 const egg = new EasterEgg(async () => {
-  const now = new Date();
-  const month = now.getMonth() + 1;
-  if (config.debugEgg || month === 7) {
+  if (validate()) {
     const index = random(0, imageSrcs.length - 1);
     const imageSrc = imageSrcs[index];
     const nav = await waitForElement(lihkgSelectors.nav);
@@ -35,9 +33,20 @@ const egg = new EasterEgg(async () => {
   }
 });
 
+function validate () {
+  if (config.debugEgg) {
+    return true;
+  }
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  return (
+    month === 7
+  );
+}
+
 export default egg;
 
 /**
  * References
- * - https://www.thestandnews.com/society/ab71銅鑼灣警員sogo外疑中刀-消息指懷疑施襲男再用刀自插心口倒地
+ * - https://zh.wikipedia.org/wiki/銅鑼灣刺警案
  */
