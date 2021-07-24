@@ -12,6 +12,9 @@ const prod: webpack.Configuration = {
   }
 };
 
-const config = merge(main, prod);
+const config = [
+  merge(main, prod),
+  merge(egg, prod)
+];
 
-export default [config, egg];
+export default config;

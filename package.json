@@ -13,8 +13,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
-    "dev": "cross-env NODE_ENV=development webpack serve --config ./config/webpack/webpack.config.dev.ts",
-    "build": "cross-env NODE_ENV=production yarn clean && webpack --config ./config/webpack/webpack.config.prod.ts",
+    "dev": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.config.dev.ts",
+    "build": "yarn clean && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
     "mock": "static-server ./data/mock --no-cache --cors * --port 20630",
     "type:scss": "tsm src --implementation sass --exportType default",
     "type:scss:watch": "yarn type:scss --watch"
@@ -52,7 +52,6 @@
     "@types/webpack": "^5.28.0",
     "@types/webpack-dev-server": "^3.11.3",
     "@types/webpack-env": "^1.16.0",
-    "cross-env": "^7.0.3",
     "css-loader": "^5.2.0",
     "postcss": "^8.2.9",
     "postcss-loader": "^5.2.0",
