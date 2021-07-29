@@ -14,7 +14,7 @@ export const ADD_LABEL_BUTTON_TEXT = '標籤';
 export const ADD_LABEL_TEXT_QUESTION = '請輸入標籤';
 export const ADD_LABEL_REASON_QUESTION = '標籤原因';
 export const ADD_LABEL_SCREENSHOT_QUESTION = '請輸入相關圖片網址（如有需要）';
-export const ADD_LABEL_ENABLE_SCREENSHOT_QUESTION = '需要自動將目標留言截圖並上載嗎？';
+export const ADD_LABEL_ENABLE_SCREENSHOT_QUESTION = '需要自動將目標留言截圖並上載嗎？\n\n（圖片上載服務由 Nasece Cloud 提供）';
 export const ADD_LABEL_SCREENSHOT_CAPTURE_FAILURE = '⚠ 截圖失敗，但這並不影響新增標籤 ⚠\n\n如果你仍然想為標籤配上圖片，建議自行截圖上載到互聯網，\n然後使用「修改標籤」功能將圖片網址加到相關標籤。';
 
 // remove
