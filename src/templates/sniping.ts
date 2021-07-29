@@ -41,7 +41,7 @@ export const snipingLabelItem = `
 
 export const snipingLabelScreenshot = `
 {{ #image }}
-[img]{{{ image }}}[/img]
+[quote][img]{{{ image }}}[/img][/quote]
 {{ /image }}
 `.trim();
 
