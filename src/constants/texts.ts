@@ -1,11 +1,13 @@
+import { displayName } from '../../package.json';
+
 // thread
 export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 
 // title
 export const USER_CARD_MODAL_TITLE = '會員資料';
 export const SETTINGS_MODAL_TITLE = '設定';
-export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
-export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入標籤記錄';
+export const SETTING_SUBSCRIPTION_SECTION_TITLE = `【${displayName}】訂閱標籤名單`;
+export const SETTING_EXPORT_IMPORT_SECTION_TITLE = `【${displayName}】匯出／匯入數據`;
 
 // add
 export const ADD_LABEL_BUTTON_TEXT = '標籤';
@@ -24,16 +26,16 @@ export const SOURCE_BUTTON_TEXT = '來源';
 export const IMAGE_BUTTON_TEXT = '相關圖片';
 
 // snipe
-export const SNIPE_BUTTON_TEXT = '狙擊';
+export const SNIPE_BUTTON_TEXT = '一鍵狙擊';
 
 // import
-export const IMPORT_FILE_BUTTON_TEXT = '匯入記錄';
-export const IMPORT_FILE_REMINDER = '所有記錄將會被覆蓋，建議先匯出一次作備份。';
+export const IMPORT_FILE_BUTTON_TEXT = '匯入設定及記錄';
+export const IMPORT_FILE_REMINDER = '所有訂閱項目及標籤記錄將會被覆蓋，建議先匯出一次作備份。';
 export const IMPORT_FILE_GENERIC_ERROR_MESSAGE = '檔案匯入失敗';
 export const IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE = '檔案內容格式錯誤';
 
 // export
-export const EXPORT_FILE_BUTTON_TEXT = '匯出記錄';
+export const EXPORT_FILE_BUTTON_TEXT = '匯出設定及記錄';
 
 // subscription
 export const ADD_SUBSCRIPTION_BUTTON_TEXT = '新增訂閱';
