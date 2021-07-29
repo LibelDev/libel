@@ -1,7 +1,7 @@
 import * as TEXTS from '../constants/texts';
 
 const prompt = (defaultText = '', defaultReason = '') => {
-  const text = (window.prompt(TEXTS.ADD_LABEL_QUESTION, defaultText) || '').trim();
+  const text = (window.prompt(TEXTS.ADD_LABEL_TEXT_QUESTION, defaultText) || '').trim();
   if (text) {
     const reason = window.prompt(TEXTS.ADD_LABEL_REASON_QUESTION, defaultReason);
     if (reason !== null) {

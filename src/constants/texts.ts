@@ -11,7 +11,7 @@ export const SETTING_EXPORT_IMPORT_SECTION_TITLE = `【${displayName}】匯出�
 
 // add
 export const ADD_LABEL_BUTTON_TEXT = '標籤';
-export const ADD_LABEL_QUESTION = '請輸入標籤';
+export const ADD_LABEL_TEXT_QUESTION = '請輸入標籤';
 export const ADD_LABEL_REASON_QUESTION = '標籤原因';
 export const ADD_LABEL_SCREENSHOT_QUESTION = '請輸入相關圖片網址（如有需要）';
 export const ADD_LABEL_ENABLE_SCREENSHOT_QUESTION = '需要自動將目標留言截圖並上載嗎？';
