@@ -2,8 +2,15 @@
 
 :global(#{$lihkg-selector-nav-category}) {
   @apply flex items-center justify-center;
-
-  .icon {
+  
+  @include desktop-mode() {
+    @screen md {
+      z-index: 0;
+    }
+  }
+  
+  .link {
+    @apply inline-flex items-center justify-center;
     @apply ml-2;
   }
 }

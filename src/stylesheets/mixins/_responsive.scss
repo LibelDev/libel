@@ -3,3 +3,9 @@
     @content;
   }
 }
+
+@mixin desktop-mode() {
+  body[data-app-ho] & {
+    @content;
+  }
+}

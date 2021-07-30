@@ -1,5 +1,5 @@
 export type Styles = {
-  'icon': string;
+  'link': string;
 };
 
 export type ClassNames = keyof Styles;
