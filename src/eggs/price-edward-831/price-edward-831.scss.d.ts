@@ -1,6 +1,7 @@
 export type Styles = {
   'active': string;
   'egg': string;
+  'hidden': string;
   'image': string;
   'slideshow': string;
 };

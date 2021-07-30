@@ -5,6 +5,8 @@
   $logo-margin: 0.5rem;
   $logo-size: 2rem;
 
+  @apply relative;
+
   .slideshow {
     @apply relative;
     @apply inline-block;
@@ -16,6 +18,7 @@
       @apply absolute;
     }
 
+    // logo
     &:before {
       content: '';
       @apply top-0 right-0;
@@ -37,6 +40,7 @@
       z-index: 1;
     }
 
+    // caption
     &:after {
       content: attr(aria-label);
       @apply bottom-0 left-0;
@@ -48,6 +52,7 @@
       @apply transition-transform;
       @apply duration-500;
       background-image: linear-gradient(transparent, #000);
+      z-index: 1;
     }
 
     &:hover {
@@ -68,9 +73,14 @@
       }
     }
   }
-
-  // hide original image
+  
   img {
-    @apply hidden;
+    &.hidden {
+      @apply absolute left-0;
+      @apply transition-opacity;
+      @apply duration-500;
+      @apply opacity-0 #{!important};
+      @apply pointer-events-none;
+    }
   }
 }

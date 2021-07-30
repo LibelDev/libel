@@ -63,6 +63,7 @@ const egg = new EasterEgg(async () => {
     const html = document.querySelector('html')!;
     html.classList.add(styles.egg);
 
+    image.classList.add(styles.hidden);
     startSlideshow(images);
   }
 });
