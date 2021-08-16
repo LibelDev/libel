@@ -1,15 +1,23 @@
-type THandler = () => void;
+import * as config from './../../config/config';
+
+type THatch = () => void;
+
+const _hatch = Symbol('hatch');
 
 class EasterEgg {
-  private handler: THandler;
+  private readonly [_hatch]!: THatch;
+  private enabled: boolean;
 
-  constructor (handler: THandler) {
-    this.handler = handler;
+  constructor (hatch: THatch, enabled: boolean) {
+    this[_hatch] = hatch;
+    this.enabled = enabled;
   }
 
   hatch () {
-    const { handler } = this;
-    handler();
+    const { enabled } = this;
+    if (config.debugEgg || enabled) {
+      this[_hatch]();
+    }
   }
 }
 
