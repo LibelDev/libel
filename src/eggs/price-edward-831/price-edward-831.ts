@@ -1,109 +1,58 @@
-import random from 'lodash/random';
-import image01 from '../../../assets/images/831/01.jpg';
-import image02 from '../../../assets/images/831/02.jpg';
-import image03 from '../../../assets/images/831/03.png';
-import image04 from '../../../assets/images/831/04.png';
-import image05 from '../../../assets/images/831/05.jpg';
-import image06 from '../../../assets/images/831/06.png';
-import image07 from '../../../assets/images/831/07.jpg';
-import image08 from '../../../assets/images/831/08.jpg';
-import image09 from '../../../assets/images/831/09.png';
-import image10 from '../../../assets/images/831/10.png';
-import image11 from '../../../assets/images/831/11.jpg';
-import image12 from '../../../assets/images/831/12.jpg';
-import image13 from '../../../assets/images/831/13.png';
-import image14 from '../../../assets/images/831/14.jpg';
-import * as config from '../../../config/config';
 import EasterEgg from '../../models/EasterEgg';
+import Slideshow, { IChangeEvent, SlideshowEvent } from '../../models/Slideshow';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
 import { waitForElement } from './../../helpers/dom';
+import { images } from './config/config';
 import styles from './price-edward-831.scss';
 
-const imageSrcs = [
-  image01,
-  image02,
-  image03,
-  image04,
-  image05,
-  image06,
-  image07,
-  image08,
-  image09,
-  image10,
-  image11,
-  image12,
-  image13,
-  image14
-];
+const timeout = 1500;
 
-const interval = 3000;
+const now = new Date();
+const month = now.getMonth() + 1;
+const date = now.getDate();
+const enabled = (
+  month === 8 &&
+  date >= (31 - 7) &&
+  window.location.pathname === '/notice'
+);
 
-const egg = new EasterEgg(async () => {
-  if (validate()) {
-    const notice = await waitForElement(lihkgSelectors.notice);
-    const image = notice.querySelector('img')!;
+const hatch = async () => {
+  const notice = await waitForElement(lihkgSelectors.notice);
+  const image = notice.querySelector('img')!;
 
-    const slideshow = document.createElement('a');
-    slideshow.setAttribute('aria-label', '點擊以勾起更多記憶');
-    slideshow.setAttribute('href', 'https://www.youtube.com/watch?v=vIau2kwxzZA&has_verified=1');
-    slideshow.setAttribute('target', '_blank');
-    slideshow.classList.add(styles.slideshow);
+  const html = document.querySelector('html')!;
+  html.classList.add(styles.egg);
 
-    const images: HTMLDivElement[] = [];
-    for (const imageSrc of imageSrcs) {
-      const image = document.createElement('div');
-      image.setAttribute('aria-hidden', 'true');
-      image.classList.add(styles.image);
-      image.style.backgroundImage = `url(${imageSrc})`;
-      slideshow.appendChild(image);
-      images.push(image);
+  const container = document.createElement('a');
+  container.setAttribute('aria-label', '點擊以勾起更多記憶');
+  container.setAttribute('href', 'https://www.youtube.com/watch?v=vIau2kwxzZA&has_verified=1');
+  container.setAttribute('target', '_blank');
+  container.classList.add(styles.slideshow);
+
+  const render = (src: string) => {
+    const image = document.createElement('div');
+    image.setAttribute('aria-hidden', 'true');
+    image.classList.add(styles.image);
+    image.style.backgroundImage = `url(${src})`;
+    return image;
+  };
+
+  const slideshow = new Slideshow({ container, images, render });
+  notice.insertBefore(container, image);
+  image.classList.add(styles.hidden);
+
+  slideshow.on(SlideshowEvent.Change, (event: IChangeEvent) => {
+    const { prevImage, image } = event;
+    if (prevImage) {
+      prevImage.classList.remove(styles.active);
     }
+    image.classList.add(styles.active);
+  });
 
-    notice.insertBefore(slideshow, image);
-    const html = document.querySelector('html')!;
-    html.classList.add(styles.egg);
+  slideshow.start(timeout);
+};
 
-    image.classList.add(styles.hidden);
-    startSlideshow(images);
-  }
-});
-
-function startSlideshow (images: HTMLDivElement[]) {
-  let activeIndex = updateActiveIndex(0);
-  setInterval(() => {
-    activeIndex = updateActiveIndex(activeIndex);
-  }, interval);
-
-  function updateActiveIndex (activeIndex: number) {
-    images[activeIndex].classList.remove(styles.active);
-    const _index = getRandomIndex(0, images.length - 1, activeIndex);
-    images[_index].classList.add(styles.active);
-    return _index;
-  }
-
-  function getRandomIndex (min: number, max: number, activeIndex: number): number {
-    const index = random(min, max);
-    if (index === activeIndex) {
-      return getRandomIndex(min, max, activeIndex);
-    }
-    return index;
-  }
-}
-
-function validate () {
-  if (config.debugEgg) {
-    return true;
-  }
-  const now = new Date();
-  const month = now.getMonth() + 1;
-  const date = now.getDate();
-  const { pathname } = window.location;
-  return (
-    month === 8 &&
-    date === 31 &&
-    pathname === '/notice'
-  );
-}
+const egg = new EasterEgg(hatch, enabled);
 
 export default egg;
 
