@@ -18,39 +18,15 @@ export interface IChangeEvent {
 const _images = Symbol('images');
 const _interval = Symbol('interval');
 
-interface IOptions {
-  container: HTMLElement;
-  images: string[];
-  render: (src: string) => HTMLElement;
-}
-
 class Slideshow extends EventEmitter {
   private [_images]: HTMLElement[] = [];
-  private [_interval]!: number;
+  private [_interval]: number | null = null;
+  private images: string[];
   private index!: number;
 
-  constructor (options: IOptions) {
+  constructor (images: string[]) {
     super();
-    this.init(options);
-  }
-
-  private init (options: IOptions) {
-    const { container, images, render } = options;
-    for (const src of images) {
-      const image = render(src);
-      this[_images].push(image);
-      container.appendChild(image);
-    }
-  }
-
-  private updateRandomIndex (): [number, number] {
-    const { index } = this;
-    const _index = random(0, this[_images].length - 1);
-    if (_index === index) {
-      return this.updateRandomIndex();
-    }
-    this.index = _index;
-    return [index, _index];
+    this.images = images;
   }
 
   private random () {
@@ -68,12 +44,39 @@ class Slideshow extends EventEmitter {
     this.emit(SlideshowEvent.Change, { prevImage, image });
   }
 
-  start (timeout: number) {
-    if (this[_interval]) {
-      window.clearInterval(this[_interval]);
+  private updateRandomIndex (): [number, number] {
+    const { images, index } = this;
+    const _index = random(0, images.length - 1);
+    if (_index === index) {
+      return this.updateRandomIndex();
     }
+    this.index = _index;
+    return [index, _index];
+  }
+
+  render (container: HTMLElement, render: (src: string) => HTMLElement) {
+    this[_images] = [];
+    const { images } = this;
+    for (let i = 0; i < images.length; i++) {
+      const src = images[i];
+      const image = render(src);
+      container.appendChild(image);
+      this[_images][i] = image;
+    }
+  }
+
+  start (timeout: number) {
+    this.stop();
     this[_interval] = window.setInterval(this.update, timeout);
     this.update();
+  }
+
+  stop () {
+    const { [_interval]: interval } = this;
+    if (interval) {
+      window.clearInterval(interval);
+      this[_interval] = null;
+    }
   }
 }
 

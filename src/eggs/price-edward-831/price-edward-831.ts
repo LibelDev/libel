@@ -19,6 +19,7 @@ const enabled = (
 const hatch = async () => {
   const notice = await waitForElement(lihkgSelectors.notice);
   const image = notice.querySelector('img')!;
+  image.classList.add(styles.hidden);
 
   const html = document.querySelector('html')!;
   html.classList.add(styles.egg);
@@ -29,18 +30,14 @@ const hatch = async () => {
   container.setAttribute('target', '_blank');
   container.classList.add(styles.slideshow);
 
-  const render = (src: string) => {
+  const slideshow = new Slideshow(images);
+  slideshow.render(container, (src: string) => {
     const image = document.createElement('div');
     image.setAttribute('aria-hidden', 'true');
     image.classList.add(styles.image);
     image.style.backgroundImage = `url(${src})`;
     return image;
-  };
-
-  const slideshow = new Slideshow({ container, images, render });
-  notice.insertBefore(container, image);
-  image.classList.add(styles.hidden);
-
+  });
   slideshow.on(SlideshowEvent.Change, (event: IChangeEvent) => {
     const { prevImage, image } = event;
     if (prevImage) {
@@ -48,8 +45,9 @@ const hatch = async () => {
     }
     image.classList.add(styles.active);
   });
-
   slideshow.start(timeout);
+
+  notice.insertBefore(container, image);
 };
 
 const egg = new EasterEgg(hatch, enabled);
