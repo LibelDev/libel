@@ -18,6 +18,9 @@ const dev: IConfiguration = {
   }
 };
 
-const config = merge(main, dev);
+const config = [
+  merge(main, dev),
+  merge(egg, dev)
+];
 
-export default [config, egg];
+export default config;

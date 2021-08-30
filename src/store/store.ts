@@ -3,14 +3,14 @@ import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { StateType } from 'typesafe-actions';
 import { DeepReadonly } from 'utility-types';
+import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
-import * as env from '../helpers/env';
 import storage from '../storage';
 import reducer, { rootReducer } from './reducer';
 import { actions as subscriptionsActions } from './slices/subscriptions';
 
 const store = configureStore({
-  devTools: env.dev,
+  devTools: dev,
   reducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
