@@ -1,4 +1,3 @@
-import path from 'path';
 import { Configuration as WebpackConfiguration } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
 import merge from 'webpack-merge';
@@ -11,11 +10,7 @@ interface IConfiguration extends WebpackConfiguration {
 
 const dev: IConfiguration = {
   mode: 'development',
-  devtool: 'eval-cheap-source-map',
-  output: {
-    filename: '[name].js',
-    path: path.join(process.cwd(), '/dist')
-  }
+  devtool: 'eval-cheap-source-map'
 };
 
 const config = [
