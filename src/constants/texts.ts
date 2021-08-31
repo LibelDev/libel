@@ -50,4 +50,7 @@ export const SUBSCRIPTION_FETCH_ERROR = '無法取得標籤名單，請檢查連
 export const SUBSCRIPTION_VALIDATION_ERROR = '標籤名單格式錯誤，無法載入，請聯絡名單作者。';
 
 // announcement
+export const NEW_VERSION = '新版本';
+export const RELEASED = '已推出';
+export const CHANGE_LOG = '更新內容';
 export const ANNOUNCEMENT_CLOSE_BUTTON_TEXT = '關閉公告';

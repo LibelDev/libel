@@ -40,8 +40,9 @@
   }
 
   .message {
+    @apply flex items-center;
     @apply mr-auto;
-    @apply pr-2;
+    @apply px-2;
 
     a {
       color: #2574a9;
@@ -49,6 +50,10 @@
       @include dark-mode() {
         color: #3498db;
       }
+    }
+
+    small {
+      @apply opacity-50;
     }
   }
 }

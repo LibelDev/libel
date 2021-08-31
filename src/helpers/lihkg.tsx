@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
-import { styles as announcementStyles } from '../components/Announcement/Announcement';
+import announcementStyles from '../components/Announcement/Announcement.scss';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';

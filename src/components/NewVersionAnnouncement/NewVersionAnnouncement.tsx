@@ -1,6 +1,8 @@
 import { render } from 'mustache';
 import React from 'react';
-import * as annnouncements from '../../templates/annnouncements';
+import { displayName, homepage } from '../../../package.json';
+import * as TEXTS from '../../constants/texts';
+import { newVersion as newVersionAnnounment } from '../../templates/announcements';
 import { IRelease } from '../../types/github';
 import Announcement from '../Announcement/Announcement';
 
@@ -10,10 +12,20 @@ interface IProps {
   release: IRelease;
 }
 
+const userScriptURL = `${homepage}/dist/libel.user.js`;
+
 const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
-  const message = render(annnouncements.newVersion, props);
+  const { currentVersion, newVersion, release } = props;
+  const oldVersionMessage = render(newVersionAnnounment.oldVersionMessage, { currentVersion });
   return (
-    <Announcement dangerouslySetInnerHTML={{ __html: message }} />
+    <Announcement>
+      【{displayName}】{' '}
+      <strong>
+        <a href={userScriptURL} target="_blank">{TEXTS.NEW_VERSION} {newVersion}</a> {TEXTS.RELEASED}
+      </strong>
+      （<a href={release.html_url} target="_blank">{TEXTS.CHANGE_LOG}</a>）
+      <small>（{oldVersionMessage}）</small>
+    </Announcement>
   );
 };
 
