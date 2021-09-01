@@ -1,6 +1,7 @@
 import { render } from 'mustache';
 import React from 'react';
-import { displayName, homepage } from '../../../package.json';
+import { publicURL } from '../../../config/config';
+import { displayName, name } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { newVersion as newVersionAnnounment } from '../../templates/announcements';
 import { IRelease } from '../../types/github';
@@ -12,7 +13,7 @@ interface IProps {
   release: IRelease;
 }
 
-const userScriptURL = `${homepage}/dist/libel.user.js`;
+const userScriptURL = `${publicURL}/${name}.user.js`;
 
 const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
   const { currentVersion, newVersion, release } = props;
