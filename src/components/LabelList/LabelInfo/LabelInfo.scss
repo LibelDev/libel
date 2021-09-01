@@ -42,7 +42,7 @@
       color: #aaaaaa;
 
       &:hover {
-        color: #000000;
+        color: #333333;
 
         @include dark-mode() {
           color: #ffffff;

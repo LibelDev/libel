@@ -19,7 +19,11 @@
     }
 
     > a {
-      @apply text-white;
+      color: #333333;
+      
+      @include dark-mode() {
+        color: #ffffff;
+      }
     }
   }
 
