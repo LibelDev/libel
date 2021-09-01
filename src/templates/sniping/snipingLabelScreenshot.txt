@@ -1,0 +1,3 @@
+{{ #image }}
+[quote][img]{{{ image }}}[/img][/quote]
+{{ /image }}

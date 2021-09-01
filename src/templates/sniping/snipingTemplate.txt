@@ -1,0 +1,16 @@
+{{ >snipingHeader }}
+
+{{ #labels }}
+
+{{ >snipingLabelItem }}
+{{ /labels }}
+[size=2][right]
+{{ #subscriptions.length }}
+-------------
+{{ #subscriptions }}
+{{ >subscriptionItem }}
+{{ /subscriptions }}
+{{ /subscriptions.length }}
+-------------
+{{ >snipingFooter }}
+[/right][/size=2]

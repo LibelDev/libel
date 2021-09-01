@@ -8,5 +8,6 @@ export const uploadImage = async (image: Blob) => {
   body.append('image', image);
   const init: RequestInit = { method: 'POST', body };
   const response = await fetch(url, init);
-  return await response.json() as IUploadResponse;
+  const json = await response.json();
+  return json as IUploadResponse;
 };

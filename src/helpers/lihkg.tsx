@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
-import { styles as announcementStyles } from '../components/Announcement/Announcement';
+import announcementStyles from '../components/Announcement/Announcement.scss';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
+import settingSectionStyles from '../components/SettingSection/SettingSection.scss';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
@@ -157,9 +158,10 @@ export const handleUserCardModal = (node: Node, store: Store) => {
 export const handleSettingsModal = (node: Node, store: Store) => {
   const _node = node as Element;
   const modelContentInner = _node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
-  const settingSectionContainer = document.createElement('div');
-  modelContentInner.appendChild(settingSectionContainer);
-  renderSettingSection(store, settingSectionContainer);
+  const container = document.createElement('div');
+  container.classList.add(settingSectionStyles.container);
+  modelContentInner.appendChild(container);
+  renderSettingSection(store, container);
 };
 
 export const handleNicknames = (nodes: NodeList, store: Store) => {

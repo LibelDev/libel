@@ -1,6 +1,6 @@
 import webpack from 'webpack';
 import environment from './plugins/environment';
-import asset from './rules/asset';
+import { resource, source } from './rules/asset';
 import scss from './rules/scss';
 import typescript from './rules/typescript';
 
@@ -10,7 +10,8 @@ const config: webpack.Configuration = {
   },
   module: {
     rules: [
-      asset,
+      resource,
+      source,
       scss,
       typescript
     ]

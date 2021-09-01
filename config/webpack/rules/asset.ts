@@ -1,8 +1,11 @@
 import webpack from 'webpack';
 
-const rule: webpack.RuleSetRule = {
+export const resource: webpack.RuleSetRule = {
   test: /\.(gif|jpg|png|svg|webp)$/i,
   type: 'asset/resource'
 };
 
-export default rule;
+export const source: webpack.RuleSetRule = {
+  test: /\.txt$/i,
+  type: 'asset/source'
+};

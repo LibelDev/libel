@@ -4,12 +4,11 @@ import { getUserRegistrationDate } from '../helpers/lihkg';
 import Label, { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { snipingFooter, snipingHeader, snipingLabelItem, snipingLabelScreenshot, subscriptionItem } from '../templates/sniping';
+import { snipingFooter, snipingHeader, snipingLabelItem, snipingLabelScreenshot, snipingTemplate, subscriptionItem } from '../templates/sniping/sniping';
 import { IDraft } from '../types/lihkg';
 import { CUSTOM_SNIPING_TEMPLATE_MAPPING, SNIPING_TEMPLATE_DRAFT_TITLE } from './../constants/sniping';
 import { DRAFTS_KEY } from './../constants/storage';
 import { filterDataSetForUser } from './../store/selectors';
-import { snipingTemplate } from './../templates/sniping';
 import { format, Format } from './date';
 import { localStorage } from './storage';
 
