@@ -1,0 +1,30 @@
+@import '../../../stylesheets/base';
+
+.footer {
+  @apply flex items-center;
+  @apply opacity-50;
+  @apply px-4;
+  padding-top: .8rem;
+
+  .version {
+    @apply mr-auto;
+  }
+
+  a {
+    color: #333333;
+    text-decoration: underline;
+
+    @include dark-mode() {
+      color: #ffffff;
+    }
+
+    & + a {
+      @apply ml-2 pl-2;
+      border-left: solid 1px #333333;
+
+      @include dark-mode() {
+        border-color: #ffffff;
+      }
+    }
+  }
+}

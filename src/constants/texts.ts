@@ -6,8 +6,8 @@ export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 // title
 export const USER_CARD_MODAL_TITLE = '會員資料';
 export const SETTINGS_MODAL_TITLE = '設定';
-export const SETTING_SUBSCRIPTION_SECTION_TITLE = `【${displayName}】訂閱標籤名單`;
-export const SETTING_EXPORT_IMPORT_SECTION_TITLE = `【${displayName}】匯出／匯入數據`;
+export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
+export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入數據';
 
 // add
 export const ADD_LABEL_BUTTON_TEXT = '標籤';
@@ -54,3 +54,7 @@ export const NEW_VERSION = '新版本';
 export const RELEASED = '已推出';
 export const CHANGE_LOG = '更新內容';
 export const ANNOUNCEMENT_CLOSE_BUTTON_TEXT = '關閉公告';
+
+// info
+export const SOURCE_CODE = 'Source code';
+export const LICENSE = 'MIT License';
