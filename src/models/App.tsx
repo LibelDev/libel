@@ -1,5 +1,7 @@
 import React from 'react';
 import { Store } from 'redux';
+import { fetchAnnouncements } from '../apis/announcement';
+import Announcement from '../components/Announcement/Announcement';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
@@ -22,6 +24,7 @@ class App {
   async start () {
     this.bindEvents();
     this.bootstrap();
+    this.checkAnnouncements();
     this.checkUpdate();
     return this;
   }
@@ -125,6 +128,25 @@ class App {
         }
       }
     });
+  }
+
+  private async checkAnnouncements () {
+    try {
+      const announments = await fetchAnnouncements();
+      const now = Date.now();
+      for (const announment of announments) {
+        const { icon, body, endAt } = announment;
+        if (now <= endAt) {
+          LIHKG.renderAnnouncement(
+            <Announcement icon={icon}>
+              <span dangerouslySetInnerHTML={{ __html: body }} />
+            </Announcement>
+          );
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   private async checkUpdate () {

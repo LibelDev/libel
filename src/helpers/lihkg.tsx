@@ -118,7 +118,7 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   container.classList.add(announcementStyles.container);
   const rightPanelContainer = await waitForRightPanelContainer();
   rightPanelContainer?.insertBefore(container, rightPanelContainer.firstChild);
-  ReactDOM.render(announcement!, container);
+  ReactDOM.render(announcement, container);
 };
 
 export const handleThread = (node: Node, store: Store) => {
