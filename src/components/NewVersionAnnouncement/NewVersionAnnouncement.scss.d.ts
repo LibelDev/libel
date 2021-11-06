@@ -1,8 +1,5 @@
 export type Styles = {
-  'announcement': string;
-  'container': string;
-  'logo': string;
-  'message': string;
+  'newVersionAnnouncement': string;
 };
 
 export type ClassNames = keyof Styles;

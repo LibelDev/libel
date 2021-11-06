@@ -1,11 +1,5 @@
-import { IconName } from '../components/Icon/Icon';
 import { publicDataURL } from './../../config/config';
-
-interface IAnnouncement {
-  icon?: IconName;
-  body: string;
-  endAt: number;
-}
+import { IAnnouncement } from './../types/announcement';
 
 export const fetchAnnouncements = async () => {
   const url = `${publicDataURL}/announcements.json`;
