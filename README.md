@@ -1,6 +1,7 @@
 <p align="center">
   <img src="./assets/logos/libel.png" alt="Libel" width="100"/>
   <h1 align="center">Libel</h1>
+  <p align="center">Label users on LIHKG</p>
   <img src="./assets/demo.gif" alt="Demo" />
 </p>
 
