@@ -3,7 +3,7 @@ import React from 'react';
 import { publicURL } from '../../../config/config';
 import { name } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
-import { newVersion as newVersionAnnounment } from '../../templates/announcements';
+import { versionUpdate } from '../../templates/announcements';
 import { IRelease } from '../../types/github';
 import { IconName } from '../../types/icon';
 import Announcement from '../Announcement/Announcement';
@@ -19,8 +19,8 @@ const userScriptURL = `${publicURL}/${name}.user.js`;
 
 const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
   const { currentVersion, newVersion, release } = props;
-  const oldVersionMessage = render(newVersionAnnounment.oldVersionMessage, { currentVersion });
-  const newVersionMessage = render(newVersionAnnounment.newVersionMessage, { newVersion });
+  const oldVersionMessage = render(versionUpdate.oldVersionMessage, { currentVersion });
+  const newVersionMessage = render(versionUpdate.newVersionMessage, { newVersion });
   return (
     <Announcement className={styles.newVersionAnnouncement} icon={IconName.InfoFill}>
       <strong>

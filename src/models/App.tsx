@@ -132,10 +132,10 @@ class App {
 
   private async checkAnnouncements () {
     try {
-      const announments = await fetchAnnouncements();
+      const announcements = await fetchAnnouncements();
       const now = Date.now();
-      for (const announment of announments) {
-        const { icon, body, endAt } = announment;
+      for (const announcement of announcements) {
+        const { icon, body, endAt } = announcement;
         if (now <= endAt) {
           LIHKG.renderAnnouncement(
             <Announcement icon={icon}>
