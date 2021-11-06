@@ -1,6 +1,7 @@
 import React from 'react';
 import Subscription from '../../../../models/Subscription';
-import Icon, { IconName } from '../../../Icon/Icon';
+import { IconName } from '../../../../types/icon';
+import Icon from '../../../Icon/Icon';
 
 interface IProps extends React.HTMLAttributes<HTMLAnchorElement> {
   subscription: Subscription;

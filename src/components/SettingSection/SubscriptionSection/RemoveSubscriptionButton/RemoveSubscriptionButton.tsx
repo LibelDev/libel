@@ -7,7 +7,8 @@ import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import * as questions from '../../../../templates/questions';
-import IconButton, { IconName } from '../../../IconButton/IconButton';
+import { IconName } from '../../../../types/icon';
+import IconButton from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   subscription: Subscription;

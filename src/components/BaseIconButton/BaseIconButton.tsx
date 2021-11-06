@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
-import Icon, { IconName } from '../Icon/Icon';
+import { IconName } from '../../types/icon';
+import Icon from '../Icon/Icon';
 import styles from './BaseIconButton.scss';
 
 export type TProps<A = React.HTMLAttributes<HTMLElement>> = A & {
@@ -37,6 +38,3 @@ const BaseIconButton = React.forwardRef<HTMLElement, TProps>((props, ref) => {
 });
 
 export default BaseIconButton;
-
-export { IconName };
-

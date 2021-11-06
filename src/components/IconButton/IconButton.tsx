@@ -13,6 +13,3 @@ const IconButton = React.forwardRef<HTMLButtonElement, IProps>((props, ref) => {
 });
 
 export default IconButton;
-
-export * from '../BaseIconButton/BaseIconButton';
-

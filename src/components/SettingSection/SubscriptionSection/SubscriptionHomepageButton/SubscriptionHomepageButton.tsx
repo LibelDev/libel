@@ -3,7 +3,8 @@ import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import Subscription from '../../../../models/Subscription';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
-import IconLink, { IconName } from '../../../IconLink/IconLink';
+import { IconName } from '../../../../types/icon';
+import IconLink from '../../../IconLink/IconLink';
 import styles from './SubscriptionHomepageButton.scss';
 
 interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {

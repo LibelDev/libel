@@ -8,7 +8,8 @@ import { selectSubscriptions } from '../../../../store/selectors';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import * as errors from '../../../../templates/errors';
-import IconButton, { IconName } from '../../../IconButton/IconButton';
+import { IconName } from '../../../../types/icon';
+import IconButton from '../../../IconButton/IconButton';
 
 const AddSubscriptionButton: React.FunctionComponent = () => {
   const dispatch = useDispatch();

@@ -2,12 +2,13 @@ import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import * as TEXTS from '../../constants/texts';
-import { renderSnipingBody } from '../../helpers/sniping';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
+import { renderSnipingBody } from '../../helpers/sniping';
 import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
 import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.scss';
-import IconButton, { IconName } from '../IconButton/IconButton';
+import { IconName } from '../../types/icon';
+import IconButton from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
 import styles from './SnipeButton.scss';
 

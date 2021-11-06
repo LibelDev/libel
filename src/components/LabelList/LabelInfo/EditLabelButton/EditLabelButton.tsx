@@ -4,7 +4,8 @@ import * as TEXTS from '../../../../constants/texts';
 import { promptEdit } from '../../../../helpers/label';
 import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
-import IconButton, { IconName } from '../../../IconButton/IconButton';
+import { IconName } from '../../../../types/icon';
+import IconButton from '../../../IconButton/IconButton';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   user: string;
