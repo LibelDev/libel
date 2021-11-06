@@ -63,9 +63,8 @@ class Storage implements IStorage {
     const { personal, subscriptions } = object;
     const data = this.massage({
       personal: personal ? JSON.parse(personal) : Personal.factory(),
-      subscriptions: subscriptions ? JSON.parse(subscriptions) : []
+      subscriptions: subscriptions ? JSON.parse(subscriptions) : defaultSubscriptions
     });
-    data.subscriptions = data.subscriptions || defaultSubscriptions;
     return this.deserialize(data);
   }
 

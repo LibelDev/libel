@@ -31,6 +31,7 @@ export const persistor = persistStore(store, null, async () => {
   await storage.ready();
   const { dispatch } = store;
   const { subscriptions } = storage;
+  dispatch(subscriptionsActions.update(subscriptions));
   for (let i = 0; i < subscriptions.length; i++) {
     dispatch(subscriptionsActions.load(i));
   }
