@@ -1,9 +1,11 @@
 import classnames from 'classnames';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useMeasure, useWindowSize } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import useRemoveParentElement from '../../hooks/useRemoveParentElement';
+import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
@@ -23,7 +25,34 @@ const Announcement: React.FunctionComponent<IProps> = (props) => {
   };
 
   const announcementRef = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
+  const [measureAnnouncementRef, { height: announcementHeight }] = useMeasure<HTMLDivElement>();
+  const { width: windowWidth } = useWindowSize();
+
+  const updateLayout = () => {
+    const announcementContainer = announcementRef.current?.parentElement;
+    if (announcementContainer) {
+      const { offsetHeight } = announcementContainer;
+      const leftPanel = document.querySelector<HTMLDivElement>(lihkgSelectors.leftPanel);
+      const rightPanel = document.querySelector<HTMLDivElement>(lihkgSelectors.rightPanel);
+      const isMobileView = windowWidth >= 768;
+      if (leftPanel) {
+        leftPanel.style.marginTop = isMobileView ? '' : `${offsetHeight}px`;
+      }
+      if (rightPanel) {
+        rightPanel.style.height = isMobileView ? `calc(100vh - 3rem - ${offsetHeight}px)` : '';
+        rightPanel.style.marginTop = `${offsetHeight}px`;
+      }
+    }
+  };
+
   useRemoveParentElement(announcementRef, !showed);
+
+  useEffect(() => {
+    measureAnnouncementRef(announcementRef.current!);
+  }, [announcementRef.current]);
+
+  useEffect(updateLayout, [pathname, announcementHeight, windowWidth]);
 
   return (
     <div

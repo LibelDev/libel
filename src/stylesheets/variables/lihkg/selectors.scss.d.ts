@@ -4,6 +4,7 @@ export type Styles = {
   'nav': string;
   'navCategory': string;
   'notice': string;
+  'rightPanel': string;
   'splitView': string;
 };
 

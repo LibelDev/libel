@@ -1,29 +1,29 @@
 @import '../../stylesheets/base';
 
+$padding-y: 0.25rem;
+$logo-size: 32px;
+
 .container {
   @apply fixed;
   @apply w-full;
   @apply left-0;
+  border-bottom: 1px solid #d9d9d9;
   top: 3rem; // header height
   transition: top 0.3s ease;
   will-change: top;
   z-index: 4; // {pinned reply z-index} + 1
 
-  :global(.#{$lihkg-class-nav-sticky-hidden} ~ #splitView) & {
-    @apply top-0;
+  @include dark-mode() {
+    border-bottom-color: #3b3a39;
   }
 
-  + :global(#rightPanel) {
-    margin-top: 33px;
+  :global(.#{$lihkg-class-nav-sticky-hidden} ~ #{$lihkg-selector-split-view}) & {
+    @apply top-0;
   }
 
   @screen md {
     @apply absolute;
     @apply top-0;
-
-    + :global(#rightPanel) {
-      height: calc(100vh - 3rem - 33px);
-    }
   }
 }
 
@@ -31,12 +31,10 @@
   @apply flex items-center;
   backdrop-filter: saturate(180%) blur(5px);
   background-color: rgba(#f6f6f6, 0.8);
-  border-bottom: 1px solid #d9d9d9;
-  padding: 0.25rem 0.8rem;
+  padding: $padding-y 0.8rem;
 
   @include dark-mode() {
     background-color: rgba(#151515, 0.8);
-    border-bottom-color: #3b3a39;
   }
 
   > * + * {
@@ -44,7 +42,8 @@
   }
 
   .logo {
-    @apply h-8 w-8;
+    height: $logo-size;
+    width: $logo-size;
   }
 
   .message {
