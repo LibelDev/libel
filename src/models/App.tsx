@@ -22,10 +22,10 @@ class App {
   }
 
   async start () {
-    this.bindEvents();
     this.bootstrap();
-    this.checkAnnouncements();
-    this.checkUpdate();
+    this.bindEvents();
+    await this.checkAnnouncements();
+    await this.checkUpdate();
     return this;
   }
 
