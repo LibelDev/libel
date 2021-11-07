@@ -24,8 +24,8 @@ class App {
   async start () {
     this.bootstrap();
     this.bindEvents();
-    await this.checkAnnouncements();
     await this.checkUpdate();
+    await this.checkAnnouncements();
     return this;
   }
 
