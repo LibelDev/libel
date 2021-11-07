@@ -24,14 +24,16 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
-    const awaiter = waitForSubmissionForm();
-    const replyButton = buttonRef.current!.parentNode!.parentNode!.querySelector<HTMLLIElement>('.i-reply');
-    replyButton!.click();
-    const element = await awaiter;
-    const formComponent = findReactComponent(element, 1) as SubmissionForm;
-    const body = renderSnipingBody(user, personal, subscriptions);
-    if (formComponent && body) {
-      formComponent.replaceEditorContent(body);
+    const replyButton = buttonRef.current?.parentNode?.parentNode?.querySelector<HTMLLIElement>(`.${IconName.Reply}`);
+    if (replyButton) {
+      const awaiter = waitForSubmissionForm();
+      replyButton.click();
+      const element = await awaiter;
+      const formComponent = findReactComponent(element, 1);
+      const body = renderSnipingBody(user, personal, subscriptions);
+      if (formComponent && body) {
+        (formComponent as SubmissionForm).replaceEditorContent(body);
+      }
     }
   }, [personal, subscriptions]);
 

@@ -19,6 +19,7 @@ import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.scss';
 import { IUser } from '../types/user';
 import { insertAfter, waitForElement } from './dom';
+import { namespace } from '../../package.json';
 
 type TRendererContainer = Parameters<Renderer>[1];
 
@@ -26,34 +27,34 @@ export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
 };
 
-export const isThread = (node: Node) => {
-  return (node as Element).matches(`.${lihkgCssClasses.thread}`);
+export const isThread = (node: Element) => {
+  return node.matches(`.${lihkgCssClasses.thread}`);
 };
 
-export const isUserCardModal = (node: Node) => {
+export const isUserCardModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.USER_CARD_MODAL_TITLE);
 };
 
-export const isSettingsModal = (node: Node) => {
+export const isSettingsModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.SETTINGS_MODAL_TITLE);
 };
 
-export const isNickname = (node: Node) => {
-  return (node as Element).matches(`.${lihkgCssClasses.nickname}`);
+export const isNickname = (node: Element) => {
+  return node.matches(`.${lihkgCssClasses.nickname}`);
 };
 
-export const querySelectorNickname = (node: Node) => {
-  return (node as Element).querySelectorAll(`.${lihkgCssClasses.nickname}`);
+export const querySelectorNickname = (node: Element) => {
+  return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
 };
 
-const querySelectorNicknameLink = (node: Node) => {
+const querySelectorNicknameLink = (node: Element) => {
   const nicknameLinkSelector = `.${lihkgCssClasses.nickname} > a[href^="/profile"]`;
-  return (node as Element).querySelector(nicknameLinkSelector);
+  return node.querySelector(nicknameLinkSelector);
 };
 
-const isModalTitleMatched = (node: Node, title: string) => {
-  if ((node as Element).matches(`.${lihkgCssClasses.modal}`)) {
-    const modalTitle = (node as Element).querySelector(`.${lihkgCssClasses.modalTitle}`);
+const isModalTitleMatched = (node: Element, title: string) => {
+  if (node.matches(`.${lihkgCssClasses.modal}`)) {
+    const modalTitle = node.querySelector(`.${lihkgCssClasses.modalTitle}`);
     if (modalTitle) {
       return modalTitle.textContent === title;
     }
@@ -121,70 +122,76 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   ReactDOM.render(announcement, container);
 };
 
-export const handleThread = (node: Node, store: Store) => {
-  const _node = node as Element;
-  const threadLink = _node.querySelector(`.${lihkgCssClasses.threadLink}`)!;
+const handleThread = (node: Element, store: Store) => {
+  // const node =node
+  const threadLink = node.querySelector(`.${lihkgCssClasses.threadLink}`)!;
   const href = threadLink.getAttribute('href')!;
   const threadId = href.match(REGEXES.THREAD_URL)![1];
   const thread = cache.getThread(threadId);
   if (thread) {
     const { user_id: user } = thread;
-    const threadUsername = _node.querySelector(`.${lihkgCssClasses.threadUsername}`)!;
+    const threadUsername = node.querySelector(`.${lihkgCssClasses.threadUsername}`)!;
     const labelBookContainer = document.createElement('div');
     insertAfter(labelBookContainer, threadUsername);
     renderLabelBook(user, store, labelBookContainer);
   }
 };
 
-export const handleUserCardModal = (node: Node, store: Store) => {
-  const _node = node as Element;
+const handleUserCardModal = (node: Element, store: Store) => {
   const doxButtonSelector = `.${lihkgCssClasses.userCardButtonsContainer} > a[href^="/profile"]`;
-  const doxButton = _node.querySelector(doxButtonSelector);
+  const doxButton = node.querySelector(doxButtonSelector);
   const href = doxButton?.getAttribute('href');
   const matched = href?.match(REGEXES.PROFILE_URL);
   if (matched) {
     const [, user] = matched;
-    const modelContentInner = _node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
+    const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
     renderLabelList(user, store, true, false, labelListContainer);
-    const userCardButtonsContainer = _node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
+    const userCardButtonsContainer = node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
     const addLabelButtonContainer = document.createElement('div');
     userCardButtonsContainer.appendChild(addLabelButtonContainer);
     renderAddLabelButton(user, store, addLabelButtonContainer);
   }
 };
 
-export const handleSettingsModal = (node: Node, store: Store) => {
-  const _node = node as Element;
-  const modelContentInner = _node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
+const handleSettingsModal = (node: Element, store: Store) => {
+  const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
   const container = document.createElement('div');
   container.classList.add(settingSectionStyles.container);
   modelContentInner.appendChild(container);
   renderSettingSection(store, container);
 };
 
-export const handleNicknames = (nodes: NodeList, store: Store) => {
-  const _nodes = Array.from(nodes);
-  for (const node of _nodes) {
+export const handleNicknames = (node: Element, store: Store) => {
+  const nodes = Array.from(querySelectorNickname(node));
+  for (const node of nodes) {
     handleNickname(node, store);
   }
 };
 
-const handleNickname = (node: Node, store: Store) => {
+const handleNickname = (node: Element, store: Store) => {
   const nicknameLink = querySelectorNicknameLink(node);
   if (nicknameLink) {
     const href = nicknameLink.getAttribute('href')!;
     const matched = href.match(REGEXES.PROFILE_URL);
     if (matched) {
+      const containerCacheKey = `__${namespace}__cache__container__`;
       const [, user] = matched;
-      (node as any).container?.remove();
+      (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
       insertAfter(container, node);
       renderLabelList(user, store, true, true, container);
-      (node as any).container = container;
+      (node as any)[containerCacheKey] = container;
     }
   }
+};
+
+export const handlerFactory = (node: Element) => {
+  if (isThread(node)) return handleThread;
+  if (isUserCardModal(node)) return handleUserCardModal;
+  if (isSettingsModal(node)) return handleSettingsModal;
+  return handleNicknames;
 };
 
 export const waitForSubmissionForm = () => {

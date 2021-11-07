@@ -49,16 +49,8 @@ class App {
               const nodes = Array.from(mutation.addedNodes);
               for (const node of nodes) {
                 if (node.nodeType === document.ELEMENT_NODE) {
-                  if (LIHKG.isThread(node)) {
-                    LIHKG.handleThread(node, store);
-                  } else if (LIHKG.isUserCardModal(node)) {
-                    LIHKG.handleUserCardModal(node, store);
-                  } else if (LIHKG.isSettingsModal(node)) {
-                    LIHKG.handleSettingsModal(node, store);
-                  } else {
-                    const nodes = LIHKG.querySelectorNickname(node);
-                    LIHKG.handleNicknames(nodes, store);
-                  }
+                  const handle = LIHKG.handlerFactory(node as Element);
+                  handle(node as Element, store);
                 }
               }
               break;
@@ -66,8 +58,7 @@ class App {
             case 'attributes': {
               if (mutation.attributeName === ATTRIBUTES.dataPostId) {
                 const { target } = mutation;
-                const nodes = LIHKG.querySelectorNickname(target);
-                LIHKG.handleNicknames(nodes, store);
+                LIHKG.handleNicknames(target as Element, store);
               }
               break;
             }
@@ -94,7 +85,7 @@ class App {
       try {
         const { parentElement } = event.target as Element;
         if (parentElement && LIHKG.isNickname(parentElement)) {
-          const { parentElement: replyElement } = parentElement.parentElement!.parentElement!;
+          const { parentElement: replyElement } = parentElement.parentElement?.parentElement!;
           cache.targetReply = replyElement;
         }
       } catch (err) {

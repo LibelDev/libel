@@ -26,7 +26,7 @@ const ExportImportSection: React.FunctionComponent = () => {
   const handleImport: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (event) => {
     event.preventDefault();
     const { files } = event.target;
-    const file = files!.item(0);
+    const file = files?.item(0);
     if (file) {
       try {
         const data = await _import(file);

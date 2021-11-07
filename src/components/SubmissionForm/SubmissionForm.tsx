@@ -1,7 +1,7 @@
 import React from 'react';
 
-class SubmissionForm extends React.Component {
-  replaceEditorContent (body: string) { }
+abstract class SubmissionForm extends React.Component {
+  abstract replaceEditorContent (body: string): void;
 }
 
 export default SubmissionForm;
