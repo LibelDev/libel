@@ -127,7 +127,7 @@ class App {
       const now = Date.now();
       for (const announcement of announcements) {
         const { icon, body, endAt } = announcement;
-        if (now <= endAt) {
+        if (!endAt || now <= endAt) {
           LIHKG.renderAnnouncement(
             <Announcement icon={icon}>
               <span dangerouslySetInnerHTML={{ __html: body }} />
