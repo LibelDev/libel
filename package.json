@@ -2,7 +2,7 @@
   "name": "libel",
   "namespace": "libel",
   "displayName": "Libel",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Label users on LIHKG",
   "author": "kitce <kitce.dev@gmail.com>",
   "repository": {
