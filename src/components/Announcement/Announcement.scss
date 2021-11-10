@@ -1,8 +1,5 @@
 @import '../../stylesheets/base';
 
-$padding-y: 0.25rem;
-$logo-size: 32px;
-
 .container {
   @apply fixed;
   @apply w-full;
@@ -12,6 +9,10 @@ $logo-size: 32px;
   transition: top 0.3s ease;
   will-change: top;
   z-index: 4; // {pinned reply z-index} + 1
+
+  &:empty {
+    @apply hidden;
+  }
 
   @include dark-mode() {
     border-bottom-color: #3b3a39;
@@ -28,6 +29,9 @@ $logo-size: 32px;
 }
 
 .announcement {
+  $logo-size: 32px;
+  $padding-y: 0.25rem;
+
   @apply flex items-center;
   backdrop-filter: saturate(180%) blur(5px);
   background-color: rgba(#f6f6f6, 0.8);
@@ -47,7 +51,6 @@ $logo-size: 32px;
   }
 
   .message {
-    @apply flex items-center;
     @apply mr-auto;
 
     a {

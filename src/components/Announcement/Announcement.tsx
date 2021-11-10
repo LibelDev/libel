@@ -1,10 +1,11 @@
 import classnames from 'classnames';
+import max from 'lodash/max';
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useMeasure, useWindowSize } from 'react-use';
+import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
-import useRemoveParentElement from '../../hooks/useRemoveParentElement';
+import { isViewport, Viewport } from '../../helpers/responsive';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
@@ -14,6 +15,27 @@ import styles from './Announcement.scss';
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: IconName;
 }
+
+const announcementElements: HTMLDivElement[] = [];
+
+const getTallestAnnouncementHeight = () => {
+  const heights = announcementElements.map((element) => element.offsetHeight);
+  const height = max(heights);
+  return height || 0;
+};
+
+const updateLayout = () => {
+  const height = getTallestAnnouncementHeight();
+  const leftPanel = document.querySelector<HTMLDivElement>(lihkgSelectors.leftPanel);
+  const rightPanel = document.querySelector<HTMLDivElement>(lihkgSelectors.rightPanel);
+  if (leftPanel) {
+    leftPanel.style.marginTop = (isViewport(Viewport.Medium) || !height) ? '' : `${height}px`;
+  }
+  if (rightPanel) {
+    rightPanel.style.height = isViewport(Viewport.Medium) && height ? `calc(100vh - 3rem - ${height}px)` : '';
+    rightPanel.style.marginTop = height ? `${height}px` : '';
+  }
+};
 
 const Announcement: React.FunctionComponent<IProps> = (props) => {
   const { className, icon, children } = props;
@@ -26,33 +48,31 @@ const Announcement: React.FunctionComponent<IProps> = (props) => {
 
   const announcementRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
-  const [measureAnnouncementRef, { height: announcementHeight }] = useMeasure<HTMLDivElement>();
-  const { width: windowWidth } = useWindowSize();
-
-  const updateLayout = () => {
-    const announcementContainer = announcementRef.current?.parentElement;
-    if (announcementContainer) {
-      const { offsetHeight } = announcementContainer;
-      const leftPanel = document.querySelector<HTMLDivElement>(lihkgSelectors.leftPanel);
-      const rightPanel = document.querySelector<HTMLDivElement>(lihkgSelectors.rightPanel);
-      const isMobileView = windowWidth >= 768;
-      if (leftPanel) {
-        leftPanel.style.marginTop = isMobileView ? '' : `${offsetHeight}px`;
-      }
-      if (rightPanel) {
-        rightPanel.style.height = isMobileView ? `calc(100vh - 3rem - ${offsetHeight}px)` : '';
-        rightPanel.style.marginTop = `${offsetHeight}px`;
-      }
-    }
-  };
-
-  useRemoveParentElement(announcementRef, !showed);
 
   useEffect(() => {
-    measureAnnouncementRef(announcementRef.current!);
-  }, [announcementRef.current]);
+    const { current } = announcementRef;
+    if (current) {
+      announcementElements.push(current);
+      if (announcementElements.length === 1) {
+        window.addEventListener('resize', updateLayout);
+      }
+    } else {
+      updateLayout();
+    }
+    return () => {
+      const index = announcementElements.indexOf(current!);
+      announcementElements.splice(index, 1);
+      if (announcementElements.length === 0) {
+        window.removeEventListener('resize', updateLayout);
+      }
+    };
+  }, [showed]);
 
-  useEffect(updateLayout, [pathname, announcementHeight, windowWidth]);
+  useEffect(updateLayout, [pathname]);
+
+  if (!showed) {
+    return null;
+  }
 
   return (
     <div
