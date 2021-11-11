@@ -52,6 +52,7 @@ export const SUBSCRIPTION_VALIDATION_ERROR = '標籤名單格式錯誤，無法�
 // announcement
 export const CHANGE_LOG = '更新內容';
 export const ANNOUNCEMENT_CLOSE_BUTTON_TEXT = '關閉公告';
+export const ANNOUNCEMENT_DONT_SHOW_AGAIN_QUESTION = '七天內不再顯示此公告？';
 
 // info
 export const SOURCE_CODE = 'Source code';

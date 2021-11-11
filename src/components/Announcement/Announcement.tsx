@@ -5,6 +5,7 @@ import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
+import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
 import { isViewport, Viewport } from '../../helpers/responsive';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
 import { IconName } from '../../types/icon';
@@ -14,6 +15,7 @@ import styles from './Announcement.scss';
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: IconName;
+  forced?: boolean;
 }
 
 const announcementElements: HTMLDivElement[] = [];
@@ -38,12 +40,15 @@ const updateLayout = () => {
 };
 
 const Announcement: React.FunctionComponent<IProps> = (props) => {
-  const { className, icon, children } = props;
+  const { id, className, icon, forced = false, children } = props;
   const [showed, setShowed] = useState(true);
 
   const handleClose: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
     setShowed(false);
+    if (id && !forced && promptDontShowAgain()) {
+      dontShowAgain(id, 7);
+    }
   };
 
   const announcementRef = useRef<HTMLDivElement>(null);

@@ -25,6 +25,7 @@
     "html2canvas": "^1.0.0-rc.7",
     "immer": "^8.0.1",
     "joi": "^17.4.0",
+    "js-cookie": "^3.0.1",
     "localforage": "^1.9.0",
     "lodash": "^4.17.21",
     "mustache": "^4.2.0",

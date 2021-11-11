@@ -22,7 +22,7 @@ const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
   const oldVersionMessage = render(versionUpdate.oldVersionMessage, { currentVersion });
   const newVersionMessage = render(versionUpdate.newVersionMessage, { newVersion });
   return (
-    <Announcement className={styles.newVersionAnnouncement} icon={IconName.InfoFill}>
+    <Announcement className={styles.newVersionAnnouncement} icon={IconName.InfoFill} forced>
       <strong>
         <a href={userScriptURL} target="_blank">{newVersionMessage}</a>
       </strong>

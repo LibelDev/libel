@@ -5,6 +5,7 @@ import Announcement from '../components/Announcement/Announcement';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
+import { hasRead } from '../helpers/announecement';
 import * as LIHKG from '../helpers/lihkg';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
@@ -126,10 +127,10 @@ class App {
       const announcements = await fetchAnnouncements();
       const now = Date.now();
       for (const announcement of announcements) {
-        const { icon, body, endAt } = announcement;
-        if (!endAt || now <= endAt) {
+        const { id, icon, body, endAt } = announcement;
+        if ((!id || !hasRead(id)) && (!endAt || now <= endAt)) {
           LIHKG.renderAnnouncement(
-            <Announcement icon={icon}>
+            <Announcement id={id} icon={icon}>
               <span dangerouslySetInnerHTML={{ __html: body }} />
             </Announcement>
           );
