@@ -7,6 +7,7 @@ import './stylesheets/main.scss';
 (async () => {
   appendScript(egg.src);
   if (isMainApp()) {
+    require('./ga');
     const { default: app } = await import('./app');
     const { default: storage } = await import('./storage');
     await storage.ready();

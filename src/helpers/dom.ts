@@ -4,8 +4,9 @@ export const insertAfter = (newChild: Node, referenceChild: Node) => {
 
 export const appendScript = (src: string) => {
   const script = document.createElement('script');
-  script.src = src;
   document.body.appendChild(script);
+  script.src = src;
+  return script;
 };
 
 export const waitForElement = (selector: string): Promise<Element> => {
