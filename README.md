@@ -27,11 +27,26 @@ $ yarn
 
 For a smooth development experience, you may want to execute the following commands simultaneously:
 
-### Build
+### Development
 
 ```bash
 $ yarn dev
 ```
+
+### SCSS module typings
+
+```bash
+$ yarn type:scss[:watch]
+```
+
+### Data hosting
+
+```bash
+$ yarn data
+```
+
+*Why the data is hosted on port `20630`?*  
+*To memorize [**the death of Hong Kong**](https://en.wikipedia.org/wiki/Hong_Kong_national_security_law) on 30/6/2020*
 
 ### Install
 
@@ -44,21 +59,6 @@ When `webpack-dev-server` completed the first compilation, follow these steps to
 
 Whenever you made changes and `webpack-dev-server` recompiled the files, repeat step 2 to 4.
 
-### SCSS module typings
-
-```bash
-$ yarn type:scss[:watch]
-```
-
-### Mock data hosting
-
-```bash
-$ yarn mock
-```
-
-*Why the mock data is hosted on port `20630`?*  
-*To memorize [**the death of Hong Kong**](https://en.wikipedia.org/wiki/Hong_Kong_national_security_law) on 30/6/2020*
-
 ***
 
 ## Distribution
@@ -69,7 +69,7 @@ $ yarn mock
 $ yarn build
 ```
 
-The production-ready files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
+The distributable files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
 
 ***
 
