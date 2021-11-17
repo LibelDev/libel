@@ -5,4 +5,5 @@ export interface IAnnouncement {
   icon?: IconName;
   body: string;
   endAt?: number;
+  forced?: boolean;
 }

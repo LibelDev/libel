@@ -127,10 +127,10 @@ class App {
       const announcements = await fetchAnnouncements();
       const now = Date.now();
       for (const announcement of announcements) {
-        const { id, icon, body, endAt } = announcement;
+        const { id, icon, body, endAt, forced } = announcement;
         if ((!id || !hasRead(id)) && (!endAt || now <= endAt)) {
           LIHKG.renderAnnouncement(
-            <Announcement id={id} icon={icon}>
+            <Announcement id={id} icon={icon} forced={forced}>
               <span dangerouslySetInnerHTML={{ __html: body }} />
             </Announcement>
           );
