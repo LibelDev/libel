@@ -1,6 +1,7 @@
 import EasterEgg from '../../models/EasterEgg';
 import Slideshow, { IChangeEvent, SlideshowEvent } from '../../models/Slideshow';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import { isNoticePage } from './../../helpers/app';
 import { waitForElement } from './../../helpers/dom';
 import { images } from './config/config';
 import styles from './price-edward-831.scss';
@@ -11,9 +12,9 @@ const now = new Date();
 const month = now.getMonth() + 1;
 const date = now.getDate();
 const enabled = (
-  month === 8 &&
-  date >= (31 - 7) &&
-  window.location.pathname === '/notice'
+  month === 8
+  && date >= (31 - 7)
+  && isNoticePage()
 );
 
 const hatch = async () => {

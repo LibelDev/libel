@@ -1,6 +1,7 @@
 import random from 'lodash/random';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import { isMainApp } from './../../helpers/app';
 import { waitForElement } from './../../helpers/dom';
 import { images } from './config/config';
 import styles from './martyr-rip.scss';
@@ -9,6 +10,7 @@ const now = new Date();
 const month = now.getMonth() + 1;
 const enabled = (
   month === 7
+  && isMainApp()
 );
 
 const hatch = async () => {

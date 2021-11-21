@@ -1,5 +1,6 @@
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import { isMainApp } from './../../helpers/app';
 import { waitForElement } from './../../helpers/dom';
 import styles from './handover-of-hongkong.scss';
 
@@ -7,8 +8,9 @@ const now = new Date();
 const month = now.getMonth() + 1;
 const date = now.getDate();
 const enabled = (
-  month === 7 &&
-  date === 1
+  month === 7
+  && date === 1
+  && isMainApp()
 );
 
 const hatch = async () => {
