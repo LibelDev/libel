@@ -27,7 +27,7 @@ $ pnpm install
 
 For a smooth development experience, you may want to execute the following commands simultaneously:
 
-### Development
+### Start development
 
 ```bash
 $ pnpm dev
