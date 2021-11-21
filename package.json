@@ -11,17 +11,24 @@
   },
   "homepage": "https://kitce.github.io/libel",
   "license": "MIT",
+  "engines": {
+    "node": ">=14",
+    "pnpm": ">=6.17",
+    "yarn": ">=1.22"
+  },
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.config.dev.ts",
-    "build": "yarn clean && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
-    "data": "superstatic ./data --port 20630 --debug",
+    "prebuild": "pnpm clean",
+    "build": "pnpm prebuild && pnpm type:scss && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
     "type:scss": "tsm src --implementation sass --exportType default",
-    "type:scss:watch": "yarn type:scss --watch"
+    "type:scss:watch": "pnpm type:scss -- --watch",
+    "data": "superstatic ./data --port 20630 --debug"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.1",
     "classnames": "^2.3.1",
+    "events": "^3.3.0",
     "html2canvas": "^1.0.0-rc.7",
     "immer": "^8.0.1",
     "joi": "^17.4.0",

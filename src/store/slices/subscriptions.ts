@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
-import Subscription, { ISerializedSubscription } from '../../models/Subscription';
+import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
 import { selectSubscriptions } from '../selectors';
 import { TRootState } from '../store';
 
@@ -13,9 +13,9 @@ interface ITogglePayload {
 
 const initialState: Subscription[] = [];
 
-const load = createAsyncThunk(
+const load = createAsyncThunk<IRemoteSubscription, number>(
   'subscriptions/load',
-  async (index: number, thunk) => {
+  async (index, thunk) => {
     const state = thunk.getState() as TRootState;
     const subscriptions = selectSubscriptions(state);
     const subscription = subscriptions[index];

@@ -22,7 +22,7 @@ For the installation steps, usage and more details, please visit [Wiki](https://
 ### Install dependencies
 
 ```bash
-$ yarn
+$ pnpm install
 ```
 
 For a smooth development experience, you may want to execute the following commands simultaneously:
@@ -30,19 +30,19 @@ For a smooth development experience, you may want to execute the following comma
 ### Development
 
 ```bash
-$ yarn dev
+$ pnpm dev
 ```
 
 ### SCSS module typings
 
 ```bash
-$ yarn type:scss[:watch]
+$ pnpm type:scss[:watch]
 ```
 
 ### Data hosting
 
 ```bash
-$ yarn data
+$ pnpm data
 ```
 
 *Why the data is hosted on port `20630`?*  
@@ -66,7 +66,7 @@ Whenever you made changes and `webpack-dev-server` recompiled the files, repeat 
 ### Build
 
 ```bash
-$ yarn build
+$ pnpm build
 ```
 
 The distributable files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)

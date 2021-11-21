@@ -1,5 +1,5 @@
+import { Store } from '@reduxjs/toolkit';
 import React from 'react';
-import { Store } from 'redux';
 import { fetchAnnouncements } from '../apis/announcement';
 import Announcement from '../components/Announcement/Announcement';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
