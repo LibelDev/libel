@@ -19,6 +19,7 @@
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.config.dev.ts",
+    "dev:egg": "DEBUG_EGG=true pnpm dev",
     "prebuild": "pnpm clean",
     "build": "pnpm prebuild && pnpm type:scss && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
     "type:scss": "tsm src --implementation sass --exportType default",
