@@ -2,7 +2,7 @@
 @import '../../stylesheets/base';
 
 .egg :global(#{$lihkg-selector-notice}) {
-  $image-ratio: math.div(500, 1024);
+  $image-ratio: percentage(math.div(500, 1024));
   $logo-margin: 0.5rem;
   $logo-size: 2rem;
 

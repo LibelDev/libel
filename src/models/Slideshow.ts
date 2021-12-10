@@ -15,18 +15,22 @@ export interface IChangeEvent {
 //   on: (type: SlideshowEvent.Change, listener: (event: IChangeEvent) => void) => this;
 // }
 
-const _images = Symbol('images');
+type ImageRenderer = (src: string) => HTMLElement;
+
+const _imageElements = Symbol('imageElements');
 const _interval = Symbol('interval');
 
 class Slideshow extends EventEmitter {
-  private [_images]: HTMLElement[] = [];
+  private [_imageElements]: HTMLElement[] = [];
   private [_interval]: number | null = null;
-  private images: string[];
   private index!: number;
 
-  constructor (images: string[]) {
+  constructor (images: string[], render: ImageRenderer) {
     super();
-    this.images = images;
+    for (const src of images) {
+      const imageElement = render(src);
+      this[_imageElements].push(imageElement);
+    }
   }
 
   private random () {
@@ -39,14 +43,15 @@ class Slideshow extends EventEmitter {
   };
 
   private triggerChange (prevIndex: number, index: number) {
-    const prevImage = this[_images][prevIndex];
-    const image = this[_images][index];
+    const prevImage = this[_imageElements][prevIndex];
+    const image = this[_imageElements][index];
     this.emit(SlideshowEvent.Change, { prevImage, image });
   }
 
   private updateRandomIndex (): [number, number] {
-    const { images, index } = this;
-    const _index = random(0, images.length - 1);
+    const { index } = this;
+    const { length } = this[_imageElements];
+    const _index = random(0, length - 1);
     if (_index === index) {
       return this.updateRandomIndex();
     }
@@ -54,21 +59,18 @@ class Slideshow extends EventEmitter {
     return [index, _index];
   }
 
-  render (container: HTMLElement, render: (src: string) => HTMLElement) {
-    this[_images] = [];
-    const { images } = this;
-    for (let i = 0; i < images.length; i++) {
-      const src = images[i];
-      const image = render(src);
+  render (container: HTMLElement) {
+    for (const image of this[_imageElements]) {
       container.appendChild(image);
-      this[_images][i] = image;
     }
+    return this;
   }
 
   start (timeout: number) {
     this.stop();
     this[_interval] = window.setInterval(this.update, timeout);
     this.update();
+    return this;
   }
 
   stop () {
@@ -77,6 +79,7 @@ class Slideshow extends EventEmitter {
       window.clearInterval(interval);
       this[_interval] = null;
     }
+    return this;
   }
 }
 
