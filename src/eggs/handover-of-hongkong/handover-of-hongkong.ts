@@ -1,19 +1,14 @@
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
-import { isMainApp } from './../../helpers/app';
 import { waitForElement } from './../../helpers/dom';
+import { enabled } from './config/config';
 import styles from './handover-of-hongkong.scss';
 
-const now = new Date();
-const month = now.getMonth() + 1;
-const date = now.getDate();
-const enabled = (
-  month === 7
-  && date === 1
-  && isMainApp()
-);
-
-const hatch = async () => {
+/**
+ * Handover of Hong Kong
+ * @see https://en.wikipedia.org/wiki/Handover_of_Hong_Kong
+ */
+ const hatch = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);
   const leftPanel = splitView.querySelector(lihkgSelectors.leftPanel);
   const underlay = document.createElement('div');
@@ -26,8 +21,3 @@ const hatch = async () => {
 const egg = new EasterEgg(hatch, enabled);
 
 export default egg;
-
-/**
- * References
- * - https://en.wikipedia.org/wiki/Handover_of_Hong_Kong
- */

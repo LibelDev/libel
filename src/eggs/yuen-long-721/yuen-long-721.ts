@@ -1,19 +1,17 @@
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
-import { isMainApp } from './../../helpers/app';
 import { waitForElement } from './../../helpers/dom';
+import { enabled } from './config/config';
 import styles from './yuen-long-721.scss';
 
-const now = new Date();
-const month = now.getMonth() + 1;
-const date = now.getDate();
-const enabled = (
-  month === 7
-  && date === 21
-  && isMainApp()
-);
-
-const hatch = async () => {
+/**
+ * Yuen Long 721
+ * @see https://en.wikipedia.org/wiki/2019_Yuen_Long_attack
+ * @see https://www.thestandnews.com/media/video/images/721-尋源
+ * @see https://www.youtube.com/watch?v=5RWsXqjaads
+ * @see https://www.youtube.com/watch?v=9e8OCzU_lAI
+ */
+ const hatch = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);
   const leftPanel = splitView.querySelector(lihkgSelectors.leftPanel);
   const underlay = document.createElement('div');
@@ -26,11 +24,3 @@ const hatch = async () => {
 const egg = new EasterEgg(hatch, enabled);
 
 export default egg;
-
-/**
- * References
- * - https://en.wikipedia.org/wiki/2019_Yuen_Long_attack
- * - https://www.thestandnews.com/media/video/images/721-尋源
- * - https://www.youtube.com/watch?v=5RWsXqjaads
- * - https://www.youtube.com/watch?v=9e8OCzU_lAI
- */
