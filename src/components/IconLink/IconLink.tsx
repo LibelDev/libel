@@ -1,20 +1,15 @@
 import React from 'react';
 import BaseIconButton, { TProps as TBaseIconButtonProps } from '../BaseIconButton/BaseIconButton';
 
-interface IProps extends TBaseIconButtonProps<React.AnchorHTMLAttributes<HTMLAnchorElement>> {
-  disabled?: boolean;
-}
+interface IProps extends TBaseIconButtonProps<React.AnchorHTMLAttributes<HTMLAnchorElement>> { }
 
 const IconLink = React.forwardRef<HTMLAnchorElement, IProps>((props, ref) => {
-  const { disabled, children, ...otherProps } = props;
+  const { children, ...otherProps } = props;
   return (
-    <BaseIconButton {...otherProps} as='a' ref={ref} disabled={disabled}>
+    <BaseIconButton {...otherProps} as='a' ref={ref}>
       {children}
     </BaseIconButton>
   );
 });
 
 export default IconLink;
-
-export * from '../BaseIconButton/BaseIconButton';
-

@@ -18,7 +18,7 @@
       color: #ffffff;
     }
 
-    & + a {
+    + a {
       @apply ml-2 pl-2;
       border-left: solid 1px #333333;
 

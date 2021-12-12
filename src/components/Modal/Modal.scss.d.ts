@@ -1,5 +1,7 @@
 export type Styles = {
-  'addLabelButton': string;
+  'backdrop': string;
+  'inner': string;
+  'modal': string;
 };
 
 export type ClassNames = keyof Styles;

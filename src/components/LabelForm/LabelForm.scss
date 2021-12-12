@@ -1,0 +1,31 @@
+.label-form {
+  @apply p-4;
+
+  > * + * {
+    @apply mt-3;
+  }
+
+  .user-icon {
+    @apply mr-2;
+  }
+
+  .input-field {
+    .text-input {
+      input {
+        width: 200px;
+      }
+    }
+  }
+
+  .screenshot {
+    @apply w-full;
+  }
+
+  .error {
+    @apply mt-3;
+
+    .icon {
+      @apply mr-2;
+    }
+  }
+}

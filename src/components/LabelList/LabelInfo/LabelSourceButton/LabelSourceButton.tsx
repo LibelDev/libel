@@ -4,7 +4,7 @@ import Label from '../../../../models/Label';
 import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
 
-interface IProps extends React.HTMLAttributes<HTMLAnchorElement> {
+interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   label: Label;
 }
 

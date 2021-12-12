@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
-import { promptEdit } from '../../../../helpers/label';
 import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
+import LabelFormModal, { ILabelFormProps } from '../../../LabelFormModal/LabelFormModal';
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   user: string;
@@ -14,28 +14,49 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const EditLabelButton: React.FunctionComponent<IProps> = (props) => {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { className, user, label, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const { text, reason, image } = label;
-    const data = promptEdit(text, reason, image);
-    if (data) {
-      const { text, reason, image } = data;
-      dispatch(personalActions.edit({ user, index, text, reason, image }));
+    if (!loading) {
+      setOpen(true);
     }
-  }, [user, label, index]);
+  }, [loading]);
+
+  const handleModalClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handleLabelFormSubmit: ILabelFormProps['onSubmission'] = async (event, label) => {
+    const { text, reason, image } = label;
+    dispatch(personalActions.edit({ user, index, text, reason, image }));
+    handleModalClose();
+  };
 
   return (
-    <IconButton
-      className={className}
-      icon={IconName.Pencil}
-      aria-label={TEXTS.EDIT_LABEL_BUTTON_TEXT}
-      data-tip={TEXTS.EDIT_LABEL_BUTTON_TEXT}
-      title={TEXTS.EDIT_LABEL_BUTTON_TEXT}
-      onClick={handleClick}
-    />
+    <React.Fragment>
+      <IconButton
+        className={className}
+        icon={IconName.Pencil}
+        aria-label={TEXTS.EDIT_LABEL_BUTTON_TEXT}
+        data-tip={TEXTS.EDIT_LABEL_BUTTON_TEXT}
+        title={TEXTS.EDIT_LABEL_BUTTON_TEXT}
+        onClick={handleClick}
+      />
+      <LabelFormModal
+        open={open}
+        user={user}
+        data={label}
+        escape={false}
+        fragile={false}
+        loading={loading}
+        onClose={handleModalClose}
+        onSubmission={handleLabelFormSubmit}
+      />
+    </React.Fragment>
   );
 };
 

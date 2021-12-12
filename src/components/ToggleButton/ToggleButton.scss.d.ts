@@ -1,4 +1,8 @@
 export type Styles = {
+  'button': string;
+  'checked': string;
+  'disabled': string;
+  'simple': string;
   'toggleButton': string;
 };
 

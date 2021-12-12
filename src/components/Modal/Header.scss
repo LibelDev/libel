@@ -1,0 +1,34 @@
+@import '../../stylesheets/base';
+
+.header {
+  @apply flex items-center;
+  @apply pl-4;
+  height: 3rem;
+  background-color: #fff;
+  border-bottom: solid 1px #e0e0e0;
+  color: #000;
+
+  @include dark-mode() {
+    background-color: #222;
+    border-bottom-color: #444443;
+    color: #fff;
+  }
+
+  .title {
+    @apply text-base font-normal;
+    @apply flex-1;
+    @apply m-0;
+    @include text-ellipsis();
+  }
+
+  .close {
+    @apply text-base;
+    height: 3rem;
+    width: 3rem;
+
+    &:focus,
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.1);
+    }
+  }
+}

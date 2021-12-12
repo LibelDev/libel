@@ -21,6 +21,7 @@ const ToggleSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <ToggleButton
+      simple
       className={className}
       checked={subscription.enabled}
       disabled={subscription.loading}
@@ -30,5 +31,7 @@ const ToggleSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
     </ToggleButton>
   );
 };
+
+ToggleSubscriptionButton.displayName = 'ToggleSubscriptionButton';
 
 export default ToggleSubscriptionButton;

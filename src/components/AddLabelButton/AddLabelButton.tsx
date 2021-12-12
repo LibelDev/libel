@@ -1,14 +1,14 @@
-import classnames from 'classnames';
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../apis/nacx';
 import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
 import { toBlob } from '../../helpers/canvas';
-import { promptAdd } from '../../helpers/label';
+import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { IPost } from '../../types/post';
-import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import Button from '../Button/Button';
+import LabelFormModal, { ILabelFormProps } from '../LabelFormModal/LabelFormModal';
 import styles from './AddLabelButton.scss';
 
 interface IProps {
@@ -17,66 +17,81 @@ interface IProps {
 }
 
 const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
-  const [disabled, setDisabled] = useState(false);
-  const dispatch = useDispatch();
   const { user, targetReply, children } = props;
 
-  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    if (!disabled) {
-      setDisabled(true);
-      const data = promptAdd();
-      if (data) {
-        const { text, reason, isScreenshotEnabled } = data;
-        const source = {
-          thread: targetReply.thread_id,
-          page: targetReply.page,
-          messageNumber: targetReply.msg_num
-        };
-        const payload: IAddLabelPayload = { user, text, reason, source };
-        if (isScreenshotEnabled) {
-          try {
-            const image = await toBlob(cache.targetReply!);
-            if (image) {
-              const { status, url } = await uploadImage(image);
-              switch (status) {
-                case 200: {
-                  payload.image = url;
-                  break;
-                }
-                default: {
-                  throw TEXTS.ADD_LABEL_SCREENSHOT_CAPTURE_FAILURE;
-                }
-              }
-            } else {
-              throw TEXTS.ADD_LABEL_SCREENSHOT_CAPTURE_FAILURE;
-            }
-          } catch (err) {
-            console.error(err);
-            window.alert(TEXTS.ADD_LABEL_SCREENSHOT_CAPTURE_FAILURE);
-          }
-        }
-        dispatch(personalActions.add(payload));
-      }
-      setDisabled(false);
+    if (!loading) {
+      setOpen(true);
     }
-  }, [disabled, user, targetReply]);
+  }, [loading]);
+
+  const handleModalClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handleLabelFormSubmit: ILabelFormProps['onSubmission'] = async (event, label, capture) => {
+    const source = mapPostToSource(targetReply);
+    const payload: IAddLabelPayload = { user, ...label, source };
+    setLoading(true);
+    if (capture) {
+      try {
+        const image = await toBlob(cache.targetReply!);
+        if (image) {
+          const { status, url } = await uploadImage(image);
+          switch (status) {
+            case 200: {
+              payload.image = url;
+              dispatch(personalActions.add(payload));
+              handleModalClose();
+              break;
+            }
+            default: {
+              throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+            }
+          }
+        } else {
+          throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+        }
+      } catch (err) {
+        setLoading(false);
+        console.error(err);
+        if (typeof err === 'string') {
+          throw err;
+        } else {
+          throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+        }
+      }
+    } else {
+      dispatch(personalActions.add(payload));
+    }
+    setLoading(false);
+    handleModalClose();
+  };
 
   return (
-    <a
-      className={
-        classnames(
-          styles.addLabelButton,
-          {
-            [styles.disabled]: disabled
-          }
-        )
-      }
-      href="#"
-      onClick={handleClick}
-    >
-      {disabled ? <LoadingSpinner /> : children}
-    </a>
+    <React.Fragment>
+      <Button
+        className={styles.addLabelButton}
+        loading={loading}
+        onClick={handleClick}
+      >
+        {children}
+      </Button>
+      <LabelFormModal
+        open={open}
+        user={user}
+        escape={false}
+        fragile={false}
+        loading={loading}
+        onClose={handleModalClose}
+        onSubmission={handleLabelFormSubmit}
+      />
+    </React.Fragment>
   );
 };
 

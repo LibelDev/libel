@@ -1,6 +1,11 @@
 export type Styles = {
-  'baseIconButton': string;
+  'error': string;
   'icon': string;
+  'inputField': string;
+  'labelForm': string;
+  'screenshot': string;
+  'textInput': string;
+  'userIcon': string;
 };
 
 export type ClassNames = keyof Styles;

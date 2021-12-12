@@ -1,5 +1,6 @@
 export type Styles = {
-  'addLabelButton': string;
+  'error': string;
+  'textInput': string;
 };
 
 export type ClassNames = keyof Styles;

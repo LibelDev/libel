@@ -1,0 +1,34 @@
+@import '../../stylesheets/base';
+
+.modal {
+  @apply flex items-center justify-center;
+  z-index: 100;
+
+  &,
+  .backdrop {
+    @apply fixed top-0 left-0;
+    @apply h-full w-full;
+  }
+
+  .backdrop {
+    background-color: rgba(160, 160, 160, 0.5);
+
+    @include dark-mode() {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .inner {
+    @apply flex flex-col flex-nowrap;
+    @apply rounded;
+    @apply relative;
+    @apply overflow-hidden;
+    background-color: #f6f6f6;
+    box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+    max-height: 80vh;
+
+    @include dark-mode() {
+      background-color: #292827;
+    }
+  }
+}

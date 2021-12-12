@@ -1,0 +1,12 @@
+.input:disabled {
+  @apply cursor-not-allowed;
+  @apply opacity-20;
+}
+
+.error {
+  @apply mt-2;
+
+  .icon {
+    @apply mr-2;
+  }
+}

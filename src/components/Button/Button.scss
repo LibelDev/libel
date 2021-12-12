@@ -1,0 +1,10 @@
+.button {
+  @apply inline-flex items-center justify-center;
+  @apply cursor-pointer;
+  transition: opacity .2s ease-out;
+  will-change: opacity;
+
+  &:disabled {
+    @apply cursor-not-allowed;
+  }
+}

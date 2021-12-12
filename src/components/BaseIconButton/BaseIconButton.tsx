@@ -1,28 +1,22 @@
 import classnames from 'classnames';
 import React from 'react';
 import { IconName } from '../../types/icon';
+import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
 import styles from './BaseIconButton.scss';
 
 export type TProps<A = React.HTMLAttributes<HTMLElement>> = A & {
-  as?: keyof React.ReactHTML;
+  as?: React.ComponentType<A> | keyof React.ReactHTML;
   icon: IconName;
   disabled?: boolean;
 };
 
 const BaseIconButton = React.forwardRef<HTMLElement, TProps>((props, ref) => {
-  const { className, as = 'button', icon, disabled, children, ...otherProps } = props;
+  const { className, as = Button, icon, children, ...otherProps } = props;
   const _props = {
     ...otherProps,
     ref,
-    disabled,
-    className: classnames(
-      className,
-      styles.baseIconButton,
-      {
-        [styles.disabled]: disabled
-      }
-    )
+    className: classnames(className, styles.baseIconButton)
   };
   const _children = (
     <React.Fragment>

@@ -1,38 +1,10 @@
-import * as TEXTS from '../constants/texts';
+import { ISource } from './../models/Label';
+import { IPost } from './../types/post';
 
-const prompt = (defaultText = '', defaultReason = '') => {
-  const text = (window.prompt(TEXTS.ADD_LABEL_TEXT_QUESTION, defaultText) || '').trim();
-  if (text) {
-    const reason = window.prompt(TEXTS.ADD_LABEL_REASON_QUESTION, defaultReason);
-    if (reason !== null) {
-      return {
-        text,
-        reason: reason.trim()
-      };
-    }
-  }
-};
-
-export const promptAdd = () => {
-  const data = prompt();
-  if (data) {
-    const isScreenshotEnabled = window.confirm(TEXTS.ADD_LABEL_ENABLE_SCREENSHOT_QUESTION);
-    return {
-      ...data,
-      isScreenshotEnabled
-    };
-  }
-};
-
-export const promptEdit = (text: string, reason?: string, image = '') => {
-  const data = prompt(text, reason);
-  if (data) {
-    const _image = window.prompt(TEXTS.ADD_LABEL_SCREENSHOT_QUESTION, image);
-    if (_image !== null) {
-      return {
-        ...data,
-        image: _image?.trim()
-      };
-    }
-  }
+export const mapPostToSource = (post: IPost): ISource => {
+  return {
+    thread: post.thread_id,
+    page: post.page,
+    messageNumber: post.msg_num
+  };
 };

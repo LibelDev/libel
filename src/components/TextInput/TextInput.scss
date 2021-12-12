@@ -1,0 +1,46 @@
+@import '../../stylesheets/base';
+
+.text-input {
+  @apply flex items-start;
+
+  > span {
+    @apply flex-1;
+    @apply mr-2;
+    line-height: 2.25rem;
+  }
+
+  input {
+    @apply relative;
+    @apply rounded;
+    @apply border border-solid;
+    @apply text-base;
+    @apply text-current;
+    background-color: #fff;
+    border-color: #d9d9d9;
+    height: 2.25rem;
+    padding: 0.4em;
+
+    @include dark-mode() {
+      background-color: #151515;
+      border-color: #3b3a39;
+    }
+
+    &:focus {
+      outline: 1px solid #fbc308;
+
+      @include dark-mode() {
+        outline: 1px solid rgba(251, 195, 8, 0.6);
+      }
+    }
+  }
+
+  &.error {
+    input {
+      border-color: #fb0808;
+
+      @include dark-mode() {
+        border-color: #fb0808;
+      }
+    }
+  }
+}

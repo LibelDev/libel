@@ -1,10 +1,5 @@
 .add-label-button {
-  @apply absolute;
-  @apply top-0 left-0;
+  @apply flex items-center justify-center;
   @apply h-full w-full;
-
-  &.disabled {
-    // @apply opacity-20;
-    @apply cursor-not-allowed;
-  }
+  @apply text-base;
 }

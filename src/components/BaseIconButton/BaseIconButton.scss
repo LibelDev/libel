@@ -1,17 +1,4 @@
 .base-icon-button {
-  @apply inline-flex items-center;
-  transition: opacity .2s ease-out;
-  will-change: opacity;
-
-  &:disabled,
-  &.disabled {
-    @apply opacity-20;
-  }
-  
-  &:not(:disabled) {
-    @apply cursor-pointer;
-  }
-
   .icon {
     &:not(:only-child) {
       @apply mr-1;
