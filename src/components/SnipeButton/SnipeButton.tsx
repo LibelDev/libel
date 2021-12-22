@@ -18,13 +18,13 @@ interface IProps {
 
 const SnipeButton: React.FunctionComponent<IProps> = (props) => {
   const { user } = props;
-  const ref = React.createRef<HTMLButtonElement>();
   const personal = useSelector(filterPersonalForUser(user));
   const subscriptions = useSelector(filterSubscriptionsForUser(user));
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
-    const replyButton = ref.current?.parentNode?.parentNode?.querySelector<HTMLElement>(`.${IconName.Reply}`);
+    const { currentTarget } = event;
+    const replyButton = currentTarget.parentNode?.parentNode?.querySelector<HTMLElement>(`.${IconName.Reply}`);
     if (replyButton) {
       const awaiter = waitForSubmissionForm();
       replyButton.click();
@@ -39,13 +39,12 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <IconButton
-      ref={ref}
       className={classnames(lihkgCssClasses.replyToolbarButton, styles.snipeButton)}
       icon={IconName.Hot}
+      onClick={handleClick}
       aria-label={TEXTS.SNIPE_BUTTON_TEXT}
       data-tip={TEXTS.SNIPE_BUTTON_TEXT}
       title={TEXTS.SNIPE_BUTTON_TEXT}
-      onClick={handleClick}
     />
   );
 };
