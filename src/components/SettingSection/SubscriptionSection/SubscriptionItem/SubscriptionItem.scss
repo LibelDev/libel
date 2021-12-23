@@ -20,7 +20,7 @@
 
     > a {
       color: #333333;
-      
+
       @include dark-mode() {
         color: #ffffff;
       }
@@ -28,7 +28,9 @@
   }
 
   .icon-button {
-    @apply text-base;
+    @apply inline-flex items-center justify-center;
+    @apply h-4 w-4;
+    font-size: 1em;
   }
 
   > * + * {

@@ -1,0 +1,10 @@
+.base-button {
+  @apply cursor-pointer;
+  transition: opacity 0.2s ease-out;
+  will-change: opacity;
+
+  &:disabled,
+  &[disabled] {
+    @apply cursor-not-allowed;
+  }
+}

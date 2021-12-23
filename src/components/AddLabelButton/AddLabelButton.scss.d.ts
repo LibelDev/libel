@@ -1,5 +1,6 @@
 export type Styles = {
   'addLabelButton': string;
+  'container': string;
 };
 
 export type ClassNames = keyof Styles;

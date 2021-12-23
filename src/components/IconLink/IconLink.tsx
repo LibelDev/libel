@@ -1,15 +1,19 @@
 import React from 'react';
-import BaseIconButton, { TProps as TBaseIconButtonProps } from '../BaseIconButton/BaseIconButton';
+import IconButton, { TProps as TIconButtonProps } from '../IconButton/IconButton';
 
-interface IProps extends TBaseIconButtonProps<React.AnchorHTMLAttributes<HTMLAnchorElement>> { }
+interface IProps { }
 
-const IconLink = React.forwardRef<HTMLAnchorElement, IProps>((props, ref) => {
-  const { children, ...otherProps } = props;
+type TProps = IProps & TIconButtonProps & {};
+
+type TPropsAsAnchor = TProps & { as: 'a'; };
+
+const IconLink: React.FunctionComponent<TProps> = (props) => {
   return (
-    <BaseIconButton {...otherProps} as='a' ref={ref}>
-      {children}
-    </BaseIconButton>
+    <IconButton
+      {...props as TPropsAsAnchor}
+      as="a"
+    />
   );
-});
+};
 
 export default IconLink;

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
+import addLabelButtonStyles from '../components/AddLabelButton/AddLabelButton.scss';
 import announcementStyles from '../components/Announcement/Announcement.scss';
 import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
@@ -150,6 +151,7 @@ const handleUserCardModal = (node: Element, store: Store) => {
     renderLabelList(user, store, true, false, labelListContainer);
     const userCardButtonsContainer = node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
     const addLabelButtonContainer = document.createElement('div');
+    addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
     userCardButtonsContainer.appendChild(addLabelButtonContainer);
     renderAddLabelButton(user, store, addLabelButtonContainer);
   }

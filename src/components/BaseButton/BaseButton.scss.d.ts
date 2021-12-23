@@ -1,5 +1,5 @@
 export type Styles = {
-  'button': string;
+  'baseButton': string;
 };
 
 export type ClassNames = keyof Styles;
