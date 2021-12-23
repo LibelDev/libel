@@ -12,7 +12,7 @@ export const toBlob = async (element: HTMLElement, options?: Partial<Options>) =
   });
 };
 
-// export const toImageURL = async (element: HTMLElement, options?: Partial<Options>) => {
-//   const blob = await toBlob(element, options);
-//   return URL.createObjectURL(blob);
-// };
+export const toImageURL = async (element: HTMLElement, options?: Partial<Options>) => {
+  const blob = await toBlob(element, options);
+  return URL.createObjectURL(blob!);
+};
