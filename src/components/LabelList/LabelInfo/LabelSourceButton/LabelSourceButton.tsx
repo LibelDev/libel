@@ -1,14 +1,17 @@
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
+import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Label from '../../../../models/Label';
 import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
 
-interface IProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface IProps  {
   label: Label;
 }
 
-const LabelSourceButton: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'a'>
+
+const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
   const { className, label } = props;
   const { sourceURL } = label;
   return sourceURL ? (

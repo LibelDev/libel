@@ -7,16 +7,19 @@ import { displayName } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
 import { isViewport, Viewport } from '../../helpers/responsive';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
 import styles from './Announcement.scss';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   icon?: IconName;
   forced?: boolean;
 }
+
+type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const announcementElements: HTMLDivElement[] = [];
 
@@ -39,7 +42,7 @@ const updateLayout = () => {
   }
 };
 
-const Announcement: React.FunctionComponent<IProps> = (props) => {
+const Announcement: React.FunctionComponent<TProps> = (props) => {
   const { id, className, icon, forced = false, children } = props;
   const [showed, setShowed] = useState(true);
 

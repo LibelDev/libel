@@ -3,6 +3,7 @@ import FocusTrap from 'focus-trap-react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import Body from './Body';
 import Footer from './Footer';
@@ -10,7 +11,7 @@ import Header from './Header';
 import IDsContext from './IDsContext';
 import styles from './Modal.scss';
 
-export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   /**
    * indicate the open state
    */
@@ -33,7 +34,9 @@ export interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   onClose: () => void;
 }
 
-const Modal: React.FunctionComponent<IProps> = (props) => {
+export type TProps = IProps & MappedHTMLAttributes<'div'>;
+
+const Modal: React.FunctionComponent<TProps> = (props) => {
   const {
     id,
     className,

@@ -9,8 +9,8 @@ import { hasRead } from '../helpers/announecement';
 import * as LIHKG from '../helpers/lihkg';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
-import { IQuoteListResponseData, IReplyListResponseData } from '../types/post';
-import { IThreadListResponseData } from '../types/thread';
+import { IQuoteListResponseData, IReplyListResponseData } from '../types/lihkg';
+import { IThreadListResponseData } from '../types/lihkg';
 import Cache from './Cache';
 
 class App {

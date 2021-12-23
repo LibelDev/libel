@@ -1,9 +1,12 @@
 import React from 'react';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import styles from './Footer.scss';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface IProps { }
 
-const Footer: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'div'>
+
+const Footer: React.FunctionComponent<TProps> = (props) => {
   const { children } = props;
   return (
     <div className={styles.footer}>

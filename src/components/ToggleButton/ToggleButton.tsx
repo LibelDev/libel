@@ -1,16 +1,18 @@
 import classNames from 'classnames';
 import React from 'react';
-import BaseInput, { IProps as IBaseInputProps } from '../BaseInput/BaseInput';
+import BaseInput, { TProps as IBaseInputProps } from '../BaseInput/BaseInput';
 import styles from './ToggleButton.scss';
 
-interface IProps extends IBaseInputProps {
+interface IProps {
   /**
    * no label, button only
    */
   simple?: boolean;
 }
 
-const ToggleButton: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & IBaseInputProps;
+
+const ToggleButton: React.FunctionComponent<TProps> = (props) => {
   const { className, children, checked, disabled, simple, ...otherProps } = props;
 
   return (

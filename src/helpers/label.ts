@@ -1,5 +1,5 @@
 import { ISource } from './../models/Label';
-import { IPost } from './../types/post';
+import { IPost } from '../types/lihkg';
 
 export const mapPostToSource = (post: IPost): ISource => {
   return {

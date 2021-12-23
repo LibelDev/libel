@@ -2,10 +2,12 @@ import React from 'react';
 import * as TEXTS from '../../constants/texts';
 import useElementID from '../../hooks/useElementID';
 import Button from '../Button/Button';
-import LabelForm, { IProps as ILabelFormProps } from '../LabelForm/LabelForm';
-import Modal, { Body, Footer, Header, IProps as IModalProps } from '../Modal/Modal';
+import LabelForm, { TProps as TLabelFormProps } from '../LabelForm/LabelForm';
+import Modal, { Body, Footer, Header, TProps as TModalProps } from '../Modal/Modal';
 
-type TProps = IModalProps & ILabelFormProps & {};
+interface IProps { }
+
+type TProps = IProps & TModalProps & TLabelFormProps;
 
 const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
   const { id, onClose, user, data, loading, onSubmission, ...otherProps } = props;
@@ -47,4 +49,4 @@ LabelFormModal.displayName = 'LabelFormModal';
 
 export default LabelFormModal;
 
-export { ILabelFormProps };
+export { TLabelFormProps };

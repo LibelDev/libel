@@ -1,12 +1,15 @@
 import classnames from 'classnames';
 import React from 'react';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import { IconName } from '../../types/icon';
 
-interface IProps extends React.HTMLAttributes<HTMLElement> {
+interface IProps {
   icon: IconName;
 }
 
-const Icon: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'i'>;
+
+const Icon: React.FunctionComponent<TProps> = (props) => {
   const { className, icon, ...otherProps } = props;
   return (
     <i

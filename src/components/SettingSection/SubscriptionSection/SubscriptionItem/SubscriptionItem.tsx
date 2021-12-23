@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
+import { MappedHTMLAttributes } from '../../../../helpers/types';
 import useDataSetThemeColorStyle from '../../../../hooks/useDataSetThemeColorStyle';
 import Subscription from '../../../../models/Subscription';
 import { IconName } from '../../../../types/icon';
@@ -12,12 +13,14 @@ import SubscriptionHomepageButton from '../SubscriptionHomepageButton/Subscripti
 import ToggleSubscriptionButton from '../ToggleSubscriptionButton/ToggleSubscriptionButton';
 import styles from './SubscriptionItem.scss';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps  {
   subscription: Subscription;
   index: number;
 }
 
-const SubscriptionItem: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'div'>
+
+const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
   const dataSetThemeColorStyle = useDataSetThemeColorStyle(subscription, 'backgroundColor');
   return (

@@ -1,15 +1,18 @@
 import React from 'react';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
 import styles from './BaseInput.scss';
 
-export interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface IProps {
   label?: React.ReactNode;
   error?: React.ReactNode;
 }
 
-const BaseInput: React.FunctionComponent<IProps> = (props) => {
+export type TProps = IProps & MappedHTMLAttributes<'input'>;
+
+const BaseInput: React.FunctionComponent<TProps> = (props) => {
   const { id, className, disabled, label, error, ...otherProps } = props;
 
   const _id = id || useElementID(BaseInput.displayName!);

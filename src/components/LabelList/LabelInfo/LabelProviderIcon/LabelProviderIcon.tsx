@@ -1,13 +1,16 @@
 import React from 'react';
+import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
 
-interface IProps extends React.HTMLAttributes<HTMLAnchorElement> {
+interface IProps  {
   subscription: Subscription;
 }
 
-const LabelProviderIcon: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'a'>
+
+const LabelProviderIcon: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription } = props;
   const { name, homepage } = subscription;
   return (

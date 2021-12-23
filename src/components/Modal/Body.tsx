@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import styles from './Body.scss';
 import IDsContext from './IDsContext';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface IProps  { }
 
-const Body: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'div'>
+
+const Body: React.FunctionComponent<TProps> = (props) => {
   const { children } = props;
   const { body: id } = useContext(IDsContext);
   return (

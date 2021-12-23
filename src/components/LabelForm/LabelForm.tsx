@@ -3,6 +3,7 @@ import joi from 'joi';
 import React, { useCallback, useState } from 'react';
 import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import { ILabel } from '../../models/Label';
 import schema from '../../schemas/label';
@@ -21,7 +22,7 @@ type TLabelFormData = (
   Pick<ILabel, 'image'>
 );
 
-export interface IProps extends React.FormHTMLAttributes<HTMLFormElement> {
+interface IProps {
   /**
    * the target user ID
    */
@@ -39,6 +40,8 @@ export interface IProps extends React.FormHTMLAttributes<HTMLFormElement> {
   onSubmission: (event: React.FormEvent<HTMLFormElement>, label: TLabelFormData, capture?: boolean) => Promise<void>;
 }
 
+export type TProps = IProps & MappedHTMLAttributes<'form'>;
+
 const _schema = schema.keys({
   text: joi.string().trim().required().messages({
     'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY,
@@ -46,7 +49,7 @@ const _schema = schema.keys({
   }),
 });
 
-const LabelForm: React.FunctionComponent<IProps> = (props) => {
+const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const {
     id,
     className,

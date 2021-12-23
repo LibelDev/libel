@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
+import { MappedHTMLAttributes } from '../../../helpers/types';
 import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 import Label from '../../../models/Label';
 import Personal from '../../../models/Personal';
@@ -11,14 +12,16 @@ import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
 import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps {
   user: string;
   label: Label;
   index: number;
   dataSet: Personal | Subscription;
 }
 
-const LabelInfo: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'div'>;
+
+const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   const { className, user, label, index, dataSet } = props;
 
   const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, 'borderColor');

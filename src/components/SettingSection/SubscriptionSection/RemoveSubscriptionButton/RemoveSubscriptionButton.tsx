@@ -3,6 +3,7 @@ import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
+import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
@@ -10,12 +11,14 @@ import * as questions from '../../../../templates/questions';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
-interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IProps  {
   subscription: Subscription;
   index: number;
 }
 
-const RemoveSubscriptionButton: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'button'>
+
+const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
   const { className, subscription, index } = props;
 

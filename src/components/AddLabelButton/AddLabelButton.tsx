@@ -6,9 +6,9 @@ import * as TEXTS from '../../constants/texts';
 import { toBlob } from '../../helpers/canvas';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
-import { IPost } from '../../types/post';
+import { IPost } from '../../types/lihkg';
 import Button from '../Button/Button';
-import LabelFormModal, { ILabelFormProps } from '../LabelFormModal/LabelFormModal';
+import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
 import styles from './AddLabelButton.scss';
 
 interface IProps {
@@ -34,7 +34,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     setOpen(false);
   }, []);
 
-  const handleLabelFormSubmit: ILabelFormProps['onSubmission'] = async (event, label, capture) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, label, capture) => {
     const source = mapPostToSource(targetReply);
     const payload: IAddLabelPayload = { user, ...label, source };
     setLoading(true);

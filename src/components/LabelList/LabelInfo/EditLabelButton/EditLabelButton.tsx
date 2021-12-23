@@ -1,19 +1,22 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
+import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Label from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
-import LabelFormModal, { ILabelFormProps } from '../../../LabelFormModal/LabelFormModal';
+import LabelFormModal, { TLabelFormProps } from '../../../LabelFormModal/LabelFormModal';
 
-interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IProps {
   user: string;
   label: Label;
   index: number;
 }
 
-const EditLabelButton: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'button'>;
+
+const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { className, user, label, index } = props;
@@ -27,7 +30,7 @@ const EditLabelButton: React.FunctionComponent<IProps> = (props) => {
     setOpen(false);
   }, []);
 
-  const handleLabelFormSubmit: ILabelFormProps['onSubmission'] = async (event, label) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, label) => {
     const { text, reason, image } = label;
     dispatch(personalActions.edit({ user, index, text, reason, image }));
     handleModalClose();

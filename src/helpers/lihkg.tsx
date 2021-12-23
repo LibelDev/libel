@@ -18,7 +18,7 @@ import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.scss';
-import { IUser } from '../types/user';
+import { IUser } from '../types/lihkg';
 import { insertAfter, waitForElement } from './dom';
 import { namespace } from '../../package.json';
 

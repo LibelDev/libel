@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
 import styles from './Header.scss';
 import IDsContext from './IDsContext';
 
-interface IProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps  {
   onClose: () => void;
 }
 
-const Header: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps & MappedHTMLAttributes<'div'>
+
+const Header: React.FunctionComponent<TProps> = (props) => {
   const { children, onClose } = props;
   const { title: id } = useContext(IDsContext);
   return (
