@@ -1,19 +1,24 @@
 import classNames from 'classnames';
 import React from 'react';
 import BaseInput, { TProps as IBaseInputProps } from '../BaseInput/BaseInput';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './ToggleButton.scss';
 
 interface IProps {
   /**
-   * no label, button only
+   * show loading spinner
    */
+  loading?: boolean;
+  /**
+  * no label, button only
+  */
   simple?: boolean;
 }
 
 type TProps = IProps & IBaseInputProps;
 
 const ToggleButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, children, checked, disabled, simple, ...otherProps } = props;
+  const { className, children, checked, disabled, loading, simple, ...otherProps } = props;
 
   return (
     <div
@@ -23,7 +28,7 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
           styles.toggleButton,
           {
             [styles.checked]: checked,
-            [styles.disabled]: disabled,
+            [styles.disabled]: disabled || loading,
             [styles.simple]: simple
           }
         )
@@ -32,8 +37,17 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
       <BaseInput
         type="checkbox"
         checked={checked}
-        disabled={disabled}
-        label={<span>{children}</span>}
+        disabled={disabled || loading}
+        label={
+          <span>
+            {children}
+            {
+              loading && (
+                <LoadingSpinner className={styles.loadingSpinner} />
+              )
+            }
+          </span>
+        }
         {...otherProps}
       />
       <div

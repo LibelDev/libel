@@ -2,6 +2,7 @@ export type Styles = {
   'button': string;
   'checked': string;
   'disabled': string;
+  'loadingSpinner': string;
   'simple': string;
   'toggleButton': string;
 };
