@@ -15,16 +15,13 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const EditLabelButton: React.FunctionComponent<IProps> = (props) => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { className, user, label, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    if (!loading) {
-      setOpen(true);
-    }
-  }, [loading]);
+    setOpen(true);
+  }, []);
 
   const handleModalClose = useCallback(() => {
     setOpen(false);
@@ -52,7 +49,6 @@ const EditLabelButton: React.FunctionComponent<IProps> = (props) => {
         data={label}
         escape={false}
         fragile={false}
-        loading={loading}
         onClose={handleModalClose}
         onSubmission={handleLabelFormSubmit}
       />
