@@ -7,12 +7,18 @@ export const toBlob = async (element: HTMLElement, options?: Partial<Options>) =
     ...options
   };
   const canvas = await html2canvas(element, _options);
-  return new Promise<Blob | null>((resolve) => {
-    canvas.toBlob(resolve);
+  return new Promise<[Blob | null, HTMLCanvasElement]>((resolve) => {
+    canvas.toBlob((blob) => {
+      resolve([blob, canvas]);
+    });
   });
 };
 
-export const toImageURL = async (element: HTMLElement, options?: Partial<Options>) => {
-  const blob = await toBlob(element, options);
-  return URL.createObjectURL(blob!);
+export const toImageURL = async (element: HTMLElement, options?: Partial<Options>): Promise<[string | null, Blob | null, HTMLCanvasElement]> => {
+  const [blob, canvas] = await toBlob(element, options)!;
+  if (blob) {
+    const url = URL.createObjectURL(blob);
+    return [url, blob, canvas];
+  }
+  return [null, blob, canvas];
 };

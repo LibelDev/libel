@@ -40,7 +40,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     setLoading(true);
     if (capture) {
       try {
-        const image = await toBlob(cache.targetReply!);
+        const [image] = await toBlob(cache.targetReply!);
         if (image) {
           const { status, url } = await uploadImage(image);
           switch (status) {
