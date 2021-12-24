@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import { MappedHTMLAttributes } from '../../../../helpers/types';
 import useDataSetThemeColorStyle from '../../../../hooks/useDataSetThemeColorStyle';
@@ -13,16 +13,20 @@ import SubscriptionHomepageButton from '../SubscriptionHomepageButton/Subscripti
 import ToggleSubscriptionButton from '../ToggleSubscriptionButton/ToggleSubscriptionButton';
 import styles from './SubscriptionItem.scss';
 
-interface IProps  {
+interface IProps {
   subscription: Subscription;
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>
+type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
-  const dataSetThemeColorStyle = useDataSetThemeColorStyle(subscription, 'backgroundColor');
+
+  const dataSetThemeColorStyle = useDataSetThemeColorStyle(subscription, useCallback((color) => ({
+    backgroundColor: color
+  }), []));
+
   return (
     <div className={classnames(className, styles.subscription)}>
       <i

@@ -33,6 +33,7 @@
     "focus-trap-react": "^8.8.2",
     "html2canvas": "^1.0.0-rc.7",
     "immer": "^8.0.1",
+    "invert-color": "^2.0.0",
     "joi": "^17.4.0",
     "js-cookie": "^3.0.1",
     "localforage": "^1.9.0",

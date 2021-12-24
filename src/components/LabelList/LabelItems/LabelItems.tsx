@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
-import styles from './LabelItems.scss';
-import LabelInfo from '../LabelInfo/LabelInfo';
+import React, { useCallback } from 'react';
 import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
+import LabelInfo from '../LabelInfo/LabelInfo';
+import styles from './LabelItems.scss';
+import invert from 'invert-color';
 
 interface IProps {
   dataSet: Personal | Subscription;
@@ -15,13 +16,23 @@ const LabelItems: React.FunctionComponent<IProps> = (props) => {
   const { dataSet, user, hasInfo } = props;
   const labels = dataSet.data[user] || [];
 
-  const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, 'borderColor');
+  const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, useCallback((color) => ({
+    backgroundColor: color,
+    borderColor: color,
+    color: invert(color, true)
+  }), []));
 
   return labels.length === 0 ? null : (
     <React.Fragment>
       {
         labels.map((label, index) => (
-          <li className={styles.labelItem} key={index} tabIndex={0} aria-label={label.text} style={dataSetThemeColorStyle}>
+          <li
+            key={index}
+            tabIndex={0}
+            className={styles.labelItem}
+            style={dataSetThemeColorStyle}
+            aria-label={label.text}
+          >
             {
               hasInfo && (
                 <LabelInfo

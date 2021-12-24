@@ -17,6 +17,7 @@
   @apply shadow-xl;
   background-color: #ffffff;
   border-color: #aaaaaa;
+  color: #aaaaaa;
   max-width: 12rem;
   
   @include dark-mode() {

@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { MappedHTMLAttributes } from '../../../helpers/types';
 import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 import Label from '../../../models/Label';
@@ -24,7 +24,9 @@ type TProps = IProps & MappedHTMLAttributes<'div'>;
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   const { className, user, label, index, dataSet } = props;
 
-  const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, 'borderColor');
+  const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, useCallback((color) => ({
+    borderColor: color
+  }), []));
 
   return (
     <div className={classnames(className, styles.labelInfo)} style={dataSetThemeColorStyle}>
