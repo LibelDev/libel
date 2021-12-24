@@ -6,6 +6,7 @@
   @apply m-1 px-2 py-1;
   @apply border border-solid rounded;
   border-color: #aaaaaa;
+  @apply text-sm;
 
   @include dark-mode() {
     border-color: #444443;
@@ -15,9 +16,9 @@
     @apply py-0;
   }
 
-  &:before {
-    content: attr(aria-label);
-  }
+  // &:before {
+  //   content: attr(aria-label);
+  // }
 
   &:hover > i {
     display: inline;

@@ -13,23 +13,26 @@ import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
 interface IProps {
+  dataSet: Personal | Subscription;
   user: string;
   label: Label;
   index: number;
-  dataSet: Personal | Subscription;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, label, index, dataSet } = props;
+  const { className, dataSet, user, label, index } = props;
 
   const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, useCallback((color) => ({
     borderColor: color
   }), []));
 
   return (
-    <div className={classnames(className, styles.labelInfo)} style={dataSetThemeColorStyle}>
+    <div
+      className={classnames(className, styles.labelInfo)}
+      style={dataSetThemeColorStyle}
+    >
       {
         label.reason && (
           <div className={styles.reason}>

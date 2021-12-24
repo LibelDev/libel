@@ -8,12 +8,11 @@ import styles from './LabelList.scss';
 
 interface IProps {
   user: string;
-  hasInfo: boolean;
   hasSnipeButton: boolean;
 }
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
-  const { user, hasInfo, hasSnipeButton } = props;
+  const { user, hasSnipeButton } = props;
   const personal = useSelector(filterPersonalForUser(user));
   const { labels: personalLabels } = personal.aggregate();
   const subscriptions = useSelector(filterSubscriptionsForUser(user));
@@ -21,32 +20,32 @@ const LabelList: React.FunctionComponent<IProps> = (props) => {
     subscriptions.map((subscription) => subscription.aggregate()),
     ({ labels }) => labels
   );
-  return (personalLabels.length || subscriptionLabels.length) ? (
-    <React.Fragment>
-      <ul className={styles.labelList}>
-        <LabelItems
-          dataSet={personal}
-          user={user}
-          hasInfo={hasInfo}
-        />
+  return (
+    (personalLabels.length || subscriptionLabels.length) ? (
+      <React.Fragment>
+        <ul className={styles.labelList}>
+          <LabelItems
+            dataSet={personal}
+            user={user}
+          />
+          {
+            subscriptions.map((subscription, index) => (
+              <LabelItems
+                key={index}
+                dataSet={subscription}
+                user={user}
+              />
+            ))
+          }
+        </ul>
         {
-          subscriptions.map((subscription, index) => (
-            <LabelItems
-              key={index}
-              dataSet={subscription}
-              user={user}
-              hasInfo={hasInfo}
-            />
-          ))
+          hasSnipeButton && !!(personal.data[user]?.length || subscriptionLabels.length) && (
+            <SnipeButton user={user} />
+          )
         }
-      </ul>
-      {
-        hasSnipeButton && !!(personal.data[user]?.length || subscriptionLabels.length) && (
-          <SnipeButton user={user} />
-        )
-      }
-    </React.Fragment>
-  ) : null;
+      </React.Fragment>
+    ) : null
+  );
 };
 
 export default LabelList;

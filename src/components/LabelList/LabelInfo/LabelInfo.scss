@@ -1,14 +1,13 @@
 @import '../../../stylesheets/base';
 
 .label-info {
-  @apply mb-2 p-2;
+  @apply absolute;
+  @apply bottom-1/2 left-1/2;
   @apply border border-solid rounded;
+  @apply mb-2 p-2;
   @apply text-center;
   @apply invisible;
   @apply opacity-0;
-  @apply absolute;
-  @apply bottom-1/2;
-  @apply left-1/2;
   @apply w-max;
   @apply -translate-x-1/2 transform;
   @apply transition-all;

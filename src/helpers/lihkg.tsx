@@ -80,12 +80,12 @@ const renderAddLabelButton = (user: string, store: Store, container: TRendererCo
   }
 };
 
-const renderLabelList = (user: string, store: Store, hasInfo: boolean, hasSnipeButton: boolean, container: TRendererContainer) => {
+const renderLabelList = (user: string, store: Store, hasSnipeButton: boolean, container: TRendererContainer) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <LabelList user={user} hasInfo={hasInfo} hasSnipeButton={hasSnipeButton} />
+        <LabelList user={user} hasSnipeButton={hasSnipeButton} />
       </PersistGate>
     </Provider>,
     container
@@ -148,7 +148,7 @@ const handleUserCardModal = (node: Element, store: Store) => {
     const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
-    renderLabelList(user, store, true, false, labelListContainer);
+    renderLabelList(user, store, false, labelListContainer);
     const userCardButtonsContainer = node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
     const addLabelButtonContainer = document.createElement('div');
     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
@@ -183,7 +183,7 @@ const handleNickname = (node: Element, store: Store) => {
       (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
       insertAfter(container, node);
-      renderLabelList(user, store, true, true, container);
+      renderLabelList(user, store, true, container);
       (node as any)[containerCacheKey] = container;
     }
   }
