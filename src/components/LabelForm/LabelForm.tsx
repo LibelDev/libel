@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import joi from 'joi';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
 import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
+import useScreenshot from '../../hooks/useScreenshot';
 import { ILabel } from '../../models/Label';
 import schema from '../../schemas/label';
 import { IconName } from '../../types/icon';
@@ -68,6 +69,12 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [errors, setErrors] = useState<IErrors>({});
   const [error, setError] = useState('');
 
+  const screenshot = useScreenshot(capture ? cache.targetReply : null, useMemo(() => ({
+    onclone: (document, element) => {
+      element.style.width = '600px';
+    }
+  }), []));
+
   const _id = id || useElementID(LabelForm.displayName!);
   const errorID = `${_id}-error`;
 
@@ -88,8 +95,6 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(async (event) => {
     event.preventDefault();
-    // const form = new FormData(event.target as HTMLFormElement);
-    // const data = Object.fromEntries(form as any);
     const { value, error } = _schema.validate(formData);
     if (error) {
       const { details } = error;
@@ -168,13 +173,28 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** add label */
           <div className={styles.inputField}>
             <ToggleButton
-              className={styles.screenshot}
+              className={styles.screenshotToggleButton}
               checked={capture}
               disabled={loading}
+              loading={screenshot.loading}
               onChange={handleCaptureChange}
             >
               {TEXTS.LABEL_FORM_FIELD_LABEL_CAPTURE}
             </ToggleButton>
+            {
+              !screenshot.loading && screenshot.url && screenshot.canvas && (
+                <div className={styles.screenshotPreview}>
+                  <a
+                    href={screenshot.url}
+                    target="_blank"
+                    style={{ backgroundImage: `url(${screenshot.url})` }}
+                    aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
+                  >
+                    <Icon className={styles.expand} icon={IconName.Expand} />
+                  </a>
+                </div>
+              )
+            }
           </div>
         )
       }

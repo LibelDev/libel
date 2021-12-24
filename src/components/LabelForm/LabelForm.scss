@@ -1,3 +1,5 @@
+@import '../../stylesheets/base';
+
 .label-form {
   @apply p-4;
 
@@ -17,8 +19,51 @@
     }
   }
 
-  .screenshot {
+  .screenshot-toggle-button {
     @apply w-full;
+
+    .loading-spinner {
+      @apply mr-2;
+    }
+  }
+
+  .screenshot-preview {
+    @apply flex;
+    @apply max-h-20 max-w-xs;
+    @apply mt-2;
+    @apply p-2;
+    @apply rounded;
+    @apply box-content;
+    border: solid 1px #e0e0e0;
+
+    @include dark-mode() {
+      border-color: #444443;
+    }
+
+    a {
+      @apply relative;
+      @apply bg-cover bg-no-repeat;
+      @apply h-20 w-full;
+
+      &:after {
+        content: '';
+        @apply absolute;
+        @apply bottom-0 left-0;
+        @apply h-4 w-full;
+        background-image: linear-gradient(transparent, #000);
+      }
+
+      .expand {
+        @apply absolute;
+        @apply right-0 bottom-0;
+        @apply rounded;
+        @apply m-1;
+        @apply p-1;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        font-size: 1.2rem;
+      }
+    }
   }
 
   .error {

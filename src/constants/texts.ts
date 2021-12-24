@@ -18,6 +18,7 @@ export const LABEL_FORM_MODAL_TITLE_EDIT = '修改標籤';
 export const LABEL_FORM_FIELD_LABEL_TEXT = '標籤名稱';
 export const LABEL_FORM_FIELD_LABEL_REASON = '標籤原因';
 export const LABEL_FORM_FIELD_LABEL_CAPTURE = '自動將目標留言截圖';
+export const LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT = '預覽截圖';
 export const LABEL_FORM_FIELD_LABEL_IMAGE = '相關圖片網址';
 export const LABEL_FORM_FIELD_PLACEHOLDER_REASON = '如無需要可留空';
 export const LABEL_FORM_FIELD_PLACEHOLDER_IMAGE = '如無需要可留空';
