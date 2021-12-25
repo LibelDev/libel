@@ -18,14 +18,6 @@
       border-color: #3b3a39;
     }
 
-    &:focus {
-      outline: 1px solid #fbc308;
-
-      @include dark-mode() {
-        outline: 1px solid rgba(251, 195, 8, 0.6);
-      }
-    }
-
     &.error {
       border-color: #fb0808;
 
