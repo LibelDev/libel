@@ -65,6 +65,7 @@
     "@types/webpack-dev-server": "^3.11.3",
     "@types/webpack-env": "^1.16.0",
     "css-loader": "^5.2.0",
+    "dotenv": "^10.0.0",
     "postcss": "^8.2.9",
     "postcss-loader": "^5.2.0",
     "postcss-preset-env": "^6.7.0",
