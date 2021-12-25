@@ -2,26 +2,36 @@ import classNames from 'classnames';
 import joi from 'joi';
 import React, { useCallback, useMemo, useState } from 'react';
 import cache from '../../cache';
+import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
-import { ILabel } from '../../models/Label';
-import schema from '../../schemas/label';
+import Label, { ILabel } from '../../models/Label';
 import { IconName } from '../../types/icon';
+import ColorPicker from '../ColorPicker/ColorPicker';
 import Icon from '../Icon/Icon';
+import LabelItem from '../LabelList/LabelItems/LabelItem/LabelItem';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.scss';
 
+type TData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
+
+type TFormData = TData & {
+  meta: {
+    screenshot?: Blob | null;
+  };
+};
+
+interface IToggleButtonState {
+  isCustomColor: boolean;
+  isCaptureReply: boolean;
+}
+
 interface IErrors {
   [name: string]: string | undefined;
 }
-
-type TLabelFormData = (
-  Required<Pick<ILabel, 'text' | 'reason'>> &
-  Pick<ILabel, 'image'>
-);
 
 interface IProps {
   /**
@@ -31,24 +41,35 @@ interface IProps {
   /**
    * the label to be edited
    */
-  data?: ILabel;
+  data?: TData;
   loading?: boolean;
   /**
    * custom onSubmit event handler
    * @async
    * @throws {string} error message
    */
-  onSubmission: (event: React.FormEvent<HTMLFormElement>, label: TLabelFormData, capture?: boolean) => Promise<void>;
+  onSubmission: (event: React.FormEvent<HTMLFormElement>, data: TFormData) => Promise<void>;
 }
 
 export type TProps = IProps & MappedHTMLAttributes<'form'>;
 
-const _schema = schema.keys({
+const schema = joi.object({
   text: joi.string().trim().required().messages({
     'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY,
     'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY
   }),
-});
+  reason: joi.string().trim().allow(''),
+  color: joi.string().trim().pattern(HEX_COLOR).allow(''),
+  image: joi.string().trim().allow(''),
+  meta: joi.object({
+    screenshot: joi.any()
+  })
+}).unknown();
+
+const initialFormData: TFormData = {
+  text: '',
+  meta: {}
+};
 
 const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const {
@@ -61,15 +82,21 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     ...otherProps
   } = props;
 
-  const [formData, setFormData] = useState<TLabelFormData>(data as TLabelFormData || {
-    text: '',
-    reason: ''
+  const [formData, setFormData] = useState<TFormData>(data as TFormData || initialFormData);
+  const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
+    isCustomColor: !!formData.color,
+    isCaptureReply: false
   });
-  const [capture, setCapture] = useState(false); // capture the screenshot of the target reply
   const [errors, setErrors] = useState<IErrors>({});
   const [error, setError] = useState('');
 
-  const screenshot = useScreenshot(capture ? cache.targetReply : null, useMemo(() => ({
+  const draftLabel = useMemo(() => {
+    const { text } = formData;
+    const label = new Label(text || TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_DUMMY_TEXT);
+    return label;
+  }, [formData]);
+
+  const screenshot = useScreenshot(toggleButtonState.isCaptureReply ? cache.targetReply : null, useMemo(() => ({
     onclone: (document, element) => {
       element.style.width = '600px';
     }
@@ -80,22 +107,28 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const _user = cache.getUser(user);
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
-    const _formData = { ...formData, [name]: value };
-    setFormData(_formData);
-    const _errors = { ...errors, [name]: undefined };
-    setErrors(_errors);
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: undefined });
   }, [formData, errors]);
 
-  const handleCaptureChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
-    const { checked } = event.target;
-    setCapture(checked);
-  }, []);
+  const handleToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+    const { checked, name } = event.target;
+    setToggleButtonState({ ...toggleButtonState, [name]: checked });
+  }, [toggleButtonState]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(async (event) => {
     event.preventDefault();
-    const { value, error } = _schema.validate(formData);
+    const _formData: TFormData = {
+      ...formData,
+      color: toggleButtonState.isCustomColor ? formData.color : undefined, // unset if it is disabled
+      meta: {
+        ...formData.meta,
+        screenshot: screenshot.blob
+      }
+    };
+    const { value, error } = schema.validate(_formData);
     if (error) {
       const { details } = error;
       for (const { context, message } of details) {
@@ -105,14 +138,14 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
     } else {
       try {
-        await onSubmission(event, value as TLabelFormData, capture);
+        await onSubmission(event, value);
       } catch (err) {
         if (typeof err === 'string') {
           setError(err);
         }
       }
     }
-  }, [onSubmission, capture, errors]);
+  }, [onSubmission, formData, toggleButtonState, errors, screenshot]);
 
   return (
     <form
@@ -132,66 +165,118 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       <div className={styles.inputField}>
         <TextInput
-          className={styles.textInput}
+          className={styles.input}
           disabled={loading}
           label={TEXTS.LABEL_FORM_FIELD_LABEL_TEXT}
-          name='text'
+          name="text"
           value={formData.text || ''}
           error={errors.text}
-          onChange={handleChange}
+          onChange={handleInputChange}
           autoFocus
         />
       </div>
       <div className={styles.inputField}>
         <TextInput
-          className={styles.textInput}
+          className={styles.input}
           disabled={loading}
           label={TEXTS.LABEL_FORM_FIELD_LABEL_REASON}
           placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_REASON}
-          name='reason'
+          name="reason"
           value={formData.reason || ''}
           error={errors.reason}
-          onChange={handleChange}
+          onChange={handleInputChange}
         />
+      </div>
+      <div className={classNames(styles.inputField, styles.color)}>
+        <ToggleButton
+          className={styles.toggleButton}
+          checked={toggleButtonState.isCustomColor}
+          name="isCustomColor"
+          disabled={loading}
+          onChange={handleToggleButtonChange}
+        >
+          {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
+        </ToggleButton>
+        {
+          toggleButtonState.isCustomColor && (
+            <div className={styles.colorPicker}>
+              <span className={styles.preview}>
+                {TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_LABEL_TEXT}
+                {
+                  draftLabel.text && (
+                    <LabelItem
+                      className={styles.labelItem}
+                      label={draftLabel}
+                      color={formData.color}
+                      hasInfo={false}
+                    />
+
+                  )
+                }
+              </span>
+              <ColorPicker
+                className={styles.input}
+                disabled={loading}
+                name="color"
+                value={formData.color || ''}
+                error={errors.color}
+                onChange={handleInputChange}
+              />
+            </div>
+          )
+        }
       </div>
       {
         data ? (
           /** edit label */
           <div className={styles.inputField}>
             <TextInput
-              className={styles.textInput}
+              className={styles.input}
               disabled={loading}
               label={TEXTS.LABEL_FORM_FIELD_LABEL_IMAGE}
               placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_IMAGE}
-              name='image'
+              name="image"
               value={formData.image || ''}
               error={errors.image}
-              onChange={handleChange}
+              onChange={handleInputChange}
             />
           </div>
         ) : (
           /** add label */
-          <div className={styles.inputField}>
+          <div className={classNames(styles.inputField, styles.screenshot)}>
             <ToggleButton
-              className={styles.screenshotToggleButton}
-              checked={capture}
+              className={styles.toggleButton}
+              checked={toggleButtonState.isCaptureReply}
               disabled={loading}
+              name="isCaptureReply"
               loading={screenshot.loading}
-              onChange={handleCaptureChange}
+              onChange={handleToggleButtonChange}
             >
               {TEXTS.LABEL_FORM_FIELD_LABEL_CAPTURE}
             </ToggleButton>
             {
-              !screenshot.loading && screenshot.url && screenshot.canvas && (
-                <div className={styles.screenshotPreview}>
-                  <a
-                    href={screenshot.url}
-                    target="_blank"
-                    style={{ backgroundImage: `url(${screenshot.url})` }}
-                    aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
-                  >
-                    <Icon className={styles.expand} icon={IconName.Expand} />
-                  </a>
+              !screenshot.loading && (screenshot.error || screenshot.url) && (
+                <div className={styles.preview}>
+                  {
+                    screenshot.error ? (
+                      <span className={styles.error}>
+                        <Icon className={styles.icon} icon={IconName.CommentAlert} />
+                        {TEXTS.LABEL_FORM_CAPTURE_ERROR}
+                      </span>
+                    ) : (
+                      screenshot.url && (
+                        <a
+                          className={styles.image}
+                          href={screenshot.url}
+                          target="_blank"
+                          style={{ backgroundImage: `url(${screenshot.url})` }}
+                          aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
+                        >
+                          <Icon className={styles.icon} icon={IconName.Expand} />
+                        </a>
+                      )
+                    )
+                  }
                 </div>
               )
             }

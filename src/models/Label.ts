@@ -6,6 +6,7 @@ export interface ILabel {
   url?: string;
   date?: number;
   source?: ISource;
+  color?: string;
   image?: string;
 }
 
@@ -28,14 +29,16 @@ class Label implements ILabel {
   url?: string;
   date?: number;
   source?: ISource;
+  color?: string;
   image?: string;
 
-  constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource, image?: string) {
+  constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource, color?: string, image?: string) {
     this.text = text;
     this.reason = reason;
     this.url = url;
     this.date = date;
     this.source = source;
+    this.color = color;
     this.image = image;
   }
 
@@ -43,8 +46,8 @@ class Label implements ILabel {
     if (label instanceof Label) {
       return label;
     }
-    const { text, reason, url, date, source, image } = label;
-    return new Label(text, reason, url, date, source, image);
+    const { text, reason, url, date, source, color, image } = label;
+    return new Label(text, reason, url, date, source, color, image);
   }
 
   get sourceURL () {

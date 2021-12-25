@@ -17,6 +17,7 @@
 }
 
 .label-list {
+  @apply inline-flex items-center;
   @apply list-none;
   @apply -m-1;
   @apply p-0;

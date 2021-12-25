@@ -1,9 +1,7 @@
 import classnames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { MappedHTMLAttributes } from '../../../helpers/types';
-import useDataSetThemeColorStyle from '../../../hooks/useDataSetThemeColorStyle';
 import Label from '../../../models/Label';
-import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import LabelImageButton from './LabelImageButton/LabelImageButton';
@@ -13,25 +11,27 @@ import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
 interface IProps {
-  dataSet: Personal | Subscription;
   user: string;
   label: Label;
-  index: number;
+  color?: string;
+  subscription?: Subscription;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
-  const { className, dataSet, user, label, index } = props;
+  const { className, user, label, color, subscription } = props;
 
-  const dataSetThemeColorStyle = useDataSetThemeColorStyle(dataSet, useCallback((color) => ({
-    borderColor: color
-  }), []));
+  const _color = label.color || color;
+
+  const style: Partial<React.CSSProperties> | undefined = useMemo(() => (_color ? {
+    borderColor: _color
+  } : undefined), [_color]);
 
   return (
     <div
       className={classnames(className, styles.labelInfo)}
-      style={dataSetThemeColorStyle}
+      style={style}
     >
       {
         label.reason && (
@@ -42,16 +42,16 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
       }
       <div className={styles.buttons}>
         {
-          !Subscription.implements(dataSet) && (
-            <EditLabelButton className={styles.button} user={user} label={label} index={index} />
+          !subscription && (
+            <EditLabelButton className={styles.button} user={user} label={label} />
           )
         }
         <LabelSourceButton className={styles.button} label={label} />
         <LabelImageButton className={styles.button} label={label} />
         {
-          Subscription.implements(dataSet) ?
-            <LabelProviderIcon className={styles.button} subscription={dataSet} /> :
-            <RemoveLabelButton className={styles.button} user={user} label={label} index={index} />
+          subscription ?
+            <LabelProviderIcon className={styles.button} subscription={subscription} /> :
+            <RemoveLabelButton className={styles.button} user={user} label={label} />
         }
       </div>
     </div>

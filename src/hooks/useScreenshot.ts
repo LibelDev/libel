@@ -4,6 +4,7 @@ import { toImageURL } from '../helpers/canvas';
 
 interface IState {
   loading: boolean;
+  error: unknown | null;
   url: string | null;
   blob: Blob | null;
   canvas: HTMLCanvasElement | null;
@@ -11,6 +12,7 @@ interface IState {
 
 const initialState: IState = {
   loading: false,
+  error: null,
   url: null,
   blob: null,
   canvas: null
@@ -22,8 +24,12 @@ const useScreenshot = (element?: HTMLElement | null, options?: Partial<Options>)
     (async () => {
       if (element) {
         setState({ ...state, loading: true });
-        const [url, blob, canvas] = await toImageURL(element, options);
-        setState({ loading: false, url, blob, canvas });
+        try {
+          const [url, blob, canvas] = await toImageURL(element, options);
+          setState({ loading: false, error: null, url, blob, canvas });
+        } catch (err) {
+          setState({ ...initialState, error: err });
+        }
       } else {
         setState(initialState);
       }

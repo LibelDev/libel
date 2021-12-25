@@ -1,6 +1,6 @@
 import html2canvas, { Options } from 'html2canvas';
 
-export const toBlob = async (element: HTMLElement, options?: Partial<Options>) => {
+const toBlob = async (element: HTMLElement, options?: Partial<Options>) => {
   const _options = {
     allowTaint: true,
     useCORS: true,

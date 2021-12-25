@@ -1,5 +1,3 @@
-import { displayName } from '../../package.json';
-
 // thread
 export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 
@@ -15,10 +13,14 @@ export const ADD_LABEL_BUTTON_TEXT = '標籤';
 // form
 export const LABEL_FORM_MODAL_TITLE_ADD = '新增標籤';
 export const LABEL_FORM_MODAL_TITLE_EDIT = '修改標籤';
-export const LABEL_FORM_FIELD_LABEL_TEXT = '標籤名稱';
-export const LABEL_FORM_FIELD_LABEL_REASON = '標籤原因';
+export const LABEL_FORM_FIELD_LABEL_TEXT = '名稱';
+export const LABEL_FORM_FIELD_LABEL_REASON = '原因';
+export const LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR = '自訂顏色';
+export const LABEL_FORM_LABEL_PREVIEW_LABEL_LABEL_TEXT = '預覽';
+export const LABEL_FORM_LABEL_PREVIEW_LABEL_DUMMY_TEXT = '標籤名稱';
 export const LABEL_FORM_FIELD_LABEL_CAPTURE = '自動將目標留言截圖';
 export const LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT = '預覽截圖';
+export const LABEL_FORM_CAPTURE_ERROR = '截圖失敗，請重新嘗試。';
 export const LABEL_FORM_FIELD_LABEL_IMAGE = '相關圖片網址';
 export const LABEL_FORM_FIELD_PLACEHOLDER_REASON = '如無需要可留空';
 export const LABEL_FORM_FIELD_PLACEHOLDER_IMAGE = '如無需要可留空';

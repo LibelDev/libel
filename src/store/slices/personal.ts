@@ -1,28 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
-import { ISource } from '../../models/Label';
+import Label, { ISource } from '../../models/Label';
 import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
 
 export interface IAddLabelPayload {
   user: string;
   text: string;
-  reason: string;
+  reason?: string;
   source: ISource;
+  color?: string;
   image?: string;
 }
 
 interface IEditLabelPayload {
   user: string;
-  index: number;
+  label: Label;
   text: string;
-  reason: string;
+  reason?: string;
+  color?: string;
   image?: string;
 }
 
 interface IRemoveLabelPayload {
   user: string;
-  index: number;
+  label: Label;
 }
 
 const initialState: Personal = new Personal();
@@ -32,16 +34,16 @@ const slice = createSlice({
   initialState,
   reducers: {
     add: (state, action: PayloadAction<IAddLabelPayload>) => {
-      const { user, text, reason, source, image } = action.payload;
-      state.add(user, text, reason, source, image);
+      const { user, text, reason, source, color, image } = action.payload;
+      state.add(user, { text, reason, source, color, image });
     },
     edit: (state, action: PayloadAction<IEditLabelPayload>) => {
-      const { user, index, text, reason, image } = action.payload;
-      state.edit(user, index, text, reason, image);
+      const { user, label, text, reason, color, image } = action.payload;
+      state.edit(user, label, { text, reason, color, image });
     },
     remove: (state, action: PayloadAction<IRemoveLabelPayload>) => {
-      const { user, index } = action.payload;
-      state.remove(user, index);
+      const { user, label } = action.payload;
+      state.remove(user, label);
     },
     update: (state, action: PayloadAction<Personal | IPersonal>) => {
       const { payload: personal } = action;

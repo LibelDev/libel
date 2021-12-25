@@ -1,9 +1,8 @@
-import { immerable } from 'immer';
-import defaultTo from 'lodash/defaultTo';
+import { immerable, isDraft, original } from 'immer';
 import * as dataSchemas from '../schemas/data';
 import * as dataSetSchemas from '../schemas/dataSet';
 import Data, { IData } from './Data';
-import Label, { ILabelDatum, ISource } from './Label';
+import Label, { ILabel, ILabelDatum } from './Label';
 
 export interface IDataSet {
   data: Data;
@@ -93,29 +92,39 @@ class DataSet implements IDataSet {
     return { users, labels };
   }
 
-  add (user: string, text: string, reason: string, source: ISource, image?: string) {
-    const labels = (this.data[user] || (this.data[user] = []));
+  add (user: string, data: Pick<ILabel, 'text' | 'reason' | 'source' | 'color' | 'image'>) {
+    this.data[user] = this.data[user] || [];
+    const labels = this.data[user]!;
+    const { text, reason, source, color, image } = data;
     const { href: url } = window.location;
     const date = Date.now();
-    const label = new Label(text, reason, url, date, source, image);
+    const label = new Label(text, reason, url, date, source, color, image);
     labels.push(label);
     return this;
   }
 
-  edit (user: string, index: number, text: string, reason: string, image?: string) {
-    const labels = this.data[user];
-    if (labels && index >= 0) {
-      const label = labels[index];
-      label.text = defaultTo(text, label.text);
-      label.reason = defaultTo(reason, label.reason);
-      label.image = defaultTo(image, label.image);
+  edit (user: string, label: Label, data: Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>) {
+    const _this = isDraft(this) ? original(this)! : this; // always use the original `this` for reference checking 
+    const labels = _this.data[user] || [];
+    const index = labels.indexOf(label);
+    if (index >= 0) {
+      const labels = this.data[user] || [];
+      const target = labels[index];
+      const { text, reason = '', color = '', image = '' } = data;
+      target.text = text;
+      target.reason = reason;
+      target.color = color;
+      target.image = image;
     }
     return this;
   }
 
-  remove (user: string, index: number) {
-    const labels = this.data[user];
-    if (labels && index >= 0) {
+  remove (user: string, label: Label) {
+    const _this = isDraft(this) ? original(this)! : this; // always use the original `this` for reference checking 
+    const labels = _this.data[user] || [];
+    const index = labels.indexOf(label);
+    if (index >= 0) {
+      const labels = this.data[user] || [];
       labels.splice(index, 1);
       if (labels.length === 0) {
         delete this.data[user];

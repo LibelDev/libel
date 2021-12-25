@@ -3,7 +3,7 @@
 .label-item {
   @apply inline-flex items-center;
   @apply relative;
-  @apply m-1 px-2 py-1;
+  @apply px-2 py-1;
   @apply border border-solid rounded;
   border-color: #aaaaaa;
   @apply text-sm;
@@ -15,10 +15,6 @@
   :global(.#{$lihkg-class-thread-heading-text}) & {
     @apply py-0;
   }
-
-  // &:before {
-  //   content: attr(aria-label);
-  // }
 
   &:hover > i {
     display: inline;

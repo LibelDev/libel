@@ -10,17 +10,16 @@ import * as questions from '../../../../templates/questions';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
-interface IProps  {
+interface IProps {
   user: string;
   label: Label;
-  index: number;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, user: userID, label, index } = props;
+  const { className, user: userID, label } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
@@ -28,9 +27,9 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
     const question = render(questions.remove.label, { user, label });
     const confirmed = window.confirm(question);
     if (confirmed) {
-      dispatch(personalActions.remove({ user: userID, index }));
+      dispatch(personalActions.remove({ user: userID, label }));
     }
-  }, [userID, label, index]);
+  }, [userID, label, label]);
 
   return (
     <IconButton

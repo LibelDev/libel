@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../apis/nacx';
-import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
-import { toBlob } from '../../helpers/canvas';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { IPost } from '../../types/lihkg';
@@ -34,28 +32,25 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     setOpen(false);
   }, []);
 
-  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, data, capture) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, data) => {
+    const { text, reason, color, image, meta } = data;
     const source = mapPostToSource(targetReply);
-    const payload: IAddLabelPayload = { user, ...data, source };
+    const payload: IAddLabelPayload = { user, text, reason, color, image, source };
     setLoading(true);
-    if (capture) {
+    const { screenshot } = meta;
+    if (screenshot) {
       try {
-        const [image] = await toBlob(cache.targetReply!);
-        if (image) {
-          const { status, url } = await uploadImage(image);
-          switch (status) {
-            case 200: {
-              payload.image = url;
-              dispatch(personalActions.add(payload));
-              handleModalClose();
-              break;
-            }
-            default: {
-              throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
-            }
+        const { status, url } = await uploadImage(screenshot);
+        switch (status) {
+          case 200: {
+            payload.image = url;
+            dispatch(personalActions.add(payload));
+            handleModalClose();
+            break;
           }
-        } else {
-          throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+          default: {
+            throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+          }
         }
       } catch (err) {
         setLoading(false);

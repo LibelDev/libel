@@ -1,0 +1,10 @@
+@import '../../stylesheets/base';
+
+.color-picker {
+  .input {
+    @apply appearance-none;
+    @apply border-0;
+    @apply rounded;
+    @apply p-0;
+  }
+}
