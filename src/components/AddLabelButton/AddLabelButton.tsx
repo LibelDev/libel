@@ -34,9 +34,9 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     setOpen(false);
   }, []);
 
-  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, label, capture) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, data, capture) => {
     const source = mapPostToSource(targetReply);
-    const payload: IAddLabelPayload = { user, ...label, source };
+    const payload: IAddLabelPayload = { user, ...data, source };
     setLoading(true);
     if (capture) {
       try {
