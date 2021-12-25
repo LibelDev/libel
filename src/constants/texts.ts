@@ -5,6 +5,7 @@ export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 export const USER_CARD_MODAL_TITLE = '會員資料';
 export const SETTINGS_MODAL_TITLE = '設定';
 export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
+export const SETTING_CLOUD_SYNC_SECTION_TITLE = '雲端同步數據';
 export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入數據';
 
 // add
@@ -59,6 +60,12 @@ export const SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT = '標籤名單主頁';
 export const SUBSCRIPTION_LOAD_SUCCESS = '成功載入名單';
 export const SUBSCRIPTION_FETCH_ERROR = '無法取得標籤名單，請檢查連結是否正確。';
 export const SUBSCRIPTION_VALIDATION_ERROR = '標籤名單格式錯誤，無法載入，請聯絡名單作者。';
+
+// cloud sync
+export const CLOUD_SYNC_GOOGLE_DRIVE_LABEL_TEXT = 'Google 雲端硬碟';
+export const CLOUD_SYNC_GOOGLE_DRIVE_ACCOUNT_PREFIX = '已連接';
+export const GOOGLE_AUTHORIZE_BUTTON_TEXT = '連接';
+export const GOOGLE_SIGNOUT_BUTTON_TEXT = '登出';
 
 // announcement
 export const CHANGE_LOG = '更新內容';

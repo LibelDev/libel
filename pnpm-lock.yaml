@@ -2,6 +2,8 @@ lockfileVersion: 5.3
 
 specifiers:
   '@reduxjs/toolkit': ^1.5.1
+  '@types/gapi': ^0.0.41
+  '@types/gapi.auth2': ^0.0.55
   '@types/joi': ^17.2.3
   '@types/lodash': ^4.14.168
   '@types/mustache': ^4.1.1
@@ -82,6 +84,8 @@ dependencies:
   semver: 7.3.5
 
 devDependencies:
+  '@types/gapi': 0.0.41
+  '@types/gapi.auth2': 0.0.55
   '@types/joi': 17.2.3
   '@types/lodash': 4.14.177
   '@types/mustache': 4.1.2
@@ -329,6 +333,16 @@ packages:
       '@types/express-serve-static-core': 4.17.25
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
+    dev: true
+
+  /@types/gapi.auth2/0.0.55:
+    resolution: {integrity: sha512-chmROsbo28jI5or0aRP8X3aBuWkq8jJHj75al/C0BhI/qum8v7XSxxQ9aLpA2ULPWgWSyh6orn9ZCaUSA4iQCA==}
+    dependencies:
+      '@types/gapi': 0.0.41
+    dev: true
+
+  /@types/gapi/0.0.41:
+    resolution: {integrity: sha512-tmHO66z/f91JZCDqinj/nNvQEszsz/hBT4+MvCSKT5sDzl5Ld/oXZ8WaecCBjRLw2uWKUInUHM9MhEXWkOiNjw==}
     dev: true
 
   /@types/glob/7.2.0:

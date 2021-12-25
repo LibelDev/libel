@@ -1,0 +1,24 @@
+.label {
+  &,
+  .user {
+    @apply flex items-center;
+  }
+  
+  .logo {
+    @apply w-10;
+  }
+
+  .provider {
+    @apply ml-2;
+  }
+
+  .user {
+    @apply mt-2;
+    @apply text-xs;
+    @apply opacity-50;
+
+    .icon {
+      @apply mr-2;
+    }
+  }
+}
