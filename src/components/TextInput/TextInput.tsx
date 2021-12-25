@@ -11,7 +11,6 @@ type TProps = IProps & TBaseInputProps;
 
 const TextInput: React.FunctionComponent<TProps> = (props) => {
   const { className, error, ...otherProps } = props;
-
   return (
     <div className={classNames(className, styles.textInput)}>
       <BaseInput
