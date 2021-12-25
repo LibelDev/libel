@@ -1,7 +1,7 @@
 import React from 'react';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
-import LabelItem from './LabelItem';
+import LabelItem from './LabelItem/LabelItem';
 
 interface IProps {
   dataSet: Personal | Subscription;
