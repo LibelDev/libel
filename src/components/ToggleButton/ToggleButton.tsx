@@ -35,11 +35,14 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
       }
     >
       <BaseInput
+        {...otherProps}
         type="checkbox"
+        role="switch"
+        className={styles.input}
         checked={checked}
         disabled={disabled || loading}
         label={
-          <span>
+          <span className={styles.label}>
             {children}
             {
               loading && (
@@ -48,7 +51,6 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
             }
           </span>
         }
-        {...otherProps}
       />
       <div
         className={styles.button}

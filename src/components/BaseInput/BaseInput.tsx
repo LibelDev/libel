@@ -23,7 +23,7 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
     <React.Fragment>
       {
         label && (
-          <span>
+          <span className={styles.label}>
             <label htmlFor={_id}>
               {label}
             </label>

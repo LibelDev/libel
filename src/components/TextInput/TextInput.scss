@@ -3,13 +3,6 @@
 .text-input {
   @apply flex items-start;
 
-  $height: 2.25rem;
-
-  > span {
-    @apply mr-4;
-    line-height: $height;
-  }
-
   .input {
     @apply relative;
     @apply rounded;
@@ -18,7 +11,6 @@
     @apply text-current;
     background-color: #fff;
     border-color: #d9d9d9;
-    height: $height;
     padding: 0.4em;
 
     @include dark-mode() {

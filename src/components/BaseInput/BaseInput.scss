@@ -1,6 +1,17 @@
-.input:disabled {
-  @apply cursor-not-allowed;
-  @apply opacity-20;
+$height: 2.25rem;
+
+.label {
+  @apply mr-4;
+  line-height: $height;
+}
+
+.input {
+  height: $height;
+
+  &:disabled {
+    @apply cursor-not-allowed;
+    @apply opacity-20;
+  }
 }
 
 .error {

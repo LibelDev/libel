@@ -6,16 +6,14 @@
 
   > span {
     @apply flex-1;
-    @apply mr-2;
+    line-height: initial;
   }
 
-  label {
-    span {
-      @apply inline-flex items-center;
-    }
+  .label {
+    @apply inline-flex items-center;
   }
 
-  input[type='checkbox'] {
+  .input {
     @apply absolute top-0 right-0;
     @apply h-6 w-12;
     @apply m-0 p-0;
@@ -25,18 +23,8 @@
     &:not(:disabled) {
       @apply cursor-pointer;
     }
-
-    // &:focus {
-    //   + .button {
-    //     outline: 1px solid #fbc308;
-
-    //     @include dark-mode() {
-    //       outline: 1px solid rgba(251, 195, 8, 0.6);
-    //     }
-    //   }
-    // }
   }
-  
+
   .loading-spinner {
     @apply ml-2;
   }
