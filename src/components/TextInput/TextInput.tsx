@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import useElementID from '../../hooks/useElementID';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import styles from './TextInput.scss';
 
@@ -11,31 +10,24 @@ interface IProps {
 type TProps = IProps & TBaseInputProps;
 
 const TextInput: React.FunctionComponent<TProps> = (props) => {
-  const { id, className, error, ...otherProps } = props;
-
-  const _id = id || useElementID(TextInput.displayName!);
-  const errorID = `${_id}-error`;
+  const { className, error, ...otherProps } = props;
 
   return (
-    <React.Fragment>
-      <div
+    <div className={classNames(className, styles.textInput)}>
+      <BaseInput
+        {...otherProps}
+        type="text"
         className={
           classNames(
-            className,
-            styles.textInput,
+            styles.input,
             {
               [styles.error]: !!error
             }
           )
         }
-      >
-        <BaseInput
-          error={error}
-          aria-describedby={errorID}
-          {...otherProps}
-        />
-      </div>
-    </React.Fragment>
+        error={error}
+      />
+    </div>
   );
 };
 

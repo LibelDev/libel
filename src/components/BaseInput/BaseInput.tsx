@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
@@ -32,7 +33,7 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
       <div>
         <input
           id={_id}
-          className={styles.input}
+          className={classNames(className, styles.input)}
           disabled={disabled}
           aria-describedby={errorID}
           {...otherProps}
