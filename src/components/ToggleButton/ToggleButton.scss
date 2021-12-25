@@ -82,7 +82,7 @@
   }
 
   &.simple {
-    label {
+    > span {
       @apply sr-only;
     }
   }
