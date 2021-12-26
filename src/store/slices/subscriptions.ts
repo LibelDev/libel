@@ -83,9 +83,15 @@ const slice = createSlice({
 type TState = StateType<typeof slice.reducer>;
 
 export const SetTransform = createTransform<TState, ISerializedSubscription[]>(
+  /**
+   * serialize the data for storage
+   */
   (subscriptions, key) => {
     return subscriptions.map((subscription) => subscription.serialize());
   },
+  /**
+   * deserialize the stored data
+   */
   (outboundState, key) => {
     return outboundState.map(Subscription.deserialize);
   },
