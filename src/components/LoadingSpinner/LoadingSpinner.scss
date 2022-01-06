@@ -1,13 +1,14 @@
 .loading-spinner {
   @apply inline-block;
-  @apply h-4 w-4;
   @apply border-2 border-solid rounded-full;
   @apply animate-spin;
+  content: '';
   border-top-color: #aaaaaa;
   border-right-color: transparent;
   border-bottom-color: transparent;
   border-left-color: #aaaaaa;
-  content: '';
+  height: 1em;
+  width: 1em;
 
   @keyframes spin {
     to {
