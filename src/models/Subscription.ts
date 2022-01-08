@@ -40,16 +40,16 @@ class Subscription extends DataSet implements ISubscription {
 
   /**
    * validate the given object as remote subscription
-   * @param object {any} the object to be validated
+   * @param {any} object the object to be validated
    * @returns {IRemoteSubscription | null}
    */
   static validate (object: any): IRemoteSubscription | null {
-    const _schemas = [subscriptionSchemas.remote];
-    for (const schema of _schemas) {
-      const { value, error } = schema.validate(object);
+    const schemas = [subscriptionSchemas.remote];
+    for (const _schema of schemas) {
+      const { value, error } = _schema.validate(object);
       if (!error) {
-        if (schema === subscriptionSchemas.remote) {
-          return value;
+        if (_schema === subscriptionSchemas.remote) {
+          return value as IRemoteSubscription;
         }
       }
     }
@@ -79,11 +79,17 @@ class Subscription extends DataSet implements ISubscription {
 
   /**
    * prepare for storage
-   * @returns {ISerializedSubscription}
    */
-  serialize (): ISerializedSubscription {
-    const { url, enabled, name } = this;
-    return { url, enabled, name };
+  static serialize (subscription: Subscription | ISerializedSubscription) {
+    if (subscription instanceof Subscription) {
+      const { url, enabled, name } = subscription;
+      return { url, enabled, name };
+    }
+    return subscription;
+  }
+
+  serialize () {
+    return Subscription.serialize(this);
   }
 
   enable () {
@@ -109,7 +115,6 @@ class Subscription extends DataSet implements ISubscription {
     this.version = subscription.version;
     this.homepage = subscription.homepage;
     this.color = subscription.color;
-    this.loaded = true;
     return this;
   }
 }

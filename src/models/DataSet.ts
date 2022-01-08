@@ -1,14 +1,14 @@
 import { immerable, isDraft, original } from 'immer';
-import * as dataSchemas from '../schemas/data';
-import * as dataSetSchemas from '../schemas/dataSet';
+import dataSchema from '../schemas/data';
+import dataSetSchema from '../schemas/dataSet';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 
 export interface IDataSet {
-  data: Data;
+  data: IData;
 }
 
-class DataSet implements IDataSet {
+abstract class DataSet implements IDataSet {
   [immerable] = true;
   data!: Data;
 
@@ -22,7 +22,7 @@ class DataSet implements IDataSet {
 
   /**
    * turn stale data into latest data structure
-   * @param object {any}
+   * @param {any} object
    * @returns {IDataSet}
    */
   private static massage (object: IData | ILabelDatum[]): IDataSet {
@@ -47,18 +47,18 @@ class DataSet implements IDataSet {
 
   /**
    * validate the given object as custom labels data, massage the object when necessary
-   * @param object {any} the object to be validated
+   * @param {any} object the object to be validated
    * @returns {IDataSet | null}
    */
   static validate (object: any): IDataSet | null {
-    const _schemas = [dataSetSchemas.default, dataSchemas.default];
-    for (const schema of _schemas) {
-      const { value, error } = schema.validate(object);
+    const schemas = [dataSetSchema, dataSchema];
+    for (const _schema of schemas) {
+      const { value, error } = _schema.validate(object);
       if (!error) {
-        if (schema === dataSetSchemas.default) {
+        if (_schema === dataSetSchema) {
           return value;
         }
-        if (schema === dataSchemas.default) {
+        if (_schema === dataSchema) {
           return this.massage(value);
         }
       }
@@ -75,14 +75,8 @@ class DataSet implements IDataSet {
     );
   }
 
-  /**
-   * prepare for storage
-   * @abstract
-   */
-  serialize (): void { };
-
-  aggregate () {
-    const { data } = this;
+  static aggregate (dataSet: IDataSet) {
+    const { data } = dataSet;
     const users = Object.keys(data);
     const labels = users.reduce<Label[]>((labels, user) => {
       const _labels = data[user] || [];
@@ -90,6 +84,16 @@ class DataSet implements IDataSet {
       return labels;
     }, []);
     return { users, labels };
+  }
+
+  /**
+   * prepare for storage
+   * @abstract
+   */
+  abstract serialize (): void;
+
+  aggregate () {
+    return DataSet.aggregate(this);
   }
 
   add (user: string, data: Pick<ILabel, 'text' | 'reason' | 'source' | 'color' | 'image'>) {

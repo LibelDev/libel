@@ -1,7 +1,7 @@
 import React from 'react';
 import * as TEXTS from '../../../constants/texts';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
-import GoogleAuthorizationButton from './GoogleAuthorizationButton/GoogleAuthorizationButton';
+import SyncWithGoogleDrive from './SyncWithGoogleDrive/SyncWithGoogleDrive';
 
 interface IProps { }
 
@@ -15,7 +15,7 @@ const CloudSyncSection: React.FunctionComponent<TProps> = () => {
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>
-          <GoogleAuthorizationButton />
+          <SyncWithGoogleDrive />
         </li>
       </ul>
     </React.Fragment>

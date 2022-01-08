@@ -1,7 +1,7 @@
 import { dev } from '../../config/config';
 import { ISerializedSubscription } from '../models/Subscription';
 
-export const defaultSubscriptions: ISerializedSubscription[] = !dev ? [] : [
+export const defaultSubscriptions: ISerializedSubscription[] = dev ? [
   {
     url: 'http://localhost:20630/mock/subscriptions/sample1.json',
     enabled: true,
@@ -17,4 +17,4 @@ export const defaultSubscriptions: ISerializedSubscription[] = !dev ? [] : [
     enabled: false,
     name: 'Sample 3'
   }
-];
+] : [];

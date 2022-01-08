@@ -51,12 +51,13 @@ class Label implements ILabel {
   }
 
   get sourceURL () {
-    const { url, source } = this;
+    const { source } = this;
     if (source) {
-      const { thread, page, messageNumber } = source;
-      return `https://lihkg.com/thread/${thread}/page/${page}?post=${messageNumber}`;
+      const { thread, page, messageNumber: post } = source;
+      return `https://lihkg.com/thread/${thread}/page/${page}?post=${post}`;
     }
-    return url;
+    // fallback to generic url
+    return this.url;
   }
 }
 

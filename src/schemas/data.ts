@@ -3,7 +3,7 @@ import { IData } from './../models/Data';
 import label from './label';
 
 const schema = joi.object<IData>().pattern(
-  joi.string().pattern(/^\d+$/),
+  joi.string().pattern(/^\d+$/), // user ID
   joi.array().items(label)
 );
 

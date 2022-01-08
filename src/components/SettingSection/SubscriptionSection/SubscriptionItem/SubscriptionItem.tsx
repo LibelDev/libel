@@ -69,16 +69,13 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
       <RemoveSubscriptionButton
         className={styles.iconButton}
         subscription={subscription}
-        index={index}
       />
       <ReloadSubscriptionButton
         className={styles.iconButton}
         subscription={subscription}
-        index={index}
       />
       <ToggleSubscriptionButton
         subscription={subscription}
-        index={index}
       />
     </div>
   );

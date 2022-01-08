@@ -7,9 +7,10 @@ import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
 import AddSubscriptionButton from './AddSubscriptionButton/AddSubscriptionButton';
 import SubscriptionItem from './SubscriptionItem/SubscriptionItem';
 import styles from './SubscriptionSection.scss';
+import Subscription from '../../../models/Subscription';
 
 const SubscriptionSection: React.FunctionComponent = () => {
-  const subscriptions = useSelector(selectSubscriptions);
+  const subscriptions = useSelector(selectSubscriptions) as Subscription[];
   return (
     <React.Fragment>
       <small className={classnames(lihkgCssClasses.settingSectionTitle, styles.sectionTitle)}>

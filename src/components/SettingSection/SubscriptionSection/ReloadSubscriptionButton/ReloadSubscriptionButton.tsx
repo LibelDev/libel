@@ -11,19 +11,18 @@ import IconButton from '../../../IconButton/IconButton';
 
 interface IProps {
   subscription: Subscription;
-  index: number;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'button'>
 
 const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, subscription, index } = props;
+  const { className, subscription } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    dispatch(subscriptionsActions.load(index));
-  }, [subscription, index]);
+    dispatch(subscriptionsActions.load(subscription));
+  }, [subscription, subscription]);
 
   return (
     <IconButton

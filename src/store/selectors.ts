@@ -5,13 +5,17 @@ import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
 import { TRootState } from './store';
 
-export const selectPersonal = (state: TRootState) => state.personal as Personal;
+export const selectMeta = (state: TRootState) => state.meta;
 
-export const selectSubscriptions = (state: TRootState) => state.subscriptions as Subscription[];
+export const selectSync = (state: TRootState) => state.sync;
+
+export const selectPersonal = (state: TRootState) => state.personal;
+
+export const selectSubscriptions = (state: TRootState) => state.subscriptions;
 
 export const filterPersonalForUser = (user: string) => createSelector(
   selectPersonal,
-  (personal) => filterDataSetForUser(personal, user)
+  (personal) => filterDataSetForUser(personal as Personal, user)
 );
 
 export const filterSubscriptionsForUser = (user: string) => createSelector(
@@ -19,7 +23,7 @@ export const filterSubscriptionsForUser = (user: string) => createSelector(
   (subscriptions) => (
     subscriptions
       .filter((subscription) => subscription.enabled && subscription.loaded)
-      .map((subscription) => filterDataSetForUser(subscription, user))
+      .map((subscription) => filterDataSetForUser(subscription as Subscription, user))
   )
 );
 

@@ -14,11 +14,17 @@ class Personal extends DataSet implements IPersonal {
 
   /**
    * prepare for storage
-   * @returns {ISerializedPersonal}
    */
-  serialize (): ISerializedPersonal {
-    const { data } = this;
-    return { data };
+  static serialize (personal: Personal | ISerializedPersonal) {
+    if (personal instanceof Personal) {
+      const { data } = personal;
+      return { data };
+    }
+    return personal;
+  }
+
+  serialize () {
+    return Personal.serialize(this);
   }
 }
 

@@ -1,4 +1,3 @@
-import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
@@ -7,28 +6,24 @@ import Subscription from '../../../../models/Subscription';
 import { selectSubscriptions } from '../../../../store/selectors';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
-import * as errors from '../../../../templates/errors';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
 const AddSubscriptionButton: React.FunctionComponent = () => {
   const dispatch = useDispatch();
-  const subscriptions = useSelector(selectSubscriptions);
+  const subscriptions = useSelector(selectSubscriptions) as Subscription[];
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
-    const url = prompt();
-    if (url) {
-      const _url = url.trim();
-      const subscription = subscriptions.find((subscription) => subscription.url === _url);
-      if (!subscription) {
-        const subscription = new Subscription('', _url, true);
-        dispatch(subscriptionsActions.add(subscription));
-        dispatch(subscriptionsActions.load(subscriptions.length));
-      } else {
-        const _message = render(errors.subscription.subscribed, { subscription });
-        window.alert(_message);
-      }
+    const url = (prompt() || '').trim();
+    const subscription = subscriptions.find((subscription) => subscription.url === url);
+    if (!subscription) {
+      const subscription = new Subscription('', url, true);
+      dispatch(subscriptionsActions.add(subscription));
+      dispatch(subscriptionsActions.load(subscription));
+    } else {
+      // already subscribed, simply load the remote data again
+      dispatch(subscriptionsActions.load(subscription));
     }
   }, [subscriptions]);
 

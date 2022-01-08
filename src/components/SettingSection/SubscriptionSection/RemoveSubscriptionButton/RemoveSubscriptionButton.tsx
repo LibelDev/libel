@@ -13,23 +13,22 @@ import IconButton from '../../../IconButton/IconButton';
 
 interface IProps  {
   subscription: Subscription;
-  index: number;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'button'>
 
 const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, subscription, index } = props;
+  const { className, subscription } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     const question = render(questions.remove.subscription, { subscription });
     const confirmed = window.confirm(question);
     if (confirmed) {
-      dispatch(subscriptionsActions.remove(index));
+      dispatch(subscriptionsActions.remove(subscription));
     }
-  }, [subscription, index]);
+  }, [subscription]);
 
   return (
     <IconButton

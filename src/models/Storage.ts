@@ -1,41 +1,47 @@
-import { Optional } from 'utility-types';
 import { defaultSubscriptions } from '../constants/subscriptions';
 import storage, { localStorage } from '../helpers/storage';
-import DataSet from '../models/DataSet';
-import Personal, { ISerializedPersonal } from '../models/Personal';
-import Subscription, { ISerializedSubscription } from '../models/Subscription';
-import * as storageSchemas from '../schemas/storage';
+import schema, { deprecated } from '../schemas/storage';
+import { initialState as initialMetaState } from '../store/slices/meta';
+import DataSet from './DataSet';
+import Meta, { ISerializedMeta } from './Meta';
+import Personal, { ISerializedPersonal } from './Personal';
+import Subscription, { ISerializedSubscription } from './Subscription';
 
 export interface ISerializedStorage {
   personal: ISerializedPersonal;
   subscriptions: ISerializedSubscription[];
+  meta?: ISerializedMeta;
 }
-
-export type TMassagedStorage = Optional<ISerializedStorage, 'subscriptions'>;
 
 export interface IStorage {
   personal: Personal;
   subscriptions: Subscription[];
+  meta?: Meta;
 }
 
-export function isISerializedStorageImplemented (object: any): object is ISerializedStorage {
+function isISerializedStorageImplemented (object: any): object is ISerializedStorage {
   return (
     'personal' in object
     && 'subscriptions' in object
+    && 'meta' in object
   );
 }
 
-const _keys = Symbol('keys');
+const _dataKeys = Symbol('dataKeys');
+const _metaKey = Symbol('metaKey');
 const _ready = Symbol('ready');
 
 class Storage implements IStorage {
-  private readonly [_keys]!: string[];
+  private readonly [_dataKeys]!: string[];
+  private readonly [_metaKey]!: string;
   private readonly [_ready]!: Promise<this>;
   personal: Personal = new Personal();
   subscriptions: Subscription[] = [];
+  meta: Meta = initialMetaState;
 
-  constructor (keys: string[]) {
-    this[_keys] = keys;
+  constructor (dataKeys: string[], metaKey: string) {
+    this[_dataKeys] = dataKeys;
+    this[_metaKey] = metaKey;
     this[_ready] = this.load();
   }
 
@@ -46,58 +52,83 @@ class Storage implements IStorage {
     }
   }
 
-  private static async load (keys: string[]) {
-    const [, ...fallbackDataKeys] = keys;
-    for (const key of keys) {
-      const json = await storage.getItem<string>(key);
-      if (json) {
-        this.clean(fallbackDataKeys);
-        return json;
+  private static async load (dataKeys: string[], metaKey: string) {
+    const [dataKey, ...deprecatedDataKeys] = dataKeys;
+    const data = await storage.getItem<string>(dataKey);
+    const meta = await storage.getItem<string>(metaKey);
+    if (data) {
+      this.clean(deprecatedDataKeys);
+      return this.parse(data, meta);
+    }
+    for (const key of deprecatedDataKeys) {
+      const data = await storage.getItem<string>(key);
+      if (data) {
+        return this.parse(data, meta);
       }
     }
-    return '{}';
+    return this.parse('{}');
   }
 
-  private static parse (json: string) {
-    const object = JSON.parse(json);
+  /**
+   * parse, massage, validate and deserialize the stored data
+   * @private
+   * @static
+   * @param {string} data the data JSON string
+   * @param {string} meta the meta JSON string
+   */
+  private static parse (data: string, meta?: string | null) {
+    const object = JSON.parse(data);
     const { personal, subscriptions } = object;
-    const data = this.massage({
+    const storage = this.massage({
+      meta: meta ? JSON.parse(meta) : initialMetaState,
       personal: personal ? JSON.parse(personal) : Personal.factory(),
       subscriptions: subscriptions ? JSON.parse(subscriptions) : defaultSubscriptions
     });
-    return this.deserialize(data);
+    const _storage = this.validate(storage)!;
+    return this.deserialize(_storage);
   }
 
   /**
    * turn stale data into latest data structure
-   * @param object {any}
-   * @returns {TMassagedStorage}
+   * @private
+   * @static
+   * @param {any} object
+   * @returns {ISerializedStorage}
    */
-  private static massage (object: any): TMassagedStorage {
+  private static massage (object: any): ISerializedStorage {
     if (isISerializedStorageImplemented(object)) {
       return object;
     }
     const personal = DataSet.validate(object);
     if (personal) {
-      return { personal };
+      return {
+        meta: initialMetaState,
+        personal,
+        subscriptions: []
+      };
     }
-    return { personal: Personal.factory() };
+    return {
+      meta: initialMetaState,
+      personal: Personal.factory(),
+      subscriptions: []
+    };
   }
 
   /**
    * validate the given object as local storage data, massage the object when necessary
-   * @param object {any} the object to be validated
-   * @returns {TMassagedStorage | null}
+   * @static
+   * @param {any} object the object to be validated
+   * @returns {ISerializedStorage | null}
    */
-  static validate (object: any): TMassagedStorage | null {
-    const _schemas = [storageSchemas.default, storageSchemas.deprecated];
-    for (const schema of _schemas) {
-      const { value, error } = schema.validate(object);
+  static validate (object: any): ISerializedStorage | null {
+    const schemas = [schema, deprecated];
+    for (const _schema of schemas) {
+      const { value, error } = _schema.validate(object);
       if (!error) {
-        if (schema === storageSchemas.default) {
-          return value;
+        if (_schema === schema) {
+          return value as ISerializedStorage;
         }
-        if (schema === storageSchemas.deprecated) {
+        if (_schema === deprecated) {
           return this.massage(value);
         }
       }
@@ -105,19 +136,21 @@ class Storage implements IStorage {
     return null;
   }
 
-  static serialize (data: IStorage): ISerializedStorage {
-    const { personal, subscriptions } = data;
+  private static serialize (data: IStorage): ISerializedStorage {
+    const { meta, personal, subscriptions } = data;
     return {
+      meta: meta?.serialize(),
       personal: personal.serialize(),
-      subscriptions: subscriptions ? subscriptions.map((subscription) => subscription.serialize()) : []
+      subscriptions: subscriptions.map((subscription) => subscription.serialize())
     };
   }
 
-  static deserialize (storage: TMassagedStorage): IStorage {
-    const { personal, subscriptions } = storage;
+  static deserialize (storage: IStorage | ISerializedStorage): IStorage {
+    const { meta, personal, subscriptions } = storage;
     return {
+      meta: meta && Meta.deserialize(meta),
       personal: Personal.deserialize(personal),
-      subscriptions: subscriptions ? subscriptions.map(Subscription.deserialize) : []
+      subscriptions: subscriptions.map(Subscription.deserialize)
     };
   }
 
@@ -134,16 +167,23 @@ class Storage implements IStorage {
     return JSON.stringify(data);
   }
 
-  async load () {
-    const keys = [this[_keys][0]];
-    const json = await Storage.load(keys);
-    const data = Storage.parse(json);
-    this.update(data);
+  /**
+   * load the storage into the model
+   * @async
+   * @returns {Promise<this>}
+   */
+  async load (): Promise<this> {
+    const dataKeys = this[_dataKeys];
+    const metaKey = this[_metaKey];
+    const storage = await Storage.load(dataKeys, metaKey);
+    this.update(storage);
     return this;
   }
 
-  private update (data: IStorage) {
-    const { personal, subscriptions } = data;
+  update (storage: IStorage | ISerializedStorage) {
+    // always deserialize the storage
+    const { meta, personal, subscriptions } = Storage.deserialize(storage);
+    this.meta = meta || this.meta;
     this.personal = personal;
     this.subscriptions = subscriptions;
     return this;

@@ -41,13 +41,12 @@ export const IMAGE_BUTTON_TEXT = '相關圖片';
 export const SNIPE_BUTTON_TEXT = '一鍵狙擊';
 
 // import
-export const IMPORT_FILE_BUTTON_TEXT = '匯入設定及記錄';
-export const IMPORT_FILE_REMINDER = '所有訂閱項目及標籤記錄將會被覆蓋，建議先匯出一次作備份。';
+export const IMPORT_FILE_BUTTON_TEXT = '匯入';
 export const IMPORT_FILE_GENERIC_ERROR_MESSAGE = '檔案匯入失敗';
 export const IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE = '檔案內容格式錯誤';
 
 // export
-export const EXPORT_FILE_BUTTON_TEXT = '匯出設定及記錄';
+export const EXPORT_FILE_BUTTON_TEXT = '匯出';
 
 // subscription
 export const ADD_SUBSCRIPTION_BUTTON_TEXT = '新增訂閱';
@@ -66,6 +65,9 @@ export const CLOUD_SYNC_GOOGLE_DRIVE_LABEL_TEXT = 'Google 雲端硬碟';
 export const CLOUD_SYNC_GOOGLE_DRIVE_ACCOUNT_PREFIX = '已連接';
 export const GOOGLE_AUTHORIZE_BUTTON_TEXT = '連接';
 export const GOOGLE_SIGNOUT_BUTTON_TEXT = '登出';
+export const CLOUD_SYNC_SYNC_IN_PROGRESS_LABEL_TEXT = '正在同步數據';
+export const CLOUD_SYNC_LAST_SYNCED_AT_LABEL_TEXT = '最後同步於';
+export const CLOUD_SYNC_ERROR = '同步數據失敗，請嘗試重新連接。';
 
 // announcement
 export const CHANGE_LOG = '更新內容';
