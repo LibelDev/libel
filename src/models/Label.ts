@@ -24,7 +24,7 @@ export interface ILabelDatum {
 
 class Label implements ILabel {
   [immerable] = true;
-  text!: string;
+  text: string;
   reason?: string;
   url?: string;
   date?: number;

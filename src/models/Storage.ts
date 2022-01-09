@@ -32,9 +32,9 @@ const _metaKey = Symbol('metaKey');
 const _ready = Symbol('ready');
 
 class Storage implements IStorage {
-  private readonly [_dataKeys]!: string[];
-  private readonly [_metaKey]!: string;
-  private readonly [_ready]!: Promise<this>;
+  private readonly [_dataKeys]: string[];
+  private readonly [_metaKey]: string;
+  private readonly [_ready]: Promise<this>;
   personal: Personal = new Personal();
   subscriptions: Subscription[] = [];
   meta: Meta = initialMetaState;

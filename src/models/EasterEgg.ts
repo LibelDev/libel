@@ -5,7 +5,7 @@ type THatch = () => void;
 const _hatch = Symbol('hatch');
 
 class EasterEgg {
-  private readonly [_hatch]!: THatch;
+  private readonly [_hatch]: THatch;
   private enabled: boolean;
 
   constructor (hatch: THatch, enabled: boolean) {

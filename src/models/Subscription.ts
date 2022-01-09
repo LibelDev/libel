@@ -21,12 +21,15 @@ export interface ISubscription extends ISerializedSubscription, IRemoteSubscript
 }
 
 class Subscription extends DataSet implements ISubscription {
-  name!: string;
-  readonly url!: string;
-  enabled!: boolean;
+  // base
+  name: string;
+  readonly url: string;
+  enabled: boolean;
+  // remote
   version!: string;
   homepage?: string;
   color?: string;
+  // state
   loaded: boolean = false;
   loading: boolean = false;
   error?: string;
@@ -34,8 +37,8 @@ class Subscription extends DataSet implements ISubscription {
   constructor (name: string, url: string, enabled: boolean) {
     super();
     this.name = name;
-    this.enabled = enabled;
     this.url = url;
+    this.enabled = enabled;
   }
 
   /**

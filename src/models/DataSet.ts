@@ -10,7 +10,7 @@ export interface IDataSet {
 
 abstract class DataSet implements IDataSet {
   [immerable] = true;
-  data!: Data;
+  data: Data;
 
   constructor (dataSet?: IDataSet) {
     this.data = new Data(dataSet?.data);
