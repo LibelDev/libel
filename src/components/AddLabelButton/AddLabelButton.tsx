@@ -32,7 +32,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     setOpen(false);
   }, []);
 
-  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, data) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = useCallback(async (event, data) => {
     const { text, reason, color, image, meta } = data;
     const source = mapPostToSource(targetReply);
     const payload: IAddLabelPayload = { user, text, reason, color, image, source };
@@ -66,7 +66,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     }
     setLoading(false);
     handleModalClose();
-  };
+  }, [user, targetReply, handleModalClose]);
 
   return (
     <React.Fragment>

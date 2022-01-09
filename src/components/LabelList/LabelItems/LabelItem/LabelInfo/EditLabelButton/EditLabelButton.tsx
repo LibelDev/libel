@@ -31,11 +31,11 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
     setOpen(false);
   }, []);
 
-  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, data) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = useCallback(async (event, data) => {
     const { text, reason, color, image } = data;
     dispatch(personalActions.edit({ user, index, text, reason, color, image }));
     handleModalClose();
-  };
+  }, [user, index, handleModalClose]);
 
   return (
     <React.Fragment>

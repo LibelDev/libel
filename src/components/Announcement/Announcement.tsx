@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import max from 'lodash/max';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
@@ -46,13 +46,13 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
   const { id, className, icon, forced = false, children } = props;
   const [showed, setShowed] = useState(true);
 
-  const handleClose: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+  const handleClose: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     setShowed(false);
     if (id && !forced && promptDontShowAgain()) {
       dontShowAgain(id, 7);
     }
-  };
+  }, [id, forced]);
 
   const announcementRef = useRef<HTMLDivElement>(null);
   const { pathname } = useLocation();
