@@ -20,10 +20,11 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
     if (!subscription) {
       const subscription = new Subscription('', url, true);
       dispatch(subscriptionsActions.add(subscription));
-      dispatch(subscriptionsActions.load(subscription));
+      dispatch(subscriptionsActions.load(subscriptions.length));
     } else {
       // already subscribed, simply load the remote data again
-      dispatch(subscriptionsActions.load(subscription));
+      const index = subscriptions.indexOf(subscription);
+      dispatch(subscriptionsActions.load(index));
     }
   }, [subscriptions]);
 

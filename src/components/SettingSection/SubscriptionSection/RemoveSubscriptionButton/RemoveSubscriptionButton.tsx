@@ -11,24 +11,25 @@ import * as questions from '../../../../templates/questions';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
-interface IProps  {
+interface IProps {
   subscription: Subscription;
+  index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>
+type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, subscription } = props;
+  const { className, subscription, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     const question = render(questions.remove.subscription, { subscription });
     const confirmed = window.confirm(question);
     if (confirmed) {
-      dispatch(subscriptionsActions.remove(subscription));
+      dispatch(subscriptionsActions.remove(index));
     }
-  }, [subscription]);
+  }, [subscription, index]);
 
   return (
     <IconButton

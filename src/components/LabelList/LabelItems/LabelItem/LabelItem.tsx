@@ -10,6 +10,7 @@ import styles from './LabelItem.scss';
 
 interface IProps {
   user?: string;
+  index?: number;
   label: Label;
   color?: string;
   dataSet?: Personal | Subscription;
@@ -19,7 +20,7 @@ interface IProps {
 type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const LabelItem: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, label, color, dataSet, hasInfo = true } = props;
+  const { className, user, index, label, color, dataSet, hasInfo = true } = props;
 
   const _color = label.color || color;
 
@@ -36,10 +37,11 @@ const LabelItem: React.FunctionComponent<TProps> = (props) => {
     >
       {label.text}
       {
-        dataSet && user && label && hasInfo && (
+        user && typeof index !== 'undefined' && label && dataSet && hasInfo && (
           <div className={styles.labelInfo}>
             <LabelInfo
               user={user}
+              index={index}
               label={label}
               color={_color}
               subscription={Subscription.implements(dataSet) ? dataSet : undefined}

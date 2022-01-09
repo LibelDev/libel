@@ -23,6 +23,7 @@ const LabelItems: React.FunctionComponent<IProps> = (props) => {
             <li key={index} className={styles.labelItem}>
               <LabelItem
                 user={user}
+                index={index}
                 label={label}
                 color={color}
                 dataSet={dataSet}

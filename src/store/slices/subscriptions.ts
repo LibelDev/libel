@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { original } from 'immer';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
+import { TRootState } from '../store';
+import { selectSubscriptions } from './../selectors';
 
 interface ITogglePayload {
-  subscription: Subscription;
+  index: number;
   enabled?: boolean;
 }
 
@@ -15,10 +16,13 @@ const initialState: Subscription[] = [];
 /**
  * load the remote subscription data
  */
-const load = createAsyncThunk<IRemoteSubscription, Subscription>(
+const load = createAsyncThunk<IRemoteSubscription, number>(
   'subscriptions/load',
-  async (subscription, thunk) => {
+  async (index, thunk) => {
     try {
+      const state = thunk.getState() as TRootState;
+      const subscriptions = selectSubscriptions(state);
+      const subscription = subscriptions[index];
       const remoteSubscription = await subscription.fetch();
       if (remoteSubscription) {
         return remoteSubscription;
@@ -40,14 +44,12 @@ const slice = createSlice({
       const subscription = Subscription.deserialize(payload);
       state.push(subscription);
     },
-    remove: (state, action: PayloadAction<Subscription>) => {
-      const { payload: subscription } = action;
-      const index = state.findIndex(({ url }) => url === subscription.url)!;
+    remove: (state, action: PayloadAction<number>) => {
+      const { payload: index } = action;
       state.splice(index, 1);
     },
     toggle: (state, action: PayloadAction<ITogglePayload>) => {
-      const { subscription, enabled } = action.payload;
-      const index = state.findIndex(({ url }) => url === subscription.url)!;
+      const { index, enabled } = action.payload;
       const _subscription = state[index];
       _subscription.enabled = enabled ?? !_subscription.enabled;
     },
@@ -59,28 +61,26 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(load.pending, (state, action) => {
-      const { arg: subscription } = action.meta;
-      const _subscription = state.find(({ url }) => url === subscription.url)!;
-      _subscription.loading = true;
-      _subscription.error = undefined;
+      const { arg: index } = action.meta;
+      const subscription = state[index];
+      subscription.loading = true;
+      subscription.error = undefined;
     });
     builder.addCase(load.fulfilled, (state, action) => {
-      const { arg: subscription } = action.meta;
+      const { arg: index } = action.meta;
       const { payload } = action;
-      const _subscription = state.find(({ url }) => url === subscription.url)!;
-      _subscription.update(payload);
-      _subscription.loaded = true;
-      _subscription.loading = false;
-      _subscription.error = undefined;
+      const subscription = state[index];
+      subscription.update(payload);
+      subscription.loaded = true;
+      subscription.loading = false;
+      subscription.error = undefined;
     });
     builder.addCase(load.rejected, (state, action) => {
-      const { arg: subscription } = action.meta;
+      const { arg: index } = action.meta;
       const { payload, error } = action;
-      // const subscriptions = original<Subscription[]>(state)!;
-      // const index = subscriptions.indexOf(subscription);
-      const _subscription = state.find(({ url }) => url === subscription.url)!;
-      _subscription.loading = false;
-      _subscription.error = (payload as any) || error.message;
+      const subscription = state[index];
+      subscription.loading = false;
+      subscription.error = (payload as any) || error.message;
     });
   }
 });

@@ -8,18 +8,19 @@ import ToggleButton from '../../../ToggleButton/ToggleButton';
 
 interface IProps {
   subscription: Subscription;
+  index: number;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, subscription } = props;
+  const { className, subscription, index } = props;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked: enabled } = event.target;
-    dispatch(subscriptionsActions.toggle({ subscription, enabled }));
-  }, [subscription, subscription]);
+    dispatch(subscriptionsActions.toggle({ index, enabled }));
+  }, [subscription, index]);
 
   return (
     <ToggleButton

@@ -10,13 +10,14 @@ import LabelFormModal, { TLabelFormProps } from '../../../../../LabelFormModal/L
 
 interface IProps {
   user: string;
+  index: number;
   label: Label;
 }
 
 type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, label } = props;
+  const { className, user, index, label } = props;
 
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
 
   const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = async (event, data) => {
     const { text, reason, color, image } = data;
-    dispatch(personalActions.edit({ user, label, text, reason, color, image }));
+    dispatch(personalActions.edit({ user, index, text, reason, color, image }));
     handleModalClose();
   };
 

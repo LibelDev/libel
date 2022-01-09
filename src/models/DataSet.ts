@@ -1,4 +1,4 @@
-import { immerable, isDraft, original } from 'immer';
+import { immerable } from 'immer';
 import dataSchema from '../schemas/data';
 import dataSetSchema from '../schemas/dataSet';
 import Data, { IData } from './Data';
@@ -107,11 +107,9 @@ abstract class DataSet implements IDataSet {
     return this;
   }
 
-  edit (user: string, label: Label, data: Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>) {
-    const _this = isDraft(this) ? original(this)! : this; // always use the original `this` for reference checking 
-    const labels = _this.data[user] || [];
-    const index = labels.indexOf(label);
-    if (index >= 0) {
+  edit (user: string, index: number, data: Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>) {
+    const labels = this.data[user];
+    if (labels && index >= 0) {
       const labels = this.data[user] || [];
       const target = labels[index];
       const { text, reason = '', color = '', image = '' } = data;
@@ -123,12 +121,9 @@ abstract class DataSet implements IDataSet {
     return this;
   }
 
-  remove (user: string, label: Label) {
-    const _this = isDraft(this) ? original(this)! : this; // always use the original `this` for reference checking 
-    const labels = _this.data[user] || [];
-    const index = labels.indexOf(label);
-    if (index >= 0) {
-      const labels = this.data[user] || [];
+  remove (user: string, index: number) {
+    const labels = this.data[user];
+    if (labels && index >= 0) {
       labels.splice(index, 1);
       if (labels.length === 0) {
         delete this.data[user];

@@ -49,8 +49,8 @@ const loadRemoteSubscriptions = async () => {
   const { dispatch } = store;
   const state = store.getState();
   const subscriptions = selectSubscriptions(state) as Subscription[];
-  for (const subscription of subscriptions) {
-    dispatch(subscriptionsActions.load(subscription));
+  for (let i = 0; i < subscriptions.length; i++) {
+    dispatch(subscriptionsActions.load(i));
   }
 };
 

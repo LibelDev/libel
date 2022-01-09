@@ -12,6 +12,7 @@ import IconButton from '../../../../../IconButton/IconButton';
 
 interface IProps {
   user: string;
+  index: number;
   label: Label;
 }
 
@@ -19,17 +20,17 @@ type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useDispatch();
-  const { className, user: userID, label } = props;
+  const { className, user, index, label } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const user = cache.getUser(userID);
-    const question = render(questions.remove.label, { user, label });
+    const _user = cache.getUser(user);
+    const question = render(questions.remove.label, { user: _user, label });
     const confirmed = window.confirm(question);
     if (confirmed) {
-      dispatch(personalActions.remove({ user: userID, label }));
+      dispatch(personalActions.remove({ user, index }));
     }
-  }, [userID, label, label]);
+  }, [user, label, label]);
 
   return (
     <IconButton

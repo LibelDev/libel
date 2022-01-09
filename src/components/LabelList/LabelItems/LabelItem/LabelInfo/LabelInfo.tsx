@@ -12,6 +12,7 @@ import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
 interface IProps {
   user: string;
+  index: number;
   label: Label;
   color?: string;
   subscription?: Subscription;
@@ -20,7 +21,7 @@ interface IProps {
 type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, label, color, subscription } = props;
+  const { className, user, index, label, color, subscription } = props;
 
   const _color = label.color || color;
 
@@ -43,7 +44,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
       <div className={styles.buttons}>
         {
           !subscription && (
-            <EditLabelButton className={styles.button} user={user} label={label} />
+            <EditLabelButton className={styles.button} user={user} index={index} label={label} />
           )
         }
         <LabelSourceButton className={styles.button} label={label} />
@@ -51,7 +52,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
         {
           subscription ?
             <LabelProviderIcon className={styles.button} subscription={subscription} /> :
-            <RemoveLabelButton className={styles.button} user={user} label={label} />
+            <RemoveLabelButton className={styles.button} user={user} index={index} label={label} />
         }
       </div>
     </div>
