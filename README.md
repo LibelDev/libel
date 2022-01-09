@@ -2,8 +2,9 @@
   <img src="./assets/logos/libel.png" alt="Libel" width="100"/>
   <h1 align="center">Libel</h1>
   <p align="center">Label users on LIHKG</p>
-  https://user-images.githubusercontent.com/15712798/148693720-4a2b5d1b-75bb-4828-84b9-2aa64a1c46d9.mp4
 </p>
+
+https://user-images.githubusercontent.com/15712798/148693720-4a2b5d1b-75bb-4828-84b9-2aa64a1c46d9.mp4
 
 ***
 
@@ -22,7 +23,7 @@ For the installation steps, usage and more details, please visit [Wiki](https://
 ### Install dependencies
 
 ```bash
-$ pnpm install
+pnpm install
 ```
 
 For a smooth development experience, you may want to execute the following commands simultaneously:
@@ -30,19 +31,19 @@ For a smooth development experience, you may want to execute the following comma
 ### Start development
 
 ```bash
-$ pnpm dev
+pnpm dev
 ```
 
 ### SCSS module typings
 
 ```bash
-$ pnpm type:scss[:watch]
+pnpm type:scss[:watch]
 ```
 
 ### Data hosting
 
 ```bash
-$ pnpm data
+pnpm data
 ```
 
 *Why the data is hosted on port `20630`?*  
@@ -66,7 +67,7 @@ Whenever you made changes and `webpack-dev-server` recompiled the files, repeat 
 ### Build
 
 ```bash
-$ pnpm build
+pnpm build
 ```
 
 The distributable files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
