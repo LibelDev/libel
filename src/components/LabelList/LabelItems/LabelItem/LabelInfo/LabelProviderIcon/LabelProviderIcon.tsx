@@ -1,8 +1,8 @@
 import React from 'react';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
-import Subscription from '../../../../models/Subscription';
-import { IconName } from '../../../../types/icon';
-import Icon from '../../../Icon/Icon';
+import { MappedHTMLAttributes } from '../../../../../../helpers/types';
+import Subscription from '../../../../../../models/Subscription';
+import { IconName } from '../../../../../../types/icon';
+import Icon from '../../../../../Icon/Icon';
 
 interface IProps  {
   subscription: Subscription;

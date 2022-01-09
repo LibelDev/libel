@@ -5,8 +5,8 @@ import * as TEXTS from '../../constants/texts';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
+import { MappedHTMLAttributes } from '../../helpers/types';
 import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
-import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.scss';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
@@ -16,15 +16,17 @@ interface IProps {
   user: string;
 }
 
-const SnipeButton: React.FunctionComponent<IProps> = (props) => {
-  const { user } = props;
+type TProps = IProps & MappedHTMLAttributes<'button'>;
+
+const SnipeButton: React.FunctionComponent<TProps> = (props) => {
+  const { className, user } = props;
   const personal = useSelector(filterPersonalForUser(user));
   const subscriptions = useSelector(filterSubscriptionsForUser(user));
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
     const { currentTarget } = event;
-    const replyButton = currentTarget.parentNode?.parentNode?.querySelector<HTMLElement>(`.${IconName.Reply}`);
+    const replyButton = currentTarget.parentNode?.parentNode?.parentNode?.querySelector<HTMLElement>(`.${IconName.Reply}`);
     if (replyButton) {
       const awaiter = waitForSubmissionForm();
       replyButton.click();
@@ -39,7 +41,7 @@ const SnipeButton: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <IconButton
-      className={classnames(lihkgCssClasses.replyToolbarButton, styles.snipeButton)}
+      className={classnames(className, styles.snipeButton)}
       icon={IconName.Hot}
       onClick={handleClick}
       aria-label={TEXTS.SNIPE_BUTTON_TEXT}

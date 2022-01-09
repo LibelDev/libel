@@ -1,18 +1,11 @@
-@import '../../../stylesheets/base';
+@import '../../../../../stylesheets/base';
 
 .label-info {
-  @apply absolute;
-  @apply bottom-1/2 left-1/2;
   @apply border border-solid rounded;
-  @apply mb-2 p-2;
+  @apply text-base;
   @apply text-center;
-  @apply invisible;
-  @apply opacity-0;
+  @apply p-2;
   @apply w-max;
-  @apply -translate-x-1/2 transform;
-  @apply transition-all;
-  @apply duration-300;
-  @apply delay-300;
   @apply shadow-xl;
   background-color: #ffffff;
   border-color: #aaaaaa;
@@ -24,9 +17,9 @@
     border-color: #444443;
   }
 
-  .reason {
-    @apply leading-none;
-  }
+  // .reason {
+  //   @apply leading-6;
+  // }
 
   .reason + .buttons {
     @apply mt-2;

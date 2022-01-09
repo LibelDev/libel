@@ -28,15 +28,15 @@ export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
 };
 
-export const isThread = (node: Element) => {
+const isThread = (node: Element) => {
   return node.matches(`.${lihkgCssClasses.thread}`);
 };
 
-export const isUserCardModal = (node: Element) => {
+const isUserCardModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.USER_CARD_MODAL_TITLE);
 };
 
-export const isSettingsModal = (node: Element) => {
+const isSettingsModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.SETTINGS_MODAL_TITLE);
 };
 
@@ -44,13 +44,17 @@ export const isNickname = (node: Element) => {
   return node.matches(`.${lihkgCssClasses.nickname}`);
 };
 
-export const querySelectorNickname = (node: Element) => {
-  return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
+const querySelectorAllReplyBody = (node: Element) => {
+  return node.querySelectorAll(`.${lihkgCssClasses.replyBody}`);
 };
+
+// const querySelectorAllNickname = (node: Element) => {
+//   return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
+// };
 
 const querySelectorNicknameLink = (node: Element) => {
   const nicknameLinkSelector = `.${lihkgCssClasses.nickname} > a[href^="/profile"]`;
-  return node.querySelector(nicknameLinkSelector);
+  return node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
 };
 
 const isModalTitleMatched = (node: Element, title: string) => {
@@ -165,14 +169,14 @@ const handleSettingsModal = (node: Element, store: Store) => {
   renderSettingSection(store, container);
 };
 
-export const handleNicknames = (node: Element, store: Store) => {
-  const nodes = Array.from(querySelectorNickname(node));
+export const handleReplyBodies = (node: Element, store: Store) => {
+  const nodes = Array.from(querySelectorAllReplyBody(node));
   for (const node of nodes) {
-    handleNickname(node, store);
+    handleReplyBody(node, store);
   }
 };
 
-const handleNickname = (node: Element, store: Store) => {
+const handleReplyBody = (node: Element, store: Store) => {
   const nicknameLink = querySelectorNicknameLink(node);
   if (nicknameLink) {
     const href = nicknameLink.getAttribute('href')!;
@@ -182,18 +186,19 @@ const handleNickname = (node: Element, store: Store) => {
       const [, user] = matched;
       (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
-      insertAfter(container, node);
+      // insertAfter(container, node);
+      node.insertBefore(container, node.firstChild!);
       renderLabelList(user, store, true, container);
       (node as any)[containerCacheKey] = container;
     }
   }
 };
 
-export const handlerFactory = (node: Element) => {
+export const mutationHandlerFactory = (node: Element) => {
   if (isThread(node)) return handleThread;
   if (isUserCardModal(node)) return handleUserCardModal;
   if (isSettingsModal(node)) return handleSettingsModal;
-  return handleNicknames;
+  return handleReplyBodies;
 };
 
 export const waitForSubmissionForm = () => {

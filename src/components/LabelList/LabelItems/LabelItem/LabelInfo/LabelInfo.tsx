@@ -1,8 +1,8 @@
 import classnames from 'classnames';
 import React, { useMemo } from 'react';
-import { MappedHTMLAttributes } from '../../../helpers/types';
-import Label from '../../../models/Label';
-import Subscription from '../../../models/Subscription';
+import { MappedHTMLAttributes } from '../../../../../helpers/types';
+import Label from '../../../../../models/Label';
+import Subscription from '../../../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import LabelImageButton from './LabelImageButton/LabelImageButton';
 import styles from './LabelInfo.scss';

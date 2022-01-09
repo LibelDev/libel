@@ -22,10 +22,21 @@
 
   &:focus-within,
   &:hover {
-    > .label-info {
+    .label-info {
       @apply visible;
       @apply opacity-100;
       @apply bottom-full;
     }
+  }
+
+  .label-info {
+    @apply absolute;
+    @apply bottom-1/2 left-1/2;
+    @apply invisible;
+    @apply opacity-0;
+    @apply -translate-x-1/2 transform;
+    @apply transition-all;
+    @apply duration-300;
+    @apply pb-2;
   }
 }

@@ -1,9 +1,9 @@
 import React from 'react';
-import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
-import Label from '../../../../models/Label';
-import { IconName } from '../../../../types/icon';
-import Icon from '../../../Icon/Icon';
+import * as TEXTS from '../../../../../../constants/texts';
+import { MappedHTMLAttributes } from '../../../../../../helpers/types';
+import Label from '../../../../../../models/Label';
+import { IconName } from '../../../../../../types/icon';
+import Icon from '../../../../../Icon/Icon';
 
 interface IProps  {
   label: Label;

@@ -1,7 +1,7 @@
 @import '../../../../stylesheets/base';
 
 .subscription {
-  @apply flex items-center justify-start flex-wrap;
+  @apply flex flex-wrap items-center justify-start;
 
   .bar {
     @apply w-1;

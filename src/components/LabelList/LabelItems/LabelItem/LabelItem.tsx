@@ -5,7 +5,7 @@ import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Label from '../../../../models/Label';
 import Personal from '../../../../models/Personal';
 import Subscription from '../../../../models/Subscription';
-import LabelInfo from '../../LabelInfo/LabelInfo';
+import LabelInfo from './LabelInfo/LabelInfo';
 import styles from './LabelItem.scss';
 
 interface IProps {
@@ -37,13 +37,14 @@ const LabelItem: React.FunctionComponent<TProps> = (props) => {
       {label.text}
       {
         dataSet && user && label && hasInfo && (
-          <LabelInfo
-            className={styles.labelInfo}
-            user={user}
-            label={label}
-            color={_color}
-            subscription={Subscription.implements(dataSet) ? dataSet : undefined}
-          />
+          <div className={styles.labelInfo}>
+            <LabelInfo
+              user={user}
+              label={label}
+              color={_color}
+              subscription={Subscription.implements(dataSet) ? dataSet : undefined}
+            />
+          </div>
         )
       }
     </div>

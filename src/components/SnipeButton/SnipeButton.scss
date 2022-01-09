@@ -1,6 +1,16 @@
+@import '../../stylesheets/base';
+
 .snipe-button {
-  @apply text-current;
-  
+  color: #aaa;
+
+  &:hover {
+    color: #000;
+
+    @include dark-mode() {
+      color: #fff;
+    }
+  }
+
   &:hover {
     @apply no-underline;
   }

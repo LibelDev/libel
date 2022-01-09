@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
-import Label from '../../../../models/Label';
-import { actions as personalActions } from '../../../../store/slices/personal';
-import { IconName } from '../../../../types/icon';
-import IconButton from '../../../IconButton/IconButton';
-import LabelFormModal, { TLabelFormProps } from '../../../LabelFormModal/LabelFormModal';
+import * as TEXTS from '../../../../../../constants/texts';
+import { MappedHTMLAttributes } from '../../../../../../helpers/types';
+import Label from '../../../../../../models/Label';
+import { actions as personalActions } from '../../../../../../store/slices/personal';
+import { IconName } from '../../../../../../types/icon';
+import IconButton from '../../../../../IconButton/IconButton';
+import LabelFormModal, { TLabelFormProps } from '../../../../../LabelFormModal/LabelFormModal';
 
 interface IProps {
   user: string;

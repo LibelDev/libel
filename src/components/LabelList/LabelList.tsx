@@ -22,28 +22,29 @@ const LabelList: React.FunctionComponent<IProps> = (props) => {
   );
   return (
     (personalLabels.length || subscriptionLabels.length) ? (
-      <React.Fragment>
-        <ul className={styles.labelList}>
-          <LabelItems
-            dataSet={personal}
-            user={user}
-          />
-          {
-            subscriptions.map((subscription, index) => (
-              <LabelItems
-                key={index}
-                dataSet={subscription}
-                user={user}
-              />
-            ))
-          }
-        </ul>
+      <ul className={styles.labelList}>
+        <LabelItems
+          dataSet={personal}
+          user={user}
+        />
+        {
+          subscriptions.map((subscription, index) => (
+            <LabelItems
+              key={index}
+              dataSet={subscription}
+              user={user}
+            />
+          ))
+        }
         {
           hasSnipeButton && !!(personal.data[user]?.length || subscriptionLabels.length) && (
-            <SnipeButton user={user} />
+            <SnipeButton
+              className={styles.snipeButton}
+              user={user}
+            />
           )
         }
-      </React.Fragment>
+      </ul>
     ) : null
   );
 };

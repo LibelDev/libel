@@ -50,7 +50,7 @@ class App {
               const nodes = Array.from(mutation.addedNodes);
               for (const node of nodes) {
                 if (node.nodeType === document.ELEMENT_NODE) {
-                  const handle = LIHKG.handlerFactory(node as Element);
+                  const handle = LIHKG.mutationHandlerFactory(node as Element);
                   handle(node as Element, store);
                 }
               }
@@ -59,7 +59,7 @@ class App {
             case 'attributes': {
               if (mutation.attributeName === ATTRIBUTES.dataPostId) {
                 const { target } = mutation;
-                LIHKG.handleNicknames(target as Element, store);
+                LIHKG.handleReplyBodies(target as Element, store);
               }
               break;
             }
