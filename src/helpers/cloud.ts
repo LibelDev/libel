@@ -38,7 +38,7 @@ export const sync = async () => {
       // never been synced with the cloud before
       // nothing to do here
     } else {
-      const data = await download(file.id!);
+      const remoteStorage = await download(file.id!);
       // remote data downloaded successfully
       const state = store.getState() as TRootState;
       const meta = selectMeta(state);
@@ -48,10 +48,10 @@ export const sync = async () => {
       const modifiedTime = new Date(file.modifiedTime!).getTime();
       // if local is newer than remote, merge local into remote
       // otherwise, merge remote into local
-      const mergeDirection = meta.lastModifiedTime > modifiedTime ? MergeDirection.Remote : MergeDirection.Local;
+      const mergeDirection = meta.lastModifiedTime > modifiedTime ? MergeDirection.Incoming : MergeDirection.Local;
       const _storage: ISerializedStorage = {
-        personal: mergePersonal(personal, data.personal, mergeDirection),
-        subscriptions: mergeSubscriptions(subscriptions, data.subscriptions, mergeDirection)
+        personal: mergePersonal(personal, remoteStorage.personal, mergeDirection),
+        subscriptions: mergeSubscriptions(subscriptions, remoteStorage.subscriptions, mergeDirection)
       };
       // load the merged data into store
       await loadDataIntoStore(_storage);
