@@ -1,6 +1,7 @@
 commitizen:
   name: cz_conventional_commits
   tag_format: v$version
-  version: 1.1.0
+  version: 2.0.0
+  start_rev: v2.0.0
   version_files:
   - package.json
