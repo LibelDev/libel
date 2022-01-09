@@ -55,9 +55,15 @@ const slice = createSlice({
 type TState = StateType<typeof slice.reducer>;
 
 export const SetTransform = createTransform<TState, ISerializedPersonal>(
+  /**
+   * serialize the data for storage
+   */
   (personal, key) => {
     return personal.serialize();
   },
+  /**
+   * deserialize the stored data
+   */
   (outboundState, key) => {
     return Personal.deserialize(outboundState);
   },

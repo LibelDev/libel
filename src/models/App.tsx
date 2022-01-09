@@ -14,8 +14,8 @@ import { IThreadListResponseData } from '../types/lihkg';
 import Cache from './Cache';
 
 class App {
-  private cache!: Cache;
-  private store!: Store;
+  private cache: Cache;
+  private store: Store;
 
   constructor (cache: Cache, store: Store) {
     this.cache = cache;

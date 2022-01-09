@@ -92,7 +92,7 @@ const Modal: React.FunctionComponent<TProps> = (props) => {
         <FocusTrap>
           <div
             ref={ref}
-            id={id}
+            id={_id}
             className={classNames(className, styles.modal)}
             role="dialog"
             aria-modal

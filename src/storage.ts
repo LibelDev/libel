@@ -1,4 +1,4 @@
-import { DATA_KEY, DEPRECATED_LOCAL_STORAGE_DATA_KEYS } from './constants/storage';
+import { DATA_KEY, DEPRECATED_LOCAL_STORAGE_DATA_KEYS, META_KEY } from './constants/storage';
 import Storage from './models/Storage';
 
 const keys = [
@@ -6,6 +6,6 @@ const keys = [
   ...DEPRECATED_LOCAL_STORAGE_DATA_KEYS
 ];
 
-const storage = new Storage(keys);
+const storage = new Storage(keys, META_KEY);
 
 export default storage;

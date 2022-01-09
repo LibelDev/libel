@@ -1,0 +1,24 @@
+.label {
+  &,
+  .hint {
+    @apply flex items-center;
+  }
+  
+  .logo {
+    @apply w-10;
+  }
+
+  .info {
+    @apply mx-4;
+  }
+
+  .hint {
+    @apply mt-2;
+    @apply text-xs;
+    @apply opacity-50;
+
+    .icon {
+      @apply mr-2;
+    }
+  }
+}

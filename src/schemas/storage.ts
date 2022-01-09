@@ -2,8 +2,9 @@ import joi from 'joi';
 import { ILabelDatum } from '../models/Label';
 import { ISerializedStorage } from '../models/Storage';
 import data from './data';
-import dataSet from './dataSet';
 import label from './label';
+import meta from './meta';
+import personal from './personal';
 import * as subscription from './subscription';
 
 export const deprecated = joi.alternatives().try(
@@ -22,8 +23,9 @@ export const deprecated = joi.alternatives().try(
 );
 
 const schema = joi.object<ISerializedStorage>({
-  personal: dataSet,
-  subscriptions: joi.array().items(subscription.serialized).required()
+  personal: personal.required(),
+  subscriptions: joi.array().items(subscription.serialized).required(),
+  meta: meta.unknown()
 });
 
 export default schema;

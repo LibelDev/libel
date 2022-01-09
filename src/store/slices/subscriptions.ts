@@ -1,24 +1,23 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { original } from 'immer';
 import { createTransform } from 'redux-persist';
 import { StateType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
-import { selectSubscriptions } from '../selectors';
-import { TRootState } from '../store';
 
 interface ITogglePayload {
-  index: number;
+  subscription: Subscription;
   enabled?: boolean;
 }
 
 const initialState: Subscription[] = [];
 
-const load = createAsyncThunk<IRemoteSubscription, number>(
+/**
+ * load the remote subscription data
+ */
+const load = createAsyncThunk<IRemoteSubscription, Subscription>(
   'subscriptions/load',
-  async (index, thunk) => {
-    const state = thunk.getState() as TRootState;
-    const subscriptions = selectSubscriptions(state);
-    const subscription = subscriptions[index];
+  async (subscription, thunk) => {
     try {
       const remoteSubscription = await subscription.fetch();
       if (remoteSubscription) {
@@ -41,13 +40,16 @@ const slice = createSlice({
       const subscription = Subscription.deserialize(payload);
       state.push(subscription);
     },
-    remove: (state, action: PayloadAction<number>) => {
-      const { payload: index } = action;
+    remove: (state, action: PayloadAction<Subscription>) => {
+      const { payload: subscription } = action;
+      const index = state.findIndex(({ url }) => url === subscription.url)!;
       state.splice(index, 1);
     },
     toggle: (state, action: PayloadAction<ITogglePayload>) => {
-      const { index, enabled } = action.payload;
-      state[index].enabled = enabled ?? !state[index].enabled;
+      const { subscription, enabled } = action.payload;
+      const index = state.findIndex(({ url }) => url === subscription.url)!;
+      const _subscription = state[index];
+      _subscription.enabled = enabled ?? !_subscription.enabled;
     },
     update: (state, action: PayloadAction<(Subscription | ISerializedSubscription)[]>) => {
       const { payload } = action;
@@ -57,25 +59,28 @@ const slice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(load.pending, (state, action) => {
-      const { arg: index } = action.meta;
-      const subscription = state[index];
-      subscription.loading = true;
-      subscription.error = undefined;
+      const { arg: subscription } = action.meta;
+      const _subscription = state.find(({ url }) => url === subscription.url)!;
+      _subscription.loading = true;
+      _subscription.error = undefined;
     });
     builder.addCase(load.fulfilled, (state, action) => {
-      const { arg: index } = action.meta;
+      const { arg: subscription } = action.meta;
       const { payload } = action;
-      const subscription = state[index];
-      subscription.update(payload);
-      subscription.loading = false;
-      subscription.error = undefined;
+      const _subscription = state.find(({ url }) => url === subscription.url)!;
+      _subscription.update(payload);
+      _subscription.loaded = true;
+      _subscription.loading = false;
+      _subscription.error = undefined;
     });
     builder.addCase(load.rejected, (state, action) => {
-      const { arg: index } = action.meta;
+      const { arg: subscription } = action.meta;
       const { payload, error } = action;
-      const subscription = state[index];
-      subscription.loading = false;
-      subscription.error = (payload as any) || error.message;
+      // const subscriptions = original<Subscription[]>(state)!;
+      // const index = subscriptions.indexOf(subscription);
+      const _subscription = state.find(({ url }) => url === subscription.url)!;
+      _subscription.loading = false;
+      _subscription.error = (payload as any) || error.message;
     });
   }
 });
@@ -83,9 +88,15 @@ const slice = createSlice({
 type TState = StateType<typeof slice.reducer>;
 
 export const SetTransform = createTransform<TState, ISerializedSubscription[]>(
+  /**
+   * serialize the data for storage
+   */
   (subscriptions, key) => {
     return subscriptions.map((subscription) => subscription.serialize());
   },
+  /**
+   * deserialize the stored data
+   */
   (outboundState, key) => {
     return outboundState.map(Subscription.deserialize);
   },

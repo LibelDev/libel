@@ -26,3 +26,8 @@ export const isStickersPage = () => {
   const { pathname } = window.location;
   return pathname === '/stickers';
 };
+
+export const isOffline = () => {
+  const cloudflareWrapper = document.querySelector('#cf-wrapper');
+  return !!cloudflareWrapper;
+};
