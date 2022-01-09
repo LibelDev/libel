@@ -62,6 +62,7 @@ export const sync = async () => {
     await upload(file.id!, json);
     const now = Date.now();
     dispatch(metaActions.setLastSyncedTime(now));
+    dispatch(syncActions.setError(null));
   } catch (err) {
     dispatch(syncActions.setError(err));
   }

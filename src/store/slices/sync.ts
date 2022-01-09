@@ -18,7 +18,7 @@ const slice = createSlice({
       const { payload } = action;
       state.loading = payload;
     },
-    setError: (state, action: PayloadAction<unknown>) => {
+    setError: (state, action: PayloadAction<unknown | null>) => {
       const { payload } = action;
       state.error = payload;
     }
