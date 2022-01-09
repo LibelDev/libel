@@ -7,12 +7,12 @@ export const isMainApp = () => {
   );
 };
 
-export const isLoginPage = () => {
+const isLoginPage = () => {
   const { pathname } = window.location;
   return pathname === '/login';
 };
 
-export const isEditProfilePage = () => {
+const isEditProfilePage = () => {
   const { pathname } = window.location;
   return pathname === '/me/profile/edit';
 };
@@ -22,7 +22,7 @@ export const isNoticePage = () => {
   return pathname === '/notice';
 };
 
-export const isStickersPage = () => {
+const isStickersPage = () => {
   const { pathname } = window.location;
   return pathname === '/stickers';
 };
