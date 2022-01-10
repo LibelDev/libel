@@ -1,7 +1,7 @@
 commitizen:
-  name: cz_conventional_commits
   changelog_start_rev: v2.0.0
+  name: cz_conventional_commits
   tag_format: v$version
-  version: 2.0.1
+  version: 2.0.2
   version_files:
   - package.json
