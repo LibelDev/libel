@@ -16,15 +16,17 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
     const url = (prompt() || '').trim();
-    const subscription = subscriptions.find((subscription) => subscription.url === url);
-    if (!subscription) {
-      const subscription = new Subscription('', url, true);
-      dispatch(subscriptionsActions.add(subscription));
-      dispatch(subscriptionsActions.load(subscriptions.length));
-    } else {
-      // already subscribed, simply load the remote data again
-      const index = subscriptions.indexOf(subscription);
-      dispatch(subscriptionsActions.load(index));
+    if (url) {
+      const subscription = subscriptions.find((subscription) => subscription.url === url);
+      if (!subscription) {
+        const subscription = new Subscription('', url, true);
+        dispatch(subscriptionsActions.add(subscription));
+        dispatch(subscriptionsActions.load(subscriptions.length));
+      } else {
+        // already subscribed, simply load the remote data again
+        const index = subscriptions.indexOf(subscription);
+        dispatch(subscriptionsActions.load(index));
+      }
     }
   }, [subscriptions]);
 
