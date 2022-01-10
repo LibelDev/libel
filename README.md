@@ -1,5 +1,3 @@
-<meta name="google-site-verification" content="1y_KKDMz5lkNhCzCn14IjLHmDtUAaaVM5gxmTUhmRHg" />
-
 <p align="center">
   <img src="./assets/logos/libel.png" alt="Libel" width="100"/>
   <h1 align="center">Libel</h1>
