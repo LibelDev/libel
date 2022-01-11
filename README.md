@@ -80,6 +80,10 @@ This project only provides technical support for the [features](https://github.c
 
 ***
 
+## Privacy Policy
+
+[Privacy Policy](https://github.com/kitce/libel/wiki/%E7%A7%81%E9%9A%B1%E6%94%BF%E7%AD%96)
+
 ## License
 
 MIT License
