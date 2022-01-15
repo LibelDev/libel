@@ -44,18 +44,18 @@ export const isNickname = (node: Element) => {
   return node.matches(`.${lihkgCssClasses.nickname}`);
 };
 
-const querySelectorAllReplyBody = (node: Element) => {
-  return node.querySelectorAll(`.${lihkgCssClasses.replyBody}`);
+const querySelectorAllNickname = (node: Element) => {
+  return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
 };
-
-// const querySelectorAllNickname = (node: Element) => {
-//   return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
-// };
 
 const querySelectorNicknameLink = (node: Element) => {
   const nicknameLinkSelector = `.${lihkgCssClasses.nickname} > a[href^="/profile"]`;
   return node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
 };
+
+// const querySelectorAllReplyBody = (node: Element) => {
+//   return node.querySelectorAll(`.${lihkgCssClasses.replyBody}`);
+// };
 
 const isModalTitleMatched = (node: Element, title: string) => {
   if (node.matches(`.${lihkgCssClasses.modal}`)) {
@@ -169,14 +169,14 @@ const handleSettingsModal = (node: Element, store: Store) => {
   renderSettingSection(store, container);
 };
 
-export const handleReplyBodies = (node: Element, store: Store) => {
-  const nodes = Array.from(querySelectorAllReplyBody(node));
+export const handleNicknames = (node: Element, store: Store) => {
+  const nodes = Array.from(querySelectorAllNickname(node));
   for (const node of nodes) {
-    handleReplyBody(node, store);
+    handleNickname(node, store);
   }
 };
 
-const handleReplyBody = (node: Element, store: Store) => {
+const handleNickname = (node: Element, store: Store) => {
   const nicknameLink = querySelectorNicknameLink(node);
   if (nicknameLink) {
     const href = nicknameLink.getAttribute('href')!;
@@ -186,19 +186,43 @@ const handleReplyBody = (node: Element, store: Store) => {
       const [, user] = matched;
       (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
-      // insertAfter(container, node);
-      node.insertBefore(container, node.firstChild!);
+      insertAfter(container, node);
       renderLabelList(user, store, true, container);
       (node as any)[containerCacheKey] = container;
     }
   }
 };
 
+// export const handleReplyBodies = (node: Element, store: Store) => {
+//   const nodes = Array.from(querySelectorAllReplyBody(node));
+//   for (const node of nodes) {
+//     handleReplyBody(node, store);
+//   }
+// };
+
+// const handleReplyBody = (node: Element, store: Store) => {
+//   const nicknameLink = querySelectorNicknameLink(node);
+//   if (nicknameLink) {
+//     const href = nicknameLink.getAttribute('href')!;
+//     const matched = href.match(REGEXES.PROFILE_URL);
+//     if (matched) {
+//       const containerCacheKey = `__${namespace}__cache__container__`;
+//       const [, user] = matched;
+//       (node as any)[containerCacheKey]?.remove();
+//       const container = document.createElement('div');
+//       // insertAfter(container, node);
+//       node.insertBefore(container, node.firstChild!);
+//       renderLabelList(user, store, true, container);
+//       (node as any)[containerCacheKey] = container;
+//     }
+//   }
+// };
+
 export const mutationHandlerFactory = (node: Element) => {
   if (isThread(node)) return handleThread;
   if (isUserCardModal(node)) return handleUserCardModal;
   if (isSettingsModal(node)) return handleSettingsModal;
-  return handleReplyBodies;
+  return handleNicknames;
 };
 
 export const waitForSubmissionForm = () => {
