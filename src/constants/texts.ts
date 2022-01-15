@@ -77,3 +77,6 @@ export const ANNOUNCEMENT_DONT_SHOW_AGAIN_QUESTION = '七天內不再顯示此�
 // info
 export const SOURCE_CODE = 'Source code';
 export const LICENSE = 'MIT License';
+
+// emote menu
+export const UNLOCK_ICON_MAP_TOGGLE_BUTTON_TEXT = '解鎖全部表情';

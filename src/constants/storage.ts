@@ -1,4 +1,5 @@
 export const DATA_KEY = 'data';
+export const CONFIG_KEY = 'config';
 export const META_KEY = 'meta';
 export const DRAFTS_KEY = 'drafts';
 

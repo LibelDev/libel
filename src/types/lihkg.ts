@@ -203,3 +203,25 @@ export interface IDraft {
   content: string;
   isReply: boolean;
 }
+
+export interface IIconMap {
+  [name: string]: IIconSet;
+}
+
+interface IIconSet {
+  icons: { [key: string]: string; };
+  special?: IIconSetSpecial;
+  showOn?: IIconSetShowOn;
+}
+
+interface IIconSetShowOn {
+  start_time?: number;
+  end_time?: number;
+  keywords?: string[];
+  user_id?: number[];
+  cat_id?: number[];
+}
+
+interface IIconSetSpecial {
+  [path: string]: string;
+}
