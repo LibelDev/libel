@@ -1,7 +1,6 @@
 import { render } from 'mustache';
 import React from 'react';
-import { publicURL } from '../../../config/config';
-import { name } from '../../../package.json';
+import { name, repository } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { versionUpdate } from '../../templates/announcements';
 import { IRelease } from '../../types/github';
@@ -15,12 +14,16 @@ interface IProps {
   release: IRelease;
 }
 
-const userScriptURL = `${publicURL}/${name}.user.js`;
+const getUserScriptURL = (release: IRelease) => {
+  const { tag_name } = release;
+  return `${repository.url}/raw/${tag_name}/dist/${name}.user.js`;
+};
 
 const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
   const { currentVersion, newVersion, release } = props;
   const oldVersionMessage = render(versionUpdate.oldVersionMessage, { currentVersion });
   const newVersionMessage = render(versionUpdate.newVersionMessage, { newVersion });
+  const userScriptURL = getUserScriptURL(release);
   return (
     <Announcement className={styles.newVersionAnnouncement} icon={IconName.InfoFill} forced>
       <strong>
