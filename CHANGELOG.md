@@ -1,3 +1,9 @@
+## v2.2.0 (2022-01-16)
+
+### Feat
+
+- **announcement**: update new version announcement
+
 ## v2.1.0 (2022-01-16)
 
 ### Feat
