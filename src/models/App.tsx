@@ -59,7 +59,7 @@ class App {
             case 'attributes': {
               if (mutation.attributeName === ATTRIBUTES.dataPostId) {
                 const { target } = mutation;
-                LIHKG.handleReplyBodies(target as Element, store);
+                LIHKG.handleNicknames(target as Element, store);
               }
               break;
             }

@@ -8,7 +8,7 @@
     @apply hidden;
   }
 
-  :global(.#{$lihkg-class-reply-body}) & {
+  :global(.#{$lihkg-class-reply-body}) > & {
     @apply mb-2;
   }
 
