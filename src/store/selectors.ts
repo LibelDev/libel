@@ -5,6 +5,8 @@ import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
 import { TRootState } from './store';
 
+export const selectConfig = (state: TRootState) => state.config;
+
 export const selectMeta = (state: TRootState) => state.meta;
 
 export const selectSync = (state: TRootState) => state.sync;
