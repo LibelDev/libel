@@ -1,8 +1,10 @@
 import { Store } from '@reduxjs/toolkit';
+import produce from 'immer';
 import React from 'react';
 import ReactDOM, { Renderer } from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { namespace } from '../../package.json';
 import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
 import addLabelButtonStyles from '../components/AddLabelButton/AddLabelButton.scss';
@@ -12,15 +14,17 @@ import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
 import settingSectionStyles from '../components/SettingSection/SettingSection.scss';
+import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
+import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton.scss';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.scss';
-import { IUser } from '../types/lihkg';
+import { IIconMap, IUser } from '../types/lihkg';
 import { insertAfter, waitForElement } from './dom';
-import { namespace } from '../../package.json';
+import { findStore, IReactRootElement } from './redux';
 
 type TRendererContainer = Parameters<Renderer>[1];
 
@@ -40,22 +44,26 @@ const isSettingsModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.SETTINGS_MODAL_TITLE);
 };
 
+const isEmoteMenu = (node: Element) => {
+  return node.matches(lihkgSelectors.emoteMenu);
+};
+
 export const isNickname = (node: Element) => {
   return node.matches(`.${lihkgCssClasses.nickname}`);
 };
 
-const querySelectorAllReplyBody = (node: Element) => {
-  return node.querySelectorAll(`.${lihkgCssClasses.replyBody}`);
+const querySelectorAllNickname = (node: Element) => {
+  return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
 };
-
-// const querySelectorAllNickname = (node: Element) => {
-//   return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
-// };
 
 const querySelectorNicknameLink = (node: Element) => {
   const nicknameLinkSelector = `.${lihkgCssClasses.nickname} > a[href^="/profile"]`;
   return node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
 };
+
+// const querySelectorAllReplyBody = (node: Element) => {
+//   return node.querySelectorAll(`.${lihkgCssClasses.replyBody}`);
+// };
 
 const isModalTitleMatched = (node: Element, title: string) => {
   if (node.matches(`.${lihkgCssClasses.modal}`)) {
@@ -119,6 +127,17 @@ const renderSettingSection = (store: Store, container: TRendererContainer) => {
   );
 };
 
+const renderUnlockIconMapToggleButton = (store: Store, container: TRendererContainer) => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <UnlockIconMapToggleButton />
+      </PersistGate>
+    </Provider>,
+    container
+  );
+};
+
 export const renderAnnouncement = async (announcement: React.ReactElement) => {
   const container = document.createElement('div');
   container.classList.add(announcementStyles.container);
@@ -169,14 +188,22 @@ const handleSettingsModal = (node: Element, store: Store) => {
   renderSettingSection(store, container);
 };
 
-export const handleReplyBodies = (node: Element, store: Store) => {
-  const nodes = Array.from(querySelectorAllReplyBody(node));
+const handleEmoteMenu = (node: Element, store: Store) => {
+  const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
+  const container = document.createElement('div');
+  container.classList.add(unlockIconMapToggleButtonStyles.container);
+  toolbar!.appendChild(container);
+  renderUnlockIconMapToggleButton(store, container);
+};
+
+export const handleNicknames = (node: Element, store: Store) => {
+  const nodes = Array.from(querySelectorAllNickname(node));
   for (const node of nodes) {
-    handleReplyBody(node, store);
+    handleNickname(node, store);
   }
 };
 
-const handleReplyBody = (node: Element, store: Store) => {
+const handleNickname = (node: Element, store: Store) => {
   const nicknameLink = querySelectorNicknameLink(node);
   if (nicknameLink) {
     const href = nicknameLink.getAttribute('href')!;
@@ -186,19 +213,44 @@ const handleReplyBody = (node: Element, store: Store) => {
       const [, user] = matched;
       (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
-      // insertAfter(container, node);
-      node.insertBefore(container, node.firstChild!);
+      insertAfter(container, node);
       renderLabelList(user, store, true, container);
       (node as any)[containerCacheKey] = container;
     }
   }
 };
 
+// export const handleReplyBodies = (node: Element, store: Store) => {
+//   const nodes = Array.from(querySelectorAllReplyBody(node));
+//   for (const node of nodes) {
+//     handleReplyBody(node, store);
+//   }
+// };
+
+// const handleReplyBody = (node: Element, store: Store) => {
+//   const nicknameLink = querySelectorNicknameLink(node);
+//   if (nicknameLink) {
+//     const href = nicknameLink.getAttribute('href')!;
+//     const matched = href.match(REGEXES.PROFILE_URL);
+//     if (matched) {
+//       const containerCacheKey = `__${namespace}__cache__container__`;
+//       const [, user] = matched;
+//       (node as any)[containerCacheKey]?.remove();
+//       const container = document.createElement('div');
+//       // insertAfter(container, node);
+//       node.insertBefore(container, node.firstChild!);
+//       renderLabelList(user, store, true, container);
+//       (node as any)[containerCacheKey] = container;
+//     }
+//   }
+// };
+
 export const mutationHandlerFactory = (node: Element) => {
   if (isThread(node)) return handleThread;
   if (isUserCardModal(node)) return handleUserCardModal;
   if (isSettingsModal(node)) return handleSettingsModal;
-  return handleReplyBodies;
+  if (isEmoteMenu(node)) return handleEmoteMenu;
+  return handleNicknames;
 };
 
 export const waitForSubmissionForm = () => {
@@ -208,4 +260,24 @@ export const waitForSubmissionForm = () => {
 const waitForRightPanelContainer = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);
   return splitView.querySelector(`.${lihkgCssClasses.rightPanelContainer}`)!;
+};
+
+/**
+ * get the original LIHKG redux store
+ */
+export const getStore = () => {
+  const app = document.querySelector(lihkgSelectors.app);
+  const store = findStore(app as IReactRootElement);
+  return store;
+};
+
+export const unlockIconMap = (iconMap: IIconMap) => {
+  return produce(iconMap, (iconMap) => {
+    const keys = Object.keys(iconMap);
+    for (const key of keys) {
+      const iconSet = iconMap[key];
+      iconSet.icons = { ...iconSet.icons, ...iconSet.special }; // unlock all special icons
+      delete iconSet.showOn; // unlock all icon sets by removing the show conditions
+    }
+  });
 };

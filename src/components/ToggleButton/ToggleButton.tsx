@@ -13,12 +13,20 @@ interface IProps {
   * no label, button only
   */
   simple?: boolean;
+  /**
+   * small button
+   */
+  small?: boolean;
+  /**
+   * button on left
+   */
+  flip?: boolean;
 }
 
 type TProps = IProps & IBaseInputProps;
 
 const ToggleButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, children, checked, disabled, loading, simple, ...otherProps } = props;
+  const { className, children, checked, disabled, loading, simple, small, flip, ...otherProps } = props;
 
   return (
     <div
@@ -29,7 +37,9 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
           {
             [styles.checked]: checked,
             [styles.disabled]: disabled || loading,
-            [styles.simple]: simple
+            [styles.simple]: simple,
+            [styles.small]: small,
+            [styles.flip]: flip,
           }
         )
       }
