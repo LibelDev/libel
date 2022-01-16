@@ -1,3 +1,9 @@
+## v2.2.2 (2022-01-16)
+
+### Fix
+
+- **cloud-sync**: update sync logic
+
 ## v2.2.1 (2022-01-16)
 
 ### Fix
