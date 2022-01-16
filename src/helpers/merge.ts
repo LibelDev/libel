@@ -41,13 +41,13 @@ const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirect
             }
           }
         } else {
-          if (mergeDirection == MergeDirection.Local) {
+          if (mergeDirection === MergeDirection.Local) {
             data[user]!.push(incomingLabel);
           }
         }
       }
     }
-    if (mergeDirection == MergeDirection.Local) {
+    if (mergeDirection === MergeDirection.Local) {
       // new users
       for (const incomingUser of incomingUsers) {
         if (!(incomingUser in data)) {
@@ -87,7 +87,7 @@ export const mergeSubscriptions = (subscriptions: (Subscription | ISerializedSub
           }
         }
       }
-      if (mergeDirection == MergeDirection.Local) {
+      if (mergeDirection === MergeDirection.Local) {
         // new subscriptions
         for (const incomingSubscription of incomingSubscriptions) {
           const subscription = subscriptions.find(({ url }) => url === incomingSubscription.url);

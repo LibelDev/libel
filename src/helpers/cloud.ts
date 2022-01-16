@@ -46,9 +46,9 @@ export const sync = async () => {
       const subscriptions = selectSubscriptions(state) as Subscription[];
       // merge with local data
       const modifiedTime = new Date(file.modifiedTime!).getTime();
-      // if local is newer than remote, merge local into remote
+      // if it has synced before and local is newer than remote, merge local into remote
       // otherwise, merge remote into local
-      const mergeDirection = meta.lastModifiedTime > modifiedTime ? MergeDirection.Incoming : MergeDirection.Local;
+      const mergeDirection = (!!meta.lastSyncedTime && meta.lastModifiedTime > modifiedTime) ? MergeDirection.Incoming : MergeDirection.Local;
       const _storage: ISerializedStorage = {
         personal: mergePersonal(personal, remoteStorage.personal, mergeDirection),
         subscriptions: mergeSubscriptions(subscriptions, remoteStorage.subscriptions, mergeDirection)
