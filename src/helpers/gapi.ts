@@ -20,7 +20,7 @@ const initClient = (apiKey: string, discoveryDocs: string[], clientId: string, s
 };
 
 const init = () => {
-  return new Promise<typeof window.gapi>((resolve) => {
+  return new Promise<typeof gapi>((resolve) => {
     const script = appendScript('https://apis.google.com/js/api.js');
     script.addEventListener('load', async () => {
       await loadClient('client:auth2');
