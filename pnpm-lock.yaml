@@ -5,6 +5,7 @@ specifiers:
   '@types/gapi': ^0.0.41
   '@types/gapi.auth2': ^0.0.55
   '@types/gapi.client.drive': ^3.0.13
+  '@types/gtag.js': ^0.0.8
   '@types/joi': ^17.2.3
   '@types/lodash': ^4.14.168
   '@types/mustache': ^4.1.1
@@ -90,6 +91,7 @@ devDependencies:
   '@types/gapi': 0.0.41
   '@types/gapi.auth2': 0.0.55
   '@types/gapi.client.drive': 3.0.13
+  '@types/gtag.js': 0.0.8
   '@types/joi': 17.2.3
   '@types/lodash': 4.14.177
   '@types/mustache': 4.1.2
@@ -180,8 +182,8 @@ packages:
     dependencies:
       '@hapi/hoek': 9.2.1
 
-  /@maxim_mazurok/gapi.client.drive/3.0.20211213:
-    resolution: {integrity: sha512-muaQtTjj8TPxTGCx+U0kclOIEIjpbK3DnC8HXITMCgxcOkKaGHuIUZVt/PLm2hnDa1XJz0NiDo87RA9KJJFKvA==}
+  /@maxim_mazurok/gapi.client.drive/3.0.20220110:
+    resolution: {integrity: sha512-yNSSh1BduI9o2QaS57MlP8BxOYWKNAkuOsKjzuVLkHTW82XTaZUM5xEXWIO2swsBlXel5G8tOqsJPRDffHG8eQ==}
     dependencies:
       '@types/gapi.client': 1.0.5
     dev: true
@@ -354,7 +356,7 @@ packages:
   /@types/gapi.client.drive/3.0.13:
     resolution: {integrity: sha512-JFkHqQj9RA8MpvfvwdX8VU0Sbu7FMGqBR9dAmkocekWdD/y5Z/a/A6Y37EEqKW/dT8t7F3RpgUDUPlhp3snAlw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.drive': 3.0.20211213
+      '@maxim_mazurok/gapi.client.drive': 3.0.20220110
     dev: true
 
   /@types/gapi.client/1.0.5:
@@ -370,6 +372,10 @@ packages:
     dependencies:
       '@types/minimatch': 3.0.5
       '@types/node': 12.20.37
+    dev: true
+
+  /@types/gtag.js/0.0.8:
+    resolution: {integrity: sha512-xKDygydxruSUNkVbZWjiEbMijz9+xZCLb2yiTiQT88pm5EhIAUhaCo05IZF1HcQc90u4W7cp+7OZNpcJxpyL5g==}
     dev: true
 
   /@types/hoist-non-react-statics/3.3.1:

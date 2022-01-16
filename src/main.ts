@@ -12,8 +12,8 @@ if (!isOffline()) {
       const { default: storage } = await import('./storage');
       await storage.ready();
       await app.start();
-      require('./ga');
       require('./sync');
+      require('./ga');
     }
   })();
 }

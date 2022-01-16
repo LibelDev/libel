@@ -1,0 +1,1 @@
+export const id = process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID!;

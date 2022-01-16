@@ -2,9 +2,10 @@ export const insertAfter = (newChild: Node, referenceChild: Node) => {
   return referenceChild.parentNode?.insertBefore(newChild, referenceChild.nextSibling);
 };
 
-export const appendScript = (src: string) => {
+export const appendScript = (src: string, async = false) => {
   const script = document.createElement('script');
   document.body.appendChild(script);
+  script.async = async;
   script.src = src;
   return script;
 };
