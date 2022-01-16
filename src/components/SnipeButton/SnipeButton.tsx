@@ -31,10 +31,10 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
       const awaiter = waitForSubmissionForm();
       replyButton.click();
       const element = await awaiter;
-      const formComponent = findReactComponent(element, 1);
+      const formComponent = findReactComponent<SubmissionForm>(element, 1);
       const body = renderSnipingBody(user, personal, subscriptions);
       if (formComponent && body) {
-        (formComponent as SubmissionForm).replaceEditorContent(body);
+        formComponent.replaceEditorContent(body);
       }
     }
   }, [personal, subscriptions]);

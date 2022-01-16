@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as lihkgActions from '../../actions/lihkg';
 import * as TEXTS from '../../constants/texts';
-import { getStore, unlockIconMap } from '../../helpers/lihkg';
+import * as LIHKG from '../../helpers/lihkg';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { IIconMap } from '../../types/lihkg';
@@ -21,7 +21,7 @@ const UnlockIconMapToggleButton = () => {
   }, []);
 
   useEffect(() => {
-    const store = getStore(); // original LIHKG redux store
+    const store = LIHKG.getStore(); // original LIHKG redux store
     const { dispatch, getState } = store!;
     if (isIconMapUnlocked) {
       const state = getState();
@@ -29,7 +29,7 @@ const UnlockIconMapToggleButton = () => {
         originalIconMap = state.app.iconMap as IIconMap;
       }
       if (!unlockedIconMap) {
-        unlockedIconMap = unlockIconMap(originalIconMap);
+        unlockedIconMap = LIHKG.unlockIconMap(originalIconMap);
       }
       // spread the object due to object being not extensible
       // otherwise it will lead to error in the LIHKG main script

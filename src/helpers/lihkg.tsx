@@ -24,7 +24,7 @@ import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.scss';
 import { IIconMap, IUser } from '../types/lihkg';
 import { insertAfter, waitForElement } from './dom';
-import { findStore, IReactRootElement } from './redux';
+import { findReduxStore, IReactRootElement } from './redux';
 
 type TRendererContainer = Parameters<Renderer>[1];
 
@@ -267,7 +267,7 @@ const waitForRightPanelContainer = async () => {
  */
 export const getStore = () => {
   const app = document.querySelector(lihkgSelectors.app);
-  const store = findStore(app as IReactRootElement);
+  const store = findReduxStore(app as IReactRootElement);
   return store;
 };
 
