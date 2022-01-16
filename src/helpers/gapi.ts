@@ -1,4 +1,5 @@
 import { appendScript } from './dom';
+import * as singleton from './singleton';
 
 type TClientDriveFilesGetRequestWithoutFileId = Omit<Parameters<typeof gapi.client.drive.files.get>[0], 'fileId'>;
 type TSpaces = ('drive' | 'appDataFolder')[];
@@ -19,30 +20,21 @@ const initClient = (apiKey: string, discoveryDocs: string[], clientId: string, s
 };
 
 const init = () => {
-  const script = appendScript('https://apis.google.com/js/api.js');
-  let ready = false;
-  let callback = (gapi: typeof window.gapi) => { };
-  script.addEventListener('load', async () => {
-    await loadClient('client:auth2');
-    const apiKey = process.env.GOOGLE_API_KEY!;
-    const discoveryDocs = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
-    const clientId = process.env.GOOGLE_CLIENT_ID!;
-    const scopes = ['https://www.googleapis.com/auth/drive.appdata'];
-    await initClient(apiKey, discoveryDocs, clientId, scopes);
-    callback(window.gapi);
-    ready = true;
-  });
-  return () => {
-    return new Promise<typeof window.gapi>((resolve) => {
-      callback = resolve;
-      if (ready) {
-        resolve(window.gapi);
-      }
+  return new Promise<typeof window.gapi>((resolve) => {
+    const script = appendScript('https://apis.google.com/js/api.js');
+    script.addEventListener('load', async () => {
+      await loadClient('client:auth2');
+      const apiKey = process.env.GOOGLE_API_KEY!;
+      const discoveryDocs = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
+      const clientId = process.env.GOOGLE_CLIENT_ID!;
+      const scopes = ['https://www.googleapis.com/auth/drive.appdata'];
+      await initClient(apiKey, discoveryDocs, clientId, scopes);
+      resolve(window.gapi);
     });
-  };
+  });
 };
 
-export const ready = init();
+export const ready = singleton.create(init());
 
 /**
  * Google Drive V3 API
