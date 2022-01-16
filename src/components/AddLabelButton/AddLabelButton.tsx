@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
+import { EventName } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
+import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
@@ -66,6 +68,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     }
     setLoading(false);
     handleModalClose();
+    gtag.event(EventName.AddLabel, payload);
   }, [user, targetReply, handleModalClose]);
 
   return (

@@ -7,15 +7,20 @@ type TWindow = typeof window & {
 };
 
 const init = () => {
-  return new Promise<typeof window.gtag>((resolve) => {
+  return new Promise<Gtag.Gtag>((resolve) => {
     const script = appendScript(`https://www.googletagmanager.com/gtag/js?id=${id}`, true);
     script.addEventListener('load', () => {
       const _window = window as TWindow;
       _window.dataLayer = _window.dataLayer || [];
-      _window.gtag = (...args: any[]) => { _window.dataLayer.push(args); };
+      _window.gtag = _window.gtag || ((...args: any[]) => { _window.dataLayer.push(args); });
       resolve(_window.gtag);
     });
   });
 };
 
 export const ready = singleton.create(init());
+
+export const event = async (eventName: Gtag.EventNames | string, eventParams?: Gtag.ControlParams | Gtag.EventParams | Gtag.CustomParams) => {
+  const gtag = await ready();
+  return gtag('event', eventName, eventParams);
+};
