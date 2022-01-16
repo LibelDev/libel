@@ -46,22 +46,26 @@ export const sync = async () => {
       const subscriptions = selectSubscriptions(state) as Subscription[];
       // merge with local data
       const modifiedTime = new Date(file.modifiedTime!).getTime();
-      // if it has synced before and local is newer than remote, merge local into remote
-      // otherwise, merge remote into local
-      const mergeDirection = (!!meta.lastSyncedTime && meta.lastModifiedTime > modifiedTime) ? MergeDirection.Incoming : MergeDirection.Local;
+      const { lastModifiedTime, lastSyncedTime } = meta;
+      // NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
+      // `lastSyncedTime === modifiedTime` => the file was updated from this instance in the previous sync
+      // => if local is newer than remote, merge local into remote, otherwise, merge remote into local
+      // `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
+      // => then always merge remote into local
+      const mergeDirection = ((lastSyncedTime === modifiedTime) && (lastModifiedTime > modifiedTime)) ? MergeDirection.Incoming : MergeDirection.Local;
       const _storage: ISerializedStorage = {
         personal: mergePersonal(personal, remoteStorage.personal, mergeDirection),
         subscriptions: mergeSubscriptions(subscriptions, remoteStorage.subscriptions, mergeDirection)
       };
       // load the merged data into store
       await loadDataIntoStore(_storage);
-      // update the data to cloud
       storage.update(_storage);
     }
+    // upload the data to cloud
     const json = storage.json();
-    await upload(file.id!, json);
-    const now = Date.now();
-    dispatch(metaActions.setLastSyncedTime(now));
+    const { result } = await upload(file.id!, json);
+    const lastSyncedTime = new Date(result.modifiedTime!).getTime();
+    dispatch(metaActions.setLastSyncedTime(lastSyncedTime));
     dispatch(syncActions.setError(null));
   } catch (err) {
     dispatch(syncActions.setError(err));
