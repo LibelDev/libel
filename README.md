@@ -2,9 +2,10 @@
   <img src="./assets/logos/libel.png" alt="Libel" width="100"/>
   <h1 align="center">Libel</h1>
   <p align="center">Label users on LIHKG</p>
+  <p align="center">
+    <img src="./assets/demo.gif" alt="Demo" />
+  </p>
 </p>
-
-https://user-images.githubusercontent.com/15712798/148693720-4a2b5d1b-75bb-4828-84b9-2aa64a1c46d9.mp4
 
 ***
 
