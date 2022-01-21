@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-// import { StateType } from 'typesafe-actions';
+import { ActionType } from 'typesafe-actions';
 import { ISource } from '../../models/Label';
 import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
 
@@ -72,10 +72,9 @@ export const SetTransform = createTransform<TState, ISerializedPersonal>(
   }
 );
 
-export const actions = {
-  ...slice.actions
-};
+export const { actions } = slice;
 
 // export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+export type TActions = ActionType<typeof slice.actions>;
 
 export default slice;

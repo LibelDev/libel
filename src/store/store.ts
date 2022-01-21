@@ -2,8 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
-// import { StateType, ActionType } from 'typesafe-actions';
-// import { DeepReadonly } from 'utility-types';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
 import Storage from '../models/Storage';
@@ -12,7 +10,6 @@ import storage from '../storage';
 import { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
 import reducer, { persistedReducer } from './reducer';
-import { selectSubscriptions } from './selectors';
 import { actions as metaActions } from './slices/meta';
 import { actions as personalActions } from './slices/personal';
 import { actions as subscriptionsActions } from './slices/subscriptions';
@@ -46,10 +43,8 @@ const store = configureStore({
 
 initMessageListener(store);
 
-const loadRemoteSubscriptions = async () => {
+const loadRemoteSubscriptions = async (subscriptions: Subscription[]) => {
   const { dispatch } = store;
-  const state = store.getState();
-  const subscriptions = selectSubscriptions(state);
   for (let i = 0; i < subscriptions.length; i++) {
     dispatch(subscriptionsActions.load(i));
   }
@@ -60,7 +55,7 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
   const { personal, subscriptions } = storage;
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
-  await loadRemoteSubscriptions();
+  await loadRemoteSubscriptions(subscriptions);
   return storage;
 };
 
@@ -69,7 +64,8 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
  */
 export const persistor = persistStore(store, null, async () => {
   await storage.ready();
-  await loadRemoteSubscriptions();
+  const { subscriptions } = storage;
+  await loadRemoteSubscriptions(subscriptions);
 });
 
 export type TRootState = ReturnType<typeof reducer>;

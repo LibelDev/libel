@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
+import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Meta from '../../models/Meta';
 
-export const initialState = new Meta();
+export const initialState: Meta = new Meta();
 
 const slice = createSlice({
   name: 'meta',
@@ -18,11 +19,10 @@ const slice = createSlice({
   },
 });
 
-export const actions = {
-  ...slice.actions
-};
+export const { actions } = slice;
 
-// type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+export type TActions = ActionType<typeof slice.actions>;
 
 export const persistedReducer = persistReducer({
   keyPrefix: '',

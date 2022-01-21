@@ -1,11 +1,12 @@
 import { Middleware } from '@reduxjs/toolkit';
 import { actions as metaActions } from '../slices/meta';
+import { TRootState } from '../store';
 
 interface IOptions {
   blacklist?: string[];
 }
 
-export const createLastModifiedTimeUpdater = (options: IOptions = {}): Middleware => (store) => (next) => (action) => {
+export const createLastModifiedTimeUpdater = (options: IOptions = {}): Middleware<{}, TRootState> => (store) => (next) => (action) => {
   const { dispatch } = store;
   const result = next(action);
   const { blacklist = [] } = options;

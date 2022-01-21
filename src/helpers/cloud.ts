@@ -1,15 +1,13 @@
 import * as files from '../constants/files';
-import Personal from '../models/Personal';
-import Subscription from '../models/Subscription';
 import storage from '../storage';
 import { actions as metaActions } from '../store/slices/meta';
 import { actions as syncActions } from '../store/slices/sync';
-import store, { TRootState } from '../store/store';
+import store from '../store/store';
 import Storage, { ISerializedStorage } from './../models/Storage';
-import { selectPersonal, selectSubscriptions, selectMeta } from './../store/selectors';
+import { selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
 import { loadDataIntoStore } from './../store/store';
 import { drive } from './gapi';
-import { mergePersonal, mergeSubscriptions, MergeDirection } from './merge';
+import { MergeDirection, mergePersonal, mergeSubscriptions } from './merge';
 
 const download = async (fileId: string): Promise<Partial<ISerializedStorage>> => {
   const { body } = await drive.getById<boolean>(fileId, { alt: 'media' });
@@ -40,10 +38,10 @@ export const sync = async () => {
     } else {
       const remoteStorage = await download(file.id!);
       // remote data downloaded successfully
-      const state = store.getState() as TRootState;
+      const state = store.getState();
       const meta = selectMeta(state);
-      const personal = selectPersonal(state) as Personal;
-      const subscriptions = selectSubscriptions(state) as Subscription[];
+      const personal = selectPersonal(state);
+      const subscriptions = selectSubscriptions(state);
       // merge with local data
       const modifiedTime = new Date(file.modifiedTime!).getTime();
       const { lastModifiedTime, lastSyncedTime } = meta;

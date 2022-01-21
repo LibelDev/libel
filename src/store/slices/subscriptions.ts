@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-// import { StateType } from 'typesafe-actions';
+import { ActionType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
+import { selectSubscriptions } from '../selectors';
 import { TRootState } from '../store';
-import { selectSubscriptions } from './../selectors';
 
 interface ITogglePayload {
   index: number;
@@ -54,10 +54,10 @@ const slice = createSlice({
     },
     toggle: (state, action: PayloadAction<ITogglePayload>) => {
       const { index, enabled } = action.payload;
-      const _subscription = state[index];
-      _subscription.enabled = enabled ?? !_subscription.enabled;
+      const subscription = state[index];
+      subscription.enabled = enabled ?? !subscription.enabled;
     },
-    update: (state, action: PayloadAction<(Subscription | ISerializedSubscription)[]>) => {
+    update: (state, action: PayloadAction<Subscription[] | ISerializedSubscription[]>) => {
       const { payload } = action;
       const subscriptions = payload.map(Subscription.deserialize);
       return subscriptions;
@@ -114,6 +114,7 @@ export const actions = {
   load
 };
 
-// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+// export type TActions = ReturnType<typeof slice.actions[keyof typeof slice.actions]>;
+export type TActions = ActionType<typeof slice.actions>;
 
 export default slice;
