@@ -1,7 +1,6 @@
-import flatMap from 'lodash/flatMap';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
+import { filterPersonalForUser, filterSubscriptionsForUser, flatMapSubscriptionsToLabels } from '../../store/selectors';
+import { useTypedSelector } from '../../store/store';
 import SnipeButton from '../SnipeButton/SnipeButton';
 import LabelItems from './LabelItems/LabelItems';
 import styles from './LabelList.scss';
@@ -13,13 +12,10 @@ interface IProps {
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
   const { user, hasSnipeButton } = props;
-  const personal = useSelector(filterPersonalForUser(user));
+  const personal = useTypedSelector(filterPersonalForUser(user));
   const { labels: personalLabels } = personal.aggregate();
-  const subscriptions = useSelector(filterSubscriptionsForUser(user));
-  const subscriptionLabels = flatMap(
-    subscriptions.map((subscription) => subscription.aggregate()),
-    ({ labels }) => labels
-  );
+  const subscriptions = useTypedSelector(filterSubscriptionsForUser(user));
+  const subscriptionLabels = flatMapSubscriptionsToLabels(subscriptions);
   return (
     (personalLabels.length || subscriptionLabels.length) ? (
       <ul className={styles.labelList}>

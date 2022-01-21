@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
 import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
+import { useTypedDispatch } from '../../../../store/store';
 import ToggleButton from '../../../ToggleButton/ToggleButton';
 
 interface IProps {
@@ -14,7 +14,7 @@ interface IProps {
 type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
   const { className, subscription, index } = props;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {

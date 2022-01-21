@@ -1,22 +1,20 @@
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import * as TEXTS from '../../../constants/texts';
 import { _export, _import } from '../../../helpers/file';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from '../../../helpers/merge';
 import useElementID from '../../../hooks/useElementID';
 import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
-import Subscription from '../../../models/Subscription';
 import { selectPersonal, selectSubscriptions } from '../../../store/selectors';
-import { loadDataIntoStore } from '../../../store/store';
+import { loadDataIntoStore, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
 import * as messages from '../../../templates/messages';
 import styles from './ExportImportSection.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
-  const personal = useSelector(selectPersonal) as Personal;
-  const subscriptions = useSelector(selectSubscriptions) as Subscription[];
+  const personal = useTypedSelector(selectPersonal);
+  const subscriptions = useTypedSelector(selectSubscriptions);
   const importFileInputId = useElementID('ImportFileInput');
 
   const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {

@@ -22,7 +22,9 @@ export const actions = {
   ...slice.actions
 };
 
-export const reducer = persistReducer({
+// type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+
+export const persistedReducer = persistReducer({
   keyPrefix: '',
   key: 'meta',
   storage: storage,

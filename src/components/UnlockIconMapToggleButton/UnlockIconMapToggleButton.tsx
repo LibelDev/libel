@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import * as lihkgActions from '../../actions/lihkg';
 import * as TEXTS from '../../constants/texts';
 import * as LIHKG from '../../helpers/lihkg';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
+import { useTypedDispatch, useTypedSelector } from '../../store/store';
 import { IIconMap } from '../../types/lihkg';
 import ToggleButton from '../ToggleButton/ToggleButton';
 
@@ -12,8 +12,8 @@ let originalIconMap: IIconMap | undefined;
 let unlockedIconMap: IIconMap | undefined;
 
 const UnlockIconMapToggleButton = () => {
-  const dispatch = useDispatch();
-  const { isIconMapUnlocked } = useSelector(selectConfig);
+  const dispatch = useTypedDispatch();
+  const { isIconMapUnlocked } = useTypedSelector(selectConfig);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked } = event.target;

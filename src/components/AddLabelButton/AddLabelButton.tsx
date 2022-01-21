@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { uploadImage } from '../../apis/nacx';
 import * as TEXTS from '../../constants/texts';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
+import { useTypedDispatch } from '../../store/store';
 import { IPost } from '../../types/lihkg';
 import Button from '../Button/Button';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
@@ -19,7 +19,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();

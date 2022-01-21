@@ -1,5 +1,5 @@
-import { persistReducer } from 'redux-persist';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
 import storage from '../../helpers/storage';
 import Config from '../../models/Config';
 
@@ -13,14 +13,16 @@ const slice = createSlice({
       const { payload } = action;
       state.isIconMapUnlocked = payload;
     }
-  },
+  }
 });
 
 export const actions = {
   ...slice.actions
 };
 
-export const reducer = persistReducer({
+// type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+
+export const persistedReducer = persistReducer({
   keyPrefix: '',
   key: 'config',
   storage: storage,

@@ -1,10 +1,10 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
 import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
+import { useTypedDispatch } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
@@ -17,7 +17,7 @@ interface IProps {
 type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
   const { className, subscription, index } = props;
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {

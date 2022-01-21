@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-import { StateType } from 'typesafe-actions';
+// import { StateType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
 import { TRootState } from '../store';
@@ -11,16 +11,20 @@ interface ITogglePayload {
   enabled?: boolean;
 }
 
+type TAsyncThunkConfig = {
+  state: TRootState;
+};
+
 const initialState: Subscription[] = [];
 
 /**
  * load the remote subscription data
  */
-const load = createAsyncThunk<IRemoteSubscription, number>(
+export const load = createAsyncThunk<IRemoteSubscription, number, TAsyncThunkConfig>(
   'subscriptions/load',
   async (index, thunk) => {
     try {
-      const state = thunk.getState() as TRootState;
+      const state = thunk.getState();
       const subscriptions = selectSubscriptions(state);
       const subscription = subscriptions[index];
       const remoteSubscription = await subscription.fetch();
@@ -85,7 +89,7 @@ const slice = createSlice({
   }
 });
 
-type TState = StateType<typeof slice.reducer>;
+type TState = ReturnType<typeof slice.reducer>;
 
 export const SetTransform = createTransform<TState, ISerializedSubscription[]>(
   /**
@@ -109,5 +113,7 @@ export const actions = {
   ...slice.actions,
   load
 };
+
+// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
 
 export default slice;

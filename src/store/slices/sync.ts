@@ -29,4 +29,6 @@ export const actions = {
   ...slice.actions
 };
 
+// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+
 export default slice;

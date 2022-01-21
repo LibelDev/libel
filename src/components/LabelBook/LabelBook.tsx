@@ -1,10 +1,10 @@
 import flatMap from 'lodash/flatMap';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { THREAD_USER_LABELS_TOOLTIP } from '../../constants/texts';
 import { MappedHTMLAttributes } from '../../helpers/types';
 import { ILabel } from '../../models/Label';
 import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
+import { useTypedSelector } from '../../store/store';
 import styles from './LabelBook.scss';
 
 interface IProps {
@@ -15,9 +15,9 @@ type TProps = IProps & MappedHTMLAttributes<'div'>;
 
 const LabelBook: React.FunctionComponent<TProps> = (props) => {
   const { user } = props;
-  const personal = useSelector(filterPersonalForUser(user));
+  const personal = useTypedSelector(filterPersonalForUser(user));
   const { labels: personalLabels } = personal.aggregate();
-  const subscriptions = useSelector(filterSubscriptionsForUser(user));
+  const subscriptions = useTypedSelector(filterSubscriptionsForUser(user));
   const subscriptionLabels = flatMap(
     subscriptions.map((subscription) => subscription.aggregate()),
     ({ labels }) => labels

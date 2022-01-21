@@ -1,11 +1,11 @@
 import formatRelative from 'date-fns/formatRelative';
 import { zhHK } from 'date-fns/locale';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import logo from '../../../../../assets/logos/google/google-drive.png';
 import * as TEXTS from '../../../../constants/texts';
 import { ready } from '../../../../helpers/gapi';
 import { selectMeta, selectSync } from '../../../../store/selectors';
+import { useTypedSelector } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
@@ -15,8 +15,8 @@ import styles from './SyncWithGoogleDrive.scss';
 const SyncWithGoogleDrive: React.FunctionComponent = () => {
   const [user, setUser] = useState<gapi.auth2.GoogleUser | null>(null);
   const [signedIn, setSignedIn] = useState(false);
-  const meta = useSelector(selectMeta);
-  const sync = useSelector(selectSync);
+  const meta = useTypedSelector(selectMeta);
+  const sync = useTypedSelector(selectSync);
 
   const localizedLastSyncedTime = useMemo(() => {
     if (meta.lastSyncedTime) {

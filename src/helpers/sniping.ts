@@ -6,9 +6,9 @@ import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
 import { promotion, snipingHeader, snipingLabelItem, snipingLabelScreenshot, snipingTemplate, subscriptionItem } from '../templates/sniping/sniping';
 import { IDraft } from '../types/lihkg';
-import { CUSTOM_SNIPING_TEMPLATE_MAPPING, CUSTOM_SNIPING_TEMPLATE_DRAFT_TITLE } from './../constants/sniping';
+import { CUSTOM_SNIPING_TEMPLATE_DRAFT_TITLE, CUSTOM_SNIPING_TEMPLATE_MAPPING } from './../constants/sniping';
 import { DRAFTS_KEY } from './../constants/storage';
-import { filterDataSetForUser } from './../store/selectors';
+import { createDataSetUserFilter } from './../store/selectors';
 import { format, Format } from './date';
 import { localStorage } from './storage';
 
@@ -40,7 +40,7 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const _subscriptions = subscriptions.filter((subscription) => !!subscription.data[userID]);
     const dataSets = ([] as (Personal | Subscription)[])
       .concat(personal, _subscriptions)
-      .map((dataSet) => filterDataSetForUser(dataSet, userID));
+      .map(createDataSetUserFilter(userID));
     const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
       const _labels = (dataSet.data[userID] || []).map((label) => ({
         ...label,

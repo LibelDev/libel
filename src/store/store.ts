@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
-import { StateType } from 'typesafe-actions';
-import { DeepReadonly } from 'utility-types';
+// import { StateType, ActionType } from 'typesafe-actions';
+// import { DeepReadonly } from 'utility-types';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
 import Storage from '../models/Storage';
@@ -10,7 +11,7 @@ import Subscription from '../models/Subscription';
 import storage from '../storage';
 import { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
-import reducer, { rootReducer } from './reducer';
+import reducer, { persistedReducer } from './reducer';
 import { selectSubscriptions } from './selectors';
 import { actions as metaActions } from './slices/meta';
 import { actions as personalActions } from './slices/personal';
@@ -22,7 +23,7 @@ import { actions as syncActions } from './slices/sync';
  */
 const store = configureStore({
   devTools: dev,
-  reducer,
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
   }).concat(
@@ -71,8 +72,10 @@ export const persistor = persistStore(store, null, async () => {
   await loadRemoteSubscriptions();
 });
 
-export type TRootState = DeepReadonly<StateType<typeof rootReducer>>;
-
+export type TRootState = ReturnType<typeof reducer>;
 export type TAppDispatch = typeof store.dispatch;
+
+export const useTypedDispatch = () => useDispatch<TAppDispatch>();
+export const useTypedSelector: TypedUseSelectorHook<TRootState> = useSelector;
 
 export default store;

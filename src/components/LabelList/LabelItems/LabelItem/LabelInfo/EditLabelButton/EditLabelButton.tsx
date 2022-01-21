@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../../../constants/texts';
 import { MappedHTMLAttributes } from '../../../../../../helpers/types';
 import Label from '../../../../../../models/Label';
 import { actions as personalActions } from '../../../../../../store/slices/personal';
+import { useTypedDispatch } from '../../../../../../store/store';
 import { IconName } from '../../../../../../types/icon';
 import IconButton from '../../../../../IconButton/IconButton';
 import LabelFormModal, { TLabelFormProps } from '../../../../../LabelFormModal/LabelFormModal';
@@ -20,7 +20,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label } = props;
 
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useTypedDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();

@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
 import { selectSubscriptions } from '../../../../store/selectors';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
+import { useTypedDispatch, useTypedSelector } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
 const AddSubscriptionButton: React.FunctionComponent = () => {
-  const dispatch = useDispatch();
-  const subscriptions = useSelector(selectSubscriptions) as Subscription[];
+  const dispatch = useTypedDispatch();
+  const subscriptions = useTypedSelector(selectSubscriptions);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();

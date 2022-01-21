@@ -17,7 +17,7 @@ export const selectSubscriptions = (state: TRootState) => state.subscriptions;
 
 export const filterPersonalForUser = (user: string) => createSelector(
   selectPersonal,
-  (personal) => filterDataSetForUser(personal as Personal, user)
+  createDataSetUserFilter(user)
 );
 
 export const filterSubscriptionsForUser = (user: string) => createSelector(
@@ -25,11 +25,17 @@ export const filterSubscriptionsForUser = (user: string) => createSelector(
   (subscriptions) => (
     subscriptions
       .filter((subscription) => subscription.enabled && subscription.loaded)
-      .map((subscription) => filterDataSetForUser(subscription as Subscription, user))
+      .map(createDataSetUserFilter(user))
   )
 );
 
-export const filterDataSetForUser = <T extends Personal | Subscription> (dataSet: T, user: string) => (
+export const flatMapSubscriptionsToLabels = (subscriptions: Subscription[]) => {
+  return subscriptions
+    .map((subscription) => subscription.aggregate())
+    .flatMap(({ labels }) => labels);
+};
+
+export const createDataSetUserFilter = <T extends Personal | Subscription> (user: string) => (dataSet: T) => (
   produce(dataSet, (dataSet) => {
     dataSet.data = new Data({
       [user]: dataSet.data[user]

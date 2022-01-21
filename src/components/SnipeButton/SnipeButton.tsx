@@ -1,12 +1,12 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import * as TEXTS from '../../constants/texts';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
 import { MappedHTMLAttributes } from '../../helpers/types';
 import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
+import { useTypedSelector } from '../../store/store';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
@@ -20,8 +20,8 @@ type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user } = props;
-  const personal = useSelector(filterPersonalForUser(user));
-  const subscriptions = useSelector(filterSubscriptionsForUser(user));
+  const personal = useTypedSelector(filterPersonalForUser(user));
+  const subscriptions = useTypedSelector(filterSubscriptionsForUser(user));
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
