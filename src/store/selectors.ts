@@ -15,12 +15,12 @@ export const selectPersonal = (state: TRootState) => state.personal;
 
 export const selectSubscriptions = (state: TRootState) => state.subscriptions;
 
-export const filterPersonalForUser = (user: string) => createSelector(
+export const createUserPersonalSelector = (user: string) => createSelector(
   selectPersonal,
   createDataSetUserFilter(user)
 );
 
-export const filterSubscriptionsForUser = (user: string) => createSelector(
+export const createUserSubscriptionsSelector = (user: string) => createSelector(
   selectSubscriptions,
   (subscriptions) => (
     subscriptions
@@ -29,11 +29,28 @@ export const filterSubscriptionsForUser = (user: string) => createSelector(
   )
 );
 
-export const flatMapSubscriptionsToLabels = (subscriptions: Subscription[]) => {
-  return subscriptions
+export const createUserPersonalLabelsSelector = (user: string) => createSelector(
+  createUserPersonalSelector(user),
+  (personal) => {
+    const { labels } = personal.aggregate();
+    return labels;
+  }
+);
+
+export const createUserSubscriptionLabelsSelector = (user: string) => createSelector(
+  createUserSubscriptionsSelector(user),
+  (subscriptions) => subscriptions
     .map((subscription) => subscription.aggregate())
-    .flatMap(({ labels }) => labels);
-};
+    .flatMap(({ labels }) => labels)
+);
+
+export const createUserLabelsSelector = (user: string) => createSelector(
+  createUserPersonalLabelsSelector(user),
+  createUserSubscriptionLabelsSelector(user),
+  (personalLabels, subscriptionsLabels) => (
+    [...personalLabels, ...subscriptionsLabels]
+  )
+);
 
 export const createDataSetUserFilter = <T extends Personal | Subscription> (user: string) => (dataSet: T) => (
   produce(dataSet, (dataSet) => {

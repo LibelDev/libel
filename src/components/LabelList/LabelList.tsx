@@ -1,5 +1,5 @@
 import React from 'react';
-import { filterPersonalForUser, filterSubscriptionsForUser, flatMapSubscriptionsToLabels } from '../../store/selectors';
+import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import SnipeButton from '../SnipeButton/SnipeButton';
 import LabelItems from './LabelItems/LabelItems';
@@ -12,10 +12,10 @@ interface IProps {
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
   const { user, hasSnipeButton } = props;
-  const personal = useTypedSelector(filterPersonalForUser(user));
-  const { labels: personalLabels } = personal.aggregate();
-  const subscriptions = useTypedSelector(filterSubscriptionsForUser(user));
-  const subscriptionLabels = flatMapSubscriptionsToLabels(subscriptions);
+  const personal = useTypedSelector(createUserPersonalSelector(user));
+  const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
+  const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
+  const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
   return (
     (personalLabels.length || subscriptionLabels.length) ? (
       <ul className={styles.labelList}>

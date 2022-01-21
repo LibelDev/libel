@@ -49,7 +49,7 @@ initMessageListener(store);
 const loadRemoteSubscriptions = async () => {
   const { dispatch } = store;
   const state = store.getState();
-  const subscriptions = selectSubscriptions(state) as Subscription[];
+  const subscriptions = selectSubscriptions(state);
   for (let i = 0; i < subscriptions.length; i++) {
     dispatch(subscriptionsActions.load(i));
   }

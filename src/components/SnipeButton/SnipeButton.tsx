@@ -5,7 +5,7 @@ import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
 import { MappedHTMLAttributes } from '../../helpers/types';
-import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
+import { createUserPersonalSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
@@ -20,8 +20,8 @@ type TProps = IProps & MappedHTMLAttributes<'button'>;
 
 const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user } = props;
-  const personal = useTypedSelector(filterPersonalForUser(user));
-  const subscriptions = useTypedSelector(filterSubscriptionsForUser(user));
+  const personal = useTypedSelector(createUserPersonalSelector(user));
+  const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
