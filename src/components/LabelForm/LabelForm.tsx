@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import joi from 'joi';
 import React, { useCallback, useMemo, useState } from 'react';
+import { namespace } from '../../../package.json';
 import cache from '../../cache';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
@@ -103,6 +104,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   }), []));
 
   const _id = id || useElementID(LabelForm.displayName!);
+  const name = `${namespace}-${LabelForm.displayName!}`;
   const errorID = `${_id}-error`;
 
   const _user = cache.getUser(user);
@@ -149,9 +151,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <form
-      id={_id}
-      className={classNames(className, styles.labelForm)}
       {...otherProps}
+      id={_id}
+      name={name}
+      className={classNames(className, styles.labelForm)}
       onSubmit={handleSubmit}
       aria-describedby={errorID}
     >
@@ -173,6 +176,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           error={errors.text}
           onChange={handleInputChange}
           autoFocus
+          autoComplete="on"
         />
       </div>
       <div className={styles.inputField}>
@@ -185,6 +189,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           value={formData.reason || ''}
           error={errors.reason}
           onChange={handleInputChange}
+          autoComplete="on"
         />
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
