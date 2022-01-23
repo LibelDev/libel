@@ -1,6 +1,6 @@
 import { id } from '../constants/ga';
+import Singleton from '../models/Singleton';
 import { appendScript } from './dom';
-import * as singleton from './singleton';
 
 type TWindow = typeof window & {
   dataLayer: any[];
@@ -8,7 +8,8 @@ type TWindow = typeof window & {
 
 const init = () => {
   return new Promise<Gtag.Gtag>((resolve) => {
-    const script = appendScript(`https://www.googletagmanager.com/gtag/js?id=${id}`, true);
+    const src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    const script = appendScript(src, true);
     script.addEventListener('load', () => {
       const _window = window as TWindow;
       _window.dataLayer = _window.dataLayer || [];
@@ -18,7 +19,8 @@ const init = () => {
   });
 };
 
-export const ready = singleton.create(init());
+const singleton = new Singleton(init());
+export const ready = () => singleton.get();
 
 export const event = async (eventName: Gtag.EventNames | string, eventParams?: Gtag.ControlParams | Gtag.EventParams | Gtag.CustomParams) => {
   const gtag = await ready();
