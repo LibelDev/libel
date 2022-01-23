@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
-import { EventName } from '../../constants/ga';
+import { EventAction, EventCategory } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
@@ -47,7 +47,6 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
           case 200: {
             payload.image = url;
             dispatch(personalActions.add(payload));
-            handleModalClose();
             break;
           }
           default: {
@@ -55,7 +54,6 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
           }
         }
       } catch (err) {
-        setLoading(false);
         console.error(err);
         if (typeof err === 'string') {
           throw err;
@@ -68,7 +66,8 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     }
     setLoading(false);
     handleModalClose();
-    gtag.event(EventName.AddLabel, payload);
+    // analytics
+    gtag.event(EventAction.Add, { category: EventCategory.Label, label: text });
   }, [user, targetReply, handleModalClose]);
 
   return (

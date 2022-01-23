@@ -1,8 +1,10 @@
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import cache from '../../../../../../cache';
+import { EventAction, EventCategory } from '../../../../../../constants/ga';
 import * as TEXTS from '../../../../../../constants/texts';
 import { MappedHTMLAttributes } from '../../../../../../helpers/types';
+import * as gtag from '../../../../../../helpers/gtag';
 import Label from '../../../../../../models/Label';
 import { actions as personalActions } from '../../../../../../store/slices/personal';
 import { useTypedDispatch } from '../../../../../../store/store';
@@ -29,6 +31,8 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
     const confirmed = window.confirm(question);
     if (confirmed) {
       dispatch(personalActions.remove({ user, index }));
+      // analytics
+      gtag.event(EventAction.Remove, { category: EventCategory.Label, label: label.text });
     }
   }, [user, label, label]);
 

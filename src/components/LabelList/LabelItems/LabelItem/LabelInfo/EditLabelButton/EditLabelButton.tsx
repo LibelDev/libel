@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
+import { EventAction, EventCategory } from '../../../../../../constants/ga';
 import * as TEXTS from '../../../../../../constants/texts';
 import { MappedHTMLAttributes } from '../../../../../../helpers/types';
+import * as gtag from '../../../../../../helpers/gtag';
 import Label from '../../../../../../models/Label';
 import { actions as personalActions } from '../../../../../../store/slices/personal';
 import { useTypedDispatch } from '../../../../../../store/store';
@@ -35,6 +37,8 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
     const { text, reason, color, image } = data;
     dispatch(personalActions.edit({ user, index, text, reason, color, image }));
     handleModalClose();
+    // analytics
+    gtag.event(EventAction.Edit, { category: EventCategory.Label, label: text });
   }, [user, index, handleModalClose]);
 
   return (
