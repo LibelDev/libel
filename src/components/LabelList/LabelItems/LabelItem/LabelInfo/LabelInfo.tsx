@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import React, { useMemo } from 'react';
-import { MappedHTMLAttributes } from '../../../../../helpers/types';
 import Label from '../../../../../models/Label';
 import Subscription from '../../../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
@@ -18,7 +17,7 @@ interface IProps {
   subscription?: Subscription;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label, color, subscription } = props;

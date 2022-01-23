@@ -1,11 +1,10 @@
 import React, { useContext } from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import styles from './Body.scss';
 import IDsContext from './IDsContext';
 
 interface IProps  { }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>
 
 const Body: React.FunctionComponent<TProps> = (props) => {
   const { children } = props;

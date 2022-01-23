@@ -1,7 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import { IconName } from '../../../../types/icon';
@@ -12,7 +11,7 @@ interface IProps  {
   subscription: Subscription;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'a'>
+type TProps = IProps & React.ComponentPropsWithoutRef<'a'>
 
 const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, ...otherProps } = props;

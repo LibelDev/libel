@@ -5,11 +5,23 @@ export enum EventAction {
   Edit = 'edit',
   Remove = 'remove',
   Reload = 'reload',
-  CloudSync = 'cloud_sync'
+  CloudSync = 'cloud_sync',
+  SignIn = 'sign_in',
+  SignOut = 'sign_out',
+  Snipe = 'snipe',
+  Open = 'open',
+  Close = 'close'
 }
 
 export enum EventCategory {
   Label = 'label',
   Subscription = 'subscription',
-  GoogleDrive = 'google_drive'
+  Modal = 'modal',
+  Announcement = 'announcement'
+}
+
+export enum EventLabel {
+  GoogleDrive = 'google_drive',
+  AddLabel = 'add_label',
+  EditLabel = 'edit_label'
 }

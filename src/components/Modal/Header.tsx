@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
 import styles from './Header.scss';
@@ -9,7 +8,7 @@ interface IProps  {
   onClose: () => void;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>
 
 const Header: React.FunctionComponent<TProps> = (props) => {
   const { children, onClose } = props;

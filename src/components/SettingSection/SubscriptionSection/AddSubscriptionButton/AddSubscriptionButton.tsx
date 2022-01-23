@@ -25,7 +25,7 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
         dispatch(subscriptionsActions.add(subscription));
         dispatch(subscriptionsActions.load(subscriptions.length));
         // analytics
-        gtag.event(EventAction.Remove, { category: EventCategory.Subscription });
+        gtag.event(EventAction.Add, { event_category: EventCategory.Subscription, event_label: subscription.name });
       } else {
         // already subscribed, simply load the remote data again
         const index = subscriptions.indexOf(subscription);

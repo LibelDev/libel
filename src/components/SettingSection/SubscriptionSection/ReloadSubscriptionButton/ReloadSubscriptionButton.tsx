@@ -2,7 +2,6 @@ import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import * as gtag from '../../../../helpers/gtag';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
@@ -16,7 +15,7 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();
@@ -26,7 +25,7 @@ const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
     event.preventDefault();
     dispatch(subscriptionsActions.load(index));
     // analytics
-    gtag.event(EventAction.Reload, { category: EventCategory.Subscription, label: subscription.name });
+    gtag.event(EventAction.Reload, { event_category: EventCategory.Subscription, event_label: subscription.name });
   }, [subscription, index]);
 
   return (

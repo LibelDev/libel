@@ -3,7 +3,6 @@ import React, { useCallback } from 'react';
 import cache from '../../../../../../cache';
 import { EventAction, EventCategory } from '../../../../../../constants/ga';
 import * as TEXTS from '../../../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../../../helpers/types';
 import * as gtag from '../../../../../../helpers/gtag';
 import Label from '../../../../../../models/Label';
 import { actions as personalActions } from '../../../../../../store/slices/personal';
@@ -18,7 +17,7 @@ interface IProps {
   label: Label;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();
@@ -32,7 +31,7 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
     if (confirmed) {
       dispatch(personalActions.remove({ user, index }));
       // analytics
-      gtag.event(EventAction.Remove, { category: EventCategory.Label, label: label.text });
+      gtag.event(EventAction.Remove, { event_category: EventCategory.Label, event_label: label.text });
     }
   }, [user, label, label]);
 

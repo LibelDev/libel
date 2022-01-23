@@ -1,4 +1,4 @@
-import { EventAction, EventCategory } from './constants/ga';
+import { EventAction, EventLabel } from './constants/ga';
 import { interval } from './constants/sync';
 import * as cloud from './helpers/cloud';
 import { ready } from './helpers/gapi';
@@ -17,7 +17,7 @@ const sync = async (auth: gapi.auth2.GoogleAuth) => {
       await cloud.sync();
       unregister = register(auth); // register next sync
       // analytics
-      gtag.event(EventAction.CloudSync, { category: EventCategory.GoogleDrive });
+      gtag.event(EventAction.CloudSync, { event_label: EventLabel.GoogleDrive });
     }
   }
 };
