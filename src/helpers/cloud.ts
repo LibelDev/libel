@@ -1,3 +1,4 @@
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import * as files from '../constants/files';
 import storage from '../storage';
 import { actions as metaActions } from '../store/slices/meta';
@@ -9,10 +10,27 @@ import { loadDataIntoStore } from './../store/store';
 import { drive } from './gapi';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from './merge';
 
+const compress = (json: string) => {
+  return compressToEncodedURIComponent(json);
+};
+
+const decompress = (body: string) => {
+  let object;
+  try {
+    // `body` may be the actual json (for backward compatibility)
+    object = JSON.parse(body);
+  } catch (err) {
+    // the json was compressed
+    const json = decompressFromEncodedURIComponent(body);
+    object = JSON.parse(json!);
+  }
+  return object;
+};
+
 const download = async (fileId: string): Promise<Partial<ISerializedStorage>> => {
   const { body } = await drive.getById<boolean>(fileId, { alt: 'media' });
   try {
-    const object = JSON.parse(body);
+    const object = decompress(body);
     return Storage.validate(object) || {};
   } catch (err) {
     // failed to parse the json
@@ -22,7 +40,8 @@ const download = async (fileId: string): Promise<Partial<ISerializedStorage>> =>
   }
 };
 
-const upload = (fileId: string, body: string) => {
+const upload = (fileId: string, json: string) => {
+  const body = compress(json);
   return drive.update(fileId, body);
 };
 

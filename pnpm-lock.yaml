@@ -8,6 +8,7 @@ specifiers:
   '@types/gtag.js': ^0.0.8
   '@types/joi': ^17.2.3
   '@types/lodash': ^4.14.168
+  '@types/lz-string': ^1.3.34
   '@types/mustache': ^4.1.1
   '@types/node': ^12.18.3
   '@types/postcss-preset-env': ^6.7.2
@@ -34,6 +35,7 @@ specifiers:
   js-cookie: ^3.0.1
   localforage: ^1.9.0
   lodash: ^4.17.21
+  lz-string: ^1.3.34
   mustache: ^4.2.0
   postcss: ^8.2.9
   postcss-loader: ^5.2.0
@@ -77,6 +79,7 @@ dependencies:
   js-cookie: 3.0.1
   localforage: 1.10.0
   lodash: 4.17.21
+  lz-string: 1.4.4
   mustache: 4.2.0
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
@@ -94,6 +97,7 @@ devDependencies:
   '@types/gtag.js': 0.0.8
   '@types/joi': 17.2.3
   '@types/lodash': 4.14.177
+  '@types/lz-string': 1.3.34
   '@types/mustache': 4.1.2
   '@types/node': 12.20.37
   '@types/postcss-preset-env': 6.7.3
@@ -182,8 +186,8 @@ packages:
     dependencies:
       '@hapi/hoek': 9.2.1
 
-  /@maxim_mazurok/gapi.client.drive/3.0.20220110:
-    resolution: {integrity: sha512-yNSSh1BduI9o2QaS57MlP8BxOYWKNAkuOsKjzuVLkHTW82XTaZUM5xEXWIO2swsBlXel5G8tOqsJPRDffHG8eQ==}
+  /@maxim_mazurok/gapi.client.drive/3.0.20220209:
+    resolution: {integrity: sha512-HLHJtV+sfdNOd64wG69X6sraT/nMY8089cNx3VWtY+81UHvpxBzQZXqPzC1qMJZWBa//lC4p8JJWOQrwlKil6A==}
     dependencies:
       '@types/gapi.client': 1.0.5
     dev: true
@@ -356,7 +360,7 @@ packages:
   /@types/gapi.client.drive/3.0.13:
     resolution: {integrity: sha512-JFkHqQj9RA8MpvfvwdX8VU0Sbu7FMGqBR9dAmkocekWdD/y5Z/a/A6Y37EEqKW/dT8t7F3RpgUDUPlhp3snAlw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.drive': 3.0.20220110
+      '@maxim_mazurok/gapi.client.drive': 3.0.20220209
     dev: true
 
   /@types/gapi.client/1.0.5:
@@ -408,6 +412,10 @@ packages:
 
   /@types/lodash/4.14.177:
     resolution: {integrity: sha512-0fDwydE2clKe9MNfvXHBHF9WEahRuj+msTuQqOmAApNORFvhMYZKNGGJdCzuhheVjMps/ti0Ak/iJPACMaevvw==}
+    dev: true
+
+  /@types/lz-string/1.3.34:
+    resolution: {integrity: sha512-j6G1e8DULJx3ONf6NdR5JiR2ZY3K3PaaqiEuKYkLQO0Czfi1AzrtjfnfCROyWGeDd5IVMKCwsgSmMip9OWijow==}
     dev: true
 
   /@types/mime/1.3.2:
@@ -3743,6 +3751,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+
+  /lz-string/1.4.4:
+    resolution: {integrity: sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=}
+    hasBin: true
+    dev: false
 
   /make-dir/3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
