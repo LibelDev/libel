@@ -10,14 +10,18 @@ export enum EventAction {
   SignOut = 'sign_out',
   Snipe = 'snipe',
   Open = 'open',
-  Close = 'close'
+  Close = 'close',
+  Export = 'export',
+  Import = 'import',
+  Error = 'error'
 }
 
 export enum EventCategory {
   Label = 'label',
   Subscription = 'subscription',
   Modal = 'modal',
-  Announcement = 'announcement'
+  Announcement = 'announcement',
+  LabelForm = 'label_form'
 }
 
 export enum EventLabel {

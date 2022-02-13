@@ -3,8 +3,10 @@ import joi from 'joi';
 import React, { useCallback, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
+import { EventAction, EventCategory } from '../../constants/ga';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
+import * as gtag from '../../helpers/gtag';
 import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
 import Label, { ILabel } from '../../models/Label';
@@ -29,7 +31,7 @@ interface IToggleButtonState {
   isCaptureReply: boolean;
 }
 
-interface IErrors {
+interface IInputErrors {
   [name: string]: string | undefined;
 }
 
@@ -87,7 +89,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     isCustomColor: !!formData.color,
     isCaptureReply: false
   });
-  const [errors, setErrors] = useState<IErrors>({});
+  const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [error, setError] = useState('');
 
   const draftLabel = useMemo(() => {
@@ -111,8 +113,8 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: undefined });
-  }, [formData, errors]);
+    setInputErrors({ ...inputErrors, [name]: undefined });
+  }, [formData, inputErrors]);
 
   const handleToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked, name } = event.target;
@@ -131,12 +133,15 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
+      const _inputErrors = { ...inputErrors };
       const { details } = error;
       for (const { context, message } of details) {
         const { key } = context!;
-        const _errors = { ...errors, [key!]: message };
-        setErrors(_errors);
+        Object.assign(_inputErrors, { [key!]: message });
+        // analytics
+        gtag.event(EventAction.Error, { event_category: EventCategory.LabelForm, event_label: key });
       }
+      setInputErrors(_inputErrors);
     } else {
       try {
         await onSubmission(event, value);
@@ -146,7 +151,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         }
       }
     }
-  }, [onSubmission, formData, toggleButtonState, errors, screenshot]);
+  }, [onSubmission, formData, toggleButtonState, inputErrors, screenshot]);
 
   return (
     <form
@@ -172,7 +177,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.LABEL_FORM_FIELD_LABEL_TEXT}
           name="text"
           value={formData.text || ''}
-          error={errors.text}
+          error={inputErrors.text}
           onChange={handleInputChange}
           autoFocus
           autoComplete="on"
@@ -186,7 +191,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_REASON}
           name="reason"
           value={formData.reason || ''}
-          error={errors.reason}
+          error={inputErrors.reason}
           onChange={handleInputChange}
           autoComplete="on"
         />
@@ -223,7 +228,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                 disabled={loading}
                 name="color"
                 value={formData.color || ''}
-                error={errors.color}
+                error={inputErrors.color}
                 onChange={handleInputChange}
               />
             </div>
@@ -241,7 +246,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_IMAGE}
               name="image"
               value={formData.image || ''}
-              error={errors.image}
+              error={inputErrors.image}
               onChange={handleInputChange}
             />
           </div>

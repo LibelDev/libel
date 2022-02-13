@@ -1,7 +1,9 @@
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
+import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
 import { _export, _import } from '../../../helpers/file';
+import * as gtag from '../../../helpers/gtag';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from '../../../helpers/merge';
 import useElementID from '../../../hooks/useElementID';
 import Personal from '../../../models/Personal';
@@ -19,11 +21,18 @@ const ExportImportSection: React.FunctionComponent = () => {
 
   const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const data = await _export();
-    const { personal, subscriptions } = data;
-    const { users, labels } = personal.aggregate();
-    const message = render(messages.success.export, { users, labels, subscriptions });
-    window.alert(message);
+    try {
+      const data = await _export();
+      // analytics
+      gtag.event(EventAction.Export);
+      const { personal, subscriptions } = data;
+      const { users, labels } = personal.aggregate();
+      const message = render(messages.success.export, { users, labels, subscriptions });
+      window.alert(message);
+    } catch (err) {
+      // analytics
+      gtag.event(EventAction.Error, { event_category: EventAction.Export });
+    }
   }, []);
 
   const handleImport: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (event) => {
@@ -38,6 +47,8 @@ const ExportImportSection: React.FunctionComponent = () => {
           subscriptions: mergeSubscriptions(subscriptions, data.subscriptions, MergeDirection.Local)
         };
         await loadDataIntoStore(storage);
+        // analytics
+        gtag.event(EventAction.Import);
         const { users, labels } = Personal.aggregate(data.personal);
         const _message = render(messages.success.import, { users, labels, subscriptions: data.subscriptions });
         window.alert(_message);
@@ -48,6 +59,8 @@ const ExportImportSection: React.FunctionComponent = () => {
           console.error(err);
           window.alert(TEXTS.IMPORT_FILE_GENERIC_ERROR_MESSAGE);
         }
+        // analytics
+        gtag.event(EventAction.Error, { event_category: EventAction.Import });
       }
     }
     event.target.value = '';
