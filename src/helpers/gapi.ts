@@ -41,7 +41,7 @@ const singleton = new Singleton(init());
 export const ready = () => singleton.get();
 
 /**
- * Google Drive V3 API
+ * Google Drive V3 API wrapper
  */
 export const drive = {
   /**
