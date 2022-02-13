@@ -1,4 +1,3 @@
-import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import * as files from '../constants/files';
 import storage from '../storage';
 import { actions as metaActions } from '../store/slices/meta';
@@ -7,36 +6,20 @@ import store from '../store/store';
 import Storage, { ISerializedStorage } from './../models/Storage';
 import { selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
 import { loadDataIntoStore } from './../store/store';
+import { compress, decompress } from './file';
 import { drive } from './gapi';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from './merge';
 
-const compress = (json: string) => {
-  return compressToEncodedURIComponent(json);
-};
-
-const decompress = (body: string) => {
-  let object;
+const download = async (fileId: string) => {
   try {
-    // `body` may be the actual json (for backward compatibility)
-    object = JSON.parse(body);
-  } catch (err) {
-    // the json was compressed
-    const json = decompressFromEncodedURIComponent(body);
-    object = JSON.parse(json!);
-  }
-  return object;
-};
-
-const download = async (fileId: string): Promise<Partial<ISerializedStorage>> => {
-  const { body } = await drive.getById<boolean>(fileId, { alt: 'media' });
-  try {
+    const { body } = await drive.getById<boolean>(fileId, { alt: 'media' });
     const object = decompress(body);
-    return Storage.validate(object) || {};
+    return Storage.validate(object) as Partial<ISerializedStorage>;
   } catch (err) {
-    // failed to parse the json
-    // probably corrupted app data which is unexpected
-    // just ignore it and simply return an empty object
-    return {};
+    // failed to download or decompress the file
+    // probably network issue or corrupted app data which is unexpected
+    // just ignore it and simply return null
+    return null;
   }
 };
 
@@ -55,8 +38,8 @@ export const sync = async () => {
       // never been synced with the cloud before
       // nothing to do here
     } else {
-      const remoteStorage = await download(file.id!);
-      // remote data downloaded successfully
+      const remoteStorage = (await download(file.id!)) || {};
+      // data downloaded successfully
       const state = store.getState();
       const meta = selectMeta(state);
       const personal = selectPersonal(state);

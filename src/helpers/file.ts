@@ -1,14 +1,14 @@
 import format from 'date-fns/format';
+import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { render } from 'mustache';
 import * as TEXTS from '../constants/texts';
-import Storage from '../models/Storage';
+import Storage, { ISerializedStorage } from '../models/Storage';
 import storage from '../storage';
 import * as filenames from '../templates/filenames';
 import { exportFilenameTimestampFormat } from './../constants/files';
-import { ISerializedStorage } from './../models/Storage';
 
-export const download = (json: string, filename: string) => {
-  const blob = new Blob([json], { type: 'text/json' });
+const download = (filename: string, body: string, type: string) => {
+  const blob = new Blob([body], { type });
   const anchor = document.createElement('a');
   const url = URL.createObjectURL(blob);
   anchor.setAttribute('href', url);
@@ -19,15 +19,45 @@ export const download = (json: string, filename: string) => {
   URL.revokeObjectURL(url);
 };
 
+export const compress = (json: string) => {
+  return compressToEncodedURIComponent(json);
+};
+
+export const decompress = (body: string) => {
+  let object;
+  try {
+    // try to parse as json first (for backward compatibility)
+    // `body` may be the actual json
+    object = JSON.parse(body);
+  } catch (err) {
+    // the json was compressed
+    const json = decompressFromEncodedURIComponent(body);
+    object = JSON.parse(json!);
+  }
+  return object;
+};
+
+export const _export = async () => {
+  await storage.load();
+  const json = storage.json();
+  const body = compress(json);
+  const now = new Date();
+  const timestamp = format(now, exportFilenameTimestampFormat);
+  const filename = render(filenames.data.export, { timestamp });
+  // TODO so sad, there is no way to detect whether the user has downloaded the file or not
+  download(filename, body, 'text/plain');
+  return storage;
+};
+
 export const _import = (file: File) => {
   return new Promise<ISerializedStorage>((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsText(file, 'UTF-8');
     reader.addEventListener('load', (event) => {
-      const { result: json } = event.target!;
-      if (typeof json === 'string') {
+      const { result: body } = event.target!;
+      if (typeof body === 'string') {
         try {
-          const object = JSON.parse(json);
+          const object = decompress(body);
           const storage = Storage.validate(object);
           if (storage) {
             resolve(storage);
@@ -36,7 +66,7 @@ export const _import = (file: File) => {
             reject(TEXTS.IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE);
           }
         } catch (err) {
-          // failed to parse the json
+          // failed to parse the file
           reject(TEXTS.IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE);
           return;
         }
@@ -49,15 +79,4 @@ export const _import = (file: File) => {
       reject(TEXTS.IMPORT_FILE_GENERIC_ERROR_MESSAGE);
     });
   });
-};
-
-export const _export = async () => {
-  await storage.load();
-  const json = storage.json();
-  const now = new Date();
-  const timestamp = format(now, exportFilenameTimestampFormat);
-  const filename = render(filenames.data.export, { timestamp });
-  // TODO so sad, there is no way to detect whether the user has downloaded the file or not
-  download(json, filename);
-  return storage;
 };
