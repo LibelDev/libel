@@ -7,12 +7,12 @@ import Storage, { ISerializedStorage } from './../models/Storage';
 import { selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
 import { loadDataIntoStore } from './../store/store';
 import { compress, decompress } from './file';
-import { drive } from './gapi';
+import * as gapi from './gapi';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from './merge';
 
 const download = async (fileId: string) => {
   try {
-    const { body } = await drive.getById<boolean>(fileId, { alt: 'media' });
+    const { body } = await gapi.drive.getById<boolean>(fileId, { alt: 'media' });
     const object = decompress(body);
     return Storage.validate(object) as Partial<ISerializedStorage>;
   } catch (err) {
@@ -25,14 +25,14 @@ const download = async (fileId: string) => {
 
 const upload = (fileId: string, json: string) => {
   const body = compress(json);
-  return drive.update(fileId, body);
+  return gapi.drive.update(fileId, body);
 };
 
 export const sync = async () => {
   const { dispatch } = store;
   dispatch(syncActions.setLoading(true));
   try {
-    const [response, fresh] = await drive.ensure(files.appData);
+    const [response, fresh] = await gapi.drive.ensure(files.appData);
     const { result: file } = response;
     if (fresh) {
       // never been synced with the cloud before
