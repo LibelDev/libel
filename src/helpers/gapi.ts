@@ -64,9 +64,8 @@ export const drive = {
    */
   async create (name: string, parents: string[] = ['appDataFolder'], fields: string[] = ['id', 'name', 'createdTime', 'modifiedTime']) {
     const gapi = await ready();
-    const resource = { name, parents };
     return gapi.client.drive.files.create({
-      resource,
+      resource: { name, parents },
       fields: fields.join(', ')
     });
   },
