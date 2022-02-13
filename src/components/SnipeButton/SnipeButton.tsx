@@ -1,10 +1,11 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
+import { EventAction } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
+import * as gtag from '../../helpers/gtag';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import { createUserPersonalSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import { IconName } from '../../types/icon';
@@ -16,7 +17,7 @@ interface IProps {
   user: string;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user } = props;
@@ -35,6 +36,8 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
       const body = renderSnipingBody(user, personal, subscriptions);
       if (formComponent && body) {
         formComponent.replaceEditorContent(body);
+        // analytics
+        gtag.event(EventAction.Snipe, { event_label: user });
       }
     }
   }, [personal, subscriptions]);

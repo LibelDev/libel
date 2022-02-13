@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch } from '../../../../store/store';
@@ -11,7 +10,7 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();

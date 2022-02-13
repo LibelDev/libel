@@ -5,7 +5,6 @@ import { namespace } from '../../../package.json';
 import cache from '../../cache';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
 import Label, { ILabel } from '../../models/Label';
@@ -52,7 +51,7 @@ interface IProps {
   onSubmission: (event: React.FormEvent<HTMLFormElement>, data: TFormData) => Promise<void>;
 }
 
-export type TProps = IProps & MappedHTMLAttributes<'form'>;
+export type TProps = IProps & React.ComponentPropsWithoutRef<'form'>;
 
 const schema = joi.object({
   text: joi.string().trim().required().messages({

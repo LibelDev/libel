@@ -1,6 +1,5 @@
 import React from 'react';
 import { THREAD_USER_LABELS_TOOLTIP } from '../../constants/texts';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import Label from '../../models/Label';
 import { createUserPersonalLabelsSelector, createUserSubscriptionLabelsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
@@ -10,7 +9,7 @@ interface IProps {
   user: string;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelBook: React.FunctionComponent<TProps> = (props) => {
   const { user } = props;

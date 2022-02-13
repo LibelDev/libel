@@ -1,11 +1,10 @@
 import classnames from 'classnames';
 import React from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import styles from './LoadingSpinner.scss';
 
 interface IProps { }
 
-type TProps = IProps & MappedHTMLAttributes<'i'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'i'>;
 
 const LoadingSpinner: React.FunctionComponent<TProps> = (props) => {
   const { className } = props;

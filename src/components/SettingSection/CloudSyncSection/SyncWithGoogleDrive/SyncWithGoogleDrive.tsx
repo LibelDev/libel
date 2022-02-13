@@ -2,8 +2,10 @@ import formatRelative from 'date-fns/formatRelative';
 import { zhHK } from 'date-fns/locale';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
+import { EventAction, EventLabel } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
 import { ready } from '../../../../helpers/gapi';
+import * as gtag from '../../../../helpers/gtag';
 import { selectMeta, selectSync } from '../../../../store/selectors';
 import { useTypedSelector } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
@@ -31,6 +33,8 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
     const gapi = await ready();
     const auth = gapi.auth2.getAuthInstance();
     auth.signIn();
+    // analytics
+    gtag.event(EventAction.SignIn, { event_label: EventLabel.GoogleDrive });
   }, []);
 
   const handleSignout: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
@@ -38,6 +42,8 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
     const gapi = await ready();
     const auth = gapi.auth2.getAuthInstance();
     auth.signOut();
+    // analytics
+    gtag.event(EventAction.SignOut, { event_label: EventLabel.GoogleDrive });
   }, []);
 
   useEffect(() => {

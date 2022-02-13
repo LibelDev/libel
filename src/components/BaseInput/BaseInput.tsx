@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
@@ -11,7 +10,7 @@ interface IProps {
   error?: React.ReactNode;
 }
 
-export type TProps = IProps & MappedHTMLAttributes<'input'>;
+export type TProps = IProps & React.ComponentPropsWithoutRef<'input'>;
 
 const BaseInput: React.FunctionComponent<TProps> = (props) => {
   const { id, className, disabled, label, error, ...otherProps } = props;

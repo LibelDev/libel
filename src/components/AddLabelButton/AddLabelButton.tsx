@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
+import { EventAction, EventCategory, EventLabel } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
+import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
@@ -25,11 +27,15 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     event.preventDefault();
     if (!loading) {
       setOpen(true);
+      // analytics
+      gtag.event(EventAction.Open, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
     }
   }, [loading]);
 
   const handleModalClose = useCallback(() => {
     setOpen(false);
+    // analytics
+    gtag.event(EventAction.Close, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
   }, []);
 
   const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = useCallback(async (event, data) => {
@@ -45,7 +51,6 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
           case 200: {
             payload.image = url;
             dispatch(personalActions.add(payload));
-            handleModalClose();
             break;
           }
           default: {
@@ -53,7 +58,6 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
           }
         }
       } catch (err) {
-        setLoading(false);
         console.error(err);
         if (typeof err === 'string') {
           throw err;
@@ -66,6 +70,8 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     }
     setLoading(false);
     handleModalClose();
+    // analytics
+    gtag.event(EventAction.Add, { event_category: EventCategory.Label, event_label: text });
   }, [user, targetReply, handleModalClose]);
 
   return (

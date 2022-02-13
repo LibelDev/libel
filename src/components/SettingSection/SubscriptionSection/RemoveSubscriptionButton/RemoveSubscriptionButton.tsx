@@ -1,8 +1,9 @@
 import classnames from 'classnames';
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
+import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
+import * as gtag from '../../../../helpers/gtag';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch } from '../../../../store/store';
@@ -16,7 +17,7 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();
@@ -28,6 +29,8 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
     const confirmed = window.confirm(question);
     if (confirmed) {
       dispatch(subscriptionsActions.remove(index));
+      // analytics
+      gtag.event(EventAction.Remove, { event_category: EventCategory.Subscription, event_label: subscription.name });
     }
   }, [subscription, index]);
 

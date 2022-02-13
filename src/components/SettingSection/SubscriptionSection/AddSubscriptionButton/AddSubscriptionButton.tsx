@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
+import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
+import * as gtag from '../../../../helpers/gtag';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
 import { selectSubscriptions } from '../../../../store/selectors';
@@ -22,6 +24,8 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
         const subscription = new Subscription('', url, true);
         dispatch(subscriptionsActions.add(subscription));
         dispatch(subscriptionsActions.load(subscriptions.length));
+        // analytics
+        gtag.event(EventAction.Add, { event_category: EventCategory.Subscription, event_label: subscription.name });
       } else {
         // already subscribed, simply load the remote data again
         const index = subscriptions.indexOf(subscription);

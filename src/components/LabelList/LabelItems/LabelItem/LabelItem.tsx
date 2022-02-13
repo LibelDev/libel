@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import invert from 'invert-color';
 import React, { useMemo } from 'react';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Label from '../../../../models/Label';
 import Personal from '../../../../models/Personal';
 import Subscription from '../../../../models/Subscription';
@@ -17,7 +16,7 @@ interface IProps {
   hasInfo?: boolean;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelItem: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label, color, dataSet, hasInfo = true } = props;

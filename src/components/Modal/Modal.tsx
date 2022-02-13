@@ -3,7 +3,6 @@ import FocusTrap from 'focus-trap-react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import Body from './Body';
 import Footer from './Footer';
@@ -34,7 +33,7 @@ interface IProps {
   onClose: () => void;
 }
 
-export type TProps = IProps & MappedHTMLAttributes<'div'>;
+export type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const Modal: React.FunctionComponent<TProps> = (props) => {
   const {

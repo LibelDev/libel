@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
+import { EventAction, EventCategory, EventLabel } from '../../../../../../constants/ga';
 import * as TEXTS from '../../../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../../../helpers/types';
+import * as gtag from '../../../../../../helpers/gtag';
 import Label from '../../../../../../models/Label';
 import { actions as personalActions } from '../../../../../../store/slices/personal';
 import { useTypedDispatch } from '../../../../../../store/store';
@@ -14,7 +15,7 @@ interface IProps {
   label: Label;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label } = props;
@@ -25,16 +26,22 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     setOpen(true);
+    // analytics
+    gtag.event(EventAction.Open, { event_category: EventCategory.Modal, event_label: EventLabel.EditLabel });
   }, []);
 
   const handleModalClose = useCallback(() => {
     setOpen(false);
+    // analytics
+    gtag.event(EventAction.Close, { event_category: EventCategory.Modal, event_label: EventLabel.EditLabel });
   }, []);
 
   const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = useCallback(async (event, data) => {
     const { text, reason, color, image } = data;
     dispatch(personalActions.edit({ user, index, text, reason, color, image }));
     handleModalClose();
+    // analytics
+    gtag.event(EventAction.Edit, { event_category: EventCategory.Label, event_label: text });
   }, [user, index, handleModalClose]);
 
   return (

@@ -1,6 +1,8 @@
+import { EventAction, EventLabel } from './constants/ga';
 import { interval } from './constants/sync';
 import * as cloud from './helpers/cloud';
 import { ready } from './helpers/gapi';
+import * as gtag from './helpers/gtag';
 import { selectSync } from './store/selectors';
 import store from './store/store';
 
@@ -14,6 +16,8 @@ const sync = async (auth: gapi.auth2.GoogleAuth) => {
     if (!sync.loading) {
       await cloud.sync();
       unregister = register(auth); // register next sync
+      // analytics
+      gtag.event(EventAction.CloudSync, { event_label: EventLabel.GoogleDrive });
     }
   }
 };

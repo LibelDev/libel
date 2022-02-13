@@ -1,7 +1,6 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import useDataSetThemeColorStyle from '../../../../hooks/useDataSetThemeColorStyle';
 import Subscription from '../../../../models/Subscription';
 import { IconName } from '../../../../types/icon';
@@ -18,7 +17,7 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
