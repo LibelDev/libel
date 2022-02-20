@@ -17,11 +17,12 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
   const meta = useTypedSelector(selectMeta);
   const sync = useTypedSelector(selectSync);
 
-  const localizedLastSyncedTime = useMemo(() => {
+  const lastSyncedTimeHintText = useMemo(() => {
     if (meta.lastSyncedTime) {
       const date = new Date(meta.lastSyncedTime);
       const now = new Date();
-      return formatRelative(date, now, { locale: zhHK });
+      const displayTime = formatRelative(date, now, { locale: zhHK });
+      return `${TEXTS.CLOUD_SYNC_LAST_SYNCED_TIME_HINT_TEXT_PREFIX} ${displayTime}`;
     }
   }, [meta.lastSyncedTime]);
 
@@ -62,11 +63,10 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                   ) : (
                     <React.Fragment>
                       {
-                        !!localizedLastSyncedTime && (
+                        !!lastSyncedTimeHintText && (
                           <small className={styles.hint}>
                             <Icon className={styles.icon} icon={IconName.CloudUpload} />
-                            {TEXTS.CLOUD_SYNC_LAST_SYNCED_AT_LABEL_TEXT}{' '}
-                            {localizedLastSyncedTime}
+                            {lastSyncedTimeHintText}
                           </small>
                         )
                       }

@@ -81,7 +81,7 @@ export const CLOUD_SYNC_GOOGLE_DRIVE_ACCOUNT_PREFIX = '已連接';
 export const GOOGLE_AUTHORIZE_BUTTON_TEXT = '連接';
 export const GOOGLE_SIGNOUT_BUTTON_TEXT = '登出';
 export const CLOUD_SYNC_SYNC_IN_PROGRESS_LABEL_TEXT = '正在同步數據';
-export const CLOUD_SYNC_LAST_SYNCED_AT_LABEL_TEXT = '最後同步於';
+export const CLOUD_SYNC_LAST_SYNCED_TIME_HINT_TEXT_PREFIX = '最後同步於';
 export const CLOUD_SYNC_ERROR = '同步數據失敗，請嘗試重新連接。';
 
 // announcement
