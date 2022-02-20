@@ -21,11 +21,11 @@ export enum EventCategory {
   Subscription = 'subscription',
   Modal = 'modal',
   Announcement = 'announcement',
-  LabelForm = 'label_form'
+  LabelForm = 'label_form',
+  Google = 'google'
 }
 
 export enum EventLabel {
-  GoogleDrive = 'google_drive',
   AddLabel = 'add_label',
   EditLabel = 'edit_label'
 }

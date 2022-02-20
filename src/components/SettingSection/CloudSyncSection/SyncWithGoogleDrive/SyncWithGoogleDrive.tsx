@@ -1,11 +1,9 @@
 import formatRelative from 'date-fns/formatRelative';
 import { zhHK } from 'date-fns/locale';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
-import { EventAction, EventLabel } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
-import { ready } from '../../../../helpers/gapi';
-import * as gtag from '../../../../helpers/gtag';
+import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
 import { useTypedSelector } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
@@ -15,8 +13,7 @@ import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import styles from './SyncWithGoogleDrive.scss';
 
 const SyncWithGoogleDrive: React.FunctionComponent = () => {
-  const [user, setUser] = useState<gapi.auth2.GoogleUser | null>(null);
-  const [signedIn, setSignedIn] = useState(false);
+  const [auth, user, signedIn] = useGoogleAuthorization();
   const meta = useTypedSelector(selectMeta);
   const sync = useTypedSelector(selectSync);
 
@@ -30,36 +27,17 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
 
   const handleSignIn: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const gapi = await ready();
-    const auth = gapi.auth2.getAuthInstance();
-    auth.signIn();
-    // analytics
-    gtag.event(EventAction.SignIn, { event_label: EventLabel.GoogleDrive });
-  }, []);
+    if (auth) {
+      auth.signIn();
+    }
+  }, [auth]);
 
   const handleSignout: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const gapi = await ready();
-    const auth = gapi.auth2.getAuthInstance();
-    auth.signOut();
-    // analytics
-    gtag.event(EventAction.SignOut, { event_label: EventLabel.GoogleDrive });
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const gapi = await ready();
-      const auth = gapi.auth2.getAuthInstance();
-      // bind state change handlers
-      auth.isSignedIn.listen(setSignedIn);
-      auth.currentUser.listen(setUser);
-      // initial state
-      const signedIn = auth.isSignedIn.get();
-      setSignedIn(signedIn);
-      const user = auth.currentUser.get();
-      setUser(user);
-    })();
-  }, []);
+    if (auth) {
+      auth.signOut();
+    }
+  }, [auth]);
 
   return (
     <React.Fragment>
@@ -68,7 +46,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
         <div className={styles.info}>
           {TEXTS.CLOUD_SYNC_GOOGLE_DRIVE_LABEL_TEXT}
           {
-            signedIn && user && (
+            user && signedIn && (
               <React.Fragment>
                 <small className={styles.hint}>
                   <Icon className={styles.icon} icon={IconName.Verified} />
