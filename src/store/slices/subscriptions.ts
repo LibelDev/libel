@@ -58,9 +58,8 @@ const slice = createSlice({
       subscription.enabled = enabled ?? !subscription.enabled;
     },
     update: (state, action: PayloadAction<Subscription[] | ISerializedSubscription[]>) => {
-      const { payload } = action;
-      const subscriptions = payload.map(Subscription.deserialize);
-      return subscriptions;
+      const { payload: subscriptions } = action;
+      return subscriptions.map(Subscription.deserialize);
     }
   },
   extraReducers: (builder) => {

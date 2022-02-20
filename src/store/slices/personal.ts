@@ -27,7 +27,7 @@ interface IRemoveLabelPayload {
   index: number;
 }
 
-const initialState: Personal = new Personal();
+const initialState = Personal.factory();
 
 const slice = createSlice({
   name: 'personal',
@@ -47,7 +47,7 @@ const slice = createSlice({
     },
     update: (state, action: PayloadAction<Personal | IPersonal>) => {
       const { payload: personal } = action;
-      return personal instanceof Personal ? personal : Personal.deserialize(personal);
+      return Personal.deserialize(personal);
     }
   },
 });

@@ -4,7 +4,7 @@ import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Meta from '../../models/Meta';
 
-export const initialState: Meta = new Meta();
+const initialState = Meta.factory();
 
 const slice = createSlice({
   name: 'meta',

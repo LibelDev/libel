@@ -4,7 +4,7 @@ import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Config from '../../models/Config';
 
-export const initialState: Config = new Config();
+const initialState = Config.factory();
 
 const slice = createSlice({
   name: 'config',

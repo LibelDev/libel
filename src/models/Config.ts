@@ -14,6 +14,10 @@ class Config implements IConfig {
     this.isIconMapUnlocked = isIconMapUnlocked || false;
   }
 
+  static factory () {
+    return new Config();
+  }
+
   static deserialize (config: Config | IConfig) {
     if (config instanceof Config) {
       return config;

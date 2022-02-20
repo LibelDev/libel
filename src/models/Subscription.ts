@@ -80,19 +80,9 @@ class Subscription extends DataSet implements ISubscription {
     return new Subscription(name, url, enabled);
   }
 
-  /**
-   * prepare for storage
-   */
-  static serialize (subscription: Subscription | ISerializedSubscription) {
-    if (subscription instanceof Subscription) {
-      const { url, enabled, name } = subscription;
-      return { url, enabled, name };
-    }
-    return subscription;
-  }
-
-  serialize () {
-    return Subscription.serialize(this);
+  serialize (): ISerializedSubscription {
+    const { url, enabled, name } = this;
+    return { url, enabled, name };
   }
 
   enable () {

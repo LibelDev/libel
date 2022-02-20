@@ -17,6 +17,10 @@ class Meta implements IMeta {
     this.lastSyncedTime = lastSyncedTime;
   }
 
+  static factory () {
+    return new Meta();
+  }
+
   static deserialize (meta: Meta | IMeta) {
     if (meta instanceof Meta) {
       return meta;

@@ -4,9 +4,11 @@ import dataSetSchema from '../schemas/dataSet';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 
-export interface IDataSet {
+interface ISerializedDataSet {
   data: IData;
 }
+
+export interface IDataSet extends ISerializedDataSet { }
 
 abstract class DataSet implements IDataSet {
   [immerable] = true;
@@ -14,10 +16,6 @@ abstract class DataSet implements IDataSet {
 
   constructor (dataSet?: IDataSet) {
     this.data = new Data(dataSet?.data);
-  }
-
-  static factory (): IDataSet {
-    return { data: new Data() };
   }
 
   /**
@@ -36,11 +34,10 @@ abstract class DataSet implements IDataSet {
             const text = label;
             return new Label(text);
           }
-          const { text, reason, url, date, source, image } = label;
-          return new Label(text, reason, url, date, source, image);
+          return Label.deserialize(label);
         });
         return dataSet;
-      }, this.factory());
+      }, { data: new Data() });
     }
     return { data: new Data(object) };
   }
@@ -86,11 +83,7 @@ abstract class DataSet implements IDataSet {
     return { users, labels };
   }
 
-  /**
-   * prepare for storage
-   * @abstract
-   */
-  abstract serialize (): void;
+  abstract serialize (): unknown;
 
   aggregate () {
     return DataSet.aggregate(this);

@@ -1,10 +1,8 @@
 import { defaultSubscriptions } from '../constants/subscriptions';
 import storage, { localStorage } from '../helpers/storage';
 import schema, { deprecated } from '../schemas/storage';
-import { initialState as initialConfigState } from '../store/slices/config';
-import { initialState as initialMetaState } from '../store/slices/meta';
-import DataSet from './DataSet';
 import Config, { ISerializedConfig } from './Config';
+import DataSet from './DataSet';
 import Meta, { ISerializedMeta } from './Meta';
 import Personal, { ISerializedPersonal } from './Personal';
 import Subscription, { ISerializedSubscription } from './Subscription';
@@ -42,9 +40,9 @@ class Storage implements IStorage {
   private readonly [_configKey]: string;
   private readonly [_metaKey]: string;
   private readonly [_ready]: Promise<this>;
-  config = initialConfigState;
-  meta = initialMetaState;
-  personal: Personal = new Personal();
+  config = Config.factory();
+  meta = Meta.factory();
+  personal: Personal = Personal.factory();
   subscriptions: Subscription[] = [];
 
   constructor (dataKeys: string[], configKey: string, metaKey: string) {
@@ -90,8 +88,8 @@ class Storage implements IStorage {
     const object = JSON.parse(data);
     const { personal, subscriptions } = object;
     const storage = this.massage({
-      config: config ? JSON.parse(config) : initialConfigState,
-      meta: meta ? JSON.parse(meta) : initialMetaState,
+      config: config ? JSON.parse(config) : Config.factory(),
+      meta: meta ? JSON.parse(meta) : Meta.factory(),
       personal: personal ? JSON.parse(personal) : Personal.factory(),
       subscriptions: subscriptions ? JSON.parse(subscriptions) : defaultSubscriptions
     });
@@ -110,19 +108,10 @@ class Storage implements IStorage {
     if (isISerializedStorageImplemented(object)) {
       return object;
     }
-    const personal = DataSet.validate(object);
-    if (personal) {
-      return {
-        config: initialConfigState,
-        meta: initialMetaState,
-        personal,
-        subscriptions: []
-      };
-    }
     return {
-      config: initialConfigState,
-      meta: initialMetaState,
-      personal: Personal.factory(),
+      config: Config.factory().serialize(),
+      meta: Meta.factory().serialize(),
+      personal: DataSet.validate(object) || Personal.factory().serialize(),
       subscriptions: []
     };
   }
@@ -149,17 +138,12 @@ class Storage implements IStorage {
     return null;
   }
 
-  private static serialize (data: IStorage): ISerializedStorage {
-    const { config, meta, personal, subscriptions } = data;
-    return {
-      config: config?.serialize(),
-      meta: meta?.serialize(),
-      personal: personal.serialize(),
-      subscriptions: subscriptions.map((subscription) => subscription.serialize())
-    };
-  }
-
-  static deserialize (storage: IStorage | ISerializedStorage): IStorage {
+  /**
+   * pure deserialization
+   * @param {IStorage | ISerializedStorage} storage 
+   * @returns {IStorage}
+   */
+  private static deserialize (storage: IStorage | ISerializedStorage): IStorage {
     const { config, meta, personal, subscriptions } = storage;
     return {
       config: config && Config.deserialize(config),
@@ -173,8 +157,14 @@ class Storage implements IStorage {
     return this[_ready];
   }
 
-  serialize () {
-    return Storage.serialize(this);
+  serialize (): ISerializedStorage {
+    const { config, meta, personal, subscriptions } = this;
+    return {
+      config: config?.serialize(),
+      meta: meta?.serialize(),
+      personal: personal.serialize(),
+      subscriptions: subscriptions.map((subscription) => subscription.serialize())
+    };
   }
 
   json () {
