@@ -6,10 +6,10 @@ import * as TEXTS from '../../../../constants/texts';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
 import { useTypedSelector } from '../../../../store/store';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
 import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
+import SettingOptionButton from '../../SettingOptionButton/SettingOptionButton';
 import styles from './SyncWithGoogleDrive.scss';
 
 const SyncWithGoogleDrive: React.FunctionComponent = () => {
@@ -86,18 +86,13 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
           }
         </div>
       </div>
-      <a
-        href="#"
-        role="button"
-        className={lihkgCssClasses.settingOptionButton}
-        onClick={signedIn ? handleSignout : handleSignIn}
-      >
+      <SettingOptionButton onClick={signedIn ? handleSignout : handleSignIn}>
         {
           signedIn ?
             TEXTS.GOOGLE_SIGNOUT_BUTTON_TEXT :
             TEXTS.GOOGLE_AUTHORIZE_BUTTON_TEXT
         }
-      </a>
+      </SettingOptionButton>
     </React.Fragment>
   );
 };

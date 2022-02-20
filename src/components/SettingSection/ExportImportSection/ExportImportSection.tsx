@@ -12,6 +12,7 @@ import { selectPersonal, selectSubscriptions } from '../../../store/selectors';
 import { loadDataIntoStore, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
 import * as messages from '../../../templates/messages';
+import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ExportImportSection.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
@@ -73,9 +74,9 @@ const ExportImportSection: React.FunctionComponent = () => {
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>
-          <a href="#" role="button" className={lihkgCssClasses.settingOptionButton} onClick={handleExport}>
+          <SettingOptionButton onClick={handleExport}>
             {TEXTS.EXPORT_FILE_BUTTON_TEXT}
-          </a>
+          </SettingOptionButton>
         </li>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <div>
