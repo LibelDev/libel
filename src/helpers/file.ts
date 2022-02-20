@@ -38,7 +38,8 @@ export const decompress = (body: string) => {
 };
 
 export const _export = async () => {
-  const json = await storage.json();
+  await storage.load()
+  const json = storage.json();
   const body = compress(json);
   const now = new Date();
   const timestamp = format(now, exportFilenameTimestampFormat);

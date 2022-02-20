@@ -8,7 +8,7 @@ import { MergeDirection, mergePersonal, mergeSubscriptions } from '../../../help
 import useElementID from '../../../hooks/useElementID';
 import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
-import { selectPersonal, selectSubscriptions } from '../../../store/selectors';
+import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
 import { loadDataIntoStore, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
 import * as messages from '../../../templates/messages';
@@ -16,6 +16,7 @@ import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ExportImportSection.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
+  const config = useTypedSelector(selectConfig);
   const personal = useTypedSelector(selectPersonal);
   const subscriptions = useTypedSelector(selectSubscriptions);
   const importFileInputId = useElementID('ImportFileInput');
@@ -44,9 +45,12 @@ const ExportImportSection: React.FunctionComponent = () => {
       try {
         const data = await _import(file);
         const storage: ISerializedStorage = {
+          config: { ...config, ...data.config },
+          // CAVEAT: ignore `meta` here
           personal: mergePersonal(personal, data.personal, MergeDirection.IncomingToLocal),
           subscriptions: mergeSubscriptions(subscriptions, data.subscriptions, MergeDirection.IncomingToLocal)
         };
+        // load the merged data into the store
         await loadDataIntoStore(storage);
         // analytics
         gtag.event(EventAction.Import);
@@ -65,7 +69,7 @@ const ExportImportSection: React.FunctionComponent = () => {
       }
     }
     event.target.value = '';
-  }, [personal, subscriptions]);
+  }, [config, personal, subscriptions]);
 
   return (
     <React.Fragment>

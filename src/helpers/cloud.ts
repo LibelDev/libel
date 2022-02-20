@@ -1,14 +1,17 @@
+import debugFactory from 'debug';
 import * as files from '../constants/files';
 import storage from '../storage';
 import { actions as metaActions } from '../store/slices/meta';
 import { actions as syncActions } from '../store/slices/sync';
 import store from '../store/store';
 import Storage, { ISerializedStorage } from './../models/Storage';
-import { selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
+import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
 import { loadDataIntoStore } from './../store/store';
 import { compress, decompress } from './file';
 import * as gapi from './gapi';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from './merge';
+
+const debug = debugFactory('libel:helper:cloud');
 
 const download = async (fileId: string) => {
   try {
@@ -42,14 +45,16 @@ export const sync = async () => {
       // nothing to do here
     } else {
       const remoteStorage = (await download(file.id!)) || {};
-      // data downloaded successfully
+      debug('sync:remoteStorage', remoteStorage);
+      // cloud data downloaded successfully
       const state = store.getState();
+      const config = selectConfig(state);
       const meta = selectMeta(state);
       const personal = selectPersonal(state);
       const subscriptions = selectSubscriptions(state);
-      // merge with local data
       const modifiedTime = new Date(file.modifiedTime!).getTime();
       const { lastModifiedTime, lastSyncedTime } = meta;
+      debug('sync:meta', lastSyncedTime, lastModifiedTime, modifiedTime);
       /**
        * NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
        * 
@@ -59,20 +64,27 @@ export const sync = async () => {
        * 
        * `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
        * => then always merge remote into local
-       **/
+       */
+      // merge with local data
       const mergeDirection = ((lastSyncedTime === modifiedTime) && (lastModifiedTime > modifiedTime)) ? MergeDirection.LocalToIncoming : MergeDirection.IncomingToLocal;
+      debug('sync:mergeDirection', MergeDirection[mergeDirection]);
       const storage: ISerializedStorage = {
+        config: { ...config, ...remoteStorage.config },
+        // CAVEAT: ignore `meta` here
         personal: mergePersonal(personal, remoteStorage.personal, mergeDirection),
         subscriptions: mergeSubscriptions(subscriptions, remoteStorage.subscriptions, mergeDirection)
       };
-      // load the merged data into store
+      // load the merged data into the store
       await loadDataIntoStore(storage);
     }
-    // upload the data to cloud
-    const json = await storage.json();
+    // upload the storage to cloud
+    await storage.load();
+    const json = storage.json();
+    debug('sync:storage', storage);
     const { result } = await upload(file.id!, json);
-    const lastSyncedTime = new Date(result.modifiedTime!).getTime();
-    dispatch(metaActions.setLastSyncedTime(lastSyncedTime));
+    const modifiedTime = new Date(result.modifiedTime!).getTime();
+    debug('sync:modifiedTime', modifiedTime);
+    dispatch(metaActions.setLastSyncedTime(modifiedTime));
     dispatch(syncActions.setError(null));
   } catch (err) {
     dispatch(syncActions.setError(err));

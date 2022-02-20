@@ -13,8 +13,8 @@ const slice = createSlice({
     setLastModifiedTime: (state, action: PayloadAction<number>) => {
       state.lastModifiedTime = action.payload;
     },
-    setLastSyncedTime: (state, action: PayloadAction<number>) => {
-      state.lastSyncedTime = action.payload;
+    setLastSyncedTime: (state, action: PayloadAction<number | null>) => {
+      state.lastSyncedTime = action.payload || undefined;
     },
     update: (state, action: PayloadAction<Meta | IMeta>) => {
       const { payload: meta } = action;

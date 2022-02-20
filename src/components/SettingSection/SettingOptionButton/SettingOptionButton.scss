@@ -1,0 +1,6 @@
+.setting-option-button {
+  &.disabled {
+    @apply cursor-not-allowed;
+    @apply opacity-20;
+  }
+}

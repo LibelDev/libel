@@ -35,6 +35,11 @@ const _configKey = Symbol('configKey');
 const _metaKey = Symbol('metaKey');
 const _ready = Symbol('ready');
 
+/**
+ * Storage model
+ * @description the middleman between the store and storage
+ * @implements IStorage
+ */
 class Storage implements IStorage {
   private readonly [_dataKeys]: string[];
   private readonly [_configKey]: string;
@@ -50,6 +55,19 @@ class Storage implements IStorage {
     this[_configKey] = configKey;
     this[_metaKey] = metaKey;
     this[_ready] = this.load();
+  }
+
+  /**
+   * pure factory function
+   * @description this does not produce an `Storage` instance
+   */
+  static factory (): Required<IStorage> {
+    return {
+      config: Config.factory(),
+      meta: Meta.factory(),
+      personal: Personal.factory(),
+      subscriptions: []
+    };
   }
 
   private static clean (keys: string[]) {
@@ -140,10 +158,11 @@ class Storage implements IStorage {
 
   /**
    * pure deserialization
+   * @description this does not produce an `Storage` instance
    * @param {IStorage | ISerializedStorage} storage 
    * @returns {IStorage}
    */
-  private static deserialize (storage: IStorage | ISerializedStorage): IStorage {
+  static deserialize (storage: IStorage | ISerializedStorage): IStorage {
     const { config, meta, personal, subscriptions } = storage;
     return {
       config: config && Config.deserialize(config),
@@ -167,18 +186,17 @@ class Storage implements IStorage {
     };
   }
 
-  async json () {
-    await this.load();
+  json () {
     const data = this.serialize();
     return JSON.stringify(data);
   }
 
   /**
-   * load the storage into the model
+   * load the storage into the instance
    * @async
    * @returns {Promise<this>}
    */
-  private async load (): Promise<this> {
+  async load (): Promise<this> {
     const dataKeys = this[_dataKeys];
     const configKey = this[_configKey];
     const metaKey = this[_metaKey];
@@ -194,14 +212,6 @@ class Storage implements IStorage {
     this.meta = meta || this.meta;
     this.personal = personal;
     this.subscriptions = subscriptions;
-    return this;
-  }
-
-  reset () {
-    this.config = Config.factory();
-    this.meta = Meta.factory();
-    this.personal = Personal.factory();
-    this.subscriptions = [];
     return this;
   }
 }
