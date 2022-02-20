@@ -1,10 +1,15 @@
 @import '../../../stylesheets/base';
 
 .footer {
-  @apply flex items-center;
+  @apply flex items-center flex-wrap;
   @apply opacity-50;
   @apply px-4;
-  padding-top: .8rem;
+  padding-top: 0.8rem;
+
+  .stats {
+    @apply w-full;
+    @apply mb-2;
+  }
 
   .version {
     @apply mr-auto;
