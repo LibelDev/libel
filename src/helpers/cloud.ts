@@ -28,12 +28,15 @@ const upload = (fileId: string, json: string) => {
   return gapi.drive.update(fileId, body);
 };
 
+export const clear = () => {
+  return gapi.drive.deleteByName(files.appData);
+};
+
 export const sync = async () => {
   const { dispatch } = store;
   dispatch(syncActions.setLoading(true));
   try {
-    const [response, fresh] = await gapi.drive.ensure(files.appData);
-    const { result: file } = response;
+    const [file, fresh] = await gapi.drive.ensure(files.appData);
     if (fresh) {
       // never been synced with the cloud before
       // nothing to do here
@@ -47,22 +50,26 @@ export const sync = async () => {
       // merge with local data
       const modifiedTime = new Date(file.modifiedTime!).getTime();
       const { lastModifiedTime, lastSyncedTime } = meta;
-      // NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
-      // `lastSyncedTime === modifiedTime` => the file was updated from this instance in the previous sync
-      // => if local is newer than remote, merge local into remote, otherwise, merge remote into local
-      // `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
-      // => then always merge remote into local
-      const mergeDirection = ((lastSyncedTime === modifiedTime) && (lastModifiedTime > modifiedTime)) ? MergeDirection.Incoming : MergeDirection.Local;
-      const _storage: ISerializedStorage = {
+      /**
+       * NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
+       * 
+       * `lastSyncedTime === modifiedTime` => the file was updated from this instance in the previous sync
+       * => if `lastModifiedTime > modifiedTime` (i.e. local is newer than remote), merge local into remote
+       * => otherwise, merge remote into local
+       * 
+       * `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
+       * => then always merge remote into local
+       **/
+      const mergeDirection = ((lastSyncedTime === modifiedTime) && (lastModifiedTime > modifiedTime)) ? MergeDirection.LocalToIncoming : MergeDirection.IncomingToLocal;
+      const storage: ISerializedStorage = {
         personal: mergePersonal(personal, remoteStorage.personal, mergeDirection),
         subscriptions: mergeSubscriptions(subscriptions, remoteStorage.subscriptions, mergeDirection)
       };
       // load the merged data into store
-      await loadDataIntoStore(_storage);
-      storage.update(_storage);
+      await loadDataIntoStore(storage);
     }
     // upload the data to cloud
-    const json = storage.json();
+    const json = await storage.json();
     const { result } = await upload(file.id!, json);
     const lastSyncedTime = new Date(result.modifiedTime!).getTime();
     dispatch(metaActions.setLastSyncedTime(lastSyncedTime));

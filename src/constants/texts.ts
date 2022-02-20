@@ -1,3 +1,5 @@
+import { displayName } from '../../package.json';
+
 // thread
 export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 
@@ -7,6 +9,7 @@ export const SETTINGS_MODAL_TITLE = '設定';
 export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
 export const SETTING_CLOUD_SYNC_SECTION_TITLE = '雲端同步數據';
 export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入數據';
+export const SETTING_CLEAR_DATA_SECTION_TITLE = '清除數據';
 
 // add
 export const ADD_LABEL_BUTTON_TEXT = '標籤';
@@ -47,6 +50,18 @@ export const IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE = '檔案內容格式錯誤';
 
 // export
 export const EXPORT_FILE_BUTTON_TEXT = '匯出';
+
+// clear data
+export const CLEAR_LOCAL_DATA_BUTTON_TEXT = '從本裝置清除數據';
+export const CLEAR_LOCAL_DATA_QUESTION = '請問你已匯出數據作備份用途並確定要清除所有標籤及訂閱記錄嗎？';
+export const CLEAR_LOCAL_DATA_CONFIRMATION = `請輸入 "${displayName}" 確認清除所有標籤及訂閱記錄`;
+export const CLEAR_LOCAL_DATA_SUCCESS = '已清除所有標籤及訂閱記錄';
+export const CLEAR_LOCAL_DATA_CANCEL = '已取消動作';
+export const CLEAR_CLOUD_DATA_BUTTON_TEXT = '從雲端清除數據';
+export const CLEAR_CLOUD_DATA_QUESTION = '請問你已匯出數據作備份用途並確定要清除所有標籤及訂閱記錄嗎？';
+export const CLEAR_CLOUD_DATA_CONFIRMATION = `請輸入 "${displayName}" 確認清除所有標籤及訂閱記錄`;
+export const CLEAR_CLOUD_DATA_SUCCESS = '已清除所有標籤及訂閱記錄';
+export const CLEAR_CLOUD_DATA_CANCEL = '已取消動作';
 
 // subscription
 export const ADD_SUBSCRIPTION_BUTTON_TEXT = '新增訂閱';

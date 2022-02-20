@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
-import Meta from '../../models/Meta';
+import Meta, { IMeta } from '../../models/Meta';
 
 const initialState = Meta.factory();
 
@@ -16,6 +16,10 @@ const slice = createSlice({
     setLastSyncedTime: (state, action: PayloadAction<number>) => {
       state.lastSyncedTime = action.payload;
     },
+    update: (state, action: PayloadAction<Meta | IMeta>) => {
+      const { payload: meta } = action;
+      return Meta.deserialize(meta);
+    }
   },
 });
 

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
-import Config from '../../models/Config';
+import Config, { IConfig } from '../../models/Config';
 
 const initialState = Config.factory();
 
@@ -13,6 +13,10 @@ const slice = createSlice({
     setIsIconMapUnlocked: (state, action: PayloadAction<boolean>) => {
       const { payload } = action;
       state.isIconMapUnlocked = payload;
+    },
+    update: (state, action: PayloadAction<Config | IConfig>) => {
+      const { payload: config } = action;
+      return Config.deserialize(config);
     }
   }
 });

@@ -167,7 +167,8 @@ class Storage implements IStorage {
     };
   }
 
-  json () {
+  async json () {
+    await this.load();
     const data = this.serialize();
     return JSON.stringify(data);
   }
@@ -177,7 +178,7 @@ class Storage implements IStorage {
    * @async
    * @returns {Promise<this>}
    */
-  async load (): Promise<this> {
+  private async load (): Promise<this> {
     const dataKeys = this[_dataKeys];
     const configKey = this[_configKey];
     const metaKey = this[_metaKey];

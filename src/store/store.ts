@@ -4,12 +4,12 @@ import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
-import Storage from '../models/Storage';
 import Subscription from '../models/Subscription';
 import storage from '../storage';
 import { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
 import reducer, { persistedReducer } from './reducer';
+import { actions as configActions } from './slices/config';
 import { actions as metaActions } from './slices/meta';
 import { actions as personalActions } from './slices/personal';
 import { actions as subscriptionsActions } from './slices/subscriptions';
@@ -43,6 +43,12 @@ const store = configureStore({
 
 initMessageListener(store);
 
+/**
+ * load the subscriptions data from remote  
+ * NOTE: this function is not really async (i.e. it resolves immediately)
+ * @async
+ * @param {Subscription[]} subscriptions 
+ */
 const loadRemoteSubscriptions = async (subscriptions: Subscription[]) => {
   const { dispatch } = store;
   for (let i = 0; i < subscriptions.length; i++) {
@@ -51,8 +57,11 @@ const loadRemoteSubscriptions = async (subscriptions: Subscription[]) => {
 };
 
 export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => {
-  const storage = Storage.deserialize(data);
-  const { personal, subscriptions } = storage;
+  // update the storage instance
+  storage.update(data);
+  const { config, meta, personal, subscriptions } = storage;
+  store.dispatch(configActions.update(config));
+  store.dispatch(metaActions.update(meta));
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
   await loadRemoteSubscriptions(subscriptions);
