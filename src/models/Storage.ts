@@ -196,6 +196,14 @@ class Storage implements IStorage {
     this.subscriptions = subscriptions;
     return this;
   }
+
+  reset () {
+    this.config = Config.factory();
+    this.meta = Meta.factory();
+    this.personal = Personal.factory();
+    this.subscriptions = [];
+    return this;
+  }
 }
 
 export default Storage;

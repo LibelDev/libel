@@ -5,8 +5,8 @@ import Personal, { ISerializedPersonal } from './../models/Personal';
 import Subscription, { ISerializedSubscription } from './../models/Subscription';
 
 export enum MergeDirection {
-  Local,
-  Incoming
+  IncomingToLocal,
+  LocalToIncoming
 }
 
 const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirection) => {
@@ -21,7 +21,7 @@ const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirect
         if (label) {
           // label with the same text already exists
           switch (mergeDirection) {
-            case MergeDirection.Local: {
+            case MergeDirection.IncomingToLocal: {
               label.reason = defaultTo(incomingLabel.reason, label.reason);
               label.url = defaultTo(incomingLabel.url, label.url);
               label.date = defaultTo(incomingLabel.date, label.date);
@@ -30,7 +30,7 @@ const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirect
               label.image = defaultTo(incomingLabel.image, label.image);
               break;
             }
-            case MergeDirection.Incoming: {
+            case MergeDirection.LocalToIncoming: {
               label.reason = defaultTo(label.reason, incomingLabel.reason);
               label.url = defaultTo(label.url, incomingLabel.url);
               label.date = defaultTo(label.date, incomingLabel.date);
@@ -41,13 +41,13 @@ const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirect
             }
           }
         } else {
-          if (mergeDirection === MergeDirection.Local) {
+          if (mergeDirection === MergeDirection.IncomingToLocal) {
             data[user]!.push(incomingLabel);
           }
         }
       }
     }
-    if (mergeDirection === MergeDirection.Local) {
+    if (mergeDirection === MergeDirection.IncomingToLocal) {
       // new users
       for (const incomingUser of incomingUsers) {
         if (!(incomingUser in data)) {
@@ -58,7 +58,7 @@ const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirect
   });
 };
 
-export const mergePersonal = (personal: Personal | ISerializedPersonal, incomingPersonal?: ISerializedPersonal, mergeDirection = MergeDirection.Local) => {
+export const mergePersonal = (personal: Personal | ISerializedPersonal, incomingPersonal?: ISerializedPersonal, mergeDirection = MergeDirection.IncomingToLocal) => {
   if (incomingPersonal) {
     const data = mergeData(personal.data, incomingPersonal.data, mergeDirection);
     return { data } as ISerializedPersonal;
@@ -66,7 +66,7 @@ export const mergePersonal = (personal: Personal | ISerializedPersonal, incoming
   return personal;
 };
 
-export const mergeSubscriptions = (subscriptions: (Subscription | ISerializedSubscription)[], incomingSubscriptions?: ISerializedSubscription[], mergeDirection = MergeDirection.Local) => {
+export const mergeSubscriptions = (subscriptions: (Subscription | ISerializedSubscription)[], incomingSubscriptions?: ISerializedSubscription[], mergeDirection = MergeDirection.IncomingToLocal) => {
   if (incomingSubscriptions) {
     return produce(subscriptions, (subscriptions) => {
       // existing subscriptions
@@ -74,12 +74,12 @@ export const mergeSubscriptions = (subscriptions: (Subscription | ISerializedSub
         const incomingSubscription = incomingSubscriptions.find(({ url }) => url === subscription.url);
         if (incomingSubscription) {
           switch (mergeDirection) {
-            case MergeDirection.Local: {
+            case MergeDirection.IncomingToLocal: {
               subscription.name = defaultTo(incomingSubscription.name, subscription.name);
               subscription.enabled = defaultTo(incomingSubscription.enabled, subscription.enabled);
               break;
             }
-            case MergeDirection.Incoming: {
+            case MergeDirection.LocalToIncoming: {
               subscription.name = defaultTo(subscription.name, incomingSubscription.name);
               subscription.enabled = defaultTo(subscription.enabled, incomingSubscription.enabled);
               break;
@@ -87,7 +87,7 @@ export const mergeSubscriptions = (subscriptions: (Subscription | ISerializedSub
           }
         }
       }
-      if (mergeDirection === MergeDirection.Local) {
+      if (mergeDirection === MergeDirection.IncomingToLocal) {
         // new subscriptions
         for (const incomingSubscription of incomingSubscriptions) {
           const subscription = subscriptions.find(({ url }) => url === incomingSubscription.url);

@@ -43,8 +43,8 @@ const ExportImportSection: React.FunctionComponent = () => {
       try {
         const data = await _import(file);
         const storage: ISerializedStorage = {
-          personal: mergePersonal(personal, data.personal, MergeDirection.Local),
-          subscriptions: mergeSubscriptions(subscriptions, data.subscriptions, MergeDirection.Local)
+          personal: mergePersonal(personal, data.personal, MergeDirection.IncomingToLocal),
+          subscriptions: mergeSubscriptions(subscriptions, data.subscriptions, MergeDirection.IncomingToLocal)
         };
         await loadDataIntoStore(storage);
         // analytics

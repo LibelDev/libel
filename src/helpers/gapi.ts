@@ -49,11 +49,14 @@ export const drive = {
    * @async
    * @param {string} name file name
    */
-  async ensure (name: string): Promise<[gapi.client.Response<gapi.client.drive.File>, boolean]> {
-    const response = await this.getByName(name);
-    if (response) { return [response, false]; }
-    const _response = await this.create(name);
-    return [_response, true];
+  async ensure (name: string): Promise<[gapi.client.drive.File, boolean]> {
+    const file = await this.getByName(name);
+    if (file) {
+      return [file, false];
+    }
+    const response = await this.create(name);
+    const { result } = response;
+    return [result, true];
   },
   /**
    * create file
@@ -92,9 +95,9 @@ export const drive = {
    * get the list of files under "appDataFolder"
    * @async
    * @param {TSpaces} spaces default: `["appDataFolder"]`
-   * @param {string[]} fields file fields to be included in the response, default: `["id", "name"]`
+   * @param {string[]} fields file fields to be included in the response, default: `["id", "name", "createdTime", "modifiedTime"]`
    */
-  async list (spaces: TSpaces = ['appDataFolder'], fields: string[] = ['id', 'name']) {
+  async list (spaces: TSpaces = ['appDataFolder'], fields: string[] = ['id', 'name', 'createdTime', 'modifiedTime']) {
     const gapi = await ready();
     return gapi.client.drive.files.list({
       spaces: spaces.join(''),
@@ -110,6 +113,7 @@ export const drive = {
    * @template R the type of the response result
    */
   async getById<R = gapi.client.drive.File> (id: string, request?: TClientDriveFilesGetRequestWithoutFileId) {
+    const gapi = await ready();
     const fields = ['id', 'name', 'createdTime', 'modifiedTime'];
     return gapi.client.drive.files.get({
       fileId: id,
@@ -121,19 +125,33 @@ export const drive = {
    * get the file by name
    * @async
    * @param {string} name file name
-   * @param {TClientDriveFilesGetRequestWithoutFileId} request the request object for `gapi.client.drive.files.get`
-   * @template R the type of the response result
    */
-  async getByName<R = gapi.client.drive.File> (name: string, request?: TClientDriveFilesGetRequestWithoutFileId) {
+  async getByName (name: string) {
     const response = await this.list();
     const { result } = response;
     const { files } = result;
     if (files) {
       for (const file of files) {
         if (file.name === name) {
-          return this.getById<R>(file.id!, request);
+          return file;
         }
       }
+    }
+  },
+  async deleteById (id: string) {
+    const gapi = await ready();
+    return gapi.client.drive.files.delete({
+      fileId: id
+    });
+  },
+  /**
+   * delete the file by name
+   * @param {string} name file name
+   */
+  async deleteByName (name: string) {
+    const file = await this.getByName(name);
+    if (file) {
+      return this.deleteById(file.id!);
     }
   }
 };

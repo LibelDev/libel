@@ -1,4 +1,5 @@
 import React from 'react';
+import ClearDataSection from './ClearDataSection/ClearDataSection';
 import CloudSyncSection from './CloudSyncSection/CloudSyncSection';
 import ExportImportSection from './ExportImportSection/ExportImportSection';
 import Footer from './Footer/Footer';
@@ -12,6 +13,7 @@ const SettingSection: React.FunctionComponent = () => {
       <SubscriptionSection />
       <CloudSyncSection />
       <ExportImportSection />
+      <ClearDataSection />
       <Footer />
     </React.Fragment>
   );

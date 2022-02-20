@@ -1,0 +1,11 @@
+.clear-data-button {
+  @apply flex items-center;
+
+  &:hover {
+    @apply no-underline;
+  }
+
+  .icon {
+    @apply mr-2;
+  }
+}
