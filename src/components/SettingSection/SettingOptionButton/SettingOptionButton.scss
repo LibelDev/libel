@@ -1,4 +1,6 @@
 .setting-option-button {
+  @apply flex items-center;
+
   &.disabled {
     @apply cursor-not-allowed;
     @apply opacity-20;
