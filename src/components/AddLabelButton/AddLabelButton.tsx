@@ -32,7 +32,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     }
   }, [loading]);
 
-  const handleModalClose = useCallback(() => {
+  const handleLabelFormModalClose = useCallback(() => {
     setOpen(false);
     // analytics
     gtag.event(EventAction.Close, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
@@ -69,10 +69,10 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
       dispatch(personalActions.add(payload));
     }
     setLoading(false);
-    handleModalClose();
+    handleLabelFormModalClose();
     // analytics
     gtag.event(EventAction.Add, { event_category: EventCategory.Label, event_label: text });
-  }, [user, targetReply, handleModalClose]);
+  }, [user, targetReply, handleLabelFormModalClose]);
 
   return (
     <React.Fragment>
@@ -89,7 +89,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
         escape={false}
         fragile={false}
         loading={loading}
-        onClose={handleModalClose}
+        onClose={handleLabelFormModalClose}
         onSubmission={handleLabelFormSubmit}
       />
     </React.Fragment>
