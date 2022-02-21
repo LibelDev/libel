@@ -15,7 +15,7 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
 
 const SettingOptionButton: React.FunctionComponent<TProps> = (props) => {
-  const { disabled, variant, className, ...otherProps } = props;
+  const { disabled, variant, className, onClick, ...otherProps } = props;
   return (
     <a
       {...otherProps}
@@ -32,6 +32,7 @@ const SettingOptionButton: React.FunctionComponent<TProps> = (props) => {
           }
         )
       }
+      onClick={!disabled ? onClick : undefined}
     />
   );
 };
