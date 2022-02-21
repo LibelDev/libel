@@ -13,8 +13,9 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useTypedDispatch();
   const { className, subscription, index } = props;
+
+  const dispatch = useTypedDispatch();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked: enabled } = event.target;

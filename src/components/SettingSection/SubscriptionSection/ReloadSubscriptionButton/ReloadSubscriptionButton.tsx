@@ -18,8 +18,9 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useTypedDispatch();
   const { className, subscription, index } = props;
+
+  const dispatch = useTypedDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();

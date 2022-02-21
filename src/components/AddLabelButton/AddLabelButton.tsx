@@ -19,9 +19,9 @@ interface IProps {
 const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
   const { user, targetReply, children } = props;
 
+  const dispatch = useTypedDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useTypedDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();

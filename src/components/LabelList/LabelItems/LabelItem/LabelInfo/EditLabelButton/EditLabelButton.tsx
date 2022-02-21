@@ -20,8 +20,8 @@ type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label } = props;
 
-  const [open, setOpen] = useState(false);
   const dispatch = useTypedDispatch();
+  const [open, setOpen] = useState(false);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();

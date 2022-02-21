@@ -20,8 +20,9 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useTypedDispatch();
   const { className, user, index, label } = props;
+
+  const dispatch = useTypedDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
