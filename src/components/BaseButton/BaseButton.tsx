@@ -8,27 +8,19 @@ interface IProps {
   loading?: boolean;
 }
 
-type HTMLAttributes<K extends keyof JSX.IntrinsicElements> = (
-  JSX.IntrinsicElements[K] extends React.DetailedHTMLProps<infer A, any> ? (
-    A
-  ) : never
-);
+type TAnchorHTMLAttributes = React.ComponentPropsWithoutRef<'a'>;
+type TButtonHTMLAttributes = React.ComponentPropsWithoutRef<'button'>;
 
-type HTMLAttributesWithIs<K extends keyof JSX.IntrinsicElements> = {
+type HTMLAttributesWithAs<K extends keyof JSX.IntrinsicElements> = {
   as?: K;
-} & HTMLAttributes<K>;
+} & React.ComponentPropsWithoutRef<K>;
 
-type AnchorHTMLAttributes = HTMLAttributes<'a'>;
-type ButtonHTMLAttributes = HTMLAttributes<'button'>;
-
-type MixedHTMLAttributes = AnchorHTMLAttributes & ButtonHTMLAttributes;
-
-type AnchorHTMLAttributesWithIs = HTMLAttributesWithIs<'a'>;
-type ButtonHTMLAttributesWithIs = HTMLAttributesWithIs<'button'>;
+type AnchorHTMLAttributesWithAs = HTMLAttributesWithAs<'a'>;
+type ButtonHTMLAttributesWithAs = HTMLAttributesWithAs<'button'>;
 
 export type TProps = IProps & (
-  AnchorHTMLAttributesWithIs |
-  ButtonHTMLAttributesWithIs
+  AnchorHTMLAttributesWithAs |
+  ButtonHTMLAttributesWithAs
 );
 
 const BaseButton: React.FunctionComponent<TProps> = (props) => {
@@ -52,7 +44,7 @@ const BaseButton: React.FunctionComponent<TProps> = (props) => {
       children
     )
   );
-  return React.createElement(as, _props as MixedHTMLAttributes, _children);
+  return React.createElement(as, _props as TAnchorHTMLAttributes & TButtonHTMLAttributes, _children);
 };
 
 export default BaseButton;
