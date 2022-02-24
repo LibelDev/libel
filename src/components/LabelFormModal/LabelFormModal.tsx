@@ -3,7 +3,7 @@ import * as TEXTS from '../../constants/texts';
 import useElementID from '../../hooks/useElementID';
 import Button from '../Button/Button';
 import LabelForm, { TProps as TLabelFormProps } from '../LabelForm/LabelForm';
-import Modal, { Body, Footer, Header, TProps as TModalProps } from '../Modal/Modal';
+import Modal, { TProps as TModalProps } from '../Modal/Modal';
 
 interface IProps { }
 
@@ -16,14 +16,14 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal onClose={onClose} {...otherProps}>
-      <Header onClose={onClose}>
+      <Modal.Header onClose={onClose}>
         {
           data ?
             TEXTS.LABEL_FORM_MODAL_TITLE_EDIT :
             TEXTS.LABEL_FORM_MODAL_TITLE_ADD
         }
-      </Header>
-      <Body>
+      </Modal.Header>
+      <Modal.Body>
         <LabelForm
           id={formID}
           user={user}
@@ -31,8 +31,8 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
           loading={loading}
           onSubmission={onSubmission}
         />
-      </Body>
-      <Footer>
+      </Modal.Body>
+      <Modal.Footer>
         <Button
           form={formID}
           type="submit"
@@ -40,7 +40,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
         >
           {TEXTS.LABEL_FORM_BUTTON_SUBMIT}
         </Button>
-      </Footer>
+      </Modal.Footer>
     </Modal>
   );
 };
