@@ -10,7 +10,7 @@ import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import SettingOptionButton from '../../SettingOptionButton/SettingOptionButton';
-import styles from './SyncWithGoogleDrive.scss';
+import styles from './SyncWithGoogleDrive.module.scss';
 
 const SyncWithGoogleDrive: React.FunctionComponent = () => {
   const [auth, user, signedIn] = useGoogleAuthorization();

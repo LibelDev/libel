@@ -7,11 +7,11 @@ import Storage from '../../../models/Storage';
 import { selectSync } from '../../../store/selectors';
 import { actions as metaActions } from '../../../store/slices/meta';
 import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../store/store';
-import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../types/icon';
 import Icon from '../../Icon/Icon';
 import SettingOptionButton, { Variant as SettingOptionButtonVariant } from '../SettingOptionButton/SettingOptionButton';
-import styles from './ClearDataSection.scss';
+import styles from './ClearDataSection.module.scss';
 
 interface IProps { }
 

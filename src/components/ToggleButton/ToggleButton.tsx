@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import BaseInput, { TProps as IBaseInputProps } from '../BaseInput/BaseInput';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
-import styles from './ToggleButton.scss';
+import styles from './ToggleButton.module.scss';
 
 interface IProps {
   /**

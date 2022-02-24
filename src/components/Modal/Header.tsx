@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
-import styles from './Header.scss';
+import styles from './Header.module.scss';
 import IDsContext from './IDsContext';
 
 interface IProps  {

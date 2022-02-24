@@ -2,7 +2,7 @@ import React from 'react';
 import Personal from '../../../models/Personal';
 import Subscription from '../../../models/Subscription';
 import LabelItem from './LabelItem/LabelItem';
-import styles from './LabelItems.scss';
+import styles from './LabelItems.module.scss';
 
 interface IProps {
   dataSet: Personal | Subscription;

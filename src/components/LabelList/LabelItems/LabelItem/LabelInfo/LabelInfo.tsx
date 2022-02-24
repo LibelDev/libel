@@ -4,7 +4,7 @@ import Label from '../../../../../models/Label';
 import Subscription from '../../../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import LabelImageButton from './LabelImageButton/LabelImageButton';
-import styles from './LabelInfo.scss';
+import styles from './LabelInfo.module.scss';
 import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
 import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';

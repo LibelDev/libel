@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
-import styles from './ColorPicker.scss';
+import styles from './ColorPicker.module.scss';
 
 interface IProps { }
 

@@ -3,7 +3,7 @@ import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUse
 import { useTypedSelector } from '../../store/store';
 import SnipeButton from '../SnipeButton/SnipeButton';
 import LabelItems from './LabelItems/LabelItems';
-import styles from './LabelList.scss';
+import styles from './LabelList.module.scss';
 
 interface IProps {
   user: string;

@@ -8,7 +8,7 @@ import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
 import IDsContext from './IDsContext';
-import styles from './Modal.scss';
+import styles from './Modal.module.scss';
 
 interface IProps {
   /**

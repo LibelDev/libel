@@ -16,7 +16,7 @@ import Icon from '../Icon/Icon';
 import LabelItem from '../LabelList/LabelItems/LabelItem/LabelItem';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
-import styles from './LabelForm.scss';
+import styles from './LabelForm.module.scss';
 
 type TData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 

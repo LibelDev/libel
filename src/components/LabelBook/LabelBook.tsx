@@ -3,7 +3,7 @@ import { THREAD_USER_LABELS_TOOLTIP } from '../../constants/texts';
 import Label from '../../models/Label';
 import { createUserPersonalLabelsSelector, createUserSubscriptionLabelsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
-import styles from './LabelBook.scss';
+import styles from './LabelBook.module.scss';
 
 interface IProps {
   user: string;

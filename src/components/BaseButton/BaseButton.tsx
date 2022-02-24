@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
-import styles from './BaseButton.scss';
+import styles from './BaseButton.module.scss';
 
 interface IProps {
   disabled?: boolean;

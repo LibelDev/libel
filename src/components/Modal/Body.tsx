@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import styles from './Body.scss';
+import styles from './Body.module.scss';
 import IDsContext from './IDsContext';
 
 interface IProps  { }

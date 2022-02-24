@@ -6,7 +6,7 @@ import * as gtag from '../../../../helpers/gtag';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch } from '../../../../store/store';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 

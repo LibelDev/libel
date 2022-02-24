@@ -9,7 +9,7 @@ import { useTypedDispatch } from '../../store/store';
 import { IPost } from '../../types/lihkg';
 import Button from '../Button/Button';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
-import styles from './AddLabelButton.scss';
+import styles from './AddLabelButton.module.scss';
 
 interface IProps {
   user: string;

@@ -2,10 +2,10 @@ import classnames from 'classnames';
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import Subscription from '../../../../models/Subscription';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../../types/icon';
 import IconLink from '../../../IconLink/IconLink';
-import styles from './SubscriptionHomepageButton.scss';
+import styles from './SubscriptionHomepageButton.module.scss';
 
 interface IProps  {
   subscription: Subscription;

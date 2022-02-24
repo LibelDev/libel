@@ -9,11 +9,11 @@ import * as TEXTS from '../../constants/texts';
 import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
 import * as gtag from '../../helpers/gtag';
 import { isViewport, Viewport } from '../../helpers/responsive';
-import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
-import styles from './Announcement.scss';
+import styles from './Announcement.module.scss';
 
 interface IProps {
   icon?: IconName;

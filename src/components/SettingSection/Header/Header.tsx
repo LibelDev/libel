@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '../../../../assets/logos/libel.png';
 import { displayName } from '../../../../package.json';
-import styles from './Header.scss';
+import styles from './Header.module.scss';
 
 const Header: React.FunctionComponent = () => {
   return (

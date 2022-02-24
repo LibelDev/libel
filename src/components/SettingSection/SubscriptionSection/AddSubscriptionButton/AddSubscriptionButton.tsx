@@ -7,7 +7,7 @@ import Subscription from '../../../../models/Subscription';
 import { selectSubscriptions } from '../../../../store/selectors';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch, useTypedSelector } from '../../../../store/store';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 

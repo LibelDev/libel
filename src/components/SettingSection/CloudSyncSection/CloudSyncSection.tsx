@@ -1,6 +1,6 @@
 import React from 'react';
 import * as TEXTS from '../../../constants/texts';
-import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import SyncWithGoogleDrive from './SyncWithGoogleDrive/SyncWithGoogleDrive';
 
 interface IProps { }

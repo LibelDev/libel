@@ -5,7 +5,7 @@ import Label from '../../../../models/Label';
 import Personal from '../../../../models/Personal';
 import Subscription from '../../../../models/Subscription';
 import LabelInfo from './LabelInfo/LabelInfo';
-import styles from './LabelItem.scss';
+import styles from './LabelItem.module.scss';
 
 interface IProps {
   user?: string;

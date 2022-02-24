@@ -11,7 +11,7 @@ import { useTypedSelector } from '../../store/store';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
-import styles from './SnipeButton.scss';
+import styles from './SnipeButton.module.scss';
 
 interface IProps {
   user: string;

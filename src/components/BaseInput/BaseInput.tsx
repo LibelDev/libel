@@ -3,7 +3,7 @@ import React from 'react';
 import useElementID from '../../hooks/useElementID';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
-import styles from './BaseInput.scss';
+import styles from './BaseInput.module.scss';
 
 interface IProps {
   label?: React.ReactNode;

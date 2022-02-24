@@ -3,10 +3,10 @@ import React from 'react';
 import * as TEXTS from '../../../constants/texts';
 import { selectSubscriptions } from '../../../store/selectors';
 import { useTypedSelector } from '../../../store/store';
-import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import AddSubscriptionButton from './AddSubscriptionButton/AddSubscriptionButton';
 import SubscriptionItem from './SubscriptionItem/SubscriptionItem';
-import styles from './SubscriptionSection.scss';
+import styles from './SubscriptionSection.module.scss';
 
 const SubscriptionSection: React.FunctionComponent = () => {
   const subscriptions = useTypedSelector(selectSubscriptions);

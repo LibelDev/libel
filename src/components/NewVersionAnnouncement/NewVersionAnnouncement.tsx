@@ -6,7 +6,7 @@ import { versionUpdate } from '../../templates/announcements';
 import { IRelease } from '../../types/github';
 import { IconName } from '../../types/icon';
 import Announcement from '../Announcement/Announcement';
-import styles from './NewVersionAnnouncement.scss';
+import styles from './NewVersionAnnouncement.module.scss';
 
 interface IProps {
   currentVersion: string;

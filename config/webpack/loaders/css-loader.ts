@@ -4,6 +4,7 @@ const loader = {
   loader: 'css-loader',
   options: {
     modules: {
+      auto: true,
       localIdentName: dev ? '[path][name]__[local]--[hash:base64:5]' : '[hash:base64:5]',
       exportLocalsConvention: 'camelCase'
     }

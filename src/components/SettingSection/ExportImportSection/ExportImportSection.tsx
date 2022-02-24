@@ -10,10 +10,10 @@ import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
 import { loadDataIntoStore, useTypedSelector } from '../../../store/store';
-import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
-import styles from './ExportImportSection.scss';
+import styles from './ExportImportSection.module.scss';
 
 const ExportImportSection: React.FunctionComponent = () => {
   const config = useTypedSelector(selectConfig);

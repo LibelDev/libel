@@ -5,7 +5,7 @@ import { LICENSE, SOURCE_CODE } from '../../../constants/texts';
 import { selectPersonal, selectSubscriptions } from '../../../store/selectors';
 import { useTypedSelector } from '../../../store/store';
 import * as messages from '../../../templates/messages';
-import styles from './Footer.scss';
+import styles from './Footer.module.scss';
 
 const licenseURL = `${repository.url}/blob/master/LICENSE`;
 

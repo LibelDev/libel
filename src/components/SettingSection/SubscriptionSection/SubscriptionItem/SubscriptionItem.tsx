@@ -10,7 +10,7 @@ import ReloadSubscriptionButton from '../ReloadSubscriptionButton/ReloadSubscrip
 import RemoveSubscriptionButton from '../RemoveSubscriptionButton/RemoveSubscriptionButton';
 import SubscriptionHomepageButton from '../SubscriptionHomepageButton/SubscriptionHomepageButton';
 import ToggleSubscriptionButton from '../ToggleSubscriptionButton/ToggleSubscriptionButton';
-import styles from './SubscriptionItem.scss';
+import styles from './SubscriptionItem.module.scss';
 
 interface IProps {
   subscription: Subscription;
