@@ -5,8 +5,11 @@
   @apply pl-4;
   height: 3rem;
   background-color: #fff;
-  border-bottom: solid 1px #e0e0e0;
   color: #000;
+  
+  &.border {
+    border-bottom: solid 1px #e0e0e0;
+  }
 
   @include dark-mode() {
     background-color: #222;
@@ -23,6 +26,7 @@
 
   .close {
     @apply text-base;
+    @apply ml-4;
     height: 3rem;
     width: 3rem;
 
