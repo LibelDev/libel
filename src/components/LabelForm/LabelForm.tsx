@@ -44,6 +44,9 @@ interface IProps {
    * the label to be edited
    */
   data?: TData;
+  /**
+   * the loading state
+   */
   loading?: boolean;
   /**
    * custom onSubmit event handler
