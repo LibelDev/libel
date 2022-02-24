@@ -26,6 +26,9 @@ class Label implements ILabel {
   [immerable] = true;
   text: string;
   reason?: string;
+  /**
+   * @deprecated
+   */
   url?: string;
   date?: number;
   source?: ISource;
