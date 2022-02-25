@@ -1,0 +1,21 @@
+@import '../../stylesheets/base';
+
+.data-set-editor {
+  // overrider Handsontable's styles
+  :global {
+    .handsontable {
+      .htBorders {
+        .wtBorder {
+          &.corner {
+            // hide the cell corner (a.k.a. the fill handle)
+            @apply hidden #{!important};
+          }
+        }
+      }
+    }
+  }
+
+  .color-cell {
+    @apply p-0;
+  }
+}

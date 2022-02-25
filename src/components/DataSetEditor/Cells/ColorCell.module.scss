@@ -1,0 +1,8 @@
+.color-picker {
+  &,
+  > div,
+  input {
+    @apply h-full;
+    @apply w-full;
+  }
+}

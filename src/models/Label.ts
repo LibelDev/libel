@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import { immerable } from 'immer';
 
 export interface ILabel {
@@ -51,6 +52,13 @@ class Label implements ILabel {
     }
     const { text, reason, url, date, source, color, image } = label;
     return new Label(text, reason, url, date, source, color, image);
+  }
+
+  get displayDate () {
+    const { date } = this;
+    if (date) {
+      return format(date, 'yyyy年MM月dd日 HH:mm:ss');
+    }
   }
 
   get sourceURL () {

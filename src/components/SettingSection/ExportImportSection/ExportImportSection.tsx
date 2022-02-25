@@ -1,5 +1,5 @@
 import { render } from 'mustache';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
 import { _export, _import } from '../../../helpers/file';
@@ -12,6 +12,7 @@ import { selectConfig, selectPersonal, selectSubscriptions } from '../../../stor
 import { loadDataIntoStore, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
+import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ExportImportSection.module.scss';
 
@@ -20,6 +21,15 @@ const ExportImportSection: React.FunctionComponent = () => {
   const personal = useTypedSelector(selectPersonal);
   const subscriptions = useTypedSelector(selectSubscriptions);
   const importFileInputId = useElementID('ImportFileInput');
+  const [dataSetEditorModalOpened, setDataSetEditorModalOpened] = useState(false);
+
+  const handleEditDataSetButtonClick = useCallback(() => {
+    setDataSetEditorModalOpened(true);
+  }, []);
+
+  const handleDataSetEditorModalClose = useCallback(() => {
+    setDataSetEditorModalOpened(false);
+  }, []);
 
   const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -74,9 +84,14 @@ const ExportImportSection: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
-        {TEXTS.SETTING_EXPORT_IMPORT_SECTION_TITLE}
+        {TEXTS.SETTINGS_EXPORT_IMPORT_SECTION_TITLE}
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
+        <li className={lihkgCssClasses.settingOptionsItem}>
+          <SettingOptionButton onClick={handleEditDataSetButtonClick}>
+            {TEXTS.EDIT_DATA_SET_BUTTON_TEXT}
+          </SettingOptionButton>
+        </li>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <SettingOptionButton onClick={handleExport}>
             {TEXTS.EXPORT_FILE_BUTTON_TEXT}
@@ -91,6 +106,13 @@ const ExportImportSection: React.FunctionComponent = () => {
           </div>
         </li>
       </ul>
+      <DataSetEditorModal
+        dataSet={personal}
+        open={dataSetEditorModalOpened}
+        escape={false}
+        fragile={false}
+        onClose={handleDataSetEditorModalClose}
+      />
     </React.Fragment>
   );
 };
