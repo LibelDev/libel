@@ -40,7 +40,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       await loadDataIntoStore(storage);
       window.alert(TEXTS.CLEAR_LOCAL_DATA_SUCCESS);
     } else {
-      window.alert(TEXTS.CLEAR_LOCAL_DATA_CANCEL);
+      // window.alert(TEXTS.CLEAR_LOCAL_DATA_CANCEL);
     }
   }, []);
 
@@ -54,7 +54,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       window.alert(TEXTS.CLEAR_CLOUD_DATA_SUCCESS);
       setClearCloudDataLoading(false);
     } else {
-      window.alert(TEXTS.CLEAR_CLOUD_DATA_CANCEL);
+      // window.alert(TEXTS.CLEAR_CLOUD_DATA_CANCEL);
     }
   }, []);
 
