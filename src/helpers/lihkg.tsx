@@ -37,11 +37,11 @@ const isThread = (node: Element) => {
 };
 
 const isUserCardModal = (node: Element) => {
-  return isModalTitleMatched(node, TEXTS.USER_CARD_MODAL_TITLE);
+  return isModalTitleMatched(node, TEXTS.LIHKG_USER_CARD_MODAL_TITLE);
 };
 
 const isSettingsModal = (node: Element) => {
-  return isModalTitleMatched(node, TEXTS.SETTINGS_MODAL_TITLE);
+  return isModalTitleMatched(node, TEXTS.LIHKG_SETTINGS_MODAL_TITLE);
 };
 
 const isEmoteMenu = (node: Element) => {

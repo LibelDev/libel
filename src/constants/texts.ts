@@ -4,15 +4,14 @@ import { displayName } from '../../package.json';
 export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
 
 // title
-export const USER_CARD_MODAL_TITLE = '會員資料';
-export const SETTINGS_MODAL_TITLE = '設定';
-export const SETTING_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
-export const SETTING_CLOUD_SYNC_SECTION_TITLE = '雲端同步數據';
-export const SETTING_EXPORT_IMPORT_SECTION_TITLE = '匯出／匯入數據';
-export const SETTING_CLEAR_DATA_SECTION_TITLE = '清除數據';
+export const LIHKG_USER_CARD_MODAL_TITLE = '會員資料';
+export const LIHKG_SETTINGS_MODAL_TITLE = '設定';
 
-// add
-export const ADD_LABEL_BUTTON_TEXT = '標籤';
+// settings
+export const SETTINGS_SUBSCRIPTION_SECTION_TITLE = '訂閱標籤名單';
+export const SETTINGS_CLOUD_SYNC_SECTION_TITLE = '雲端同步資料';
+export const SETTINGS_EXPORT_IMPORT_SECTION_TITLE = '管理資料';
+export const SETTINGS_CLEAR_DATA_SECTION_TITLE = '清除資料';
 
 // form
 export const LABEL_FORM_MODAL_TITLE_ADD = '新增標籤';
@@ -32,11 +31,16 @@ export const LABEL_FORM_FIELD_ERROR_TEXT_EMPTY = '必須填寫標籤名稱';
 export const LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE = '截圖失敗，請稍後再試。';
 export const LABEL_FORM_BUTTON_SUBMIT = '確定';
 
+// add
+export const ADD_LABEL_BUTTON_TEXT = '標籤';
+
+// edit
+export const EDIT_LABEL_BUTTON_TEXT = '修改';
+
 // remove
 export const REMOVE_LABEL_BUTTON_TEXT = '刪除';
 
 // info
-export const EDIT_LABEL_BUTTON_TEXT = '修改';
 export const SOURCE_BUTTON_TEXT = '來源';
 export const IMAGE_BUTTON_TEXT = '相關圖片';
 
@@ -44,24 +48,24 @@ export const IMAGE_BUTTON_TEXT = '相關圖片';
 export const SNIPE_BUTTON_TEXT = '一鍵狙擊';
 
 // import
-export const IMPORT_FILE_BUTTON_TEXT = '匯入';
+export const IMPORT_FILE_BUTTON_TEXT = '匯入資料及設定';
 export const IMPORT_FILE_GENERIC_ERROR_MESSAGE = '檔案匯入失敗';
 export const IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE = '檔案內容格式錯誤';
 
 // export
-export const EXPORT_FILE_BUTTON_TEXT = '匯出';
+export const EXPORT_FILE_BUTTON_TEXT = '匯出資料及設定';
 
 // clear data
-export const CLEAR_LOCAL_DATA_BUTTON_TEXT = '從本裝置清除數據';
-export const CLEAR_LOCAL_DATA_QUESTION = '請問你已匯出數據作備份用途並確定要清除所有標籤及訂閱記錄嗎？';
-export const CLEAR_LOCAL_DATA_CONFIRMATION = `請輸入 "${displayName}" 確認清除所有標籤及訂閱記錄`;
-export const CLEAR_LOCAL_DATA_SUCCESS = '已清除所有標籤及訂閱記錄';
-export const CLEAR_LOCAL_DATA_CANCEL = '已取消動作';
-export const CLEAR_CLOUD_DATA_BUTTON_TEXT = '從雲端清除數據';
-export const CLEAR_CLOUD_DATA_QUESTION = '請問你已匯出數據作備份用途並確定要清除所有標籤及訂閱記錄嗎？';
-export const CLEAR_CLOUD_DATA_CONFIRMATION = `請輸入 "${displayName}" 確認清除所有標籤及訂閱記錄`;
-export const CLEAR_CLOUD_DATA_SUCCESS = '已清除所有標籤及訂閱記錄';
-export const CLEAR_CLOUD_DATA_CANCEL = '已取消動作';
+export const CLEAR_LOCAL_DATA_BUTTON_TEXT = '從本裝置清除資料及重置設定';
+export const CLEAR_LOCAL_DATA_QUESTION = '請問你已匯出資料作備份用途並確定要清除個人標籤記錄、訂閱名單及重置設定嗎？';
+export const CLEAR_LOCAL_DATA_CONFIRMATION = `請輸入 "${displayName}" 確認清除個人標籤記錄、訂閱名單及重置設定`;
+export const CLEAR_LOCAL_DATA_SUCCESS = '成功清除個人標籤記錄、訂閱名單及重置設定';
+export const CLEAR_LOCAL_DATA_CANCEL = '已取消清除資料';
+export const CLEAR_CLOUD_DATA_BUTTON_TEXT = '從雲端清除資料及重置設定';
+export const CLEAR_CLOUD_DATA_QUESTION = '請問你已匯出資料作備份用途並確定要清除個人標籤記錄、訂閱名單及重置設定嗎？';
+export const CLEAR_CLOUD_DATA_CONFIRMATION = `請輸入 "${displayName}" 確認清除個人標籤記錄、訂閱名單及重置設定`;
+export const CLEAR_CLOUD_DATA_SUCCESS = '成功清除個人標籤記錄、訂閱名單及重置設定';
+export const CLEAR_CLOUD_DATA_CANCEL = '已取消清除資料';
 
 // subscription
 export const ADD_SUBSCRIPTION_BUTTON_TEXT = '新增訂閱';
@@ -80,16 +84,16 @@ export const CLOUD_SYNC_GOOGLE_DRIVE_LABEL_TEXT = 'Google 雲端硬碟';
 export const CLOUD_SYNC_GOOGLE_DRIVE_ACCOUNT_PREFIX = '已連接';
 export const GOOGLE_AUTHORIZE_BUTTON_TEXT = '連接';
 export const GOOGLE_SIGNOUT_BUTTON_TEXT = '登出';
-export const CLOUD_SYNC_SYNC_IN_PROGRESS_LABEL_TEXT = '正在同步數據';
+export const CLOUD_SYNC_SYNC_IN_PROGRESS_LABEL_TEXT = '正在同步資料';
 export const CLOUD_SYNC_LAST_SYNCED_TIME_HINT_TEXT_PREFIX = '最後同步於';
-export const CLOUD_SYNC_ERROR = '同步數據失敗，請嘗試重新連接。';
+export const CLOUD_SYNC_ERROR = '資料同步失敗，請嘗試重新連接。';
 
 // announcement
 export const CHANGE_LOG = '更新內容';
 export const ANNOUNCEMENT_CLOSE_BUTTON_TEXT = '關閉公告';
 export const ANNOUNCEMENT_DONT_SHOW_AGAIN_QUESTION = '七天內不再顯示此公告？';
 
-// info
+// plugin info
 export const SOURCE_CODE = 'Source code';
 export const LICENSE = 'MIT License';
 
