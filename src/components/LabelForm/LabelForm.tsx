@@ -227,6 +227,8 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                 }
               </span>
               <ColorPicker
+                border
+                rounded
                 className={styles.input}
                 disabled={loading}
                 name="color"

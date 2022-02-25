@@ -1,10 +1,39 @@
 @import '../../stylesheets/base';
 
 .color-picker {
-  .input {
+  input {
     @apply appearance-none;
-    @apply border-0;
-    @apply rounded;
+    @apply bg-transparent;
     @apply p-0;
+
+    &::-webkit-color-swatch-wrapper {
+      @apply p-0;
+    }
+
+    &::-webkit-color-swatch {
+      @apply border-0;
+    }
+
+    &[value=''] {
+      &::-webkit-color-swatch {
+        // @apply bg-transparent #{!important};
+        background: repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% 50% / 10px 10px;
+      }
+    }
+  }
+
+  &:not(.border) {
+    input {
+      @apply border-0;
+    }
+  }
+
+  &.rounded {
+    input {
+      &,
+      &::-webkit-color-swatch {
+        border-radius: 0.25rem;
+      }
+    }
   }
 }
