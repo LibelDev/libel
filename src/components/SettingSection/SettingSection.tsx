@@ -1,7 +1,7 @@
 import React from 'react';
 import ClearDataSection from './ClearDataSection/ClearDataSection';
 import CloudSyncSection from './CloudSyncSection/CloudSyncSection';
-import ExportImportSection from './ExportImportSection/ExportImportSection';
+import ManageDataSection from './ManageDataSection/ManageDataSection';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import SubscriptionSection from './SubscriptionSection/SubscriptionSection';
@@ -12,7 +12,7 @@ const SettingSection: React.FunctionComponent = () => {
       <Header />
       <SubscriptionSection />
       <CloudSyncSection />
-      <ExportImportSection />
+      <ManageDataSection />
       <ClearDataSection />
       <Footer />
     </React.Fragment>

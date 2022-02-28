@@ -77,8 +77,7 @@ abstract class DataSet implements IDataSet {
     const users = Object.keys(data);
     const labels = users.reduce<Label[]>((labels, user) => {
       const _labels = data[user] || [];
-      labels = labels.concat(_labels);
-      return labels;
+      return labels.concat(_labels);
     }, []);
     return { users, labels };
   }

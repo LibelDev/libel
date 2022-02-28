@@ -70,6 +70,15 @@ class Label implements ILabel {
     // fallback to generic url
     return this.url;
   }
+
+  clone (deep?: boolean) {
+    const { text, reason, url, date, source, color, image } = this;
+    const clone = new Label(text, reason, url, date, source, color, image);
+    if (deep) {
+      clone.source = source && { ...source };
+    }
+    return clone;
+  }
 }
 
 export default Label;

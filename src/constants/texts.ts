@@ -47,6 +47,22 @@ export const IMAGE_BUTTON_TEXT = '相關圖片';
 // snipe
 export const SNIPE_BUTTON_TEXT = '一鍵狙擊';
 
+// data set editor
+export const SPREADSHEET_COLUMN_HEADER_USER_ID = '會員編號';
+export const SPREADSHEET_COLUMN_HEADER_LABEL_TEXT = '標籤';
+export const SPREADSHEET_COLUMN_HEADER_LABEL_REASON = '原因';
+export const SPREADSHEET_COLUMN_HEADER_LABEL_DATE = '日期';
+export const SPREADSHEET_COLUMN_HEADER_LABEL_SOURCE = '來源';
+export const SPREADSHEET_COLUMN_HEADER_LABEL_COLOR = '顏色';
+export const SPREADSHEET_COLUMN_HEADER_LABEL_IMAGE = '截圖';
+export const SPREADSHEET_COLUMN_PLACEHOLDER_LABEL_IMAGE = '圖片網址';
+export const EDIT_DATA_SET_BUTTON_TEXT = '編輯個人標籤記錄';
+export const DATA_SET_EDITOR_MODAL_TITLE = '編輯標籤';
+export const DATA_SET_EDITOR_SAVE_BUTTON_TEXT = '儲存';
+export const DATA_SET_EDITOR_SAVE_QUESTION = '你確認儲存個人標籤記錄嗎？';
+export const DATA_SET_EDITOR_SAVE_SUCCESS = '已更新個人標籤記錄';
+export const DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE = '目前未有任何個人標籤記錄';
+
 // import
 export const IMPORT_FILE_BUTTON_TEXT = '匯入資料及設定';
 export const IMPORT_FILE_GENERIC_ERROR_MESSAGE = '檔案匯入失敗';
@@ -99,17 +115,3 @@ export const LICENSE = 'MIT License';
 
 // emote menu
 export const UNLOCK_ICON_MAP_TOGGLE_BUTTON_TEXT = '解鎖全部表情';
-
-// data set editor
-export const SPREADSHEET_COLUMN_HEADER_USER_ID = '會員編號';
-export const SPREADSHEET_COLUMN_HEADER_LABEL_TEXT = '標籤';
-export const SPREADSHEET_COLUMN_HEADER_LABEL_REASON = '原因';
-export const SPREADSHEET_COLUMN_HEADER_LABEL_DATE = '日期';
-export const SPREADSHEET_COLUMN_HEADER_LABEL_SOURCE = '來源';
-export const SPREADSHEET_COLUMN_HEADER_LABEL_COLOR = '顏色';
-export const SPREADSHEET_COLUMN_HEADER_LABEL_IMAGE = '截圖';
-export const SPREADSHEET_COLUMN_PLACEHOLDER_LABEL_IMAGE = '圖片網址';
-export const EDIT_DATA_SET_BUTTON_TEXT = '編輯個人標籤記錄';
-export const DATA_SET_EDITOR_MODAL_TITLE = '編輯標籤';
-export const DATA_SET_EDITOR_SUBMIT_BUTTON_TEXT = '儲存';
-export const DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE = '目前未有任何個人標籤記錄';

@@ -1,3 +1,4 @@
+import debugFactory from 'debug';
 import { render } from 'mustache';
 import React, { useCallback, useState } from 'react';
 import { EventAction } from '../../../constants/ga';
@@ -9,14 +10,18 @@ import useElementID from '../../../hooks/useElementID';
 import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
-import { loadDataIntoStore, useTypedSelector } from '../../../store/store';
+import { actions as personalActions } from '../../../store/slices/personal';
+import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
 import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
-import styles from './ExportImportSection.module.scss';
+import styles from './ManageDataSection.module.scss';
 
-const ExportImportSection: React.FunctionComponent = () => {
+const debug = debugFactory('libel:component:ManageDataSection');
+
+const ManageDataSection: React.FunctionComponent = () => {
+  const dispatch = useTypedDispatch();
   const config = useTypedSelector(selectConfig);
   const personal = useTypedSelector(selectPersonal);
   const subscriptions = useTypedSelector(selectSubscriptions);
@@ -81,6 +86,16 @@ const ExportImportSection: React.FunctionComponent = () => {
     event.target.value = '';
   }, [config, personal, subscriptions]);
 
+  const handleDataSetEditorSave = useCallback((dataSet: Personal) => {
+    const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_SAVE_QUESTION);
+    if (confirmed) {
+      debug('handleDataSetSave', dataSet);
+      dispatch(personalActions.update(dataSet));
+      window.alert(TEXTS.DATA_SET_EDITOR_SAVE_SUCCESS);
+      handleDataSetEditorModalClose();
+    }
+  }, [handleDataSetEditorModalClose]);
+
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
@@ -108,6 +123,7 @@ const ExportImportSection: React.FunctionComponent = () => {
       </ul>
       <DataSetEditorModal
         dataSet={personal}
+        onSave={handleDataSetEditorSave}
         open={dataSetEditorModalOpened}
         escape={false}
         fragile={false}
@@ -117,4 +133,4 @@ const ExportImportSection: React.FunctionComponent = () => {
   );
 };
 
-export default ExportImportSection;
+export default ManageDataSection;

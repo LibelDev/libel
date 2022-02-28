@@ -1,8 +1,7 @@
+// import debugFactory from 'debug';
 import React, { useMemo } from 'react';
 import * as TEXTS from '../../constants/texts';
 import useElementID from '../../hooks/useElementID';
-import { selectPersonal } from '../../store/selectors';
-import { useTypedSelector } from '../../store/store';
 import Button from '../Button/Button';
 import DataSetEditor, { TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
@@ -12,11 +11,12 @@ interface IProps { }
 
 type TProps = IProps & TModalProps & TDataSetEditorProps;
 
-const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
-  const { onClose, dataSet, ...otherProps } = props;
+// const debug = debugFactory('libel:component:DataSetEditorModal');
 
-  const personal = useTypedSelector(selectPersonal);
-  const { labels } = useMemo(() => personal.aggregate(), [personal]);
+const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
+  const { dataSet, onSave, onClose, ...otherProps } = props;
+
+  const { labels } = useMemo(() => dataSet.aggregate(), [dataSet]);
   const formID = useElementID(DataSetEditor.displayName!);
 
   const empty = labels.length === 0;
@@ -29,7 +29,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
       <Modal.Body>
         {
           !empty ? (
-            <DataSetEditor id={formID} dataSet={dataSet} />
+            <DataSetEditor id={formID} dataSet={dataSet} onSave={onSave} />
           ) : (
             <div className={styles.emptyDataSetMesssage}>
               {TEXTS.DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE}
@@ -41,7 +41,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
         !empty && (
           <Modal.Footer>
             <Button form={formID} type="submit">
-              {TEXTS.DATA_SET_EDITOR_SUBMIT_BUTTON_TEXT}
+              {TEXTS.DATA_SET_EDITOR_SAVE_BUTTON_TEXT}
             </Button>
           </Modal.Footer>
         )
