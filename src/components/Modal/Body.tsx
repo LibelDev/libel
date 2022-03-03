@@ -1,16 +1,29 @@
+import classNames from 'classnames';
 import React, { useContext } from 'react';
 import styles from './Body.module.scss';
 import IDsContext from './IDsContext';
 
-interface IProps  { }
+interface IProps {
+  padding?: boolean;
+}
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const Body: React.FunctionComponent<TProps> = (props) => {
-  const { children } = props;
+  const { padding, children } = props;
   const { body: id } = useContext(IDsContext);
   return (
-    <div id={id} className={styles.body}>
+    <div
+      id={id}
+      className={
+        classNames(
+          styles.body,
+          {
+            [styles.padding]: padding
+          }
+        )
+      }
+    >
       {children}
     </div>
   );

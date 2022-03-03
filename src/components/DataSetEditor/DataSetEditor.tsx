@@ -1,187 +1,81 @@
-import { HotTable } from '@handsontable/react';
+// import { HotTable } from '@handsontable/react';
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import Handsontable from 'handsontable';
-import { registerAllModules } from 'handsontable/registry';
-import React, { useCallback, useMemo } from 'react';
-import ReactDOM from 'react-dom';
-import * as TEXTS from '../../constants/texts';
+import produce from 'immer';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { deduplicate } from '../../helpers/array';
 import { mapDataSetToSpreadsheetEntries, mapSpreadsheetEntriesToDataSet } from '../../helpers/spreadsheet';
 import { replaceNewLines } from '../../helpers/string';
+import { IDataSet } from '../../models/DataSet';
 import Personal from '../../models/Personal';
-import { color, image, reason, text } from '../../schemas/label';
-import ColorCell from './Cells/ColorCell';
-import ImageCell from './Cells/ImageCell';
-import SourceCell from './Cells/SourceCell';
-import UserIDCell from './Cells/UserIDCell';
+import { settings } from './config';
 import styles from './DataSetEditor.module.scss';
 
 interface IProps {
-  dataSet: Personal;
-  onSave?: (dataSet: Personal) => void;
+  dataSet: IDataSet;
+  onChange?: (changes: Handsontable.CellChange[]) => void;
+  onSubmit?: (dataSet: Personal) => void;
 }
 
-export type TProps = IProps & React.ComponentPropsWithoutRef<'form'>;
+export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onChange' | 'onSubmit'>;
 
-registerAllModules();
+type TCellChange = [
+  number,
+  string | number,
+  string | null,
+  string | null
+];
 
 const debug = debugFactory('libel:component:DataSetEditor');
 
-const columns: Handsontable.ColumnSettings[] = [
-  /**
-   * user
-   */
-  {
-    type: 'text',
-    data: 'user',
-    readOnly: true,
-    renderer: (hotInstance, cell, row, column, prop, user: string) => {
-      ReactDOM.render(<UserIDCell user={user} />, cell);
-    }
-  },
-  /**
-   * text
-   */
-  {
-    type: 'text',
-    data: 'label.text',
-    validator: (value, callback) => {
-      const { error } = text.validate(value);
-      callback(!error);
-    }
-  },
-  /**
-   * reason
-   */
-  {
-    type: 'text',
-    data: 'label.reason',
-    validator: (value, callback) => {
-      const { error } = reason.allow(null).validate(value);
-      callback(!error);
-    }
-  },
-  /**
-   * color
-   */
-  {
-    type: 'text',
-    data: 'label.color',
-    readOnly: true,
-    renderer: (hotInstance, cell, row, column, prop, color?: string | null) => {
-      cell.classList.add(styles.colorCell);
-      const handleChange = (color?: string | null) => {
-        hotInstance.setDataAtCell(row, column, color);
-      };
-      ReactDOM.render(<ColorCell color={color} onChange={handleChange} />, cell);
-    },
-    validator: (value, callback) => {
-      const { error } = color.allow(null).validate(value);
-      callback(!error);
-    }
-  },
-  /**
-   * image
-   */
-  {
-    type: 'text',
-    data: 'label.image',
-    placeholder: TEXTS.SPREADSHEET_COLUMN_PLACEHOLDER_LABEL_IMAGE,
-    renderer: function (hotInstance, cell, row, column, prop, src: string | null | undefined, cellProperties) {
-      cell.classList.add('htCenter');
-      if (src) {
-        ReactDOM.render(<ImageCell src={src} />, cell);
-      } else {
-        Handsontable.renderers.TextRenderer.apply(this, [hotInstance, cell, row, column, prop, src, cellProperties]);
-      }
-    },
-    validator: (value, callback) => {
-      const { error } = image.allow(null).validate(value);
-      callback(!error);
-    }
-  },
-  /**
-   * source
-   */
-  {
-    type: 'text',
-    data: 'label.sourceURL',
-    readOnly: true,
-    renderer: (hotInstance, cell, row, column, prop, href: string) => {
-      cell.classList.add('htCenter');
-      ReactDOM.render(<SourceCell href={href} />, cell);
-    }
-  },
-  /**
-   * date
-   */
-  {
-    type: 'text',
-    data: 'label.displayDate',
-    readOnly: true,
-    renderer: (hotInstance, cell, row, column, prop, value, cellProperties) => {
-      cell.classList.add('htCenter');
-      Handsontable.renderers.TextRenderer.apply(this, [hotInstance, cell, row, column, prop, value, cellProperties]);
-    }
-  }
-];
-
-const colHeaders = [
-  TEXTS.SPREADSHEET_COLUMN_HEADER_USER_ID,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_TEXT,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_REASON,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_COLOR,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_IMAGE,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_SOURCE,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_DATE
-];
-
-const settings: Handsontable.GridSettings = {
-  licenseKey: process.env.HANDSONTABLE_LICENSE_KEY,
-  height: 300,
-  width: 800,
-  columns,
-  colWidths: [80, 80, 200, 50, 60, 50, 180],
-  colHeaders,
-  rowHeaders: true,
-  selectionMode: 'single',
-  stretchH: 'all',
-  wordWrap: false,
-  // plugins
-  autoColumnSize: false,
-  contextMenu: false,
-  copyPaste: true,
-  dropdownMenu: true,
-  filters: true,
-  manualColumnMove: false,
-  manualRowMove: false,
-  trimRows: false,
-  undo: true
-};
-
 const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
-  const { dataSet, className, onSave, ...otherProps } = props;
+  const { dataSet, className, onChange, onSubmit, ...otherProps } = props;
+
+  const [hotInstance, setHotInstance] = useState<Handsontable | null>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   // memoize the data to avoid changes from outside
   const entries = useMemo(() => mapDataSetToSpreadsheetEntries(dataSet), []);
   debug('entries', entries);
+  const _settings = useMemo(() => {
+    return produce(settings, (settings) => {
+      const texts = entries.map(({ label }) => label.text);
+      const [, textColumn] = settings.columns as Handsontable.ColumnSettings[];
+      textColumn.source = deduplicate(texts);
+    });
+  }, [entries]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
     event.preventDefault();
-    const dataSet = mapSpreadsheetEntriesToDataSet(entries);
-    if (onSave) {
-      onSave(dataSet);
+    if (onSubmit) {
+      const dataSet = mapSpreadsheetEntriesToDataSet(entries);
+      onSubmit(dataSet);
     }
-  }, []);
+  }, [entries]);
 
   const handleBeforeChange = useCallback((changes: Handsontable.CellChange[], source: Handsontable.ChangeSource) => {
     if (changes && source === 'edit') {
       for (const change of changes) {
-        const [, , , newValue] = change;
-        change[3] = replaceNewLines(newValue, ' ');
+        const [, , , newValue] = change as TCellChange;
+        change[3] = newValue && replaceNewLines(newValue, ' ');
+      }
+      if (onChange) {
+        onChange(changes);
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (ref.current) {
+      const hotInstance = new Handsontable(ref.current, {
+        ..._settings,
+        data: entries,
+        beforeChange: handleBeforeChange
+      });
+      setHotInstance(hotInstance);
+    }
+  }, [_settings, entries, handleBeforeChange]);
 
   return (
     <form
@@ -194,11 +88,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       }
       onSubmit={handleSubmit}
     >
-      <HotTable
-        data={entries}
-        settings={settings}
-        beforeChange={handleBeforeChange}
-      />
+      <div ref={ref} />
     </form>
   );
 };

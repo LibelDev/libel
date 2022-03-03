@@ -66,7 +66,6 @@ const Modal: TModal = (props) => {
     body: `${_id}-body`
   }), [_id]);
 
-
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     if (fragile && event.target === backdropRef.current) {
       onClose();

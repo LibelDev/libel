@@ -26,15 +26,30 @@ const ManageDataSection: React.FunctionComponent = () => {
   const personal = useTypedSelector(selectPersonal);
   const subscriptions = useTypedSelector(selectSubscriptions);
   const importFileInputId = useElementID('ImportFileInput');
-  const [dataSetEditorModalOpened, setDataSetEditorModalOpened] = useState(false);
+  const [isDataSetEditorModalOpened, setIsDataSetEditorModalOpened] = useState(false);
+  const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
 
   const handleEditDataSetButtonClick = useCallback(() => {
-    setDataSetEditorModalOpened(true);
+    setIsDataSetEditorModalOpened(true);
+    setIsDataSetEditorDirty(false);
+  }, []);
+
+  const handleDataSetEditorChange = useCallback(() => {
+    setIsDataSetEditorDirty(true);
   }, []);
 
   const handleDataSetEditorModalClose = useCallback(() => {
-    setDataSetEditorModalOpened(false);
-  }, []);
+    if (isDataSetEditorDirty) {
+      const users = Object.keys(personal.data); // empty data set
+      if (users.length > 0) {
+        const yes = window.confirm(TEXTS.CLOSE_DATA_SET_EDITOR_QUESTION);
+        if (!yes) {
+          return;
+        }
+      }
+    }
+    setIsDataSetEditorModalOpened(false);
+  }, [personal, isDataSetEditorDirty]);
 
   const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -86,15 +101,15 @@ const ManageDataSection: React.FunctionComponent = () => {
     event.target.value = '';
   }, [config, personal, subscriptions]);
 
-  const handleDataSetEditorSave = useCallback((dataSet: Personal) => {
+  const handleDataSetEditorSubmit = useCallback((dataSet: Personal) => {
     const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_SAVE_QUESTION);
     if (confirmed) {
-      debug('handleDataSetSave', dataSet);
+      debug('handleDataSetEditorSubmit', dataSet);
       dispatch(personalActions.update(dataSet));
       window.alert(TEXTS.DATA_SET_EDITOR_SAVE_SUCCESS);
-      handleDataSetEditorModalClose();
+      setIsDataSetEditorModalOpened(false);
     }
-  }, [handleDataSetEditorModalClose]);
+  }, []);
 
   return (
     <React.Fragment>
@@ -123,8 +138,9 @@ const ManageDataSection: React.FunctionComponent = () => {
       </ul>
       <DataSetEditorModal
         dataSet={personal}
-        onSave={handleDataSetEditorSave}
-        open={dataSetEditorModalOpened}
+        onChange={handleDataSetEditorChange}
+        onSubmit={handleDataSetEditorSubmit}
+        open={isDataSetEditorModalOpened}
         escape={false}
         fragile={false}
         onClose={handleDataSetEditorModalClose}

@@ -1,3 +1,9 @@
+td {
+  &.color-cell {
+    @apply p-0;
+  }
+}
+
 .color-picker {
   &,
   > div,

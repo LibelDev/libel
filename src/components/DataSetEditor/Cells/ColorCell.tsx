@@ -6,7 +6,7 @@ import styles from './ColorCell.module.scss';
 
 interface IProps {
   color?: string | null;
-  onChange: (color?: string | null) => void;
+  onChange: (color: string | null) => void;
 }
 
 type TProps = IProps;
@@ -16,17 +16,17 @@ const debug = debugFactory('libel:component:ColorCell');
 const ColorCell: React.FunctionComponent<TProps> = (props) => {
   const { color, onChange } = props;
 
-  const [value, setValue] = useState(color);
+  const [value, setValue] = useState(color || null);
 
-  const handleSetValue = useCallback((value: typeof color) => {
+  const updateValue = useCallback((value: string | null) => {
     setValue(value);
     onChange(value);
   }, [onChange]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { value } = event.target;
-    handleSetValue(value);
-  }, [handleSetValue]);
+    updateValue(value);
+  }, [updateValue]);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
     const { key } = event;
@@ -34,11 +34,11 @@ const ColorCell: React.FunctionComponent<TProps> = (props) => {
     switch (key) {
       case Key.Backspace:
       case Key.Delete: {
-        handleSetValue(null);
+        updateValue(null);
         break;
       }
     }
-  }, [handleSetValue]);
+  }, [updateValue]);
 
   return (
     <ColorPicker

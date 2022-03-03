@@ -59,9 +59,10 @@ export const SPREADSHEET_COLUMN_PLACEHOLDER_LABEL_IMAGE = '圖片網址';
 export const EDIT_DATA_SET_BUTTON_TEXT = '編輯個人標籤記錄';
 export const DATA_SET_EDITOR_MODAL_TITLE = '編輯標籤';
 export const DATA_SET_EDITOR_SAVE_BUTTON_TEXT = '儲存';
-export const DATA_SET_EDITOR_SAVE_QUESTION = '你確認儲存個人標籤記錄嗎？';
-export const DATA_SET_EDITOR_SAVE_SUCCESS = '已更新個人標籤記錄';
-export const DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE = '目前未有任何個人標籤記錄';
+export const DATA_SET_EDITOR_SAVE_QUESTION = '你確定要儲存個人標籤記錄嗎？';
+export const DATA_SET_EDITOR_SAVE_SUCCESS = '已儲存個人標籤記錄';
+export const DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE = '未有任何個人標籤記錄';
+export const CLOSE_DATA_SET_EDITOR_QUESTION = `你確定要放棄變更並關閉【${DATA_SET_EDITOR_MODAL_TITLE}】？`;
 
 // import
 export const IMPORT_FILE_BUTTON_TEXT = '匯入資料及設定';

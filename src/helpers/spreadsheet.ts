@@ -38,10 +38,11 @@ export const mapDataSetToSpreadsheetEntries = (dataSet: IDataSet) => {
 
 export const mapSpreadsheetEntriesToDataSet = (entries: ISpreadsheetEntry[]) => {
   const dataSet = Personal.factory();
+  const { data } = dataSet;
   for (const entry of entries) {
     const { user, label } = entry;
-    dataSet.data[user] = dataSet.data[user] || [];
-    dataSet.data[user]!.push(label);
+    data[user] = data[user] || [];
+    data[user]!.push(label.clone());
   }
   return dataSet;
 };
