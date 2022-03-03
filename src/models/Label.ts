@@ -1,5 +1,8 @@
 import format from 'date-fns/format';
 import { immerable } from 'immer';
+import { shortenedHost } from '../constants/lihkg';
+import { mapSourceToPost } from '../helpers/label';
+import { getShareId } from '../helpers/lihkg';
 
 export interface ILabel {
   text: string;
@@ -17,7 +20,7 @@ export interface ISource {
   messageNumber: string;
 }
 
-// deprecated
+/** @deprecated */
 export interface ILabelDatum {
   user: string;
   labels: (ILabel | string)[];
@@ -27,9 +30,7 @@ class Label implements ILabel {
   [immerable] = true;
   text: string;
   reason?: string;
-  /**
-   * @deprecated
-   */
+  /** @deprecated */
   url?: string;
   date?: number;
   source?: ISource;
@@ -61,13 +62,20 @@ class Label implements ILabel {
     }
   }
 
-  get sourceURL () {
+  get shareID () {
     const { source } = this;
     if (source) {
-      const { thread, page, messageNumber: post } = source;
-      return `https://lihkg.com/thread/${thread}/page/${page}?post=${post}`;
+      const post = mapSourceToPost(source);
+      return getShareId(post);
     }
-    // fallback to generic url
+  }
+
+  get shareURL () {
+    const { shareID } = this;
+    if (shareID) {
+      return `${shortenedHost}/${shareID}`;
+    }
+    // fallback to the deprecated url
     return this.url;
   }
 

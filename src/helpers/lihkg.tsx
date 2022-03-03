@@ -19,14 +19,20 @@ import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleBu
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
+import { ISource } from '../models/Label';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import { IIconMap, IUser } from '../types/lihkg';
+import { IIconMap, IUser, TTracablePost } from '../types/lihkg';
 import { insertAfter, waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
 
 type TRendererContainer = Parameters<Renderer>[1];
+
+enum ShareType {
+  Thread = 1,
+  Reply = 2
+}
 
 export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
@@ -280,4 +286,37 @@ export const unlockIconMap = (iconMap: IIconMap) => {
       delete iconSet.showOn; // unlock all icon sets by removing the show conditions
     }
   });
+};
+
+/**
+ * get the share id of the reply
+ * @copyright the implementation is a reference from LIHKG source code
+ * @param {ISource} post the label source 
+ * @returns the share id
+ */
+export const getShareId = (post: TTracablePost) => {
+  const e = post.thread_id; // thread id
+  if (post.msg_num === '1') {
+    return e;
+  }
+  const t = ShareType.Reply; // the share type: thread or reply
+  const n = parseInt(post.msg_num, 10); // the share variable: page number or message number
+  const x = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQR'; // the hash seed
+  const C = (e: number, t: string) => {
+    let n;
+    let r = '';
+    while (e > 0) {
+      r = t[n = (e - 1) % t.length] + r;
+      e = parseInt(((e - n) / t.length).toString(), 10);
+    }
+    return r;
+  };
+  if (t > 0) {
+    const r = n.toString().length - 1;
+    const i = r << 1 | t - 1;
+    return C(parseInt(`${e}${n}`, 10), x) + 'STUVWXYZ'[i];
+  }
+  // since `type > 0` will always be `true`
+  // this will neven happen, but just keep this for consistency
+  return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };

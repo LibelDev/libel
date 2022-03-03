@@ -1,7 +1,7 @@
 import { render } from 'mustache';
 import cache from '../cache';
 import { getUserRegistrationDate } from '../helpers/lihkg';
-import Label, { ILabel } from '../models/Label';
+import { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
 import { promotion, snipingHeader, snipingLabelItem, snipingLabelScreenshot, snipingTemplate, subscriptionItem } from '../templates/sniping/sniping';
@@ -13,7 +13,7 @@ import { format, Format } from './date';
 import { localStorage } from './storage';
 
 interface ISnipeLabelItem extends ILabel {
-  sourceURL: Label['sourceURL'];
+  shareURL?: string;
   subscription: Subscription | null;
 }
 
@@ -44,7 +44,7 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
       const _labels = (dataSet.data[userID] || []).map((label) => ({
         ...label,
-        sourceURL: label.sourceURL,
+        shareURL: label.shareURL,
         subscription: Subscription.implements(dataSet) ? dataSet : null
       }));
       return labels.concat(_labels);

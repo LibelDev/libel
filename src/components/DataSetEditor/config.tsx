@@ -100,7 +100,7 @@ const columns: Handsontable.ColumnSettings[] = [
    */
   {
     type: 'text',
-    data: 'label.sourceURL',
+    data: 'label.shareURL',
     readOnly: true,
     renderer: (hotInstance, cell, row, column, prop, href: string) => {
       cell.classList.add('htCenter');

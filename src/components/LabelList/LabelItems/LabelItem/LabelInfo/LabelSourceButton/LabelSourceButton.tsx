@@ -12,11 +12,11 @@ type TProps = IProps & React.ComponentPropsWithoutRef<'a'>
 
 const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
   const { className, label } = props;
-  const { sourceURL } = label;
-  return sourceURL ? (
+  const { shareURL } = label;
+  return shareURL ? (
     <a
       className={className}
-      href={sourceURL}
+      href={shareURL}
       target="_blank"
       aria-label={TEXTS.SOURCE_BUTTON_TEXT}
       data-tip={TEXTS.SOURCE_BUTTON_TEXT}

@@ -48,6 +48,8 @@ export interface IPost {
   quote?: IPost;
 }
 
+export type TTracablePost = Pick<IPost, 'thread_id' | 'page' | 'msg_num'>;
+
 interface IRemark {
   is_newbie?: boolean;
   is_not_push_post?: boolean;
