@@ -4,6 +4,7 @@ import * as TEXTS from '../../../constants/texts';
 
 interface IProps {
   src?: string | null;
+  placeholder?: string;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
@@ -11,10 +12,14 @@ type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
 // const debug = debugFactory('libel:component:ImageCell');
 
 const ImageCell: React.FunctionComponent<TProps> = (props) => {
-  const { src, ...otherProps } = props;
+  const { src, placeholder, ...otherProps } = props;
 
   if (!src) {
-    return null;
+    return (
+      <React.Fragment>
+        {placeholder}
+      </React.Fragment>
+    );
   }
 
   return (

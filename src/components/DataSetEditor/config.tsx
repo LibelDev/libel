@@ -84,11 +84,10 @@ const columns: Handsontable.ColumnSettings[] = [
     placeholder: TEXTS.SPREADSHEET_COLUMN_PLACEHOLDER_LABEL_IMAGE,
     renderer: function (hotInstance, cell, row, column, prop, src: string | null | undefined, cellProperties) {
       cell.classList.add('htCenter');
-      if (src) {
-        ReactDOM.render(<ImageCell src={src} />, cell);
-      } else {
-        Handsontable.renderers.TextRenderer.apply(this, [hotInstance, cell, row, column, prop, src, cellProperties]);
+      if (!src) {
+        cell.classList.add('htDimmed');
       }
+      ReactDOM.render(<ImageCell src={src} placeholder={cellProperties.placeholder} />, cell);
     },
     validator: (value, callback) => {
       const { error } = image.allow(null).validate(value);
