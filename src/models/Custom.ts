@@ -6,17 +6,17 @@ export interface ISerializedCustom extends IDataSet { }
 export interface ICustom extends ISerializedCustom { }
 
 class Custom extends DataSet implements ICustom {
-  static factory () {
+  static factory<T extends Custom> () {
     const data = new Data();
     const dataSet: IDataSet = { data };
-    return new this(dataSet);
+    return new this(dataSet) as T;
   }
 
-  static deserialize (custom: Custom | ISerializedCustom) {
+  static deserialize<T extends Custom> (custom: Custom | ISerializedCustom) {
     if (custom instanceof this) {
-      return custom;
+      return custom as T;
     }
-    return new this(custom);
+    return new this(custom) as T;
   }
 
   serialize (): ISerializedCustom {
