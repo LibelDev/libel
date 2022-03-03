@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import debugFactory from 'debug';
 import { render } from 'mustache';
 import React, { useCallback, useState } from 'react';
@@ -6,7 +7,6 @@ import * as TEXTS from '../../../constants/texts';
 import { _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
 import { MergeDirection, mergePersonal, mergeSubscriptions } from '../../../helpers/merge';
-import useElementID from '../../../hooks/useElementID';
 import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
@@ -14,6 +14,7 @@ import { actions as personalActions } from '../../../store/slices/personal';
 import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
+import BaseInput from '../../BaseInput/BaseInput';
 import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ManageDataSection.module.scss';
@@ -25,7 +26,6 @@ const ManageDataSection: React.FunctionComponent = () => {
   const config = useTypedSelector(selectConfig);
   const personal = useTypedSelector(selectPersonal);
   const subscriptions = useTypedSelector(selectSubscriptions);
-  const importFileInputId = useElementID('ImportFileInput');
   const [isDataSetEditorModalOpened, setIsDataSetEditorModalOpened] = useState(false);
   const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
 
@@ -127,13 +127,18 @@ const ManageDataSection: React.FunctionComponent = () => {
             {TEXTS.EXPORT_FILE_BUTTON_TEXT}
           </SettingOptionButton>
         </li>
-        <li className={lihkgCssClasses.settingOptionsItem}>
-          <div>
-            <input id={importFileInputId} className={styles.import} type="file" accept="text/json" onChange={handleImport} />
-            <label htmlFor={importFileInputId} className={lihkgCssClasses.settingOptionButton}>
-              {TEXTS.IMPORT_FILE_BUTTON_TEXT}
-            </label>
-          </div>
+        <li className={classNames(styles.import, lihkgCssClasses.settingOptionsItem)}>
+          <BaseInput
+            type="file"
+            accept="text/*"
+            className={styles.input}
+            onChange={handleImport}
+            label={
+              <span className={classNames(styles.label, lihkgCssClasses.settingOptionButton)}>
+                {TEXTS.IMPORT_FILE_BUTTON_TEXT}
+              </span>
+            }
+          />
         </li>
       </ul>
       <DataSetEditorModal

@@ -1,15 +1,19 @@
 .import {
-  @apply hidden;
+  // BaseInput label
+  > span {
+    @apply mr-0;
+    line-height: normal;
+  }
 
-  + label {
+  // BaseInput <input />
+  .input {
+    @apply hidden;
+  }
+
+  .label {
     &:hover {
       @apply cursor-pointer;
-      @apply no-underline;
-    }
-
-    + small {
-      @apply block;
-      @apply mt-1;
+      @apply underline;
     }
   }
 }
