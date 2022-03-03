@@ -38,12 +38,12 @@ class Label implements ILabel {
 
   constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource, color?: string, image?: string) {
     this.text = text;
-    this.reason = reason;
-    this.url = url;
-    this.date = date;
-    this.source = source;
-    this.color = color;
-    this.image = image;
+    this.reason = reason || undefined;
+    this.url = url || undefined;
+    this.date = date || undefined;
+    this.source = source || undefined;
+    this.color = color || undefined;
+    this.image = image || undefined;
   }
 
   static deserialize (label: Label | ILabel) {
