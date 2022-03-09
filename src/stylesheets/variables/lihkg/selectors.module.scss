@@ -2,13 +2,26 @@
 
 :export {
   app: $lihkg-selector-app;
-  emote-menu: $lihkg-selector-emote-menu;
   emote-menu-toolbar: $lihkg-selector-emote-menu-toolbar;
+  emote-menu: $lihkg-selector-emote-menu;
   left-panel: $lihkg-selector-left-panel;
+  modal-content: $lihkg-selector-modal-content;
+  modal-title: $lihkg-selector-modal-title;
+  modal: $lihkg-selector-modal;
   nav-category: $lihkg-selector-nav-category;
+  nav-sticky-hidden: $lihkg-selector-nav-sticky-hidden;
   nav: $lihkg-selector-nav;
+  nickname: $lihkg-selector-nickname;
   notice: $lihkg-selector-notice;
+  reply-body: $lihkg-selector-reply-body;
   reply-item-header: $lihkg-selector-reply-item-header;
+  reply-item: $lihkg-selector-reply-item;
+  right-panel-container: $lihkg-selector-right-panel-container;
   right-panel: $lihkg-selector-right-panel;
   split-view: $lihkg-selector-split-view;
+  submission-form: $lihkg-selector-submission-form;
+  thread-link: $lihkg-selector-thread-link;
+  thread-username: $lihkg-selector-thread-username;
+  thread: $lihkg-selector-thread;
+  user-card-buttons-container: $lihkg-selector-user-card-buttons-container;
 }

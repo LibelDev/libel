@@ -18,7 +18,7 @@
     border-bottom-color: #3b3a39;
   }
 
-  :global(.#{$lihkg-class-nav-sticky-hidden} ~ #{$lihkg-selector-split-view}) & {
+  :global(#{$lihkg-selector-nav-sticky-hidden} ~ #{$lihkg-selector-split-view}) & {
     @apply top-0;
   }
 

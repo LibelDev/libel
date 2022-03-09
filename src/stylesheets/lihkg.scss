@@ -4,11 +4,11 @@
  * override
  */
 :global {
-  .#{$lihkg-class-reply-item} {
+  #{$lihkg-selector-reply-item} {
     @apply overflow-visible;
   }
 
-  .#{$lihkg-class-right-panel-container} {
+  #{$lihkg-selector-right-panel-container} {
     @apply relative;
   }
 }

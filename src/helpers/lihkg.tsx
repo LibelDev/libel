@@ -42,7 +42,7 @@ export const getUserRegistrationDate = (user: IUser) => {
 };
 
 const isThread = (node: Element) => {
-  return node.matches(`.${lihkgCssClasses.thread}`);
+  return node.matches(lihkgSelectors.thread);
 };
 
 const isUserCardModal = (node: Element) => {
@@ -62,15 +62,15 @@ const isReplyButton = (node: Element) => {
 };
 
 export const isNickname = (node: Element) => {
-  return node.matches(`.${lihkgCssClasses.nickname}`);
+  return node.matches(lihkgSelectors.nickname);
 };
 
 const querySelectorAllNickname = (node: Element) => {
-  return node.querySelectorAll(`.${lihkgCssClasses.nickname}`);
+  return node.querySelectorAll(lihkgSelectors.nickname);
 };
 
 const querySelectorNicknameLink = (node: Element) => {
-  const nicknameLinkSelector = `.${lihkgCssClasses.nickname} > a[href^="/profile"]`;
+  const nicknameLinkSelector = `${lihkgSelectors.nickname} > a[href^="/profile"]`;
   return node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
 };
 
@@ -88,8 +88,8 @@ const getUserIDFromNode = (node: Element) => {
 };
 
 const isModalTitleMatched = (node: Element, title: string) => {
-  if (node.matches(`.${lihkgCssClasses.modal}`)) {
-    const modalTitle = node.querySelector(`.${lihkgCssClasses.modalTitle}`);
+  if (node.matches(lihkgSelectors.modal)) {
+    const modalTitle = node.querySelector(lihkgSelectors.modalTitle);
     if (modalTitle) {
       return modalTitle.textContent === title;
     }
@@ -183,13 +183,13 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
 
 const handleThreadMutation = (node: Element, store: Store) => {
   // const node =node
-  const threadLink = node.querySelector(`.${lihkgCssClasses.threadLink}`)!;
+  const threadLink = node.querySelector(lihkgSelectors.threadLink)!;
   const href = threadLink.getAttribute('href')!;
   const threadId = href.match(REGEXES.THREAD_URL)![1];
   const thread = cache.getThread(threadId);
   if (thread) {
     const { user_id: user } = thread;
-    const threadUsername = node.querySelector(`.${lihkgCssClasses.threadUsername}`)!;
+    const threadUsername = node.querySelector(lihkgSelectors.threadUsername)!;
     const labelBookContainer = document.createElement('div');
     insertAfter(labelBookContainer, threadUsername);
     renderLabelBook(user, store, labelBookContainer);
@@ -197,17 +197,17 @@ const handleThreadMutation = (node: Element, store: Store) => {
 };
 
 const handleUserCardModalMutation = (node: Element, store: Store) => {
-  const doxButtonSelector = `.${lihkgCssClasses.userCardButtonsContainer} > a[href^="/profile"]`;
+  const doxButtonSelector = `${lihkgSelectors.userCardButtonsContainer} > a[href^="/profile"]`;
   const doxButton = node.querySelector(doxButtonSelector);
   const href = doxButton?.getAttribute('href');
   const matched = href?.match(REGEXES.PROFILE_URL);
   if (matched) {
     const [, user] = matched;
-    const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
+    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
     renderLabelList(user, store, labelListContainer);
-    const userCardButtonsContainer = node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
+    const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
     const addLabelButtonContainer = document.createElement('div');
     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
     userCardButtonsContainer.appendChild(addLabelButtonContainer);
@@ -216,7 +216,7 @@ const handleUserCardModalMutation = (node: Element, store: Store) => {
 };
 
 const handleSettingsModalMutation = (node: Element, store: Store) => {
-  const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
+  const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
   const container = document.createElement('div');
   container.classList.add(settingSectionStyles.container);
   modelContentInner.appendChild(container);
@@ -292,12 +292,12 @@ export const mutationHandlerFactory = (node: Element) => {
 };
 
 export const waitForSubmissionForm = () => {
-  return waitForElement(`.${lihkgCssClasses.submissionForm}`);
+  return waitForElement(lihkgSelectors.submissionForm);
 };
 
 const waitForRightPanelContainer = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);
-  return splitView.querySelector(`.${lihkgCssClasses.rightPanelContainer}`)!;
+  return splitView.querySelector(lihkgSelectors.rightPanelContainer)!;
 };
 
 /**

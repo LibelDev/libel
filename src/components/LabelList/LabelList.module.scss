@@ -8,15 +8,15 @@
     @apply hidden;
   }
 
-  :global(.#{$lihkg-class-reply-body}) > & {
+  :global(#{$lihkg-selector-reply-body}) > & {
     @apply mb-2;
   }
 
-  :global(.#{$lihkg-class-nickname}) ~ & {
+  :global(#{$lihkg-selector-nickname}) ~ & {
     @apply ml-2;
   }
 
-  :global(.#{$lihkg-class-modal}) & {
+  :global(#{$lihkg-selector-modal}) & {
     @apply mt-2;
 
     .label-list {
