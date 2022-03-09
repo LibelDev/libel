@@ -1,7 +1,7 @@
 import { Store } from '@reduxjs/toolkit';
 import produce from 'immer';
 import React from 'react';
-import ReactDOM, { Renderer } from 'react-dom';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { namespace } from '../../package.json';
@@ -14,6 +14,8 @@ import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.module.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
 import settingSectionStyles from '../components/SettingSection/SettingSection.module.scss';
+import SnipeButton from '../components/SnipeButton/SnipeButton';
+import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
 import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
 import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton.module.scss';
 import * as ATTRIBUTES from '../constants/attributes';
@@ -23,11 +25,12 @@ import { ISource } from '../models/Label';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
+import { IconName } from '../types/icon';
 import { IIconMap, IUser, TTracablePost } from '../types/lihkg';
 import { insertAfter, waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
 
-type TRendererContainer = Parameters<Renderer>[1];
+// type TRendererContainer = Parameters<Renderer>[1];
 
 enum ShareType {
   Thread = 1,
@@ -54,6 +57,10 @@ const isEmoteMenu = (node: Element) => {
   return node.matches(lihkgSelectors.emoteMenu);
 };
 
+const isReplyButton = (node: Element) => {
+  return node.matches(`.${IconName.Reply}`);
+};
+
 export const isNickname = (node: Element) => {
   return node.matches(`.${lihkgCssClasses.nickname}`);
 };
@@ -67,9 +74,18 @@ const querySelectorNicknameLink = (node: Element) => {
   return node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
 };
 
-// const querySelectorAllReplyBody = (node: Element) => {
-//   return node.querySelectorAll(`.${lihkgCssClasses.replyBody}`);
-// };
+const querySelectorAllReplyItemHeader = (node: Element) => {
+  return node.querySelectorAll(lihkgSelectors.replyItemHeader);
+};
+
+const getUserIDFromNode = (node: Element) => {
+  const nicknameLink = querySelectorNicknameLink(node);
+  const href = nicknameLink?.getAttribute('href');
+  const matched = href?.match(REGEXES.PROFILE_URL);
+  if (matched) {
+    return matched[1];
+  }
+};
 
 const isModalTitleMatched = (node: Element, title: string) => {
   if (node.matches(`.${lihkgCssClasses.modal}`)) {
@@ -81,7 +97,7 @@ const isModalTitleMatched = (node: Element, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = (user: string, store: Store, container: TRendererContainer) => {
+const renderAddLabelButton = (user: string, store: Store, container: Element) => {
   const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
   const targetReply = cache.getReply(postID);
   if (targetReply) {
@@ -98,19 +114,32 @@ const renderAddLabelButton = (user: string, store: Store, container: TRendererCo
   }
 };
 
-const renderLabelList = (user: string, store: Store, hasSnipeButton: boolean, container: TRendererContainer) => {
+const renderLabelList = (user: string, store: Store, container: Element) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <LabelList user={user} hasSnipeButton={hasSnipeButton} />
+        <LabelList user={user} />
       </PersistGate>
     </Provider>,
     container
   );
 };
 
-const renderLabelBook = (user: string, store: Store, container: TRendererContainer) => {
+const renderSnipeButton = (user: string, store: Store, container: Element) => {
+  (container as Element).classList.add(lihkgCssClasses.replyToolbarButton);
+  (container as Element).classList.add(snipeButtonStyles.container);
+  ReactDOM.render(
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <SnipeButton user={user} />
+      </PersistGate>
+    </Provider>,
+    container
+  );
+};
+
+const renderLabelBook = (user: string, store: Store, container: Element) => {
   (container as Element).classList.add(lihkgCssClasses.threadHeadingText);
   ReactDOM.render(
     <Provider store={store}>
@@ -122,7 +151,7 @@ const renderLabelBook = (user: string, store: Store, container: TRendererContain
   );
 };
 
-const renderSettingSection = (store: Store, container: TRendererContainer) => {
+const renderSettingSection = (store: Store, container: Element) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -133,7 +162,7 @@ const renderSettingSection = (store: Store, container: TRendererContainer) => {
   );
 };
 
-const renderUnlockIconMapToggleButton = (store: Store, container: TRendererContainer) => {
+const renderUnlockIconMapToggleButton = (store: Store, container: Element) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -152,7 +181,7 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   ReactDOM.render(announcement, container);
 };
 
-const handleThread = (node: Element, store: Store) => {
+const handleThreadMutation = (node: Element, store: Store) => {
   // const node =node
   const threadLink = node.querySelector(`.${lihkgCssClasses.threadLink}`)!;
   const href = threadLink.getAttribute('href')!;
@@ -167,7 +196,7 @@ const handleThread = (node: Element, store: Store) => {
   }
 };
 
-const handleUserCardModal = (node: Element, store: Store) => {
+const handleUserCardModalMutation = (node: Element, store: Store) => {
   const doxButtonSelector = `.${lihkgCssClasses.userCardButtonsContainer} > a[href^="/profile"]`;
   const doxButton = node.querySelector(doxButtonSelector);
   const href = doxButton?.getAttribute('href');
@@ -177,7 +206,7 @@ const handleUserCardModal = (node: Element, store: Store) => {
     const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
-    renderLabelList(user, store, false, labelListContainer);
+    renderLabelList(user, store, labelListContainer);
     const userCardButtonsContainer = node.querySelector(`.${lihkgCssClasses.userCardButtonsContainer}`)!;
     const addLabelButtonContainer = document.createElement('div');
     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
@@ -186,7 +215,7 @@ const handleUserCardModal = (node: Element, store: Store) => {
   }
 };
 
-const handleSettingsModal = (node: Element, store: Store) => {
+const handleSettingsModalMutation = (node: Element, store: Store) => {
   const modelContentInner = node.querySelector(`.${lihkgCssClasses.modalContent} > div`)!;
   const container = document.createElement('div');
   container.classList.add(settingSectionStyles.container);
@@ -194,7 +223,7 @@ const handleSettingsModal = (node: Element, store: Store) => {
   renderSettingSection(store, container);
 };
 
-const handleEmoteMenu = (node: Element, store: Store) => {
+const handleEmoteMenuMutation = (node: Element, store: Store) => {
   const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
   const container = document.createElement('div');
   container.classList.add(unlockIconMapToggleButtonStyles.container);
@@ -202,61 +231,64 @@ const handleEmoteMenu = (node: Element, store: Store) => {
   renderUnlockIconMapToggleButton(store, container);
 };
 
-export const handleNicknames = (node: Element, store: Store) => {
+const handleReplyButtonMutation = (node: Element, store: Store) => {
+  const replyItemHeader = node.parentElement!;
+  handleReplyItemHeaderMutation(replyItemHeader, store);
+};
+
+export const handleMutation = (node: Element, store: Store) => {
+  handleNicknamesMutation(node, store);
+  handleReplyItemHeadersMutation(node, store);
+};
+
+const handleNicknamesMutation = (node: Element, store: Store) => {
   const nodes = Array.from(querySelectorAllNickname(node));
   for (const node of nodes) {
-    handleNickname(node, store);
+    handleNicknameMutation(node, store);
   }
 };
 
-const handleNickname = (node: Element, store: Store) => {
-  const nicknameLink = querySelectorNicknameLink(node);
-  if (nicknameLink) {
-    const href = nicknameLink.getAttribute('href')!;
-    const matched = href.match(REGEXES.PROFILE_URL);
-    if (matched) {
+const handleNicknameMutation = (node: Element, store: Store) => {
+  const user = getUserIDFromNode(node);
+  if (user) {
+    const containerCacheKey = `__${namespace}__cache__container__`;
+    (node as any)[containerCacheKey]?.remove();
+    const container = document.createElement('div');
+    insertAfter(container, node);
+    renderLabelList(user, store, container);
+    (node as any)[containerCacheKey] = container;
+  }
+};
+
+const handleReplyItemHeadersMutation = (node: Element, store: Store) => {
+  const nodes = Array.from(querySelectorAllReplyItemHeader(node));
+  for (const node of nodes) {
+    handleReplyItemHeaderMutation(node, store);
+  }
+};
+
+const handleReplyItemHeaderMutation = (node: Element, store: Store) => {
+  const user = getUserIDFromNode(node);
+  if (user) {
+    const replyButton = node.querySelector(`.${IconName.Reply}`);
+    if (replyButton) {
       const containerCacheKey = `__${namespace}__cache__container__`;
-      const [, user] = matched;
       (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
-      insertAfter(container, node);
-      renderLabelList(user, store, true, container);
+      insertAfter(container, replyButton);
+      renderSnipeButton(user, store, container);
       (node as any)[containerCacheKey] = container;
     }
   }
 };
 
-// export const handleReplyBodies = (node: Element, store: Store) => {
-//   const nodes = Array.from(querySelectorAllReplyBody(node));
-//   for (const node of nodes) {
-//     handleReplyBody(node, store);
-//   }
-// };
-
-// const handleReplyBody = (node: Element, store: Store) => {
-//   const nicknameLink = querySelectorNicknameLink(node);
-//   if (nicknameLink) {
-//     const href = nicknameLink.getAttribute('href')!;
-//     const matched = href.match(REGEXES.PROFILE_URL);
-//     if (matched) {
-//       const containerCacheKey = `__${namespace}__cache__container__`;
-//       const [, user] = matched;
-//       (node as any)[containerCacheKey]?.remove();
-//       const container = document.createElement('div');
-//       // insertAfter(container, node);
-//       node.insertBefore(container, node.firstChild!);
-//       renderLabelList(user, store, true, container);
-//       (node as any)[containerCacheKey] = container;
-//     }
-//   }
-// };
-
 export const mutationHandlerFactory = (node: Element) => {
-  if (isThread(node)) return handleThread;
-  if (isUserCardModal(node)) return handleUserCardModal;
-  if (isSettingsModal(node)) return handleSettingsModal;
-  if (isEmoteMenu(node)) return handleEmoteMenu;
-  return handleNicknames;
+  if (isThread(node)) return handleThreadMutation;
+  if (isUserCardModal(node)) return handleUserCardModalMutation;
+  if (isSettingsModal(node)) return handleSettingsModalMutation;
+  if (isEmoteMenu(node)) return handleEmoteMenuMutation;
+  if (isReplyButton(node)) return handleReplyButtonMutation;
+  return handleMutation;
 };
 
 export const waitForSubmissionForm = () => {

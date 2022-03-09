@@ -6,7 +6,7 @@ import * as gtag from '../../helpers/gtag';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
-import { createUserPersonalSelector, createUserSubscriptionsSelector } from '../../store/selectors';
+import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
@@ -23,6 +23,12 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user } = props;
   const personal = useTypedSelector(createUserPersonalSelector(user));
   const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
+  const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
+  const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
+
+  if (personalLabels.length === 0 && subscriptionLabels.length === 0) {
+    return null;
+  }
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
