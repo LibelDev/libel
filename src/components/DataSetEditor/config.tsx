@@ -56,25 +56,25 @@ const columns: Handsontable.ColumnSettings[] = [
       callback(!error);
     }
   },
-  /**
-   * color
-   */
-  {
-    type: 'text',
-    data: 'label.color',
-    readOnly: true,
-    renderer: (hotInstance, cell, row, column, prop, color?: string | null) => {
-      cell.classList.add(colorCellStyles.colorCell);
-      const handleChange = (color: string | null) => {
-        hotInstance.setDataAtCell(row, column, color);
-      };
-      ReactDOM.render(<ColorCell color={color} onChange={handleChange} />, cell);
-    },
-    validator: (value, callback) => {
-      const { error } = color.allow(null).validate(value);
-      callback(!error);
-    }
-  },
+  // /**
+  //  * color
+  //  */
+  // {
+  //   type: 'text',
+  //   data: 'label.color',
+  //   readOnly: true,
+  //   renderer: (hotInstance, cell, row, column, prop, color?: string | null) => {
+  //     cell.classList.add(colorCellStyles.colorCell);
+  //     const handleChange = (color: string | null) => {
+  //       hotInstance.setDataAtCell(row, column, color);
+  //     };
+  //     ReactDOM.render(<ColorCell color={color} onChange={handleChange} />, cell);
+  //   },
+  //   validator: (value, callback) => {
+  //     const { error } = color.allow(null).validate(value);
+  //     callback(!error);
+  //   }
+  // },
   /**
    * image
    */
@@ -124,7 +124,7 @@ const colHeaders = [
   TEXTS.SPREADSHEET_COLUMN_HEADER_USER_ID,
   TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_TEXT,
   TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_REASON,
-  TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_COLOR,
+  // TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_COLOR,
   TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_IMAGE,
   TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_SOURCE,
   TEXTS.SPREADSHEET_COLUMN_HEADER_LABEL_DATE
@@ -135,7 +135,7 @@ export const settings: Handsontable.GridSettings = {
   height: 300,
   width: 800,
   columns,
-  colWidths: [80, 80, 200, 50, 60, 50, 180],
+  colWidths: [80, 80, 200, /* 50, */ 60, 50, 180],
   colHeaders,
   rowHeaders: true,
   selectionMode: 'single',

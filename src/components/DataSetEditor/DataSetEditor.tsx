@@ -9,7 +9,7 @@ import { mapDataSetToSpreadsheetEntries, mapSpreadsheetEntriesToDataSet } from '
 import { replaceNewLines } from '../../helpers/string';
 import { IDataSet } from '../../models/DataSet';
 import Personal from '../../models/Personal';
-import { settings } from './config';
+import * as config from './config';
 import styles from './DataSetEditor.module.scss';
 
 interface IProps {
@@ -36,10 +36,14 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const ref = useRef<HTMLDivElement>(null);
 
   // memoize the data to avoid changes from outside
-  const entries = useMemo(() => mapDataSetToSpreadsheetEntries(dataSet), []);
-  debug('entries', entries);
-  const _settings = useMemo(() => {
-    return produce(settings, (settings) => {
+  const entries = useMemo(() => {
+    const entries = mapDataSetToSpreadsheetEntries(dataSet);
+    debug('entries', entries);
+    return entries;
+  }, []);
+
+  const settings = useMemo(() => {
+    return produce(config.settings, (settings) => {
       const texts = entries.map(({ label }) => label.text);
       const [, textColumn] = settings.columns as Handsontable.ColumnSettings[];
       textColumn.source = deduplicate(texts);
@@ -69,13 +73,13 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   useEffect(() => {
     if (ref.current) {
       const hotInstance = new Handsontable(ref.current, {
-        ..._settings,
+        ...settings,
         data: entries,
         beforeChange: handleBeforeChange
       });
       setHotInstance(hotInstance);
     }
-  }, [_settings, entries, handleBeforeChange]);
+  }, [entries, settings, handleBeforeChange]);
 
   return (
     <form
