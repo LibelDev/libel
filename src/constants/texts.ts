@@ -64,13 +64,13 @@ export const DATA_SET_EDITOR_SAVE_SUCCESS = '已儲存個人標籤記錄';
 export const DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE = '未有任何個人標籤記錄';
 export const CLOSE_DATA_SET_EDITOR_QUESTION = `你確定要放棄變更並關閉【${DATA_SET_EDITOR_MODAL_TITLE}】？`;
 
+// export
+export const EXPORT_FILE_BUTTON_TEXT = '匯出資料及設定';
+
 // import
 export const IMPORT_FILE_BUTTON_TEXT = '匯入資料及設定';
 export const IMPORT_FILE_GENERIC_ERROR_MESSAGE = '檔案匯入失敗';
 export const IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE = '檔案內容格式錯誤';
-
-// export
-export const EXPORT_FILE_BUTTON_TEXT = '匯出資料及設定';
 
 // clear data
 export const CLEAR_LOCAL_DATA_BUTTON_TEXT = '從本裝置清除資料及重置設定';

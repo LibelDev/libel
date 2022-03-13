@@ -58,6 +58,16 @@ const ManageDataSection: React.FunctionComponent = () => {
     setIsDataSetEditorModalOpened(false);
   }, [personal, isDataSetEditorDirty]);
 
+  const handleDataSetEditorSubmit = useCallback((dataSet: Personal) => {
+    const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_SAVE_QUESTION);
+    if (confirmed) {
+      debug('handleDataSetEditorSubmit', dataSet);
+      dispatch(personalActions.update(dataSet));
+      window.alert(TEXTS.DATA_SET_EDITOR_SAVE_SUCCESS);
+      setIsDataSetEditorModalOpened(false);
+    }
+  }, []);
+
   const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
     try {
@@ -107,16 +117,6 @@ const ManageDataSection: React.FunctionComponent = () => {
     }
     event.target.value = '';
   }, [config, personal, subscriptions]);
-
-  const handleDataSetEditorSubmit = useCallback((dataSet: Personal) => {
-    const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_SAVE_QUESTION);
-    if (confirmed) {
-      debug('handleDataSetEditorSubmit', dataSet);
-      dispatch(personalActions.update(dataSet));
-      window.alert(TEXTS.DATA_SET_EDITOR_SAVE_SUCCESS);
-      setIsDataSetEditorModalOpened(false);
-    }
-  }, []);
 
   return (
     <React.Fragment>
