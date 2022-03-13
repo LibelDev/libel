@@ -57,7 +57,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
       <LabelFormModal
         open={open}
         user={user}
-        data={label}
+        label={label}
         escape={false}
         fragile={false}
         onClose={handleModalClose}

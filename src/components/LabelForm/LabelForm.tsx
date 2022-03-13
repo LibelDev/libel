@@ -18,9 +18,9 @@ import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.module.scss';
 
-type TData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
+type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
-type TFormData = TData & {
+type TFormData = TLabelData & {
   meta: {
     screenshot?: Blob | null;
   };
@@ -43,7 +43,7 @@ interface IProps {
   /**
    * the label to be edited
    */
-  data?: TData;
+  label?: TLabelData;
   /**
    * the loading state
    */
@@ -81,7 +81,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     id,
     className,
     user,
-    data,
+    label: data,
     loading,
     onSubmission,
     ...otherProps

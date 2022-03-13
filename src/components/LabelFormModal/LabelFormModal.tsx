@@ -10,7 +10,7 @@ interface IProps { }
 type TProps = IProps & TModalProps & TLabelFormProps;
 
 const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
-  const { onClose, user, data, loading, onSubmission, ...otherProps } = props;
+  const { onClose, user, label, loading, onSubmission, ...otherProps } = props;
 
   const formID = useElementID(LabelForm.displayName!);
 
@@ -18,7 +18,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
     <Modal {...otherProps} onClose={onClose}>
       <Modal.Header onClose={onClose}>
         {
-          data ?
+          label ?
             TEXTS.LABEL_FORM_MODAL_TITLE_EDIT :
             TEXTS.LABEL_FORM_MODAL_TITLE_ADD
         }
@@ -27,7 +27,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
         <LabelForm
           id={formID}
           user={user}
-          data={data}
+          label={label}
           loading={loading}
           onSubmission={onSubmission}
         />
