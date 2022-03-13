@@ -88,7 +88,6 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
   store.dispatch(subscriptionsActions.update(subscriptions));
   await loadRemoteSubscriptions(subscriptions);
   // update the storage instance reference
-  await storage.load();
   storage.update(data);
 };
 
