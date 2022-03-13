@@ -201,7 +201,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
-          className={styles.toggleButton}
+          fullWidth
           checked={toggleButtonState.isCustomColor}
           name="isCustomColor"
           disabled={loading}
@@ -259,7 +259,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** add label */
           <div className={classNames(styles.inputField, styles.screenshot)}>
             <ToggleButton
-              className={styles.toggleButton}
+              fullWidth
               checked={toggleButtonState.isCaptureReply}
               disabled={loading}
               name="isCaptureReply"

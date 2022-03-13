@@ -10,15 +10,19 @@ interface IProps {
    */
   loading?: boolean;
   /**
-  * no label, button only
-  */
+   * set the toggle button to full width
+   */
+  fullWidth?: boolean;
+  /**
+   * display the switch button only
+   */
   simple?: boolean;
   /**
-   * small button
+   * use small button
    */
   small?: boolean;
   /**
-   * button on left
+   * label on the right, button on left
    */
   flip?: boolean;
 }
@@ -26,7 +30,7 @@ interface IProps {
 type TProps = IProps & IBaseInputProps;
 
 const ToggleButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, children, checked, disabled, loading, simple, small, flip, ...otherProps } = props;
+  const { className, children, checked, disabled, loading, fullWidth, simple, small, flip, ...otherProps } = props;
 
   return (
     <div
@@ -37,6 +41,7 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
           {
             [styles.checked]: checked,
             [styles.disabled]: disabled || loading,
+            [styles.fullWidth]: fullWidth,
             [styles.simple]: simple,
             [styles.small]: small,
             [styles.flip]: flip,
