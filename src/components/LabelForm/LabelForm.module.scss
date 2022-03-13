@@ -29,87 +29,81 @@
         }
       }
     }
+
+    &.color {
+      .color-picker {
+        @apply flex items-center;
+        @apply mt-2;
+
+        .preview {
+          @apply flex items-center;
+
+          .label-item {
+            @apply inline-block;
+            @apply ml-2;
+            @include text-ellipsis();
+            max-width: 5rem;
+          }
+        }
+
+        .input {
+          @apply ml-auto;
+        }
+      }
+    }
+
+    &.screenshot {
+      .preview {
+        @apply mt-2;
+        @apply p-2;
+        @apply rounded;
+        @apply box-content;
+        @apply max-w-xs;
+        border: solid 1px #e0e0e0;
+
+        @include dark-mode() {
+          border-color: #444443;
+        }
+
+        .error {
+          @apply flex items-center justify-center;
+          @apply w-full;
+
+          .icon {
+            @apply mr-2;
+          }
+        }
+
+        .image {
+          @apply block;
+          @apply relative;
+          @apply bg-cover bg-no-repeat;
+          @apply h-20 w-full;
+
+          &:after {
+            content: '';
+            @apply absolute;
+            @apply bottom-0 left-0;
+            @apply h-4 w-full;
+            background-image: linear-gradient(transparent, #000);
+          }
+
+          .icon {
+            @apply absolute;
+            @apply right-0 bottom-0;
+            @apply rounded;
+            @apply m-1;
+            @apply p-1;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
   }
 
   .toggle-button {
     @apply w-full;
-  }
-
-  .color {
-    .color-picker {
-      @apply mt-2;
-
-      &,
-      .input > div {
-        @apply flex items-center;
-      }
-
-      .preview {
-        @apply flex items-center;
-        @apply flex-1;
-
-        .label-item {
-          @apply inline-block;
-          @apply ml-2;
-          @include text-ellipsis();
-          max-width: 5rem;
-        }
-      }
-
-      .input {
-        @apply border-0;
-        @apply p-0;
-      }
-    }
-  }
-
-  .screenshot {
-    .preview {
-      @apply mt-2;
-      @apply p-2;
-      @apply rounded;
-      @apply box-content;
-      @apply max-w-xs;
-      border: solid 1px #e0e0e0;
-
-      @include dark-mode() {
-        border-color: #444443;
-      }
-
-      .error {
-        @apply flex items-center justify-center;
-        @apply w-full;
-
-        .icon {
-          @apply mr-2;
-        }
-      }
-
-      .image {
-        @apply block;
-        @apply relative;
-        @apply bg-cover bg-no-repeat;
-        @apply h-20 w-full;
-
-        &:after {
-          content: '';
-          @apply absolute;
-          @apply bottom-0 left-0;
-          @apply h-4 w-full;
-          background-image: linear-gradient(transparent, #000);
-        }
-
-        .icon {
-          @apply absolute;
-          @apply right-0 bottom-0;
-          @apply rounded;
-          @apply m-1;
-          @apply p-1;
-          background-color: rgba(0, 0, 0, 0.6);
-          color: #ffffff;
-          font-size: 1.2rem;
-        }
-      }
-    }
   }
 }

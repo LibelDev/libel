@@ -22,6 +22,10 @@
     }
   }
 
+  > div {
+    @apply flex items-center;
+  }
+
   &:not(.border) {
     input {
       @apply border-0;
