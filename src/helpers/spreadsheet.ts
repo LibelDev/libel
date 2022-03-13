@@ -63,7 +63,7 @@ export const mapSpreadsheetEntriesToDataSet = (entries: ISpreadsheetEntry[]) => 
 //   for (const user of users) {
 //     const labels = data[user]!;
 //     for (const label of labels) {
-//       const { text, reason, displayDate, shareURL, color, image } = label;
+//       const { text, reason, color, image, shareURL, displayDate } = label;
 //       const entry: TSpreadsheetEntry = [user, text, reason, color, image, shareURL, displayDate];
 //       csv.push(entry);
 //     }
