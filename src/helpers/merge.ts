@@ -1,102 +1,98 @@
 import { produce } from 'immer';
-import defaultTo from 'lodash/defaultTo';
-import { IData } from '../models/Data';
-import Personal, { ISerializedPersonal } from './../models/Personal';
-import Subscription, { ISerializedSubscription } from './../models/Subscription';
+import { IDataSet } from '../models/DataSet';
+import { ISerializedSubscription } from './../models/Subscription';
 
 export enum MergeDirection {
   IncomingToLocal,
   LocalToIncoming
 }
 
-const mergeData = (data: IData, incomingData: IData, mergeDirection: MergeDirection) => {
-  const users = Object.keys(data);
-  const incomingUsers = Object.keys(incomingData);
-  return produce(data, (data) => {
-    // existing users
-    for (const user of users) {
-      const incomingLabels = incomingData[user] || [];
-      for (const incomingLabel of incomingLabels) {
-        const label = data[user]!.find((label) => label.text === incomingLabel.text);
-        if (label) {
-          // label with the same text already exists
-          switch (mergeDirection) {
-            case MergeDirection.IncomingToLocal: {
-              label.reason = defaultTo(incomingLabel.reason, label.reason);
-              label.url = defaultTo(incomingLabel.url, label.url);
-              label.date = defaultTo(incomingLabel.date, label.date);
-              label.source = defaultTo(incomingLabel.source, label.source);
-              label.color = defaultTo(incomingLabel.color, label.color);
-              label.image = defaultTo(incomingLabel.image, label.image);
-              break;
-            }
-            case MergeDirection.LocalToIncoming: {
-              label.reason = defaultTo(label.reason, incomingLabel.reason);
-              label.url = defaultTo(label.url, incomingLabel.url);
-              label.date = defaultTo(label.date, incomingLabel.date);
-              label.source = defaultTo(label.source, incomingLabel.source);
-              label.color = defaultTo(label.color, incomingLabel.color);
-              label.image = defaultTo(label.image, incomingLabel.image);
-              break;
-            }
+/**
+ * merge the data sets
+ * @template {IDataSet} T
+ * @param {T} dataSetA the target data set
+ * @param {T} dataSetB the incoming data set
+ * @param {boolean} prune prune the labels from dataSetA if it does not exist in dataSetB
+ * @returns {T}
+ */
+export const mergeDataSet = <T extends IDataSet> (dataSetA: T, dataSetB: T, prune: boolean): T => {
+  return produce(dataSetA, (dataSetA) => {
+    const { data: dataA } = dataSetA;
+    const { data: dataB } = dataSetB;
+    const usersA = Object.keys(dataA);
+    const usersB = Object.keys(dataB);
+    for (const userA of usersA) {
+      const labelsB = dataB[userA];
+      /** existing user in B */
+      if (labelsB) {
+        if (prune) {
+          /** prune the missing A */
+          dataA[userA] = dataA[userA]?.filter((labelA) => {
+            const labelB = labelsB.find((labelB) => labelB.id === labelA.id || labelB.text === labelA.text);
+            return !!labelB;
+          });
+        }
+        /** merge B into A */
+        const labelsA = dataA[userA]!;
+        for (const labelB of labelsB) {
+          const labelA = labelsA.find((labelA) => labelA.id === labelB.id || labelA.text === labelB.text);
+          if (labelA) {
+            /** existing label */
+            labelA.text = labelB.text;
+            labelA.reason = labelB.reason;
+            labelA.url = labelB.url;
+            labelA.date = labelB.date;
+            labelA.source = labelB.source;
+            labelA.color = labelB.color;
+            labelA.image = labelB.image;
+          } else {
+            /** new label */
+            labelsA.push(labelB);
           }
-        } else {
-          if (mergeDirection === MergeDirection.IncomingToLocal) {
-            data[user]!.push(incomingLabel);
-          }
+        }
+      } else {
+        if (prune) {
+          delete dataA[userA];
         }
       }
     }
-    if (mergeDirection === MergeDirection.IncomingToLocal) {
-      // new users
-      for (const incomingUser of incomingUsers) {
-        if (!(incomingUser in data)) {
-          data[incomingUser] = incomingData[incomingUser];
-        }
+    for (const userB of usersB) {
+      /** new users */
+      if (!(userB in dataA)) {
+        dataA[userB] = dataB[userB];
       }
     }
   });
 };
 
-export const mergePersonal = (personal: Personal | ISerializedPersonal, incomingPersonal?: ISerializedPersonal, mergeDirection = MergeDirection.IncomingToLocal) => {
-  if (incomingPersonal) {
-    const data = mergeData(personal.data, incomingPersonal.data, mergeDirection);
-    return { data } as ISerializedPersonal;
-  }
-  return personal;
-};
-
-export const mergeSubscriptions = (subscriptions: (Subscription | ISerializedSubscription)[], incomingSubscriptions?: ISerializedSubscription[], mergeDirection = MergeDirection.IncomingToLocal) => {
-  if (incomingSubscriptions) {
-    return produce(subscriptions, (subscriptions) => {
-      // existing subscriptions
-      for (const subscription of subscriptions) {
-        const incomingSubscription = incomingSubscriptions.find(({ url }) => url === subscription.url);
-        if (incomingSubscription) {
-          switch (mergeDirection) {
-            case MergeDirection.IncomingToLocal: {
-              subscription.name = defaultTo(incomingSubscription.name, subscription.name);
-              subscription.enabled = defaultTo(incomingSubscription.enabled, subscription.enabled);
-              break;
-            }
-            case MergeDirection.LocalToIncoming: {
-              subscription.name = defaultTo(subscription.name, incomingSubscription.name);
-              subscription.enabled = defaultTo(subscription.enabled, incomingSubscription.enabled);
-              break;
-            }
-          }
-        }
+/**
+ * merge the subscriptions arrays
+ * @param {ISerializedSubscription[]} subscriptionsA the target subscriptions array
+ * @param {ISerializedSubscription[]} subscriptionsB the incoming subscriptions array
+ * @param {boolean} prune prune the subscription from subscriptionsA if it does not exist in subscriptionsB
+ * @returns {ISerializedSubscription[]}
+ */
+export const mergeSubscriptions = (subscriptionsA: ISerializedSubscription[], subscriptionsB: ISerializedSubscription[], prune: boolean): ISerializedSubscription[] => {
+  /** prune the missing A */
+  const _subscriptionsA = !prune ? subscriptionsA : subscriptionsA.filter((subscriptionA) => {
+    const subscriptionB = subscriptionsB.find(({ url }) => url === subscriptionA.url);
+    return !!subscriptionB;
+  });
+  return produce(_subscriptionsA, (subscriptionsA) => {
+    /** existing subscriptions */
+    for (const subscriptionA of subscriptionsA) {
+      const subscriptionB = subscriptionsB.find((subscriptionB) => subscriptionB.url === subscriptionA.url);
+      if (subscriptionB) {
+        subscriptionA.name = subscriptionB.name;
+        subscriptionA.enabled = subscriptionB.enabled;
       }
-      if (mergeDirection === MergeDirection.IncomingToLocal) {
-        // new subscriptions
-        for (const incomingSubscription of incomingSubscriptions) {
-          const subscription = subscriptions.find(({ url }) => url === incomingSubscription.url);
-          if (!subscription) {
-            subscriptions.push(incomingSubscription);
-          }
-        }
+    }
+    /** new subscriptions */
+    for (const subscriptionB of subscriptionsB) {
+      const subscriptionA = subscriptionsA.find((subscriptionA) => subscriptionA.url === subscriptionB.url);
+      if (!subscriptionA) {
+        subscriptionsA.push(subscriptionB);
       }
-    });
-  }
-  return subscriptions;
+    }
+  });
 };

@@ -127,6 +127,11 @@ abstract class DataSet implements IDataSet {
     return this;
   }
 
+  plain<T extends IDataSet> (): T {
+    const json = JSON.stringify(this);
+    return JSON.parse(json);
+  }
+
   patch () {
     /** patch Label#id */
     const { data } = this;

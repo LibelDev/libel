@@ -6,7 +6,7 @@ import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
 import { _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
-import { MergeDirection, mergePersonal, mergeSubscriptions } from '../../../helpers/merge';
+import { mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
 import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
@@ -20,6 +20,12 @@ import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ManageDataSection.module.scss';
 
 const debug = debugFactory('libel:component:ManageDataSection');
+
+const importInputAccepts = [
+  'text/plain',
+  '.json',
+  '.txt'
+];
 
 const ManageDataSection: React.FunctionComponent = () => {
   const dispatch = useTypedDispatch();
@@ -73,19 +79,19 @@ const ManageDataSection: React.FunctionComponent = () => {
     const file = files?.item(0);
     if (file) {
       try {
-        const data = await _import(file);
+        const incoming = await _import(file);
         const storage: ISerializedStorage = {
-          config: { ...config, ...data.config },
+          config: { ...config, ...incoming.config },
           // CAVEAT: ignore `meta` here
-          personal: mergePersonal(personal, data.personal, MergeDirection.IncomingToLocal),
-          subscriptions: mergeSubscriptions(subscriptions, data.subscriptions, MergeDirection.IncomingToLocal)
+          personal: mergeDataSet(personal.plain(), incoming.personal, false),
+          subscriptions: mergeSubscriptions(subscriptions, incoming.subscriptions, false)
         };
         // load the merged data into the store
         await loadDataIntoStore(storage);
         // analytics
         gtag.event(EventAction.Import);
-        const { users, labels } = Personal.aggregate(data.personal);
-        const _message = render(messages.success.import, { users, labels, subscriptions: data.subscriptions });
+        const { users, labels } = Personal.aggregate(incoming.personal);
+        const _message = render(messages.success.import, { users, labels, subscriptions: incoming.subscriptions });
         window.alert(_message);
       } catch (err) {
         if (typeof err === 'string') {
@@ -130,7 +136,7 @@ const ManageDataSection: React.FunctionComponent = () => {
         <li className={classNames(styles.import, lihkgCssClasses.settingOptionsItem)}>
           <BaseInput
             type="file"
-            accept="text/*"
+            accept={importInputAccepts.join(',')}
             className={styles.input}
             onChange={handleImport}
             label={

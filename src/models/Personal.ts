@@ -12,6 +12,10 @@ class Personal extends Custom implements IPersonal {
   static deserialize<T extends Personal> (personal: Personal | ISerializedPersonal) {
     return super.deserialize<T>(personal);
   }
+
+  plain<T extends IPersonal> (): T {
+    return super.plain<T>();
+  }
 }
 
 export default Personal;
