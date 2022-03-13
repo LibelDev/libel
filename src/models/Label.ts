@@ -4,8 +4,10 @@ import { shortenedHost } from '../constants/lihkg';
 import { mapSourceToPost } from '../helpers/label';
 import { getShareId } from '../helpers/lihkg';
 
+type TLabelText = string;
+
 export interface ILabel {
-  text: string;
+  text: TLabelText;
   reason?: string;
   url?: string;
   date?: number;
@@ -23,7 +25,7 @@ export interface ISource {
 /** @deprecated */
 export interface ILabelDatum {
   user: string;
-  labels: (ILabel | string)[];
+  labels: (ILabel | TLabelText)[];
 }
 
 class Label implements ILabel {

@@ -1,14 +1,14 @@
 import Data from './Data';
-import DataSet, { IDataSet } from './DataSet';
+import DataSet, { ISerializedDataSet } from './DataSet';
 
-export interface ISerializedCustom extends IDataSet { }
+export interface ISerializedCustom extends ISerializedDataSet { }
 
 export interface ICustom extends ISerializedCustom { }
 
 class Custom extends DataSet implements ICustom {
   static factory<T extends Custom> () {
     const data = new Data();
-    const dataSet: IDataSet = { data };
+    const dataSet: ICustom = { data };
     return new this(dataSet) as T;
   }
 

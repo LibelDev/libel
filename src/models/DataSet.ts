@@ -4,7 +4,7 @@ import dataSetSchema from '../schemas/dataSet';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 
-interface ISerializedDataSet {
+export interface ISerializedDataSet {
   data: IData;
 }
 
@@ -37,9 +37,9 @@ abstract class DataSet implements IDataSet {
           return Label.deserialize(label);
         });
         return dataSet;
-      }, { data: new Data() });
+      }, { data: {} });
     }
-    return { data: new Data(object) };
+    return { data: { ...object } };
   }
 
   /**
@@ -75,7 +75,7 @@ abstract class DataSet implements IDataSet {
   static aggregate (dataSet: IDataSet) {
     const { data } = dataSet;
     const users = Object.keys(data);
-    const labels = users.reduce<Label[]>((labels, user) => {
+    const labels = users.reduce<ILabel[]>((labels, user) => {
       const _labels = data[user] || [];
       return labels.concat(_labels);
     }, []);

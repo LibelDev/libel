@@ -1,8 +1,8 @@
 import { immerable } from 'immer';
-import Label from './Label';
+import Label, { ILabel } from './Label';
 
 export interface IData {
-  [user: string]: Label[] | undefined;
+  [user: string]: ILabel[] | undefined;
 }
 
 class Data implements IData {

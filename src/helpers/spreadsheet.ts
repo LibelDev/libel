@@ -28,7 +28,7 @@ export const mapDataSetToSpreadsheetEntries = (dataSet: IDataSet) => {
       return {
         user,
         // shallow clone, but enough
-        label: label.clone()
+        label: Label.deserialize(label).clone()
       };
     });
     return entries.concat(_entries);
