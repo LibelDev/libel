@@ -26,10 +26,6 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
   const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
 
-  if (personalLabels.length === 0 && subscriptionLabels.length === 0) {
-    return null;
-  }
-
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
     const { currentTarget } = event;
@@ -47,6 +43,10 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
       }
     }
   }, [personal, subscriptions]);
+
+  if (personalLabels.length === 0 && subscriptionLabels.length === 0) {
+    return null;
+  }
 
   return (
     <IconButton
