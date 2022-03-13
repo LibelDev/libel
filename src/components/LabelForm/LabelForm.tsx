@@ -81,13 +81,13 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     id,
     className,
     user,
-    label: data,
+    label,
     loading,
     onSubmission,
     ...otherProps
   } = props;
 
-  const [formData, setFormData] = useState<TFormData>(data as TFormData || initialFormData);
+  const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
     isCustomColor: !!formData.color,
     isCaptureReply: false
@@ -241,7 +241,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         }
       </div>
       {
-        data ? (
+        label ? (
           /** edit label */
           <div className={styles.inputField}>
             <TextInput
