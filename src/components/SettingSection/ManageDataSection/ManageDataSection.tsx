@@ -35,7 +35,8 @@ const ManageDataSection: React.FunctionComponent = () => {
   const [isDataSetEditorModalOpened, setIsDataSetEditorModalOpened] = useState(false);
   const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
 
-  const handleEditDataSetButtonClick = useCallback(() => {
+  const handleEditDataSetButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
+    event.preventDefault();
     setIsDataSetEditorModalOpened(true);
     setIsDataSetEditorDirty(false);
   }, []);
