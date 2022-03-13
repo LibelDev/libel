@@ -205,6 +205,12 @@ class Storage implements IStorage {
     return this;
   }
 
+  patch () {
+    const { personal } = this;
+    personal.patch();
+    return this;
+  }
+
   update (storage: IStorage | ISerializedStorage) {
     // always deserialize the storage
     const { config, meta, personal, subscriptions } = Storage.deserialize(storage);
@@ -212,6 +218,7 @@ class Storage implements IStorage {
     this.meta = meta || this.meta;
     this.personal = personal;
     this.subscriptions = subscriptions;
+    this.patch();
     return this;
   }
 }

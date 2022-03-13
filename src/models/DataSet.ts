@@ -1,6 +1,7 @@
 import { immerable } from 'immer';
 import dataSchema from '../schemas/data';
 import dataSetSchema from '../schemas/dataSet';
+import { getAvailableLabelID } from './../helpers/label';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 
@@ -32,7 +33,8 @@ abstract class DataSet implements IDataSet {
           if (typeof label === 'string') {
             // backward compatible
             const text = label;
-            return new Label(text);
+            // `id` will be patched later
+            return new Label('', text);
           }
           return Label.deserialize(label);
         });
@@ -91,10 +93,11 @@ abstract class DataSet implements IDataSet {
   add (user: string, data: Pick<ILabel, 'text' | 'reason' | 'source' | 'color' | 'image'>) {
     this.data[user] = this.data[user] || [];
     const labels = this.data[user]!;
+    const id = getAvailableLabelID(labels);
     const { text, reason, source, color, image } = data;
     const { href: url } = window.location;
     const date = Date.now();
-    const label = new Label(text, reason, url, date, source, color, image);
+    const label = new Label(id, text, reason, url, date, source, color, image);
     labels.push(label);
     return this;
   }
@@ -119,6 +122,22 @@ abstract class DataSet implements IDataSet {
       labels.splice(index, 1);
       if (labels.length === 0) {
         delete this.data[user];
+      }
+    }
+    return this;
+  }
+
+  patch () {
+    /** patch Label#id */
+    const { data } = this;
+    const users = Object.keys(data);
+    for (const user of users) {
+      const labels = data[user]!;
+      for (const label of labels) {
+        if (!label.id) {
+          const id = getAvailableLabelID(labels);
+          label.id = id;
+        }
       }
     }
     return this;

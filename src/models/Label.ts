@@ -7,6 +7,7 @@ import { getShareId } from '../helpers/lihkg';
 type TLabelText = string;
 
 export interface ILabel {
+  id: string;
   text: TLabelText;
   reason?: string;
   url?: string;
@@ -30,6 +31,7 @@ export interface ILabelDatum {
 
 class Label implements ILabel {
   [immerable] = true;
+  id: string;
   text: string;
   reason?: string;
   /** @deprecated */
@@ -39,7 +41,17 @@ class Label implements ILabel {
   color?: string;
   image?: string;
 
-  constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource, color?: string, image?: string) {
+  constructor (
+    id: string,
+    text: string,
+    reason?: string,
+    url?: string,
+    date?: number,
+    source?: ISource,
+    color?: string,
+    image?: string
+  ) {
+    this.id = id;
     this.text = text;
     this.reason = reason || undefined;
     this.url = url || undefined;
@@ -53,8 +65,8 @@ class Label implements ILabel {
     if (label instanceof Label) {
       return label;
     }
-    const { text, reason, url, date, source, color, image } = label;
-    return new Label(text, reason, url, date, source, color, image);
+    const { id, text, reason, url, date, source, color, image } = label;
+    return new Label(id, text, reason, url, date, source, color, image);
   }
 
   get displayDate () {
@@ -82,8 +94,8 @@ class Label implements ILabel {
   }
 
   clone (deep?: boolean) {
-    const { text, reason, url, date, source, color, image } = this;
-    const clone = new Label(text, reason, url, date, source, color, image);
+    const { id, text, reason, url, date, source, color, image } = this;
+    const clone = new Label(id, text, reason, url, date, source, color, image);
     if (deep) {
       clone.source = source && { ...source };
     }

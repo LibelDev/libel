@@ -1,6 +1,7 @@
 import { IPost } from '../types/lihkg';
-import { ISource } from './../models/Label';
+import { ILabel, ISource } from './../models/Label';
 import { TTracablePost } from './../types/lihkg';
+import { counter } from './counter';
 
 export const mapPostToSource = (post: IPost): ISource => {
   return {
@@ -16,4 +17,16 @@ export const mapSourceToPost = (source: ISource): TTracablePost => {
     page: source.page,
     msg_num: source.messageNumber
   };
+};
+
+export const getAvailableLabelID = (labels: ILabel[]) => {
+  const count = counter(1);
+  while (true) {
+    const { value } = count.next();
+    const id = `${value}`;
+    const label = labels.find((label) => label.id === id);
+    if (!label) {
+      return id;
+    }
+  }
 };
