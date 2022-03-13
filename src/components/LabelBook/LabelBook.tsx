@@ -1,6 +1,6 @@
 import React from 'react';
 import { THREAD_USER_LABELS_TOOLTIP } from '../../constants/texts';
-import Label from '../../models/Label';
+import { ILabel } from '../../models/Label';
 import { createUserPersonalLabelsSelector, createUserSubscriptionLabelsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import styles from './LabelBook.module.scss';
@@ -13,11 +13,9 @@ type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelBook: React.FunctionComponent<TProps> = (props) => {
   const { user } = props;
-  // const personal = useTypedSelector(createUserPersonalSelector(user));
-  // const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
   const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
-  const labels = ([] as Label[]).concat(personalLabels, subscriptionLabels);
+  const labels = ([] as ILabel[]).concat(personalLabels, subscriptionLabels);
   return labels.length ? (
     <div
       className={styles.labelBook}
