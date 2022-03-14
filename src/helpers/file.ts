@@ -7,14 +7,15 @@ import storage from '../storage';
 import * as filenames from '../templates/filenames';
 import { exportFilenameTimestampFormat } from './../constants/files';
 
-const download = (filename: string, body: string, type: string) => {
+export const download = (filename: string, body: string, type: string) => {
   const blob = new Blob([body], { type });
   const anchor = document.createElement('a');
   const url = URL.createObjectURL(blob);
   anchor.setAttribute('href', url);
-  anchor.download = filename;
+  anchor.setAttribute('download', filename);
   document.body.appendChild(anchor);
-  anchor.click();
+  const click = new MouseEvent('click');
+  anchor.dispatchEvent(click);
   document.body.removeChild(anchor);
   URL.revokeObjectURL(url);
 };
