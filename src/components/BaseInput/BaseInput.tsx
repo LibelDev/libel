@@ -29,10 +29,10 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
           </span>
         )
       }
-      <div>
+      <div className={styles.input}>
         <input
           id={_id}
-          className={classNames(className, styles.input)}
+          className={className}
           disabled={disabled}
           aria-describedby={errorID}
           {...otherProps}

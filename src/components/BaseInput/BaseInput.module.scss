@@ -8,20 +8,24 @@ $height: 2.25rem;
 }
 
 .input {
-  &[type='text'] {
-    height: $height;
-  }
+  input {
+    @apply w-full;
 
-  &:disabled {
-    @apply cursor-not-allowed;
-    @apply opacity-20;
-  }
+    &[type='text'] {
+      height: $height;
+    }
 
-  &:focus {
-    outline: 1px solid #fbc308;
+    &:disabled {
+      @apply cursor-not-allowed;
+      @apply opacity-20;
+    }
 
-    @include dark-mode() {
-      outline: 1px solid rgba(251, 195, 8, 0.6);
+    &:focus {
+      outline: 1px solid #fbc308;
+
+      @include dark-mode() {
+        outline: 1px solid rgba(251, 195, 8, 0.6);
+      }
     }
   }
 }

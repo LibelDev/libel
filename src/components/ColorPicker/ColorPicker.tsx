@@ -28,6 +28,7 @@ const ColorPicker: React.FunctionComponent<TProps> = (props) => {
     >
       <BaseInput
         {...otherProps}
+        className={styles.input}
         type="color"
         value={value}
       />

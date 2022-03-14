@@ -1,7 +1,12 @@
 @import '../../stylesheets/base';
 
 .color-picker {
-  input {
+  > div {
+    @apply flex items-center;
+    @apply w-12;
+  }
+
+  .input {
     @apply appearance-none;
     @apply bg-transparent;
     @apply p-0;
@@ -20,10 +25,6 @@
         background: repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% 50% / 10px 10px;
       }
     }
-  }
-
-  > div {
-    @apply flex items-center;
   }
 
   &:not(.border) {
