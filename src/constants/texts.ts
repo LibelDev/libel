@@ -13,7 +13,7 @@ export const SETTINGS_CLOUD_SYNC_SECTION_TITLE = '雲端同步資料';
 export const SETTINGS_EXPORT_IMPORT_SECTION_TITLE = '管理資料';
 export const SETTINGS_CLEAR_DATA_SECTION_TITLE = '清除資料';
 
-// form
+// label form
 export const LABEL_FORM_MODAL_TITLE_ADD = '新增標籤';
 export const LABEL_FORM_MODAL_TITLE_EDIT = '修改標籤';
 export const LABEL_FORM_FIELD_LABEL_TEXT = '名稱';
