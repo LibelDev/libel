@@ -22,6 +22,7 @@ export enum EventCategory {
   Modal = 'modal',
   Announcement = 'announcement',
   LabelForm = 'label_form',
+  SubscriptionMaker = 'subscription_maker',
   Google = 'google'
 }
 

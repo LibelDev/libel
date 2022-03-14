@@ -3,6 +3,12 @@ import { persistReducer } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Config, { IConfig } from '../../models/Config';
+import { ISubscriptionTemplate } from './../../models/Subscription';
+
+interface IUpdateSubscriptionTemplatePayload {
+  index: number;
+  subscriptionTemplate: ISubscriptionTemplate;
+}
 
 const initialState = Config.factory();
 
@@ -13,6 +19,26 @@ const slice = createSlice({
     setIsIconMapUnlocked: (state, action: PayloadAction<boolean>) => {
       const { payload } = action;
       state.isIconMapUnlocked = payload;
+    },
+    addSubscriptionTemplate: (state, action: PayloadAction<ISubscriptionTemplate>) => {
+      const { payload } = action;
+      state.subscriptionTemplates.push(payload);
+    },
+    updateSubscriptionTemplate: {
+      reducer: (state, action: PayloadAction<IUpdateSubscriptionTemplatePayload>) => {
+        const { payload } = action;
+        const { index, subscriptionTemplate } = payload;
+        state.subscriptionTemplates[index] = subscriptionTemplate;
+      },
+      prepare: (index: number, subscriptionTemplate: ISubscriptionTemplate) => {
+        return {
+          payload: { index, subscriptionTemplate }
+        };
+      }
+    },
+    removeSubscriptionTemplate: (state, action: PayloadAction<number>) => {
+      const { payload: index } = action;
+      state.subscriptionTemplates.splice(index, 1);
     },
     update: (state, action: PayloadAction<Config | IConfig>) => {
       const { payload: config } = action;
@@ -30,7 +56,7 @@ export const persistedReducer = persistReducer({
   keyPrefix: '',
   key: 'config',
   storage: storage,
-  whitelist: ['isIconMapUnlocked']
+  whitelist: ['isIconMapUnlocked', 'subscriptionTemplates']
 }, slice.reducer);
 
 export default slice;

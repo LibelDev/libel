@@ -29,6 +29,14 @@ class Meta implements IMeta {
     return new Meta(lastModifiedTime, lastSyncedTime);
   }
 
+  static parseFromStorage (json: string): IMeta {
+    const { lastModifiedTime, lastSyncedTime } = JSON.parse(json);
+    return {
+      lastModifiedTime: JSON.parse(lastModifiedTime),
+      lastSyncedTime: lastSyncedTime && JSON.parse(lastSyncedTime)
+    };
+  }
+
   serialize (): ISerializedMeta {
     const { lastModifiedTime, lastSyncedTime } = this;
     return {

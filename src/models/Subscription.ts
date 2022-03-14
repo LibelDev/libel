@@ -8,11 +8,13 @@ export interface ISerializedSubscription {
   enabled: boolean;
 }
 
-export interface IRemoteSubscription extends IDataSet, Pick<ISerializedSubscription, 'name'> {
+export interface ISubscriptionTemplate extends Pick<ISerializedSubscription, 'name'> {
   version: string;
   homepage?: string;
   color?: string;
 }
+
+export interface IRemoteSubscription extends IDataSet, ISubscriptionTemplate { }
 
 export interface ISubscription extends ISerializedSubscription, IRemoteSubscription {
   loaded: boolean;

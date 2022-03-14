@@ -105,8 +105,8 @@ class Storage implements IStorage {
     const object = JSON.parse(data);
     const { personal, subscriptions } = object;
     const storage = this.massage({
-      config: config ? JSON.parse(config) : Config.factory(),
-      meta: meta ? JSON.parse(meta) : Meta.factory(),
+      config: config ? Config.parseFromStorage(config) : Config.factory(),
+      meta: meta ? Meta.parseFromStorage(meta) : Meta.factory(),
       personal: personal ? JSON.parse(personal) : Personal.factory(),
       subscriptions: subscriptions ? JSON.parse(subscriptions) : []
     });

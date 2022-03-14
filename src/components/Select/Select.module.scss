@@ -1,0 +1,59 @@
+@import '../../stylesheets/base';
+
+.wrapper {
+  $height: 2.25rem;
+
+  @apply flex items-start;
+
+  .label {
+    @apply mr-4;
+    line-height: $height;
+  }
+
+  .select {
+    @apply relative;
+    @apply flex items-center;
+    @apply border border-solid;
+    background-color: #f2f2f2;
+    border-color: #d9d9d9;
+    border-radius: 4px;
+    height: $height;
+
+    @include dark-mode() {
+      background-color: #151515;
+      border-color: #3b3a39;
+    }
+
+    &,
+    select {
+      padding: 0.4em;
+    }
+
+    select {
+      @apply appearance-none;
+      @apply absolute top-0 left-0;
+      @apply h-full w-full;
+      @apply bg-transparent;
+      @apply border-0;
+      @apply m-0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    .icon {
+      @apply ml-auto;
+    }
+
+    &:not(.border) {
+      @apply border-0;
+    }
+  }
+
+  .error {
+    @apply mt-2;
+
+    .icon {
+      @apply mr-2;
+    }
+  }
+}

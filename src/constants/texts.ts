@@ -64,6 +64,22 @@ export const DATA_SET_EDITOR_SAVE_SUCCESS = '已儲存個人標籤記錄';
 export const DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE = '未有任何個人標籤記錄';
 export const CLOSE_DATA_SET_EDITOR_QUESTION = `你確定要放棄變更並關閉【${DATA_SET_EDITOR_MODAL_TITLE}】？`;
 
+// make subscription
+export const MAKE_SUBSCRIPTION_BUTTON_TEXT = '將個人標籤記錄製作成訂閱名單';
+export const SUBSCRIPTION_MAKER_MODAL_TITLE = '製作訂閱名單';
+export const SUBSCRIPTION_MAKER_SUBMIT_BUTTON_TEXT = '確定';
+export const SUBSCRIPTION_MAKER_FIELD_LABEL_TEMPLATE = '訂閱名單';
+export const SUBSCRIPTION_MAKER_FIELD_TEMPLATE_OPTION_DEFAULT = '新訂閱名單';
+export const SUBSCRIPTION_MAKER_FIELD_LABEL_NAME = '名稱';
+export const SUBSCRIPTION_MAKER_FIELD_LABEL_VERSION = '版本';
+export const SUBSCRIPTION_MAKER_FIELD_LABEL_HOMEPAGE = '網站';
+export const SUBSCRIPTION_MAKER_FIELD_LABEL_COLOR = '主題顏色';
+export const SUBSCRIPTION_MAKER_FIELD_PLACEHOLDER_HOMEPAGE = '如無需要可留空';
+export const SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_EMPTY = '必須填寫名稱';
+export const SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_EMPTY = '必須填寫版本';
+export const SUBSCRIPTION_MAKER_REMOVE_BUTTON_TEXT = '刪除訂閱名單';
+export const SUBSCRIPTION_MAKER_REMOVE_TEMPLATE_QUESTION = '確認要刪除製作過的訂閱名單嗎？';
+
 // export
 export const EXPORT_FILE_BUTTON_TEXT = '匯出資料及設定';
 

@@ -4,11 +4,12 @@ import { render } from 'mustache';
 import React, { useCallback, useState } from 'react';
 import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
-import { _export, _import } from '../../../helpers/file';
+import { download, _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
 import { mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
 import Personal from '../../../models/Personal';
 import { ISerializedStorage } from '../../../models/Storage';
+import { IRemoteSubscription } from '../../../models/Subscription';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
 import { actions as personalActions } from '../../../store/slices/personal';
 import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../store/store';
@@ -16,6 +17,7 @@ import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module
 import * as messages from '../../../templates/messages';
 import BaseInput from '../../BaseInput/BaseInput';
 import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
+import SubscriptionMakerModal from '../../SubscriptionMakerModal/SubscriptionMakerModal';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ManageDataSection.module.scss';
 
@@ -33,6 +35,7 @@ const ManageDataSection: React.FunctionComponent = () => {
   const personal = useTypedSelector(selectPersonal);
   const subscriptions = useTypedSelector(selectSubscriptions);
   const [isDataSetEditorModalOpened, setIsDataSetEditorModalOpened] = useState(false);
+  const [isSubscriptionMakerModalOpened, setIsSubscriptionMakerModalOpened] = useState(false);
   const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
 
   const handleEditDataSetButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
@@ -66,6 +69,22 @@ const ManageDataSection: React.FunctionComponent = () => {
       window.alert(TEXTS.DATA_SET_EDITOR_SAVE_SUCCESS);
       setIsDataSetEditorModalOpened(false);
     }
+  }, []);
+
+  const handleMakeSubscriptionButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
+    event.preventDefault();
+    setIsSubscriptionMakerModalOpened(true);
+  }, []);
+
+  const handleSubscriptionMakerModalClose = useCallback(() => {
+    setIsSubscriptionMakerModalOpened(false);
+  }, []);
+
+  const handleSubscriptionMakerSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>, subscription: IRemoteSubscription) => {
+    const filename = `${subscription.name}.json`;
+    const json = JSON.stringify(subscription, null, 2);
+    download(filename, json, 'text/plain');
+    debug('handleSubscriptionMakerSubmit', json);
   }, []);
 
   const handleExport: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
@@ -130,6 +149,11 @@ const ManageDataSection: React.FunctionComponent = () => {
           </SettingOptionButton>
         </li>
         <li className={lihkgCssClasses.settingOptionsItem}>
+          <SettingOptionButton onClick={handleMakeSubscriptionButtonClick}>
+            {TEXTS.MAKE_SUBSCRIPTION_BUTTON_TEXT}
+          </SettingOptionButton>
+        </li>
+        <li className={lihkgCssClasses.settingOptionsItem}>
           <SettingOptionButton onClick={handleExport}>
             {TEXTS.EXPORT_FILE_BUTTON_TEXT}
           </SettingOptionButton>
@@ -156,6 +180,14 @@ const ManageDataSection: React.FunctionComponent = () => {
         escape={false}
         fragile={false}
         onClose={handleDataSetEditorModalClose}
+      />
+      <SubscriptionMakerModal
+        dataSet={personal}
+        onSubmit={handleSubscriptionMakerSubmit}
+        open={isSubscriptionMakerModalOpened}
+        escape={false}
+        fragile={false}
+        onClose={handleSubscriptionMakerModalClose}
       />
     </React.Fragment>
   );
