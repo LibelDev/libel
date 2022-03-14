@@ -1,4 +1,3 @@
-import { defaultSubscriptions } from '../constants/subscriptions';
 import storage, { localStorage } from '../helpers/storage';
 import schema, { deprecated } from '../schemas/storage';
 import Config, { ISerializedConfig } from './Config';
@@ -109,7 +108,7 @@ class Storage implements IStorage {
       config: config ? JSON.parse(config) : Config.factory(),
       meta: meta ? JSON.parse(meta) : Meta.factory(),
       personal: personal ? JSON.parse(personal) : Personal.factory(),
-      subscriptions: subscriptions ? JSON.parse(subscriptions) : defaultSubscriptions
+      subscriptions: subscriptions ? JSON.parse(subscriptions) : []
     });
     const _storage = this.validate(storage)!;
     return this.deserialize(_storage);
