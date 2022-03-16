@@ -1,3 +1,4 @@
+import { flip, useFloating } from '@floating-ui/react-dom';
 import classNames from 'classnames';
 import invert from 'invert-color';
 import React, { useMemo } from 'react';
@@ -13,31 +14,46 @@ interface IProps {
   label: Label;
   color?: string;
   dataSet?: Personal | Subscription;
-  hasInfo?: boolean;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelItem: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, index, label, color, dataSet, hasInfo = true } = props;
+  const { className, user, index, label, color, dataSet } = props;
 
   const _color = label.color || color;
 
-  const style: Partial<React.CSSProperties> | undefined = useMemo(() => (_color ? {
+  const labelItemStyle: Partial<React.CSSProperties> | undefined = useMemo(() => (_color ? {
     backgroundColor: _color,
     borderColor: _color,
     color: _color && invert(_color, true)
   } : undefined), [_color]);
 
+  const { x, y, reference, floating, strategy, update } = useFloating({
+    strategy: 'fixed',
+    placement: 'top',
+    middleware: [flip()],
+  });
+
+  const labelInfoStyle = useMemo(() => ({
+    position: strategy,
+    top: y ?? '',
+    left: x ?? '',
+  }), [x, y, strategy]);
+
   return (
-    <div
-      className={classNames(className, styles.labelItem)}
-      style={style}
-    >
-      {label.text}
+    <React.Fragment>
+      <div
+        ref={reference}
+        className={classNames(className, styles.labelItem)}
+        style={labelItemStyle}
+        onMouseEnter={update}
+      >
+        {label.text}
+      </div>
       {
-        user && typeof index !== 'undefined' && label && dataSet && hasInfo && (
-          <div className={styles.labelInfo}>
+        user && typeof index !== 'undefined' && label && dataSet && (
+          <div ref={floating} className={styles.labelInfo} style={labelInfoStyle}>
             <LabelInfo
               user={user}
               index={index}
@@ -48,7 +64,7 @@ const LabelItem: React.FunctionComponent<TProps> = (props) => {
           </div>
         )
       }
-    </div>
+    </React.Fragment>
   );
 };
 

@@ -220,7 +220,6 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                       className={styles.labelItem}
                       label={draftLabel}
                       color={formData.color}
-                      hasInfo={false}
                     />
 
                   )

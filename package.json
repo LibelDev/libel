@@ -30,6 +30,7 @@
     "data": "superstatic ./data --port 20630 --debug"
   },
   "dependencies": {
+    "@floating-ui/react-dom": "^0.6.0",
     "@handsontable/react": "^11.1.0",
     "@reduxjs/toolkit": "^1.5.1",
     "classnames": "^2.3.1",

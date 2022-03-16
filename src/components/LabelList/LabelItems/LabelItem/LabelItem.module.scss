@@ -1,5 +1,15 @@
 @import '../../../../stylesheets/base';
 
+@mixin invisible() {
+  @apply invisible;
+  @apply opacity-0;
+}
+
+@mixin visible() {
+  @apply visible;
+  @apply opacity-100;
+}
+
 .label-item {
   @apply inline-flex items-center;
   @apply relative;
@@ -16,27 +26,24 @@
     @apply py-0;
   }
 
-  &:hover > i {
-    display: inline;
-  }
-
-  &:focus-within,
   &:hover {
-    .label-info {
-      @apply visible;
-      @apply opacity-100;
-      @apply bottom-full;
+    & + .label-info {
+      @include visible();
+      @apply translate-y-0;
     }
   }
+}
 
-  .label-info {
-    @apply absolute;
-    @apply bottom-1/2 left-1/2;
-    @apply invisible;
-    @apply opacity-0;
-    @apply -translate-x-1/2 transform;
-    @apply transition-all;
-    @apply duration-300;
-    @apply pb-2;
+.label-info {
+  @include invisible();
+  @apply translate-y-2 transform;
+  transition-property: opacity, transform, visibility;
+  @apply duration-300;
+  @apply py-2;
+  z-index: 1;
+
+  &:hover {
+    @include visible();
+    @apply translate-y-0;
   }
 }
