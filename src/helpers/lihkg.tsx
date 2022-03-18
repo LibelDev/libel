@@ -323,10 +323,10 @@ export const unlockIconMap = (iconMap: IIconMap) => {
 /**
  * get the share id of the reply
  * @copyright the implementation is a reference from LIHKG source code
- * @param {ISource} post the label source 
+ * @param {TTracablePost} post the label source 
  * @returns the share id
  */
-export const getShareId = (post: TTracablePost) => {
+export const getShareID = (post: TTracablePost) => {
   const e = post.thread_id; // thread id
   if (post.msg_num === '1') {
     return e;

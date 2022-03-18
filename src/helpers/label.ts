@@ -1,7 +1,9 @@
+import { shortenedHost } from '../constants/lihkg';
 import { IPost } from '../types/lihkg';
 import { ILabel, ISource } from './../models/Label';
 import { TTracablePost } from './../types/lihkg';
 import { counter } from './counter';
+import { getShareID } from './lihkg';
 
 export const mapPostToSource = (post: IPost): ISource => {
   return {
@@ -29,4 +31,15 @@ export const getAvailableLabelID = (labels: ILabel[]) => {
       return id;
     }
   }
+};
+
+export const getShareURL = (label: ILabel) => {
+  const { source } = label;
+  if (source) {
+    const post = mapSourceToPost(source);
+    const shareID = getShareID(post);
+    return `${shortenedHost}/${shareID}`;
+  }
+  // fallback to the deprecated url
+  return label.url;
 };

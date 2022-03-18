@@ -1,8 +1,8 @@
 import format from 'date-fns/format';
 import { immerable } from 'immer';
 import { shortenedHost } from '../constants/lihkg';
-import { mapSourceToPost } from '../helpers/label';
-import { getShareId } from '../helpers/lihkg';
+import { mapSourceToPost, getShareURL } from '../helpers/label';
+import { getShareID } from '../helpers/lihkg';
 
 type TLabelText = string;
 
@@ -10,6 +10,7 @@ export interface ILabel {
   id: string;
   text: TLabelText;
   reason?: string;
+  /** @deprecated */
   url?: string;
   date?: number;
   source?: ISource;
@@ -76,21 +77,8 @@ class Label implements ILabel {
     }
   }
 
-  get shareID () {
-    const { source } = this;
-    if (source) {
-      const post = mapSourceToPost(source);
-      return getShareId(post);
-    }
-  }
-
   get shareURL () {
-    const { shareID } = this;
-    if (shareID) {
-      return `${shortenedHost}/${shareID}`;
-    }
-    // fallback to the deprecated url
-    return this.url;
+    return getShareURL(this);
   }
 
   clone (deep?: boolean) {
