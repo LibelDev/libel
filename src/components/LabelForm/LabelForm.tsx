@@ -13,7 +13,7 @@ import Label, { ILabel } from '../../models/Label';
 import { IconName } from '../../types/icon';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import Icon from '../Icon/Icon';
-import LabelItem from '../LabelList/LabelItems/LabelItem/LabelItem';
+import LabelItem from '../LabelItem/LabelItem';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.module.scss';
@@ -218,7 +218,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                   draftLabel.text && (
                     <LabelItem
                       className={styles.labelItem}
-                      label={draftLabel}
+                      text={draftLabel.text}
                       color={formData.color}
                     />
 

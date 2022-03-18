@@ -1,20 +1,20 @@
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
-import cache from '../../../../../../cache';
-import { EventAction, EventCategory } from '../../../../../../constants/ga';
-import * as TEXTS from '../../../../../../constants/texts';
-import * as gtag from '../../../../../../helpers/gtag';
-import Label from '../../../../../../models/Label';
-import { actions as personalActions } from '../../../../../../store/slices/personal';
-import { useTypedDispatch } from '../../../../../../store/store';
-import * as questions from '../../../../../../templates/questions';
-import { IconName } from '../../../../../../types/icon';
-import IconButton from '../../../../../IconButton/IconButton';
+import cache from '../../../../cache';
+import { EventAction, EventCategory } from '../../../../constants/ga';
+import * as TEXTS from '../../../../constants/texts';
+import * as gtag from '../../../../helpers/gtag';
+import { ILabel } from '../../../../models/Label';
+import { actions as personalActions } from '../../../../store/slices/personal';
+import { useTypedDispatch } from '../../../../store/store';
+import * as questions from '../../../../templates/questions';
+import { IconName } from '../../../../types/icon';
+import IconButton from '../../../IconButton/IconButton';
 
 interface IProps {
   user: string;
   index: number;
-  label: Label;
+  label: ILabel;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
@@ -34,7 +34,7 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
       // analytics
       gtag.event(EventAction.Remove, { event_category: EventCategory.Label, event_label: label.text });
     }
-  }, [user, label, label]);
+  }, [user, index, label]);
 
   return (
     <IconButton

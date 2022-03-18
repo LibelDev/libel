@@ -1,3 +1,4 @@
+import { Strategy } from '@floating-ui/react-dom';
 import { Store } from '@reduxjs/toolkit';
 import produce from 'immer';
 import React from 'react';
@@ -21,7 +22,6 @@ import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleBu
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
-import { ISource } from '../models/Label';
 import { persistor } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
@@ -114,12 +114,12 @@ const renderAddLabelButton = (user: string, store: Store, container: Element) =>
   }
 };
 
-const renderLabelList = (user: string, store: Store, container: Element) => {
+const renderLabelList = (user: string, store: Store, floatingStrategy: Strategy, container: Element) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <LabelList user={user} />
+        <LabelList user={user} floatingStrategy={floatingStrategy} />
       </PersistGate>
     </Provider>,
     container
@@ -182,7 +182,6 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
 };
 
 const handleThreadMutation = (node: Element, store: Store) => {
-  // const node =node
   const threadLink = node.querySelector(lihkgSelectors.threadLink)!;
   const href = threadLink.getAttribute('href')!;
   const threadId = href.match(REGEXES.THREAD_URL)![1];
@@ -206,7 +205,7 @@ const handleUserCardModalMutation = (node: Element, store: Store) => {
     const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
-    renderLabelList(user, store, labelListContainer);
+    renderLabelList(user, store, 'fixed', labelListContainer);
     const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
     const addLabelButtonContainer = document.createElement('div');
     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
@@ -255,7 +254,7 @@ const handleNicknameMutation = (node: Element, store: Store) => {
     (node as any)[containerCacheKey]?.remove();
     const container = document.createElement('div');
     insertAfter(container, node);
-    renderLabelList(user, store, container);
+    renderLabelList(user, store, 'absolute', container);
     (node as any)[containerCacheKey] = container;
   }
 };

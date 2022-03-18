@@ -1,0 +1,8 @@
+.label-info-list {
+  @apply list-none;
+  @apply p-0;
+
+  > li + li {
+    @apply mt-2;
+  }
+}

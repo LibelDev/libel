@@ -1,38 +1,46 @@
-import React from 'react';
+import { Strategy } from '@floating-ui/react-dom';
+import React, { useMemo } from 'react';
+import { groupByText } from '../../helpers/label';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
-import LabelItems from './LabelItems/LabelItems';
+import GroupedLabelItem from './GroupedLabelItem/GroupedLabelItem';
 import styles from './LabelList.module.scss';
 
 interface IProps {
   user: string;
+  floatingStrategy?: Strategy;
 }
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
-  const { user } = props;
+  const { user, floatingStrategy } = props;
   const personal = useTypedSelector(createUserPersonalSelector(user));
   const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
   const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
 
-  if (personalLabels.length === 0 && subscriptionLabels.length === 0) {
+  const groupedLabels = useMemo(() => {
+    return groupByText(user, [personal, ...subscriptions]);
+  }, [personalLabels, subscriptionLabels]);
+
+  if (groupedLabels.length === 0) {
     return null;
   }
 
   return (
     <ul className={styles.labelList}>
-      <LabelItems
-        dataSet={personal}
-        user={user}
-      />
       {
-        subscriptions.map((subscription, index) => (
-          <LabelItems
-            key={index}
-            dataSet={subscription}
-            user={user}
-          />
-        ))
+        groupedLabels.map((groupedLabel, index) => {
+          const { text, items } = groupedLabel;
+          return (
+            <li key={index}>
+              <GroupedLabelItem
+                text={text}
+                items={items}
+                floatingStrategy={floatingStrategy}
+              />
+            </li>
+          );
+        })
       }
     </ul>
   );

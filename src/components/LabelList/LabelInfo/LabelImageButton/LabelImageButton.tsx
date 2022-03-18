@@ -1,11 +1,11 @@
 import React from 'react';
-import * as TEXTS from '../../../../../../constants/texts';
-import Label from '../../../../../../models/Label';
-import { IconName } from '../../../../../../types/icon';
-import Icon from '../../../../../Icon/Icon';
+import * as TEXTS from '../../../../constants/texts';
+import { ILabel } from '../../../../models/Label';
+import { IconName } from '../../../../types/icon';
+import Icon from '../../../Icon/Icon';
 
 interface IProps  {
-  label: Label;
+  label: ILabel;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'a'>

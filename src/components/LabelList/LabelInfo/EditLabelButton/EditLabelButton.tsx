@@ -1,18 +1,18 @@
 import React, { useCallback, useState } from 'react';
-import { EventAction, EventCategory, EventLabel } from '../../../../../../constants/ga';
-import * as TEXTS from '../../../../../../constants/texts';
-import * as gtag from '../../../../../../helpers/gtag';
-import Label from '../../../../../../models/Label';
-import { actions as personalActions } from '../../../../../../store/slices/personal';
-import { useTypedDispatch } from '../../../../../../store/store';
-import { IconName } from '../../../../../../types/icon';
-import IconButton from '../../../../../IconButton/IconButton';
-import LabelFormModal, { TLabelFormProps } from '../../../../../LabelFormModal/LabelFormModal';
+import { EventAction, EventCategory, EventLabel } from '../../../../constants/ga';
+import * as TEXTS from '../../../../constants/texts';
+import * as gtag from '../../../../helpers/gtag';
+import { ILabel } from '../../../../models/Label';
+import { actions as personalActions } from '../../../../store/slices/personal';
+import { useTypedDispatch } from '../../../../store/store';
+import { IconName } from '../../../../types/icon';
+import IconButton from '../../../IconButton/IconButton';
+import LabelFormModal, { TLabelFormProps } from '../../../LabelFormModal/LabelFormModal';
 
 interface IProps {
   user: string;
   index: number;
-  label: Label;
+  label: ILabel;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;

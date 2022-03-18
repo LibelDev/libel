@@ -1,7 +1,9 @@
 import classnames from 'classnames';
 import React, { useMemo } from 'react';
-import Label from '../../../../../models/Label';
-import Subscription from '../../../../../models/Subscription';
+import { getShareURL } from '../../../helpers/label';
+import { IDataSet } from '../../../models/DataSet';
+import { ILabel } from '../../../models/Label';
+import Subscription from '../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import LabelImageButton from './LabelImageButton/LabelImageButton';
 import styles from './LabelInfo.module.scss';
@@ -12,21 +14,23 @@ import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 interface IProps {
   user: string;
   index: number;
-  label: Label;
+  label: ILabel;
   color?: string;
-  subscription?: Subscription;
+  dataSet?: IDataSet;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, index, label, color, subscription } = props;
+  const { className, user, index, label, color, dataSet } = props;
 
   const _color = label.color || color;
 
   const style: Partial<React.CSSProperties> | undefined = useMemo(() => (_color ? {
     borderColor: _color
   } : undefined), [_color]);
+
+  const isSubscriptionImplemented = Subscription.implements(dataSet);
 
   return (
     <div
@@ -42,16 +46,37 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
       }
       <div className={styles.buttons}>
         {
-          !subscription && (
-            <EditLabelButton className={styles.button} user={user} index={index} label={label} />
+          !isSubscriptionImplemented && (
+            <EditLabelButton
+              className={styles.button}
+              user={user}
+              index={index}
+              label={label}
+            />
           )
         }
-        <LabelSourceButton className={styles.button} label={label} />
-        <LabelImageButton className={styles.button} label={label} />
+        <LabelSourceButton
+          className={styles.button}
+          url={getShareURL(label)}
+        />
+        <LabelImageButton
+          className={styles.button}
+          label={label}
+        />
         {
-          subscription ?
-            <LabelProviderIcon className={styles.button} subscription={subscription} /> :
-            <RemoveLabelButton className={styles.button} user={user} index={index} label={label} />
+          isSubscriptionImplemented ? (
+            <LabelProviderIcon
+              className={styles.button}
+              subscription={dataSet}
+            />
+          ) : (
+            <RemoveLabelButton
+              className={styles.button}
+              user={user}
+              index={index}
+              label={label}
+            />
+          )
         }
       </div>
     </div>

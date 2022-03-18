@@ -1,46 +1,11 @@
-@import '../../stylesheets/base';
-
-.container {
-  @apply flex items-center justify-center;
-
-  &:empty {
-    @apply hidden;
-  }
-
-  // when it is in the reply body on the top
-  :global(#{$lihkg-selector-reply-body}) > & {
-    @apply mb-2;
-  }
-
-  // when it is beside the nickname
-  :global(#{$lihkg-selector-nickname}) ~ & {
-    @apply ml-4 mr-2;
-  }
-
-  // when it is inside the user card modal
-  :global(#{$lihkg-selector-modal}) & {
-    @apply mt-4;
-  }
-}
-
-.label-list {
-  @apply flex flex-wrap items-center;
-  @apply list-none;
-  @apply text-base;
-  @apply -m-2;
-  @apply p-0;
-
-  > li {
-    @apply m-2;
-  }
-}
+@import '../../../stylesheets/base';
 
 .label-item {
   @apply inline-flex items-center;
-  @apply px-2 py-1;
   @apply relative;
   @apply border border-solid rounded;
   border-color: #aaaaaa;
+  @apply px-2 py-1;
   @apply text-sm;
 
   @include dark-mode() {
@@ -69,5 +34,29 @@
       background-color: #444443;
       color: #aaa;
     }
+  }
+
+  &:hover {
+    & + .label-info-list {
+      @include visible();
+      @apply translate-y-2;
+    }
+  }
+}
+
+.label-info-list {
+  @include hide-scrollbar();
+  @include invisible();
+  @apply transform;
+  @apply translate-y-4;
+  transition-property: opacity, transform, visibility;
+  @apply duration-300;
+  @apply max-h-32;
+  @apply overflow-y-auto;
+  z-index: 1;
+
+  &:hover {
+    @include visible();
+    @apply translate-y-2;
   }
 }
