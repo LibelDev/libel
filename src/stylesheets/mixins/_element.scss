@@ -1,0 +1,20 @@
+@mixin invisible() {
+  @apply invisible;
+  @apply opacity-0;
+}
+
+@mixin visible() {
+  @apply visible;
+  @apply opacity-100;
+}
+
+@mixin hide-scrollbar() {
+  /** chrome, safari, opera */
+  &::-webkit-scrollbar {
+    @apply hidden;
+  }
+  /** IE and Edge */
+  -ms-overflow-style: none;
+  /** firefox */
+  scrollbar-width: none;
+}
