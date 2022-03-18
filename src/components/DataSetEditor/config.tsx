@@ -5,9 +5,7 @@ import { CopyPaste, DropdownMenu, Filters, registerPlugin, UndoRedo } from 'hand
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as TEXTS from '../../constants/texts';
-import { color, image, reason, text } from '../../schemas/label';
-import ColorCell from './Cells/ColorCell';
-import colorCellStyles from './Cells/ColorCell.module.scss';
+import { image, reason, text } from '../../schemas/label';
 import ImageCell from './Cells/ImageCell';
 import SourceCell from './Cells/SourceCell';
 import UserIDCell from './Cells/UserIDCell';
