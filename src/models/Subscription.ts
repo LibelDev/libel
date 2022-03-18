@@ -8,13 +8,13 @@ export interface ISerializedSubscription {
   enabled: boolean;
 }
 
-export interface ISubscriptionTemplate extends Pick<ISerializedSubscription, 'name'> {
+export interface IBasicSubscription extends Pick<ISerializedSubscription, 'name'> {
   version: string;
   homepage?: string;
   color?: string;
 }
 
-export interface IRemoteSubscription extends IDataSet, ISubscriptionTemplate { }
+export interface IRemoteSubscription extends IDataSet, IBasicSubscription { }
 
 export interface ISubscription extends ISerializedSubscription, IRemoteSubscription {
   loaded: boolean;
@@ -66,9 +66,9 @@ class Subscription extends DataSet implements ISubscription {
       object instanceof this
       || (
         super.implements(object)
+        && 'name' in object
         && 'url' in object
         && 'enabled' in object
-        && 'name' in object
         && 'version' in object
       )
     );

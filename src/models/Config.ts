@@ -1,9 +1,9 @@
 import { immerable } from 'immer';
-import { ISubscriptionTemplate } from './Subscription';
+import { IBasicSubscription } from './Subscription';
 
 export interface ISerializedConfig {
   isIconMapUnlocked: boolean;
-  subscriptionTemplates: ISubscriptionTemplate[];
+  subscriptionTemplates: IBasicSubscription[];
 }
 
 export interface IConfig extends ISerializedConfig { }
@@ -11,9 +11,9 @@ export interface IConfig extends ISerializedConfig { }
 class Config implements IConfig {
   [immerable] = true;
   isIconMapUnlocked: boolean;
-  subscriptionTemplates: ISubscriptionTemplate[] = [];
+  subscriptionTemplates: IBasicSubscription[] = [];
 
-  constructor (isIconMapUnlocked?: boolean, subscriptionTemplates?: ISubscriptionTemplate[]) {
+  constructor (isIconMapUnlocked?: boolean, subscriptionTemplates?: IBasicSubscription[]) {
     this.isIconMapUnlocked = isIconMapUnlocked || false;
     this.subscriptionTemplates = subscriptionTemplates || [];
   }
