@@ -23,10 +23,12 @@ export const waitForElement = (selector: string): Promise<Element> => {
             const nodes = Array.from(mutation.addedNodes);
             for (const node of nodes) {
               if (node.nodeType === document.ELEMENT_NODE) {
-                if ((node as Element).matches(selector)) {
-                  observer.disconnect();
-                  return resolve(node as Element);
-                }
+                window.requestAnimationFrame(() => {
+                  if ((node as Element).matches(selector)) {
+                    observer.disconnect();
+                    return resolve(node as Element);
+                  }
+                });
               }
             }
             break;
