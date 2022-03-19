@@ -9,12 +9,12 @@
     @apply relative;
     @apply px-3 py-1;
     @apply border-solid border;
-    border-color: #aaaaaa #aaaaaa #aaaaaa transparent;
+    border-color: $color-grey05 $color-grey05 $color-grey05 transparent;
     @apply rounded;
     @apply text-sm;
 
     @include dark-mode() {
-      border-color: #444443 #444443 #444443 transparent;
+      border-color: $color-grey06 $color-grey06 $color-grey06 transparent;
     }
   }
 
@@ -28,7 +28,7 @@
     height: $size;
     width: $size;
     @apply border-solid border;
-    border-color: #aaaaaa transparent transparent #aaaaaa;
+    border-color: $color-grey05 transparent transparent $color-grey05;
     @apply rounded-sm rounded-tl;
     @apply transform;
     @apply origin-top-right;
@@ -36,7 +36,7 @@
     @apply -rotate-45;
 
     @include dark-mode() {
-      border-color: #444443 transparent transparent #444443;
+      border-color: $color-grey06 transparent transparent $color-grey06;
     }
   }
 
@@ -49,10 +49,10 @@
     @apply rounded-full;
     @apply transform;
     @apply -translate-y-1/2;
-    border-color: #aaaaaa;
+    border-color: $color-grey05;
 
     @include dark-mode() {
-      border-color: #444443;
+      border-color: $color-grey06;
     }
   }
 }

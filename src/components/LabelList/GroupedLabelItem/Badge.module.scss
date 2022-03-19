@@ -5,13 +5,13 @@
   @apply text-xs;
   @apply p-1;
   @apply rounded-full;
-  background-color: #aaaaaa;
-  color: #fff;
+  background-color: $color-grey05;
+  color: $color-white;
   min-height: 1.5rem;
   min-width: 1.5rem;
 
   @include dark-mode() {
-    background-color: #444443;
-    color: #aaa;
+    background-color: $color-grey06;
+    color: $color-grey05;
   }
 }

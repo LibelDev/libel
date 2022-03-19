@@ -19,6 +19,6 @@
   scrollbar-width: none;
 }
 
-@mixin glow($blur-radius: 0.5rem, $spread-radius: 0.125rem, $color: #000000) {
+@mixin glow($blur-radius: 0.5rem, $spread-radius: 0.125rem, $color: $color-black) {
   box-shadow: 0 0 $blur-radius $spread-radius rgba($color, 0.5);
 }

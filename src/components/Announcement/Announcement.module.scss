@@ -4,7 +4,7 @@
   @apply fixed;
   @apply w-full;
   @apply left-0;
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid $color-grey03;
   top: 3rem; // header height
   transition: top 0.3s ease;
   will-change: top;
@@ -15,7 +15,7 @@
   }
 
   @include dark-mode() {
-    border-bottom-color: #3b3a39;
+    border-bottom-color: $color-grey08;
   }
 
   :global(#{$lihkg-selector-nav-sticky-hidden} ~ #{$lihkg-selector-split-view}) & {
@@ -34,11 +34,11 @@
 
   @apply flex items-center;
   backdrop-filter: saturate(180%) blur(5px);
-  background-color: rgba(#f6f6f6, 0.8);
+  background-color: rgba($color-white01, 0.8);
   padding: $padding-y 0.8rem;
 
   @include dark-mode() {
-    background-color: rgba(#151515, 0.8);
+    background-color: rgba($color-black03, 0.8);
   }
 
   > * + * {
@@ -54,10 +54,10 @@
     @apply mr-auto;
 
     a {
-      color: #2574a9;
+      color: $color-blue02;
 
       @include dark-mode() {
-        color: #3498db;
+        color: $color-blue01;
       }
     }
   }

@@ -9,20 +9,20 @@
     @apply border border-solid;
     @apply text-base;
     @apply text-current;
-    background-color: #fff;
-    border-color: #d9d9d9;
+    background-color: $color-white;
+    border-color: $color-grey03;
     padding: 0.4em;
 
     @include dark-mode() {
-      background-color: #151515;
-      border-color: #3b3a39;
+      background-color: $color-black03;
+      border-color: $color-grey08;
     }
 
     &.error {
-      border-color: #fb0808;
+      border-color: $color-red01;
 
       @include dark-mode() {
-        border-color: #fb0808;
+        border-color: $color-red01;
       }
     }
   }

@@ -7,7 +7,7 @@
     @apply w-1;
     @apply self-stretch;
     @apply rounded-sm;
-    background-color: #444443;
+    background-color: $color-grey06;
   }
 
   .name {
@@ -19,10 +19,10 @@
     }
 
     > a {
-      color: #333333;
+      color: $color-grey09;
 
       @include dark-mode() {
-        color: #ffffff;
+        color: $color-white;
       }
     }
   }

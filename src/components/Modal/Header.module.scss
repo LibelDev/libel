@@ -4,17 +4,17 @@
   @apply flex items-center;
   @apply pl-4;
   height: 3rem;
-  background-color: #fff;
-  color: #000;
+  background-color: $color-white;
+  color: $color-black;
   
   &.border {
-    border-bottom: solid 1px #e0e0e0;
+    border-bottom: solid 1px $color-grey02;
   }
 
   @include dark-mode() {
-    background-color: #222;
-    border-bottom-color: #444443;
-    color: #fff;
+    background-color: $color-black02;
+    border-bottom-color: $color-grey06;
+    color: $color-white;
   }
 
   .title {
@@ -32,7 +32,7 @@
 
     &:focus,
     &:hover {
-      background-color: rgba(128, 128, 128, 0.1);
+      background-color: rgba($color-grey10, 0.1);
     }
   }
 }

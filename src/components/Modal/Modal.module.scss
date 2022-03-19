@@ -11,10 +11,10 @@
   }
 
   .backdrop {
-    background-color: rgba(160, 160, 160, 0.5);
+    background-color: rgba($color-grey11, 0.5);
 
     @include dark-mode() {
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba($color-black, 0.5);
     }
   }
 
@@ -23,12 +23,12 @@
     @apply rounded;
     @apply relative;
     @apply overflow-hidden;
-    background-color: #f6f6f6;
-    box-shadow: 0 4px 8px rgb(0 0 0 / 20%);
+    background-color: $color-white01;
+    box-shadow: 0 4px 8px rgba($color-black, 0.2);
     max-height: 80vh;
 
     @include dark-mode() {
-      background-color: #292827;
+      background-color: $color-black01;
     }
   }
 }

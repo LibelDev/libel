@@ -3,14 +3,14 @@
 .footer {
   @apply flex;
   @apply h-12;
-  background-color: #fff;
-  border-top: solid 1px #e0e0e0;
-  color: #000;
+  background-color: $color-white;
+  border-top: solid 1px $color-grey02;
+  color: $color-black;
 
   @include dark-mode() {
-    background-color: #222;
-    border-top-color: #444443;
-    color: #fff;
+    background-color: $color-black02;
+    border-top-color: $color-grey06;
+    color: $color-white;
   }
 
   a,
@@ -29,10 +29,10 @@
 
     &:focus,
     &:hover {
-      background-color: rgba(128, 128, 128, 0.1);
+      background-color: rgba($color-grey10, 0.1);
 
       @include dark-mode() {
-        background-color: #3f3f3f;
+        background-color: $color-grey07;
       }
     }
   }

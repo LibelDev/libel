@@ -16,19 +16,19 @@
   }
 
   a {
-    color: #333333;
+    color: $color-grey09;
     text-decoration: underline;
 
     @include dark-mode() {
-      color: #ffffff;
+      color: $color-white;
     }
 
     + a {
       @apply ml-2 pl-2;
-      border-left: solid 1px #333333;
+      border-left: solid 1px $color-grey09;
 
       @include dark-mode() {
-        border-color: #ffffff;
+        border-color: $color-white;
       }
     }
   }

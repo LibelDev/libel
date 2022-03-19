@@ -59,10 +59,10 @@
         @apply rounded;
         @apply box-content;
         @apply max-w-xs;
-        border: solid 1px #e0e0e0;
+        border: solid 1px $color-grey02;
 
         @include dark-mode() {
-          border-color: #444443;
+          border-color: $color-grey06;
         }
 
         .error {
@@ -85,7 +85,7 @@
             @apply absolute;
             @apply bottom-0 left-0;
             @apply h-4 w-full;
-            background-image: linear-gradient(transparent, #000);
+            background-image: linear-gradient(transparent, $color-black);
           }
 
           .icon {
@@ -94,8 +94,8 @@
             @apply rounded;
             @apply m-1;
             @apply p-1;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #ffffff;
+            background-color: rgba($color-black, 0.6);
+            color: $color-white;
             font-size: 1.2rem;
           }
         }

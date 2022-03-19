@@ -22,7 +22,7 @@
     &[value=''] {
       &::-webkit-color-swatch {
         // @apply bg-transparent #{!important};
-        background: repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 50% 50% / 10px 10px;
+        background: repeating-conic-gradient($color-grey04 0% 25%, $color-white 0% 50%) 50% 50% / 10px 10px;
       }
     }
   }

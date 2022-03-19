@@ -21,10 +21,10 @@ $height: 2.25rem;
     }
 
     &:focus {
-      outline: 1px solid #fbc308;
+      outline: 1px solid $color-yellow01;
 
       @include dark-mode() {
-        outline: 1px solid rgba(251, 195, 8, 0.6);
+        outline: 1px solid rgba($color-yellow01, 0.6);
       }
     }
   }

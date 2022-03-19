@@ -40,7 +40,7 @@
     @apply relative;
     @apply cursor-pointer;
     @apply rounded-2xl;
-    background-color: rgba(128, 128, 128, 0.2);
+    background-color: rgba($color-grey10, 0.2);
 
     > span {
       @apply sr-only;
@@ -59,7 +59,7 @@
       left: 5%;
       @apply transform;
       @apply -translate-y-1/2;
-      box-shadow: 1px 2px 6px -1px rgba(0, 0, 0, 0.3);
+      box-shadow: 1px 2px 6px -1px rgba($color-black, 0.3);
       content: '';
       height: 1.3rem;
       width: 1.3rem;
@@ -68,11 +68,11 @@
 
   &.checked {
     .button {
-      background-color: #fbc308;
+      background-color: $color-yellow01;
 
       &:after {
         left: 53%;
-        box-shadow: -3px 2px 6px -1px rgba(0, 0, 0, 0.3);
+        box-shadow: -3px 2px 6px -1px rgba($color-black, 0.3);
       }
     }
   }
