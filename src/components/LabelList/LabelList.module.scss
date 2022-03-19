@@ -1,14 +1,20 @@
 @import '../../stylesheets/base';
 
 .container {
-  @apply flex items-center justify-center;
+  // @apply flex items-center;
 
   &:empty {
     @apply hidden;
   }
 
-  // when it is in the reply body on the top
-  :global(#{$lihkg-selector-reply-body}) > & {
+  // when it is inside thread item inner {
+  :global(#{$lihkg-selector-thread-item-inner}) > & {
+    @apply mb-2;
+    @apply ml-5;
+  }
+
+  // when it is inside the reply item inner
+  :global(#{$lihkg-selector-reply-item-inner}) > & {
     @apply mb-2;
   }
 
@@ -20,6 +26,10 @@
   // when it is inside the user card modal
   :global(#{$lihkg-selector-modal}) & {
     @apply mt-4;
+
+    .label-list {
+      @apply justify-center;
+    }
   }
 }
 
@@ -27,11 +37,11 @@
   @apply flex flex-wrap items-center;
   @apply list-none;
   @apply text-base;
-  @apply -m-2;
+  @apply -mx-2 -my-1;
   @apply p-0;
 
   > li {
-    @apply m-2;
+    @apply mx-2 my-1;
   }
 }
 

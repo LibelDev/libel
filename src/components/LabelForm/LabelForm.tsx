@@ -216,12 +216,9 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                 {TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_LABEL_TEXT}
                 {
                   draftLabel.text && (
-                    <LabelItem
-                      className={styles.labelItem}
-                      text={draftLabel.text}
-                      color={formData.color}
-                    />
-
+                    <LabelItem className={styles.labelItem} color={formData.color}>
+                      {draftLabel.text}
+                    </LabelItem>
                   )
                 }
               </span>

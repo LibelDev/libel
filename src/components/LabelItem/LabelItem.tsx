@@ -4,14 +4,13 @@ import React, { useMemo } from 'react';
 import styles from './LabelItem.module.scss';
 
 interface IProps {
-  text: string;
   color?: string;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
-  const { className, children, text, color } = props;
+  const { className, children, color } = props;
 
   const style: Partial<React.CSSProperties> | undefined = useMemo(() => (color ? {
     backgroundColor: color,
@@ -21,7 +20,6 @@ const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
 
   return (
     <div ref={ref} className={classNames(className, styles.labelItem)} style={style}>
-      {text}
       {children}
     </div>
   );

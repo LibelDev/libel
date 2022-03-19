@@ -1,4 +1,5 @@
-import { Strategy } from '@floating-ui/react-dom';
+import debugFactory from 'debug';
+import { useFloating } from '@floating-ui/react-dom';
 import { Store } from '@reduxjs/toolkit';
 import produce from 'immer';
 import React from 'react';
@@ -10,7 +11,6 @@ import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
 import addLabelButtonStyles from '../components/AddLabelButton/AddLabelButton.module.scss';
 import announcementStyles from '../components/Announcement/Announcement.module.scss';
-import LabelBook from '../components/LabelBook/LabelBook';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.module.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
@@ -31,18 +31,21 @@ import { insertAfter, waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
 
 // type TRendererContainer = Parameters<Renderer>[1];
+type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 enum ShareType {
   Thread = 1,
   Reply = 2
 }
 
+const debug = debugFactory('libel:helper:lihkg');
+
 export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
 };
 
-const isThread = (node: Element) => {
-  return node.matches(lihkgSelectors.thread);
+const isThreadItem = (node: Element) => {
+  return node.matches(lihkgSelectors.threadItem);
 };
 
 const isUserCardModal = (node: Element) => {
@@ -57,29 +60,29 @@ const isEmoteMenu = (node: Element) => {
   return node.matches(lihkgSelectors.emoteMenu);
 };
 
+const isReplyList = (node: Element) => {
+  return node.matches(lihkgSelectors.replyList);
+};
+
+const isReplyItem = (node: Element) => {
+  return node.matches(lihkgSelectors.replyItem);
+};
+
 const isReplyButton = (node: Element) => {
   return node.matches(`.${IconName.Reply}`);
+};
+
+const isReplyModal = (node: Element) => {
+  return node.matches(lihkgSelectors.replyModal);
 };
 
 export const isNickname = (node: Element) => {
   return node.matches(lihkgSelectors.nickname);
 };
 
-const querySelectorAllNickname = (node: Element) => {
-  return node.querySelectorAll(lihkgSelectors.nickname);
-};
-
-const querySelectorNicknameLink = (node: Element) => {
-  const nicknameLinkSelector = `${lihkgSelectors.nickname} > a[href^="/profile"]`;
-  return node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
-};
-
-const querySelectorAllReplyItemHeader = (node: Element) => {
-  return node.querySelectorAll(lihkgSelectors.replyItemHeader);
-};
-
 const getUserIDFromNode = (node: Element) => {
-  const nicknameLink = querySelectorNicknameLink(node);
+  const nicknameLinkSelector = `${lihkgSelectors.nickname} > a[href^="/profile"]`;
+  const nicknameLink = node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
   const href = nicknameLink?.getAttribute('href');
   const matched = href?.match(REGEXES.PROFILE_URL);
   if (matched) {
@@ -114,12 +117,15 @@ const renderAddLabelButton = (user: string, store: Store, container: Element) =>
   }
 };
 
-const renderLabelList = (user: string, store: Store, floatingStrategy: Strategy, container: Element) => {
+const renderLabelList = (user: string, store: Store, floatingConfig: TFloatingConfig, container: Element) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <LabelList user={user} floatingStrategy={floatingStrategy} />
+        <LabelList
+          user={user}
+          floatingConfig={floatingConfig}
+        />
       </PersistGate>
     </Provider>,
     container
@@ -133,18 +139,6 @@ const renderSnipeButton = (user: string, store: Store, container: Element) => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <SnipeButton user={user} />
-      </PersistGate>
-    </Provider>,
-    container
-  );
-};
-
-const renderLabelBook = (user: string, store: Store, container: Element) => {
-  (container as Element).classList.add(lihkgCssClasses.threadHeadingText);
-  ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <LabelBook user={user} />
       </PersistGate>
     </Provider>,
     container
@@ -181,17 +175,17 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   ReactDOM.render(announcement, container);
 };
 
-const handleThreadMutation = (node: Element, store: Store) => {
+const handleThreadItemMutation = (node: Element, store: Store) => {
   const threadLink = node.querySelector(lihkgSelectors.threadLink)!;
   const href = threadLink.getAttribute('href')!;
   const threadId = href.match(REGEXES.THREAD_URL)![1];
   const thread = cache.getThread(threadId);
   if (thread) {
     const { user_id: user } = thread;
-    const threadUsername = node.querySelector(lihkgSelectors.threadUsername)!;
-    const labelBookContainer = document.createElement('div');
-    insertAfter(labelBookContainer, threadUsername);
-    renderLabelBook(user, store, labelBookContainer);
+    const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner)!;
+    const container = document.createElement('div');
+    threadItemInner.insertAdjacentElement('afterbegin', container);
+    renderLabelList(user, store, undefined, container);
   }
 };
 
@@ -205,7 +199,8 @@ const handleUserCardModalMutation = (node: Element, store: Store) => {
     const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
-    renderLabelList(user, store, 'fixed', labelListContainer);
+    const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
+    renderLabelList(user, store, floatingConfig, labelListContainer);
     const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
     const addLabelButtonContainer = document.createElement('div');
     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
@@ -230,40 +225,34 @@ const handleEmoteMenuMutation = (node: Element, store: Store) => {
   renderUnlockIconMapToggleButton(store, container);
 };
 
-const handleReplyButtonMutation = (node: Element, store: Store) => {
-  const replyItemHeader = node.parentElement!;
-  handleReplyItemHeaderMutation(replyItemHeader, store);
-};
-
-export const handleMutation = (node: Element, store: Store) => {
-  handleNicknamesMutation(node, store);
-  handleReplyItemHeadersMutation(node, store);
-};
-
-const handleNicknamesMutation = (node: Element, store: Store) => {
-  const nodes = Array.from(querySelectorAllNickname(node));
+const handleReplyListMutation = (node: Element, store: Store) => {
+  const nodes = Array.from(node.querySelectorAll(lihkgSelectors.replyItemInner));
   for (const node of nodes) {
-    handleNicknameMutation(node, store);
+    handleReplyItemInnerMutation(node, store);
   }
 };
 
-const handleNicknameMutation = (node: Element, store: Store) => {
+const handleReplyItemMutation = (node: Element, store: Store) => {
+  const _node = node.querySelector(lihkgSelectors.replyItemInner)!;
+  handleReplyItemInnerMutation(_node, store);
+};
+
+const handleReplyItemInnerMutation = (node: Element, store: Store) => {
   const user = getUserIDFromNode(node);
   if (user) {
     const containerCacheKey = `__${namespace}__cache__container__`;
     (node as any)[containerCacheKey]?.remove();
     const container = document.createElement('div');
-    insertAfter(container, node);
-    renderLabelList(user, store, 'absolute', container);
+    node.insertAdjacentElement('afterbegin', container);
+    const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
+    renderLabelList(user, store, floatingConfig, container);
     (node as any)[containerCacheKey] = container;
   }
 };
 
-const handleReplyItemHeadersMutation = (node: Element, store: Store) => {
-  const nodes = Array.from(querySelectorAllReplyItemHeader(node));
-  for (const node of nodes) {
-    handleReplyItemHeaderMutation(node, store);
-  }
+const handleReplyButtonMutation = (node: Element, store: Store) => {
+  const replyItemHeader = node.parentElement!;
+  handleReplyItemHeaderMutation(replyItemHeader, store);
 };
 
 const handleReplyItemHeaderMutation = (node: Element, store: Store) => {
@@ -281,13 +270,34 @@ const handleReplyItemHeaderMutation = (node: Element, store: Store) => {
   }
 };
 
+const handleReplyModalMutation = (node: Element, store: Store) => {
+  const _node = node.querySelector(lihkgSelectors.replyItemInner)!;
+  handleReplyItemInnerMutation(_node, store);
+};
+
+export const handleDataPostIdAttributeMutation = (node: Element, store: Store) => {
+  const _node = node.querySelector(lihkgSelectors.replyItemInner)!;
+  handleReplyItemInnerMutation(_node, store);
+};
+
 export const mutationHandlerFactory = (node: Element) => {
-  if (isThread(node)) return handleThreadMutation;
+  debug('mutationHandlerFactory', node);
+  /** when render the thread item */
+  if (isThreadItem(node)) return handleThreadItemMutation;
+  /** when render the user card modal */
   if (isUserCardModal(node)) return handleUserCardModalMutation;
+  /** when render the settings modal */
   if (isSettingsModal(node)) return handleSettingsModalMutation;
+  /** when render the emote menu */
   if (isEmoteMenu(node)) return handleEmoteMenuMutation;
+  /** when render the reply list (probably when enter the thread or go to next page) */
+  if (isReplyList(node)) return handleReplyListMutation;
+  /** when render the reply item (probably inside the reply modal) */
+  if (isReplyItem(node)) return handleReplyItemMutation;
+  /** when expand the short reply item */
   if (isReplyButton(node)) return handleReplyButtonMutation;
-  return handleMutation;
+  /** when render reply modal */
+  if (isReplyModal(node)) return handleReplyModalMutation;
 };
 
 export const waitForSubmissionForm = () => {
@@ -308,6 +318,11 @@ export const getStore = () => {
   return store;
 };
 
+/**
+ * unlock all icons
+ * @param {IIconMap} iconMap the original LIHKG icon map
+ * @returns the unlocked icon map
+ */
 export const unlockIconMap = (iconMap: IIconMap) => {
   return produce(iconMap, (iconMap) => {
     const keys = Object.keys(iconMap);

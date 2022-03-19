@@ -1,8 +1,5 @@
 import { displayName } from '../../package.json';
 
-// thread
-export const THREAD_USER_LABELS_TOOLTIP = '會員標籤';
-
 // title
 export const LIHKG_USER_CARD_MODAL_TITLE = '會員資料';
 export const LIHKG_SETTINGS_MODAL_TITLE = '設定';

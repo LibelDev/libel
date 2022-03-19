@@ -1,26 +1,33 @@
-import { autoUpdate, Strategy, useFloating } from '@floating-ui/react-dom';
+import { autoUpdate, useFloating } from '@floating-ui/react-dom';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
 import { IGroupedLabelItem } from '../../../types/label';
 import LabelItem from '../../LabelItem/LabelItem';
 import LabelInfoList from '../LabelInfoList/LabelInfoList';
+import Badge from './Badge';
 import styles from './GroupedLabelItem.module.scss';
 
-interface IProps {
+export interface IProps {
   text: string;
   items: IGroupedLabelItem[];
-  floatingStrategy?: Strategy;
+  floatingConfig?: Parameters<typeof useFloating>[0];
 }
 
 const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
-  const { text, items, floatingStrategy } = props;
+  const { text, items, floatingConfig } = props;
+
+  /* omit the unnecessary hooks if there is no label info list */
+  if (!floatingConfig) {
+    return (
+      <LabelItem className={styles.labelItem}>
+        {text}
+        <Badge className={styles.badge} quantity={items.length} />
+      </LabelItem>
+    );
+  }
 
   const [labelListInfoRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>(0.2);
-
-  const { x, y, reference, floating, strategy, update, refs } = useFloating({
-    strategy: floatingStrategy,
-    placement: 'bottom-start'
-  });
+  const { x, y, reference, floating, strategy, update, refs } = useFloating(floatingConfig);
 
   const labelInfoListStyle: React.CSSProperties = useMemo(() => ({
     ...fadeoutScrollStyle,
@@ -44,19 +51,9 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <React.Fragment>
-      <LabelItem
-        ref={reference}
-        className={styles.labelItem}
-        text={text}
-        onMouseEnter={update}
-      >
-        {
-          items.length > 1 && (
-            <span className={styles.badge}>
-              {items.length}
-            </span>
-          )
-        }
+      <LabelItem ref={reference} className={styles.labelItem} onMouseEnter={update}>
+        {text}
+        <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
       <LabelInfoList
         ref={updateLabelInfoListRef}

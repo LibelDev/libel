@@ -1,18 +1,16 @@
-import { Strategy } from '@floating-ui/react-dom';
 import React, { useMemo } from 'react';
 import { groupByText } from '../../helpers/label';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
-import GroupedLabelItem from './GroupedLabelItem/GroupedLabelItem';
+import GroupedLabelItem, { IProps as IGroupedLabelItemProps } from './GroupedLabelItem/GroupedLabelItem';
 import styles from './LabelList.module.scss';
 
-interface IProps {
+interface IProps extends Pick<IGroupedLabelItemProps, 'floatingConfig'> {
   user: string;
-  floatingStrategy?: Strategy;
 }
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
-  const { user, floatingStrategy } = props;
+  const { user, floatingConfig } = props;
   const personal = useTypedSelector(createUserPersonalSelector(user));
   const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
@@ -36,7 +34,7 @@ const LabelList: React.FunctionComponent<IProps> = (props) => {
               <GroupedLabelItem
                 text={text}
                 items={items}
-                floatingStrategy={floatingStrategy}
+                floatingConfig={floatingConfig}
               />
             </li>
           );
