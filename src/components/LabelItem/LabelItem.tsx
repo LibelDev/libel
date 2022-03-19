@@ -30,7 +30,9 @@ const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
       style={style}
       {...otherProps}
     >
-      {children}
+      <div className={styles.inner}>
+        {children}
+      </div>
     </div>
   );
 });
