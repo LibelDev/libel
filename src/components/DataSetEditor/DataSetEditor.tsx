@@ -1,4 +1,3 @@
-// import { HotTable } from '@handsontable/react';
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import Handsontable from 'handsontable';
