@@ -28,7 +28,7 @@ const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Body>
       <Modal.Footer>
         <Button form={formID} type="submit">
-          {TEXTS.SUBSCRIPTION_MAKER_SUBMIT_BUTTON_TEXT}
+          {TEXTS.SUBSCRIPTION_MAKER_BUTTON_TEXT_SUBMIT}
         </Button>
       </Modal.Footer>
     </Modal>

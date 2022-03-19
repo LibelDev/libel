@@ -52,7 +52,7 @@ const ManageDataSection: React.FunctionComponent = () => {
     if (isDataSetEditorDirty) {
       const users = Object.keys(personal.data); // empty data set
       if (users.length > 0) {
-        const yes = window.confirm(TEXTS.CLOSE_DATA_SET_EDITOR_QUESTION);
+        const yes = window.confirm(TEXTS.DATA_SET_EDITOR_MESSAGE_CLOSE_CONFIRMATION);
         if (!yes) {
           return;
         }
@@ -62,11 +62,11 @@ const ManageDataSection: React.FunctionComponent = () => {
   }, [personal, isDataSetEditorDirty]);
 
   const handleDataSetEditorSubmit = useCallback((dataSet: Personal) => {
-    const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_SAVE_QUESTION);
+    const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_CONFIRMATION);
     if (confirmed) {
       debug('handleDataSetEditorSubmit', dataSet);
       dispatch(personalActions.update(dataSet));
-      window.alert(TEXTS.DATA_SET_EDITOR_SAVE_SUCCESS);
+      window.alert(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_SUCCESS);
       setIsDataSetEditorModalOpened(false);
     }
   }, []);
@@ -128,7 +128,7 @@ const ManageDataSection: React.FunctionComponent = () => {
           window.alert(err);
         } else {
           console.error(err);
-          window.alert(TEXTS.IMPORT_FILE_GENERIC_ERROR_MESSAGE);
+          window.alert(TEXTS.IMPORT_FILE_ERROR_GENERIC_ERROR);
         }
         // analytics
         gtag.event(EventAction.Error, { event_category: EventAction.Import });
@@ -140,22 +140,22 @@ const ManageDataSection: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
-        {TEXTS.SETTINGS_EXPORT_IMPORT_SECTION_TITLE}
+        {TEXTS.SETTINGS_SECTION_TITLE_MANAGE_DATA}
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <SettingOptionButton onClick={handleEditDataSetButtonClick}>
-            {TEXTS.EDIT_DATA_SET_BUTTON_TEXT}
+            {TEXTS.BUTTON_TEXT_EDIT_DATA_SET}
           </SettingOptionButton>
         </li>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <SettingOptionButton onClick={handleMakeSubscriptionButtonClick}>
-            {TEXTS.MAKE_SUBSCRIPTION_BUTTON_TEXT}
+            {TEXTS.BUTTON_TEXT_MAKE_SUBSCRIPTION}
           </SettingOptionButton>
         </li>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <SettingOptionButton onClick={handleExport}>
-            {TEXTS.EXPORT_FILE_BUTTON_TEXT}
+            {TEXTS.BUTTON_TEXT_EXPORT_FILE}
           </SettingOptionButton>
         </li>
         <li className={classNames(styles.import, lihkgCssClasses.settingOptionsItem)}>
@@ -166,7 +166,7 @@ const ManageDataSection: React.FunctionComponent = () => {
             onChange={handleImport}
             label={
               <span className={classNames(styles.label, lihkgCssClasses.settingOptionButton)}>
-                {TEXTS.IMPORT_FILE_BUTTON_TEXT}
+                {TEXTS.BUTTON_TEXT_IMPORT_FILE}
               </span>
             }
           />

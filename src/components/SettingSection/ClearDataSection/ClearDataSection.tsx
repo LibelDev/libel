@@ -34,11 +34,11 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
 
   const handleClearLocalData: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const sure = confirm(TEXTS.CLEAR_LOCAL_DATA_QUESTION, TEXTS.CLEAR_LOCAL_DATA_CONFIRMATION);
+    const sure = confirm(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CONFIRMATION, TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_DOUBLE_CONFIRMATION);
     if (sure) {
       const storage = Storage.factory();
       await loadDataIntoStore(storage);
-      window.alert(TEXTS.CLEAR_LOCAL_DATA_SUCCESS);
+      window.alert(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS);
     } else {
       // window.alert(TEXTS.CLEAR_LOCAL_DATA_CANCEL);
     }
@@ -46,12 +46,12 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
 
   const handleClearCloudData: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const sure = confirm(TEXTS.CLEAR_CLOUD_DATA_QUESTION, TEXTS.CLEAR_CLOUD_DATA_CONFIRMATION);
+    const sure = confirm(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CONFIRMATION, TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_DOUBLE_CONFIRMATION);
     if (sure) {
       setClearCloudDataLoading(true);
       await cloud.clear();
       dispatch(metaActions.setLastSyncedTime(null));
-      window.alert(TEXTS.CLEAR_CLOUD_DATA_SUCCESS);
+      window.alert(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS);
       setClearCloudDataLoading(false);
     } else {
       // window.alert(TEXTS.CLEAR_CLOUD_DATA_CANCEL);
@@ -61,7 +61,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
-        {TEXTS.SETTINGS_CLEAR_DATA_SECTION_TITLE}
+        {TEXTS.SETTINGS_SECTION_TITLE_CLEAR_DATA}
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>
@@ -71,7 +71,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
             onClick={handleClearLocalData}
           >
             <Icon className={styles.icon} icon={IconName.Desktop} />
-            {TEXTS.CLEAR_LOCAL_DATA_BUTTON_TEXT}
+            {TEXTS.BUTTON_TEXT_CLEAR_LOCAL_DATA}
           </SettingOptionButton>
         </li>
         {
@@ -84,7 +84,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
                 onClick={handleClearCloudData}
               >
                 <Icon className={styles.icon} icon={IconName.CloudUpload} />
-                {TEXTS.CLEAR_CLOUD_DATA_BUTTON_TEXT}
+                {TEXTS.BUTTON_TEXT_CLEAR_CLOUD_DATA}
               </SettingOptionButton>
             </li>
           )

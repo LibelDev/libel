@@ -53,9 +53,9 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
       className={classnames(className, styles.snipeButton)}
       icon={IconName.Hot}
       onClick={handleClick}
-      aria-label={TEXTS.SNIPE_BUTTON_TEXT}
-      data-tip={TEXTS.SNIPE_BUTTON_TEXT}
-      title={TEXTS.SNIPE_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_SNIPE}
+      data-tip={TEXTS.BUTTON_TEXT_SNIPE}
+      title={TEXTS.BUTTON_TEXT_SNIPE}
     />
   );
 };

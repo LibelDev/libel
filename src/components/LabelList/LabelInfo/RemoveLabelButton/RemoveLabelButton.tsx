@@ -40,9 +40,9 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
     <IconButton
       className={className}
       icon={IconName.DeleteForever}
-      aria-label={TEXTS.REMOVE_LABEL_BUTTON_TEXT}
-      data-tip={TEXTS.REMOVE_LABEL_BUTTON_TEXT}
-      title={TEXTS.REMOVE_LABEL_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
+      data-tip={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
+      title={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
       onClick={handleClick}
     />
   );

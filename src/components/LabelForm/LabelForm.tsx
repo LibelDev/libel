@@ -60,8 +60,8 @@ export type TProps = IProps & React.ComponentPropsWithoutRef<'form'>;
 
 const schema = joi.object({
   text: joi.string().trim().required().messages({
-    'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY,
-    'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY
+    'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED,
+    'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED
   }),
   reason: joi.string().trim().allow(''),
   color: joi.string().trim().pattern(HEX_COLOR).allow(''),
@@ -97,7 +97,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const draftLabel = useMemo(() => {
     const { text } = formData;
-    const label = new Label('DRAFT', text || TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_DUMMY_TEXT);
+    const label = new Label('DRAFT', text || TEXTS.LABEL_FORM_PREVIEW_LABEL_DUMMY_TEXT);
     return label;
   }, [formData]);
 
@@ -213,7 +213,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           toggleButtonState.isCustomColor && (
             <div className={styles.colorPicker}>
               <span className={styles.preview}>
-                {TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_LABEL_TEXT}
+                {TEXTS.LABEL_FORM_PREVIEW_LABEL_LABEL_TEXT}
                 {
                   draftLabel.text && (
                     <LabelItem className={styles.labelItem} color={formData.color}>

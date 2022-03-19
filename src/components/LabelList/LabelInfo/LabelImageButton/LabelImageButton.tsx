@@ -18,9 +18,9 @@ const LabelImageButton: React.FunctionComponent<TProps> = (props) => {
       className={className}
       href={image}
       target="_blank"
-      aria-label={TEXTS.IMAGE_BUTTON_TEXT}
-      data-tip={TEXTS.IMAGE_BUTTON_TEXT}
-      title={TEXTS.IMAGE_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_LABEL_IMAGE}
+      data-tip={TEXTS.BUTTON_TEXT_LABEL_IMAGE}
+      title={TEXTS.BUTTON_TEXT_LABEL_IMAGE}
     >
       <Icon icon={IconName.Image} />
     </a>

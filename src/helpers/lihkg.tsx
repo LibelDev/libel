@@ -108,7 +108,7 @@ const renderAddLabelButton = (user: string, store: Store, container: Element) =>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <AddLabelButton user={user} targetReply={targetReply}>
-            {TEXTS.ADD_LABEL_BUTTON_TEXT}
+            {TEXTS.BUTTON_TEXT_ADD_LABEL}
           </AddLabelButton>
         </PersistGate>
       </Provider>,

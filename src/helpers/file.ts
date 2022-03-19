@@ -64,20 +64,20 @@ export const _import = (file: File) => {
             resolve(storage);
           } else {
             // storage validation error
-            reject(TEXTS.IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE);
+            reject(TEXTS.IMPORT_FILE_ERROR_INVALID_DATA_FORMAT);
           }
         } catch (err) {
           // failed to parse the file
-          reject(TEXTS.IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE);
+          reject(TEXTS.IMPORT_FILE_ERROR_INVALID_DATA_FORMAT);
           return;
         }
       } else {
         // cannot read file as string
-        reject(TEXTS.IMPORT_FILE_DATA_FORMAT_ERROR_MESSAGE);
+        reject(TEXTS.IMPORT_FILE_ERROR_INVALID_DATA_FORMAT);
       }
     });
     reader.addEventListener('error', (event) => {
-      reject(TEXTS.IMPORT_FILE_GENERIC_ERROR_MESSAGE);
+      reject(TEXTS.IMPORT_FILE_ERROR_GENERIC_ERROR);
     });
   });
 };

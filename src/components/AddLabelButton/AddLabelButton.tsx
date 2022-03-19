@@ -54,7 +54,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
             break;
           }
           default: {
-            throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+            throw TEXTS.LABEL_FORM_FIELD_ERROR_FAILED_TO_UPLOAD;
           }
         }
       } catch (err) {
@@ -62,7 +62,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
         if (typeof err === 'string') {
           throw err;
         } else {
-          throw TEXTS.LABEL_FORM_FIELD_ERROR_CAPTURE_FAILURE;
+          throw TEXTS.LABEL_FORM_FIELD_ERROR_FAILED_TO_UPLOAD;
         }
       }
     } else {

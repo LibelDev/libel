@@ -51,12 +51,12 @@ const debug = debugFactory('libel:component:SubscriptionMaker');
 
 const schema = joi.object({
   name: joi.string().trim().required().messages({
-    'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_EMPTY,
-    'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_EMPTY
+    'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_REQUIRED,
+    'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_REQUIRED
   }),
   version: joi.string().trim().required().messages({
-    'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_EMPTY,
-    'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_EMPTY
+    'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_REQUIRED,
+    'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_REQUIRED
   }),
   homepage: joi.string().trim().allow(''),
   color: joi.string().trim().pattern(HEX_COLOR).allow('')
@@ -92,7 +92,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
 
   const handleSubscriptionTemplateRemoveButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const yes = window.confirm(TEXTS.SUBSCRIPTION_MAKER_REMOVE_TEMPLATE_QUESTION);
+    const yes = window.confirm(TEXTS.SUBSCRIPTION_MAKER_MESSAGE_REMOVE_TEMPLATE_CONFIRMATION);
     if (yes) {
       dispatch(configActions.removeSubscriptionTemplate(subscriptionTemplateIndex));
       setSubscriptionTemplateIndex(-1);
@@ -173,7 +173,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           onChange={handleSubscriptionTemplateChange}
         >
           <option value={-1}>
-            {TEXTS.SUBSCRIPTION_MAKER_FIELD_TEMPLATE_OPTION_DEFAULT}
+            {TEXTS.SUBSCRIPTION_MAKER_TEMPLATE_OPTION_DEFAULT}
           </option>
           {
             subscriptionTemplates.map((subscriptionTemplate, index) => (
@@ -188,7 +188,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
             <IconButton
               className={styles.remove}
               icon={IconName.DeleteForever}
-              aria-label={TEXTS.SUBSCRIPTION_MAKER_REMOVE_BUTTON_TEXT}
+              aria-label={TEXTS.SUBSCRIPTION_MAKER_BUTTON_TEXT_REMOVE}
               onClick={handleSubscriptionTemplateRemoveButtonClick}
             />
           )

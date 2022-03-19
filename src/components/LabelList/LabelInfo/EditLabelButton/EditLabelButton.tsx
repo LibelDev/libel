@@ -49,9 +49,9 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         className={className}
         icon={IconName.Pencil}
-        aria-label={TEXTS.EDIT_LABEL_BUTTON_TEXT}
-        data-tip={TEXTS.EDIT_LABEL_BUTTON_TEXT}
-        title={TEXTS.EDIT_LABEL_BUTTON_TEXT}
+        aria-label={TEXTS.BUTTON_TEXT_EDIT_LABEL}
+        data-tip={TEXTS.BUTTON_TEXT_EDIT_LABEL}
+        title={TEXTS.BUTTON_TEXT_EDIT_LABEL}
         onClick={handleClick}
       />
       <LabelFormModal

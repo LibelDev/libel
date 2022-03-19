@@ -35,7 +35,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
               onSubmit={onSubmit}
             />
           ) : (
-            TEXTS.DATA_SET_EDITOR_EMPTY_DATA_SET_MESSAGE
+            TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET
           )
         }
       </Modal.Body>
@@ -43,7 +43,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
         !empty && (
           <Modal.Footer>
             <Button form={formID} type="submit">
-              {TEXTS.DATA_SET_EDITOR_SAVE_BUTTON_TEXT}
+              {TEXTS.DATA_SET_EDITOR_BUTTON_TEXT_SAVE}
             </Button>
           </Modal.Footer>
         )

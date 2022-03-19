@@ -30,7 +30,7 @@ const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       disabled={subscription.loading}
       onChange={handleChange}
     >
-      {subscription.enabled ? TEXTS.DISABLE_SUBSCRIPTION_BUTTON_TEXT : TEXTS.ENABLE_SUBSCRIPTION_BUTTON_TEXT}
+      {subscription.enabled ? TEXTS.BUTTON_TEXT_DISABLE_SUBSCRIPTION : TEXTS.BUTTON_TEXT_ENABLE_SUBSCRIPTION}
     </ToggleButton>
   );
 };

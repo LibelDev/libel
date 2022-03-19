@@ -22,7 +22,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
       const date = new Date(meta.lastSyncedTime);
       const now = new Date();
       const displayTime = formatRelative(date, now, { locale: zhHK });
-      return `${TEXTS.CLOUD_SYNC_LAST_SYNCED_TIME_HINT_TEXT_PREFIX} ${displayTime}`;
+      return `${TEXTS.CLOUD_SYNC_LABEL_PREFIX_LAST_SYNCED_TIME_HINT} ${displayTime}`;
     }
   }, [meta.lastSyncedTime]);
 
@@ -45,20 +45,20 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
       <div className={styles.label}>
         <img className={styles.logo} src={logo} alt='' />
         <div className={styles.info}>
-          {TEXTS.CLOUD_SYNC_GOOGLE_DRIVE_LABEL_TEXT}
+          {TEXTS.CLOUD_SYNC_LABEL_GOOGLE_DRIVE}
           {
             user && signedIn && (
               <React.Fragment>
                 <small className={styles.hint}>
                   <Icon className={styles.icon} icon={IconName.Verified} />
-                  {TEXTS.CLOUD_SYNC_GOOGLE_DRIVE_ACCOUNT_PREFIX}{' '}
+                  {TEXTS.CLOUD_SYNC_LABEL_PREFIX_CONNECTED_ACCOUNT}{' '}
                   {user.getBasicProfile().getEmail()}
                 </small>
                 {
                   sync.loading ? (
                     <small className={styles.hint}>
                       <LoadingSpinner className={styles.icon} />
-                      {TEXTS.CLOUD_SYNC_SYNC_IN_PROGRESS_LABEL_TEXT}
+                      {TEXTS.CLOUD_SYNC_LABEL_SYNC_IN_PROGRESS}
                     </small>
                   ) : (
                     <React.Fragment>
@@ -74,7 +74,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                         !!sync.error && (
                           <small className={styles.hint}>
                             <Icon className={styles.icon} icon={IconName.CommentAlert} />
-                            {TEXTS.CLOUD_SYNC_ERROR}
+                            {TEXTS.CLOUD_SYNC_ERROR_GENERIC_ERROR}
                           </small>
                         )
                       }
@@ -89,8 +89,8 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
       <SettingOptionButton onClick={signedIn ? handleSignout : handleSignIn}>
         {
           signedIn ?
-            TEXTS.GOOGLE_SIGNOUT_BUTTON_TEXT :
-            TEXTS.GOOGLE_AUTHORIZE_BUTTON_TEXT
+            TEXTS.BUTTON_TEXT_GOOGLE_SIGNOUT :
+            TEXTS.BUTTON_TEXT_GOOGLE_AUTHORIZE
         }
       </SettingOptionButton>
     </React.Fragment>

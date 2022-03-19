@@ -19,8 +19,8 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
       <Modal.Header onClose={onClose}>
         {
           label ?
-            TEXTS.LABEL_FORM_MODAL_TITLE_EDIT :
-            TEXTS.LABEL_FORM_MODAL_TITLE_ADD
+            TEXTS.LABEL_FORM_MODAL_TITLE_EDIT_LABEL :
+            TEXTS.LABEL_FORM_MODAL_TITLE_ADD_LABEL
         }
       </Modal.Header>
       <Modal.Body>
@@ -38,7 +38,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
           type="submit"
           loading={loading}
         >
-          {TEXTS.LABEL_FORM_BUTTON_SUBMIT}
+          {TEXTS.LABEL_FORM_BUTTON_TEXT_SUBMIT}
         </Button>
       </Modal.Footer>
     </Modal>

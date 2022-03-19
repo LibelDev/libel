@@ -40,9 +40,9 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       className={classnames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Close}
-      aria-label={TEXTS.REMOVE_SUBSCRIPTION_BUTTON_TEXT}
-      data-tip={TEXTS.REMOVE_SUBSCRIPTION_BUTTON_TEXT}
-      title={TEXTS.REMOVE_SUBSCRIPTION_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}
+      data-tip={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}
+      title={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}
       onClick={handleClick}
     />
   );

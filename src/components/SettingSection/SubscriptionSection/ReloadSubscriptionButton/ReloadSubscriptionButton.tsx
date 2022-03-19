@@ -34,9 +34,9 @@ const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       className={classnames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Refresh}
-      aria-label={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-      data-tip={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-      title={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}
+      data-tip={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}
+      title={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}
       onClick={handleClick}
     />
   );

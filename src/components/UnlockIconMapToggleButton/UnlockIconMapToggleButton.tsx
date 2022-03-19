@@ -43,7 +43,7 @@ const UnlockIconMapToggleButton = () => {
 
   return (
     <ToggleButton small flip checked={isIconMapUnlocked} onChange={handleChange}>
-      {TEXTS.UNLOCK_ICON_MAP_TOGGLE_BUTTON_TEXT}
+      {TEXTS.BUTTON_TEXT_UNLOCK_ICON_MAP}
     </ToggleButton>
   );
 };

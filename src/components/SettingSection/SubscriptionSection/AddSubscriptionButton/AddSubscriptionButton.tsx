@@ -38,12 +38,12 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
     <IconButton
       className={lihkgCssClasses.settingOptionButton}
       icon={IconName.Plus}
-      aria-label={TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
-      data-tip={TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
-      title={TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
+      data-tip={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
+      title={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
       onClick={handleClick}
     >
-      {TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
+      {TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
     </IconButton>
   );
 };

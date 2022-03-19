@@ -100,7 +100,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         icon={IconName.Close}
         onClick={handleClose}
-        aria-label={TEXTS.ANNOUNCEMENT_CLOSE_BUTTON_TEXT}
+        aria-label={TEXTS.BUTTON_TEXT_CLOSE_ANNOUNCEMENT}
       />
     </div>
   );

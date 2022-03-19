@@ -31,10 +31,10 @@ export const load = createAsyncThunk<IRemoteSubscription, number, TAsyncThunkCon
       if (remoteSubscription) {
         return remoteSubscription;
       }
-      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_VALIDATION_ERROR);
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT);
     } catch (err) {
       console.error(err);
-      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_FETCH_ERROR);
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_FAILED_TO_FETCH);
     }
   }
 );

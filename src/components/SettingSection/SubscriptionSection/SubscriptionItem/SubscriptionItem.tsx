@@ -48,9 +48,9 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
             subscription.version && (
               <Icon
                 icon={IconName.Verified}
-                aria-label={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                data-tip={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                title={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
+                aria-label={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                data-tip={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                title={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
               />
             )
           )

@@ -29,9 +29,9 @@ const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
       href={homepage}
       target="_blank"
       disabled={loading || !homepage}
-      aria-label={TEXTS.SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT}
-      data-tip={TEXTS.SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT}
-      title={TEXTS.SUBSCRIPTION_HOMEPAGE_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
+      data-tip={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
+      title={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
       {...otherProps}
     />
   );

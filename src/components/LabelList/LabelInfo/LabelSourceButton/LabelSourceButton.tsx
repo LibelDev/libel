@@ -17,9 +17,9 @@ const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
       className={className}
       href={url}
       target="_blank"
-      aria-label={TEXTS.SOURCE_BUTTON_TEXT}
-      data-tip={TEXTS.SOURCE_BUTTON_TEXT}
-      title={TEXTS.SOURCE_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
+      data-tip={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
+      title={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
     >
       <Icon icon={IconName.Link} />
     </a>
