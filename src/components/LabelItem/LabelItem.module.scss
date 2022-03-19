@@ -1,13 +1,55 @@
+@use 'sass:math';
 @import '../../stylesheets/base';
 
 .label-item {
-  @apply inline-flex items-center;
+  @apply relative;
   @apply px-2 py-1;
-  @apply border border-solid rounded;
-  border-color: #aaaaaa;
+  @apply ml-3;
+  @apply border-solid border;
+  border-color: #aaaaaa #aaaaaa #aaaaaa transparent;
+  @apply rounded;
   @apply text-sm;
 
   @include dark-mode() {
-    border-color: #444443;
+    border-color: #444443 #444443 #444443 transparent;
+  }
+
+  &:before {
+    $height: 30; // 1.25rem + 0.25rem * 2 + 2px
+    $size: #{math.sqrt(math.div(math.pow($height, 2), 2))}px;
+    content: '';
+    @apply absolute;
+    @apply top-0 right-full;
+    @apply block;
+    height: $size;
+    width: $size;
+    @apply border-solid border;
+    border-color: #aaaaaa transparent transparent #aaaaaa;
+    @apply rounded-sm rounded-tl;
+    @apply transform;
+    @apply origin-top-right;
+    --tw-translate-x: 1px;
+    --tw-translate-y: -1px;
+    @apply -rotate-45;
+
+    @include dark-mode() {
+      border-color: #444443 transparent transparent #444443;
+    }
+  }
+
+  &:after {
+    content: '';
+    @apply absolute;
+    @apply top-1/2 right-full;
+    @apply h-1 w-1;
+    @apply border-solid border;
+    @apply rounded-full;
+    @apply transform;
+    @apply -translate-y-1/2;
+    border-color: #aaaaaa;
+
+    @include dark-mode() {
+      border-color: #444443;
+    }
   }
 }

@@ -1,6 +1,5 @@
 import { autoUpdate, flip, useFloating } from '@floating-ui/react-dom';
-import classNames from 'classnames';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
 import { IGroupedLabelItem } from '../../../types/label';
 import LabelItem from '../../LabelItem/LabelItem';
@@ -16,24 +15,6 @@ export interface IProps {
 
 const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
   const { text, items, floatingConfig } = props;
-  const [active, setActive] = useState(false);
-
-  const _className = useMemo(() => (
-    classNames(
-      styles.labelItem,
-      {
-        [styles.active]: active
-      }
-    )
-  ), [active]);
-
-  const handleMouseEnter: React.MouseEventHandler<HTMLElement> = useCallback(() => {
-    setActive(true);
-  }, []);
-
-  const handleMouseLeave: React.MouseEventHandler<HTMLElement> = useCallback(() => {
-    setActive(false);
-  }, []);
 
   /**
    * omit the unnecessary hooks if there is no label info list  
@@ -42,7 +23,7 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
    */
   if (!floatingConfig) {
     return (
-      <LabelItem className={_className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <LabelItem className={styles.labelItem}>
         {text}
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
@@ -68,11 +49,6 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
     floating(element);
   }, [floating]);
 
-  const handleMouseEnterWithFloatingUpdate: React.MouseEventHandler<HTMLElement> = useCallback((event) => {
-    handleMouseEnter(event);
-    update();
-  }, [handleMouseEnter]);
-
   useEffect(() => {
     const { reference, floating } = refs;
     if (!reference.current || !floating.current) {
@@ -83,12 +59,7 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <React.Fragment>
-      <LabelItem
-        ref={reference}
-        className={_className}
-        onMouseEnter={handleMouseEnterWithFloatingUpdate}
-        onMouseLeave={handleMouseLeave}
-      >
+      <LabelItem ref={reference} className={styles.labelItem}>
         {text}
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
@@ -97,8 +68,6 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
         className={styles.labelInfoList}
         style={labelInfoListStyle}
         items={items}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       />
     </React.Fragment>
   );

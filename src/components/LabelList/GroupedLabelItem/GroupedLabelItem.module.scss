@@ -1,28 +1,10 @@
 @import '../../../stylesheets/base';
 
 .label-item {
-  @apply inline-flex items-center;
   @apply relative;
-  @apply border border-solid rounded;
-  border-color: #aaaaaa;
-  @apply px-2 py-1;
-  @apply text-sm;
-  @apply transition-shadow;
-
-  @include dark-mode() {
-    border-color: #444443;
-  }
 
   :global(.#{$lihkg-class-thread-heading-text}) & {
     @apply py-0;
-  }
-
-  &.active {
-    @include glow();
-
-    @include dark-mode() {
-      @include glow($color: #ffffff);
-    }
   }
 
   .badge {
