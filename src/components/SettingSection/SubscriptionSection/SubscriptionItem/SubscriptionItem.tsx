@@ -1,7 +1,6 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import useDataSetThemeColorStyle from '../../../../hooks/useDataSetThemeColorStyle';
 import Subscription from '../../../../models/Subscription';
 import { IconName } from '../../../../types/icon';
@@ -11,14 +10,14 @@ import ReloadSubscriptionButton from '../ReloadSubscriptionButton/ReloadSubscrip
 import RemoveSubscriptionButton from '../RemoveSubscriptionButton/RemoveSubscriptionButton';
 import SubscriptionHomepageButton from '../SubscriptionHomepageButton/SubscriptionHomepageButton';
 import ToggleSubscriptionButton from '../ToggleSubscriptionButton/ToggleSubscriptionButton';
-import styles from './SubscriptionItem.scss';
+import styles from './SubscriptionItem.module.scss';
 
 interface IProps {
   subscription: Subscription;
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
@@ -49,9 +48,9 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
             subscription.version && (
               <Icon
                 icon={IconName.Verified}
-                aria-label={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                data-tip={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
-                title={TEXTS.SUBSCRIPTION_LOAD_SUCCESS}
+                aria-label={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                data-tip={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                title={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
               />
             )
           )

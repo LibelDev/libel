@@ -1,0 +1,39 @@
+@import '../../stylesheets/base';
+
+.footer {
+  @apply flex;
+  @apply h-12;
+  background-color: $color-white;
+  border-top: solid 1px $color-grey02;
+  color: $color-black;
+
+  @include dark-mode() {
+    background-color: $color-black02;
+    border-top-color: $color-grey06;
+    color: $color-white;
+  }
+
+  a,
+  button,
+  input[type='button'],
+  input[type='submit'] {
+    @apply flex-1;
+    @apply bg-transparent;
+    @apply border-0;
+    @apply text-center;
+    @apply text-base text-current;
+
+    // &:not(:disabled) {
+    //   @apply cursor-pointer;
+    // }
+
+    &:focus,
+    &:hover {
+      background-color: rgba($color-grey10, 0.1);
+
+      @include dark-mode() {
+        background-color: $color-grey07;
+      }
+    }
+  }
+}

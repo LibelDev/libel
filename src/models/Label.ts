@@ -1,8 +1,16 @@
+import format from 'date-fns/format';
 import { immerable } from 'immer';
+import { shortenedHost } from '../constants/lihkg';
+import { mapSourceToPost, getShareURL } from '../helpers/label';
+import { getShareID } from '../helpers/lihkg';
+
+type TLabelText = string;
 
 export interface ILabel {
-  text: string;
+  id: string;
+  text: TLabelText;
   reason?: string;
+  /** @deprecated */
   url?: string;
   date?: number;
   source?: ISource;
@@ -16,48 +24,70 @@ export interface ISource {
   messageNumber: string;
 }
 
-// deprecated
+/** @deprecated */
 export interface ILabelDatum {
   user: string;
-  labels: (ILabel | string)[];
+  labels: (ILabel | TLabelText)[];
 }
 
 class Label implements ILabel {
   [immerable] = true;
+  id: string;
   text: string;
   reason?: string;
+  /** @deprecated */
   url?: string;
   date?: number;
   source?: ISource;
   color?: string;
   image?: string;
 
-  constructor (text: string, reason?: string, url?: string, date?: number, source?: ISource, color?: string, image?: string) {
+  constructor (
+    id: string,
+    text: string,
+    reason?: string,
+    url?: string,
+    date?: number,
+    source?: ISource,
+    color?: string,
+    image?: string
+  ) {
+    this.id = id;
     this.text = text;
-    this.reason = reason;
-    this.url = url;
-    this.date = date;
-    this.source = source;
-    this.color = color;
-    this.image = image;
+    this.reason = reason || undefined;
+    this.url = url || undefined;
+    this.date = date || undefined;
+    this.source = source || undefined;
+    this.color = color || undefined;
+    this.image = image || undefined;
   }
 
   static deserialize (label: Label | ILabel) {
     if (label instanceof Label) {
       return label;
     }
-    const { text, reason, url, date, source, color, image } = label;
-    return new Label(text, reason, url, date, source, color, image);
+    const { id, text, reason, url, date, source, color, image } = label;
+    return new Label(id, text, reason, url, date, source, color, image);
   }
 
-  get sourceURL () {
-    const { source } = this;
-    if (source) {
-      const { thread, page, messageNumber: post } = source;
-      return `https://lihkg.com/thread/${thread}/page/${page}?post=${post}`;
+  get displayDate () {
+    const { date } = this;
+    if (date) {
+      return format(date, 'yyyy年MM月dd日 HH:mm:ss');
     }
-    // fallback to generic url
-    return this.url;
+  }
+
+  get shareURL () {
+    return getShareURL(this);
+  }
+
+  clone (deep?: boolean) {
+    const { id, text, reason, url, date, source, color, image } = this;
+    const clone = new Label(id, text, reason, url, date, source, color, image);
+    if (deep) {
+      clone.source = source && { ...source };
+    }
+    return clone;
   }
 }
 

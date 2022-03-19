@@ -1,0 +1,20 @@
+@import '../../stylesheets/base';
+
+.loading-spinner {
+  @apply inline-block;
+  @apply border-2 border-solid rounded-full;
+  @apply animate-spin;
+  content: '';
+  border-top-color: $color-grey05;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: $color-grey05;
+  height: 1em;
+  width: 1em;
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}

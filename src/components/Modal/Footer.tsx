@@ -1,10 +1,9 @@
 import React from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
-import styles from './Footer.scss';
+import styles from './Footer.module.scss';
 
 interface IProps { }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>
 
 const Footer: React.FunctionComponent<TProps> = (props) => {
   const { children } = props;

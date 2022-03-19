@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
+import { useTypedDispatch } from '../../../../store/store';
 import ToggleButton from '../../../ToggleButton/ToggleButton';
 
 interface IProps {
@@ -11,11 +10,12 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useDispatch();
   const { className, subscription, index } = props;
+
+  const dispatch = useTypedDispatch();
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked: enabled } = event.target;
@@ -30,7 +30,7 @@ const ToggleSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       disabled={subscription.loading}
       onChange={handleChange}
     >
-      {subscription.enabled ? TEXTS.DISABLE_SUBSCRIPTION_BUTTON_TEXT : TEXTS.ENABLE_SUBSCRIPTION_BUTTON_TEXT}
+      {subscription.enabled ? TEXTS.BUTTON_TEXT_DISABLE_SUBSCRIPTION : TEXTS.BUTTON_TEXT_ENABLE_SUBSCRIPTION}
     </ToggleButton>
   );
 };

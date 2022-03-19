@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ActionType } from 'typesafe-actions';
 
 interface IState {
   loading: boolean;
@@ -25,8 +26,9 @@ const slice = createSlice({
   },
 });
 
-export const actions = {
-  ...slice.actions
-};
+export const { actions } = slice;
+
+// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+export type TActions = ActionType<typeof slice.actions>;
 
 export default slice;

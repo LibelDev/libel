@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-import { StateType } from 'typesafe-actions';
+import { ActionType } from 'typesafe-actions';
 import { ISource } from '../../models/Label';
 import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
 
@@ -27,7 +27,7 @@ interface IRemoveLabelPayload {
   index: number;
 }
 
-const initialState: Personal = new Personal();
+const initialState = Personal.factory();
 
 const slice = createSlice({
   name: 'personal',
@@ -47,12 +47,12 @@ const slice = createSlice({
     },
     update: (state, action: PayloadAction<Personal | IPersonal>) => {
       const { payload: personal } = action;
-      return personal instanceof Personal ? personal : Personal.deserialize(personal);
+      return Personal.deserialize(personal);
     }
   },
 });
 
-type TState = StateType<typeof slice.reducer>;
+type TState = ReturnType<typeof slice.reducer>;
 
 export const SetTransform = createTransform<TState, ISerializedPersonal>(
   /**
@@ -72,8 +72,9 @@ export const SetTransform = createTransform<TState, ISerializedPersonal>(
   }
 );
 
-export const actions = {
-  ...slice.actions
-};
+export const { actions } = slice;
+
+// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+export type TActions = ActionType<typeof slice.actions>;
 
 export default slice;

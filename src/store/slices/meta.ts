@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
+import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
-import Meta from '../../models/Meta';
+import Meta, { IMeta } from '../../models/Meta';
 
-export const initialState = new Meta();
+const initialState = Meta.factory();
 
 const slice = createSlice({
   name: 'meta',
@@ -12,17 +13,22 @@ const slice = createSlice({
     setLastModifiedTime: (state, action: PayloadAction<number>) => {
       state.lastModifiedTime = action.payload;
     },
-    setLastSyncedTime: (state, action: PayloadAction<number>) => {
-      state.lastSyncedTime = action.payload;
+    setLastSyncedTime: (state, action: PayloadAction<number | null>) => {
+      state.lastSyncedTime = action.payload || undefined;
     },
+    update: (state, action: PayloadAction<Meta | IMeta>) => {
+      const { payload: meta } = action;
+      return Meta.deserialize(meta);
+    }
   },
 });
 
-export const actions = {
-  ...slice.actions
-};
+export const { actions } = slice;
 
-export const reducer = persistReducer({
+// export type TActions = ReturnType<typeof actions[keyof typeof actions]>;
+export type TActions = ActionType<typeof slice.actions>;
+
+export const persistedReducer = persistReducer({
   keyPrefix: '',
   key: 'meta',
   storage: storage,

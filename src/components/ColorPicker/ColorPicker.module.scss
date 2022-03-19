@@ -1,0 +1,44 @@
+@import '../../stylesheets/base';
+
+.color-picker {
+  > div {
+    @apply flex items-center;
+    @apply w-12;
+  }
+
+  .input {
+    @apply appearance-none;
+    @apply bg-transparent;
+    @apply p-0;
+
+    &::-webkit-color-swatch-wrapper {
+      @apply p-0;
+    }
+
+    &::-webkit-color-swatch {
+      @apply border-0;
+    }
+
+    &[value=''] {
+      &::-webkit-color-swatch {
+        // @apply bg-transparent #{!important};
+        background: repeating-conic-gradient($color-grey04 0% 25%, $color-white 0% 50%) 50% 50% / 10px 10px;
+      }
+    }
+  }
+
+  &:not(.border) {
+    input {
+      @apply border-0;
+    }
+  }
+
+  &.rounded {
+    input {
+      &,
+      &::-webkit-color-swatch {
+        border-radius: 0.25rem;
+      }
+    }
+  }
+}

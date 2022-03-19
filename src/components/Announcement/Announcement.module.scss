@@ -1,0 +1,64 @@
+@import '../../stylesheets/base';
+
+.container {
+  @apply fixed;
+  @apply w-full;
+  @apply left-0;
+  border-bottom: 1px solid $color-grey03;
+  top: 3rem; // header height
+  transition: top 0.3s ease;
+  will-change: top;
+  z-index: 4; // {pinned reply z-index} + 1
+
+  &:empty {
+    @apply hidden;
+  }
+
+  @include dark-mode() {
+    border-bottom-color: $color-grey08;
+  }
+
+  :global(#{$lihkg-selector-nav-sticky-hidden} ~ #{$lihkg-selector-split-view}) & {
+    @apply top-0;
+  }
+
+  @screen md {
+    @apply absolute;
+    @apply top-0;
+  }
+}
+
+.announcement {
+  $logo-size: 32px;
+  $padding-y: 0.25rem;
+
+  @apply flex items-center;
+  backdrop-filter: saturate(180%) blur(5px);
+  background-color: rgba($color-white01, 0.8);
+  padding: $padding-y 0.8rem;
+
+  @include dark-mode() {
+    background-color: rgba($color-black03, 0.8);
+  }
+
+  > * + * {
+    @apply ml-3;
+  }
+
+  .logo {
+    height: $logo-size;
+    width: $logo-size;
+  }
+
+  .message {
+    @apply mr-auto;
+
+    a {
+      color: $color-blue02;
+
+      @include dark-mode() {
+        color: $color-blue01;
+      }
+    }
+  }
+}

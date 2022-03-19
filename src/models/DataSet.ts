@@ -1,12 +1,15 @@
 import { immerable } from 'immer';
 import dataSchema from '../schemas/data';
 import dataSetSchema from '../schemas/dataSet';
+import { getAvailableLabelID } from './../helpers/label';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 
-export interface IDataSet {
+export interface ISerializedDataSet {
   data: IData;
 }
+
+export interface IDataSet extends ISerializedDataSet { }
 
 abstract class DataSet implements IDataSet {
   [immerable] = true;
@@ -14,10 +17,6 @@ abstract class DataSet implements IDataSet {
 
   constructor (dataSet?: IDataSet) {
     this.data = new Data(dataSet?.data);
-  }
-
-  static factory (): IDataSet {
-    return { data: new Data() };
   }
 
   /**
@@ -34,15 +33,15 @@ abstract class DataSet implements IDataSet {
           if (typeof label === 'string') {
             // backward compatible
             const text = label;
-            return new Label(text);
+            // `id` will be patched later
+            return new Label('', text);
           }
-          const { text, reason, url, date, source, image } = label;
-          return new Label(text, reason, url, date, source, image);
+          return Label.deserialize(label);
         });
         return dataSet;
-      }, this.factory());
+      }, { data: {} });
     }
-    return { data: new Data(object) };
+    return { data: { ...object } };
   }
 
   /**
@@ -78,19 +77,14 @@ abstract class DataSet implements IDataSet {
   static aggregate (dataSet: IDataSet) {
     const { data } = dataSet;
     const users = Object.keys(data);
-    const labels = users.reduce<Label[]>((labels, user) => {
+    const labels = users.reduce<ILabel[]>((labels, user) => {
       const _labels = data[user] || [];
-      labels = labels.concat(_labels);
-      return labels;
+      return labels.concat(_labels);
     }, []);
     return { users, labels };
   }
 
-  /**
-   * prepare for storage
-   * @abstract
-   */
-  abstract serialize (): void;
+  abstract serialize (): unknown;
 
   aggregate () {
     return DataSet.aggregate(this);
@@ -99,10 +93,11 @@ abstract class DataSet implements IDataSet {
   add (user: string, data: Pick<ILabel, 'text' | 'reason' | 'source' | 'color' | 'image'>) {
     this.data[user] = this.data[user] || [];
     const labels = this.data[user]!;
+    const id = getAvailableLabelID(labels);
     const { text, reason, source, color, image } = data;
     const { href: url } = window.location;
     const date = Date.now();
-    const label = new Label(text, reason, url, date, source, color, image);
+    const label = new Label(id, text, reason, url, date, source, color, image);
     labels.push(label);
     return this;
   }
@@ -127,6 +122,27 @@ abstract class DataSet implements IDataSet {
       labels.splice(index, 1);
       if (labels.length === 0) {
         delete this.data[user];
+      }
+    }
+    return this;
+  }
+
+  plain<T extends IDataSet> (): T {
+    const json = JSON.stringify(this);
+    return JSON.parse(json);
+  }
+
+  patch () {
+    /** patch Label#id */
+    const { data } = this;
+    const users = Object.keys(data);
+    for (const user of users) {
+      const labels = data[user]!;
+      for (const label of labels) {
+        if (!label.id) {
+          const id = getAvailableLabelID(labels);
+          label.id = id;
+        }
       }
     }
     return this;

@@ -1,0 +1,44 @@
+@import '../../../stylesheets/base';
+
+.label-item {
+  @apply relative;
+
+  :global(.#{$lihkg-class-thread-heading-text}) & {
+    @apply py-0;
+  }
+
+  .badge {
+    @apply absolute;
+    @apply top-0 right-0;
+    @apply transform;
+    @apply translate-x-1/2 -translate-y-1/2;
+  }
+
+  &:hover {
+    & + .label-info-list {
+      @include visible();
+      @apply translate-y-2;
+    }
+  }
+}
+
+.label-info-list {
+  @include hide-scrollbar();
+  @include invisible();
+  @apply rounded;
+  @apply -my-2;
+  @apply py-2;
+  @apply transform;
+  @apply translate-y-4;
+  transition-property: opacity, transform, visibility;
+  @apply duration-300;
+  @apply max-h-32;
+  @apply box-content;
+  @apply overflow-y-auto;
+  z-index: 1;
+
+  &:hover {
+    @include visible();
+    @apply translate-y-2;
+  }
+}

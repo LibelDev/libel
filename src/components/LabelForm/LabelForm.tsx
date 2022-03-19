@@ -1,24 +1,26 @@
 import classNames from 'classnames';
 import joi from 'joi';
 import React, { useCallback, useMemo, useState } from 'react';
+import { namespace } from '../../../package.json';
 import cache from '../../cache';
+import { EventAction, EventCategory } from '../../constants/ga';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
-import { MappedHTMLAttributes } from '../../helpers/types';
+import * as gtag from '../../helpers/gtag';
 import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
 import Label, { ILabel } from '../../models/Label';
 import { IconName } from '../../types/icon';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import Icon from '../Icon/Icon';
-import LabelItem from '../LabelList/LabelItems/LabelItem/LabelItem';
+import LabelItem from '../LabelItem/LabelItem';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
-import styles from './LabelForm.scss';
+import styles from './LabelForm.module.scss';
 
-type TData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
+type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
-type TFormData = TData & {
+type TFormData = TLabelData & {
   meta: {
     screenshot?: Blob | null;
   };
@@ -29,7 +31,7 @@ interface IToggleButtonState {
   isCaptureReply: boolean;
 }
 
-interface IErrors {
+interface IInputErrors {
   [name: string]: string | undefined;
 }
 
@@ -41,7 +43,10 @@ interface IProps {
   /**
    * the label to be edited
    */
-  data?: TData;
+  label?: TLabelData;
+  /**
+   * the loading state
+   */
   loading?: boolean;
   /**
    * custom onSubmit event handler
@@ -51,12 +56,12 @@ interface IProps {
   onSubmission: (event: React.FormEvent<HTMLFormElement>, data: TFormData) => Promise<void>;
 }
 
-export type TProps = IProps & MappedHTMLAttributes<'form'>;
+export type TProps = IProps & React.ComponentPropsWithoutRef<'form'>;
 
 const schema = joi.object({
   text: joi.string().trim().required().messages({
-    'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY,
-    'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_EMPTY
+    'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED,
+    'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED
   }),
   reason: joi.string().trim().allow(''),
   color: joi.string().trim().pattern(HEX_COLOR).allow(''),
@@ -76,23 +81,23 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     id,
     className,
     user,
-    data,
+    label,
     loading,
     onSubmission,
     ...otherProps
   } = props;
 
-  const [formData, setFormData] = useState<TFormData>(data as TFormData || initialFormData);
+  const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
     isCustomColor: !!formData.color,
     isCaptureReply: false
   });
-  const [errors, setErrors] = useState<IErrors>({});
+  const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [error, setError] = useState('');
 
   const draftLabel = useMemo(() => {
     const { text } = formData;
-    const label = new Label(text || TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_DUMMY_TEXT);
+    const label = new Label('DRAFT', text || TEXTS.LABEL_FORM_PREVIEW_LABEL_DUMMY_TEXT);
     return label;
   }, [formData]);
 
@@ -103,6 +108,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   }), []));
 
   const _id = id || useElementID(LabelForm.displayName!);
+  const name = `${namespace}-${LabelForm.displayName!}`;
   const errorID = `${_id}-error`;
 
   const _user = cache.getUser(user);
@@ -110,8 +116,8 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-    setErrors({ ...errors, [name]: undefined });
-  }, [formData, errors]);
+    setInputErrors({ ...inputErrors, [name]: undefined });
+  }, [formData, inputErrors]);
 
   const handleToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked, name } = event.target;
@@ -130,12 +136,15 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
+      const _inputErrors = { ...inputErrors };
       const { details } = error;
       for (const { context, message } of details) {
         const { key } = context!;
-        const _errors = { ...errors, [key!]: message };
-        setErrors(_errors);
+        Object.assign(_inputErrors, { [key!]: message });
+        // analytics
+        gtag.event(EventAction.Error, { event_category: EventCategory.LabelForm, event_label: key });
       }
+      setInputErrors(_inputErrors);
     } else {
       try {
         await onSubmission(event, value);
@@ -145,13 +154,14 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         }
       }
     }
-  }, [onSubmission, formData, toggleButtonState, errors, screenshot]);
+  }, [onSubmission, formData, toggleButtonState, inputErrors, screenshot]);
 
   return (
     <form
-      id={_id}
-      className={classNames(className, styles.labelForm)}
       {...otherProps}
+      id={_id}
+      name={name}
+      className={classNames(className, styles.labelForm)}
       onSubmit={handleSubmit}
       aria-describedby={errorID}
     >
@@ -170,9 +180,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.LABEL_FORM_FIELD_LABEL_TEXT}
           name="text"
           value={formData.text || ''}
-          error={errors.text}
+          error={inputErrors.text}
           onChange={handleInputChange}
           autoFocus
+          autoComplete="on"
         />
       </div>
       <div className={styles.inputField}>
@@ -183,13 +194,14 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_REASON}
           name="reason"
           value={formData.reason || ''}
-          error={errors.reason}
+          error={inputErrors.reason}
           onChange={handleInputChange}
+          autoComplete="on"
         />
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
-          className={styles.toggleButton}
+          fullWidth
           checked={toggleButtonState.isCustomColor}
           name="isCustomColor"
           disabled={loading}
@@ -201,25 +213,23 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           toggleButtonState.isCustomColor && (
             <div className={styles.colorPicker}>
               <span className={styles.preview}>
-                {TEXTS.LABEL_FORM_LABEL_PREVIEW_LABEL_LABEL_TEXT}
+                {TEXTS.LABEL_FORM_PREVIEW_LABEL_LABEL_TEXT}
                 {
                   draftLabel.text && (
-                    <LabelItem
-                      className={styles.labelItem}
-                      label={draftLabel}
-                      color={formData.color}
-                      hasInfo={false}
-                    />
-
+                    <LabelItem className={styles.labelItem} color={formData.color}>
+                      {draftLabel.text}
+                    </LabelItem>
                   )
                 }
               </span>
               <ColorPicker
+                border
+                rounded
                 className={styles.input}
                 disabled={loading}
                 name="color"
                 value={formData.color || ''}
-                error={errors.color}
+                error={inputErrors.color}
                 onChange={handleInputChange}
               />
             </div>
@@ -227,7 +237,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         }
       </div>
       {
-        data ? (
+        label ? (
           /** edit label */
           <div className={styles.inputField}>
             <TextInput
@@ -237,7 +247,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_IMAGE}
               name="image"
               value={formData.image || ''}
-              error={errors.image}
+              error={inputErrors.image}
               onChange={handleInputChange}
             />
           </div>
@@ -245,7 +255,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** add label */
           <div className={classNames(styles.inputField, styles.screenshot)}>
             <ToggleButton
-              className={styles.toggleButton}
+              fullWidth
               checked={toggleButtonState.isCaptureReply}
               disabled={loading}
               name="isCaptureReply"

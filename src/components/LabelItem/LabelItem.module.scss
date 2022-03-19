@@ -1,0 +1,58 @@
+@use 'sass:math';
+@import '../../stylesheets/base';
+
+.label-item {
+  @apply relative;
+  @apply pl-3;
+
+  .inner {
+    @apply relative;
+    @apply px-3 py-1;
+    @apply border-solid border;
+    border-color: $color-grey05 $color-grey05 $color-grey05 transparent;
+    @apply rounded;
+    @apply text-sm;
+
+    @include dark-mode() {
+      border-color: $color-grey06 $color-grey06 $color-grey06 transparent;
+    }
+  }
+
+  &:before {
+    $height: 30; // 1.25rem + 0.25rem * 2 + 2px
+    $size: #{math.sqrt(math.div(math.pow($height, 2), 2))}px;
+    content: '';
+    @apply absolute;
+    @apply top-0 -left-2;
+    @apply block;
+    height: $size;
+    width: $size;
+    @apply border-solid border;
+    border-color: $color-grey05 transparent transparent $color-grey05;
+    @apply rounded-sm rounded-tl;
+    @apply transform;
+    @apply origin-top-right;
+    --tw-translate-x: 1px;
+    @apply -rotate-45;
+
+    @include dark-mode() {
+      border-color: $color-grey06 transparent transparent $color-grey06;
+    }
+  }
+
+  &:after {
+    content: '';
+    @apply absolute;
+    @apply top-1/2 left-2;
+    @apply h-1 w-1;
+    @apply border-solid border;
+    @apply rounded-full;
+    @apply transform;
+    @apply -translate-y-1/2;
+    border-color: $color-grey05;
+
+    @include dark-mode() {
+      border-color: $color-grey06;
+    }
+  }
+}

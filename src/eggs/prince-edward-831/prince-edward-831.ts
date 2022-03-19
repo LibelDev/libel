@@ -1,7 +1,7 @@
 import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import Slideshow, { IChangeEvent, SlideshowEvent } from '../../models/Slideshow';
-import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { enabled, images, timeout, videoURL } from './config/config';
 import styles from './prince-edward-831.scss';
 

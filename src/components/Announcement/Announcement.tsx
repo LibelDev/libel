@@ -4,22 +4,23 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
+import { EventAction, EventCategory } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
+import * as gtag from '../../helpers/gtag';
 import { isViewport, Viewport } from '../../helpers/responsive';
-import { MappedHTMLAttributes } from '../../helpers/types';
-import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.scss';
+import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
 import IconButton from '../IconButton/IconButton';
-import styles from './Announcement.scss';
+import styles from './Announcement.module.scss';
 
 interface IProps {
   icon?: IconName;
   forced?: boolean;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const announcementElements: HTMLDivElement[] = [];
 
@@ -52,6 +53,8 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
     if (id && !forced && promptDontShowAgain()) {
       dontShowAgain(id, 7);
     }
+    // analytics
+    gtag.event(EventAction.Close, { event_category: EventCategory.Announcement, event_label: id });
   }, [id, forced]);
 
   const announcementRef = useRef<HTMLDivElement>(null);
@@ -67,6 +70,8 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
     } else {
       updateLayout();
     }
+    // analytics
+    gtag.event(EventAction.Open, { event_category: EventCategory.Announcement, event_label: id });
     return () => {
       const index = announcementElements.indexOf(current!);
       announcementElements.splice(index, 1);
@@ -74,7 +79,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
         window.removeEventListener('resize', updateLayout);
       }
     };
-  }, [showed]);
+  }, [id]);
 
   useEffect(updateLayout, [pathname]);
 
@@ -95,7 +100,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         icon={IconName.Close}
         onClick={handleClose}
-        aria-label={TEXTS.ANNOUNCEMENT_CLOSE_BUTTON_TEXT}
+        aria-label={TEXTS.BUTTON_TEXT_CLOSE_ANNOUNCEMENT}
       />
     </div>
   );

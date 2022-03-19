@@ -1,0 +1,58 @@
+@import '../../stylesheets/base';
+
+.subscription-maker {
+  @apply p-4;
+
+  > * + * {
+    @apply mt-4;
+  }
+
+  .input-field {
+    @apply flex items-start;
+
+    .select {
+      @apply flex-1;
+
+      > div {
+        @apply flex-1;
+      }
+
+      & + .remove {
+        @apply ml-2;
+        font-size: inherit;
+        line-height: 2.25rem;
+      }
+    }
+
+    .text-input {
+      @apply flex-1;
+
+      > span {
+        @apply flex-1;
+      }
+
+      > div {
+        width: 200px;
+      }
+
+      .error {
+        @apply mt-4;
+
+        .icon {
+          @apply mr-2;
+        }
+      }
+    }
+
+    &.color {
+      .color-picker {
+        @apply flex items-center;
+        @apply ml-4;
+
+        .input {
+          @apply ml-auto;
+        }
+      }
+    }
+  }
+}

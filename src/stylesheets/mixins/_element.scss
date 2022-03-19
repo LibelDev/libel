@@ -1,0 +1,24 @@
+@mixin invisible() {
+  @apply invisible;
+  @apply opacity-0;
+}
+
+@mixin visible() {
+  @apply visible;
+  @apply opacity-100;
+}
+
+@mixin hide-scrollbar() {
+  /** chrome, safari, opera */
+  &::-webkit-scrollbar {
+    @apply hidden;
+  }
+  /** IE and Edge */
+  -ms-overflow-style: none;
+  /** firefox */
+  scrollbar-width: none;
+}
+
+@mixin glow($blur-radius: 0.5rem, $spread-radius: 0.125rem, $color: $color-black) {
+  box-shadow: 0 0 $blur-radius $spread-radius rgba($color, 0.5);
+}

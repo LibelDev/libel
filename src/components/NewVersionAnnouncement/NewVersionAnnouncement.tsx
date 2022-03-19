@@ -6,7 +6,7 @@ import { versionUpdate } from '../../templates/announcements';
 import { IRelease } from '../../types/github';
 import { IconName } from '../../types/icon';
 import Announcement from '../Announcement/Announcement';
-import styles from './NewVersionAnnouncement.scss';
+import styles from './NewVersionAnnouncement.module.scss';
 
 interface IProps {
   currentVersion: string;
@@ -29,7 +29,7 @@ const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
       <strong>
         <a href={userScriptURL} target="_blank">{newVersionMessage}</a>
       </strong>
-      （<a href={release.html_url} target="_blank">{TEXTS.CHANGE_LOG}</a>）
+      （<a href={release.html_url} target="_blank">{TEXTS.ANNOUCEMENT_LABEL_CHANGE_LOG}</a>）
       <small>（{oldVersionMessage}）</small>
     </Announcement>
   );

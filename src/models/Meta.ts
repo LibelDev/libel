@@ -17,12 +17,24 @@ class Meta implements IMeta {
     this.lastSyncedTime = lastSyncedTime;
   }
 
+  static factory () {
+    return new Meta();
+  }
+
   static deserialize (meta: Meta | IMeta) {
     if (meta instanceof Meta) {
       return meta;
     }
     const { lastModifiedTime, lastSyncedTime } = meta;
     return new Meta(lastModifiedTime, lastSyncedTime);
+  }
+
+  static parseFromStorage (json: string): IMeta {
+    const { lastModifiedTime, lastSyncedTime } = JSON.parse(json);
+    return {
+      lastModifiedTime: JSON.parse(lastModifiedTime),
+      lastSyncedTime: lastSyncedTime && JSON.parse(lastSyncedTime)
+    };
   }
 
   serialize (): ISerializedMeta {

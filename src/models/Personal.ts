@@ -1,30 +1,20 @@
-import DataSet, { IDataSet } from './DataSet';
+import Custom, { ICustom, ISerializedCustom } from './Custom';
 
-export interface ISerializedPersonal extends IDataSet { }
+export interface ISerializedPersonal extends ISerializedCustom { }
 
-export interface IPersonal extends ISerializedPersonal { }
+export interface IPersonal extends ICustom { }
 
-class Personal extends DataSet implements IPersonal {
-  static deserialize (personal: Personal | ISerializedPersonal) {
-    if (personal instanceof Personal) {
-      return personal;
-    }
-    return new Personal(personal);
+class Personal extends Custom implements IPersonal {
+  static factory<T extends Personal> () {
+    return super.factory<T>();
   }
 
-  /**
-   * prepare for storage
-   */
-  static serialize (personal: Personal | ISerializedPersonal) {
-    if (personal instanceof Personal) {
-      const { data } = personal;
-      return { data };
-    }
-    return personal;
+  static deserialize<T extends Personal> (personal: Personal | ISerializedPersonal) {
+    return super.deserialize<T>(personal);
   }
 
-  serialize () {
-    return Personal.serialize(this);
+  plain<T extends IPersonal> (): T {
+    return super.plain<T>();
   }
 }
 

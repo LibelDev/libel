@@ -1,0 +1,35 @@
+@import '../../../stylesheets/base';
+
+.footer {
+  @apply flex items-center flex-wrap;
+  @apply opacity-50;
+  @apply px-4;
+  padding-top: 0.8rem;
+
+  .stats {
+    @apply w-full;
+    @apply mb-2;
+  }
+
+  .version {
+    @apply mr-auto;
+  }
+
+  a {
+    color: $color-grey09;
+    text-decoration: underline;
+
+    @include dark-mode() {
+      color: $color-white;
+    }
+
+    + a {
+      @apply ml-2 pl-2;
+      border-left: solid 1px $color-grey09;
+
+      @include dark-mode() {
+        border-color: $color-white;
+      }
+    }
+  }
+}

@@ -1,11 +1,12 @@
 import classnames from 'classnames';
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
-import { MappedHTMLAttributes } from '../../../../helpers/types';
+import * as gtag from '../../../../helpers/gtag';
 import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import { useTypedDispatch } from '../../../../store/store';
+import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
@@ -14,15 +15,18 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'button'>;
+type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
 
 const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
-  const dispatch = useDispatch();
   const { className, subscription, index } = props;
+
+  const dispatch = useTypedDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     dispatch(subscriptionsActions.load(index));
+    // analytics
+    gtag.event(EventAction.Reload, { event_category: EventCategory.Subscription, event_label: subscription.name });
   }, [subscription, index]);
 
   return (
@@ -30,9 +34,9 @@ const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       className={classnames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Refresh}
-      aria-label={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-      data-tip={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
-      title={TEXTS.RELOAD_SUBSCRIPTION_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}
+      data-tip={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}
+      title={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}
       onClick={handleClick}
     />
   );

@@ -5,7 +5,7 @@ export interface IReactRootElement extends Element {
   _reactRootContainer: any;
 }
 
-export const findStore = (root: IReactRootElement): Store | null => {
+export const findReduxStore = (root: IReactRootElement): Store | null => {
   let base;
   try {
     base = root._reactRootContainer._internalRoot.current;

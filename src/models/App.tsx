@@ -44,27 +44,33 @@ class App {
 
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        window.requestAnimationFrame(() => {
-          switch (mutation.type) {
-            case 'childList': {
-              const nodes = Array.from(mutation.addedNodes);
-              for (const node of nodes) {
-                if (node.nodeType === document.ELEMENT_NODE) {
-                  const handle = LIHKG.mutationHandlerFactory(node as Element);
-                  handle(node as Element, store);
+        switch (mutation.type) {
+          case 'childList': {
+            /** generic new nodes handling */
+            const nodes = Array.from(mutation.addedNodes);
+            for (const node of nodes) {
+              if (node.nodeType === document.ELEMENT_NODE) {
+                const handle = LIHKG.addedNodeMutationHandlerFactory(node as Element);
+                if (handle) {
+                  window.requestAnimationFrame(() => {
+                    handle(node as Element, store);
+                  });
                 }
               }
-              break;
             }
-            case 'attributes': {
-              if (mutation.attributeName === ATTRIBUTES.dataPostId) {
-                const { target } = mutation;
-                LIHKG.handleNicknames(target as Element, store);
-              }
-              break;
-            }
+            break;
           }
-        });
+          case 'attributes': {
+            /** when navigate between the quotes */
+            if (mutation.attributeName === ATTRIBUTES.dataPostId) {
+              const { target } = mutation;
+              window.requestAnimationFrame(() => {
+                LIHKG.handleDataPostIdAttributeMutation(target as Element, store);
+              });
+            }
+            break;
+          }
+        }
       }
     });
 

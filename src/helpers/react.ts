@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const findReactComponent = <T extends unknown> (element: any, traverseUp = 0): T | null => {
+export const findReactComponent = <T extends React.Component> (element: any, traverseUp = 0): T | null => {
   const key = Object.keys(element).find((key) => key.startsWith('__reactInternalInstance$'))!;
   const fiber = element[key];
   if (!fiber) return null;

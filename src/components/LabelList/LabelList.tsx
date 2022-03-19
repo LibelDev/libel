@@ -1,51 +1,46 @@
-import flatMap from 'lodash/flatMap';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { filterPersonalForUser, filterSubscriptionsForUser } from '../../store/selectors';
-import SnipeButton from '../SnipeButton/SnipeButton';
-import LabelItems from './LabelItems/LabelItems';
-import styles from './LabelList.scss';
+import React, { useMemo } from 'react';
+import { groupByText } from '../../helpers/label';
+import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
+import { useTypedSelector } from '../../store/store';
+import GroupedLabelItem, { IProps as IGroupedLabelItemProps } from './GroupedLabelItem/GroupedLabelItem';
+import styles from './LabelList.module.scss';
 
-interface IProps {
+interface IProps extends Pick<IGroupedLabelItemProps, 'floatingConfig'> {
   user: string;
-  hasSnipeButton: boolean;
 }
 
 const LabelList: React.FunctionComponent<IProps> = (props) => {
-  const { user, hasSnipeButton } = props;
-  const personal = useSelector(filterPersonalForUser(user));
-  const { labels: personalLabels } = personal.aggregate();
-  const subscriptions = useSelector(filterSubscriptionsForUser(user));
-  const subscriptionLabels = flatMap(
-    subscriptions.map((subscription) => subscription.aggregate()),
-    ({ labels }) => labels
-  );
+  const { user, floatingConfig } = props;
+  const personal = useTypedSelector(createUserPersonalSelector(user));
+  const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
+  const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
+  const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
+
+  const groupedLabels = useMemo(() => {
+    return groupByText(user, [personal, ...subscriptions]);
+  }, [personalLabels, subscriptionLabels]);
+
+  if (groupedLabels.length === 0) {
+    return null;
+  }
+
   return (
-    (personalLabels.length || subscriptionLabels.length) ? (
-      <ul className={styles.labelList}>
-        <LabelItems
-          dataSet={personal}
-          user={user}
-        />
-        {
-          subscriptions.map((subscription, index) => (
-            <LabelItems
-              key={index}
-              dataSet={subscription}
-              user={user}
-            />
-          ))
-        }
-        {
-          hasSnipeButton && !!(personal.data[user]?.length || subscriptionLabels.length) && (
-            <SnipeButton
-              className={styles.snipeButton}
-              user={user}
-            />
-          )
-        }
-      </ul>
-    ) : null
+    <ul className={styles.labelList}>
+      {
+        groupedLabels.map((groupedLabel, index) => {
+          const { text, items } = groupedLabel;
+          return (
+            <li key={index}>
+              <GroupedLabelItem
+                text={text}
+                items={items}
+                floatingConfig={floatingConfig}
+              />
+            </li>
+          );
+        })
+      }
+    </ul>
   );
 };
 

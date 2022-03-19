@@ -1,10 +1,7 @@
-import { defaultSubscriptions } from '../constants/subscriptions';
 import storage, { localStorage } from '../helpers/storage';
 import schema, { deprecated } from '../schemas/storage';
-import { initialState as initialConfigState } from '../store/slices/config';
-import { initialState as initialMetaState } from '../store/slices/meta';
-import DataSet from './DataSet';
 import Config, { ISerializedConfig } from './Config';
+import DataSet from './DataSet';
 import Meta, { ISerializedMeta } from './Meta';
 import Personal, { ISerializedPersonal } from './Personal';
 import Subscription, { ISerializedSubscription } from './Subscription';
@@ -37,14 +34,19 @@ const _configKey = Symbol('configKey');
 const _metaKey = Symbol('metaKey');
 const _ready = Symbol('ready');
 
+/**
+ * Storage model
+ * @description the middleman between the store and storage
+ * @implements IStorage
+ */
 class Storage implements IStorage {
   private readonly [_dataKeys]: string[];
   private readonly [_configKey]: string;
   private readonly [_metaKey]: string;
   private readonly [_ready]: Promise<this>;
-  config = initialConfigState;
-  meta = initialMetaState;
-  personal: Personal = new Personal();
+  config = Config.factory();
+  meta = Meta.factory();
+  personal = Personal.factory();
   subscriptions: Subscription[] = [];
 
   constructor (dataKeys: string[], configKey: string, metaKey: string) {
@@ -52,6 +54,19 @@ class Storage implements IStorage {
     this[_configKey] = configKey;
     this[_metaKey] = metaKey;
     this[_ready] = this.load();
+  }
+
+  /**
+   * pure factory function
+   * @description this does not produce an `Storage` instance
+   */
+  static factory (): Required<IStorage> {
+    return {
+      config: Config.factory(),
+      meta: Meta.factory(),
+      personal: Personal.factory(),
+      subscriptions: []
+    };
   }
 
   private static clean (keys: string[]) {
@@ -90,10 +105,10 @@ class Storage implements IStorage {
     const object = JSON.parse(data);
     const { personal, subscriptions } = object;
     const storage = this.massage({
-      config: config ? JSON.parse(config) : initialConfigState,
-      meta: meta ? JSON.parse(meta) : initialMetaState,
+      config: config ? Config.parseFromStorage(config) : Config.factory(),
+      meta: meta ? Meta.parseFromStorage(meta) : Meta.factory(),
       personal: personal ? JSON.parse(personal) : Personal.factory(),
-      subscriptions: subscriptions ? JSON.parse(subscriptions) : defaultSubscriptions
+      subscriptions: subscriptions ? JSON.parse(subscriptions) : []
     });
     const _storage = this.validate(storage)!;
     return this.deserialize(_storage);
@@ -110,19 +125,10 @@ class Storage implements IStorage {
     if (isISerializedStorageImplemented(object)) {
       return object;
     }
-    const personal = DataSet.validate(object);
-    if (personal) {
-      return {
-        config: initialConfigState,
-        meta: initialMetaState,
-        personal,
-        subscriptions: []
-      };
-    }
     return {
-      config: initialConfigState,
-      meta: initialMetaState,
-      personal: Personal.factory(),
+      config: Config.factory().serialize(),
+      meta: Meta.factory().serialize(),
+      personal: DataSet.validate(object) || Personal.factory().serialize(),
       subscriptions: []
     };
   }
@@ -149,16 +155,12 @@ class Storage implements IStorage {
     return null;
   }
 
-  private static serialize (data: IStorage): ISerializedStorage {
-    const { config, meta, personal, subscriptions } = data;
-    return {
-      config: config?.serialize(),
-      meta: meta?.serialize(),
-      personal: personal.serialize(),
-      subscriptions: subscriptions.map((subscription) => subscription.serialize())
-    };
-  }
-
+  /**
+   * pure deserialization
+   * @description this does not produce an `Storage` instance
+   * @param {IStorage | ISerializedStorage} storage 
+   * @returns {IStorage}
+   */
   static deserialize (storage: IStorage | ISerializedStorage): IStorage {
     const { config, meta, personal, subscriptions } = storage;
     return {
@@ -173,8 +175,14 @@ class Storage implements IStorage {
     return this[_ready];
   }
 
-  serialize () {
-    return Storage.serialize(this);
+  serialize (): ISerializedStorage {
+    const { config, meta, personal, subscriptions } = this;
+    return {
+      config: config?.serialize(),
+      meta: meta?.serialize(),
+      personal: personal.serialize(),
+      subscriptions: subscriptions.map((subscription) => subscription.serialize())
+    };
   }
 
   json () {
@@ -183,7 +191,7 @@ class Storage implements IStorage {
   }
 
   /**
-   * load the storage into the model
+   * load the storage into the instance
    * @async
    * @returns {Promise<this>}
    */
@@ -196,6 +204,12 @@ class Storage implements IStorage {
     return this;
   }
 
+  patch () {
+    const { personal } = this;
+    personal.patch();
+    return this;
+  }
+
   update (storage: IStorage | ISerializedStorage) {
     // always deserialize the storage
     const { config, meta, personal, subscriptions } = Storage.deserialize(storage);
@@ -203,6 +217,7 @@ class Storage implements IStorage {
     this.meta = meta || this.meta;
     this.personal = personal;
     this.subscriptions = subscriptions;
+    this.patch();
     return this;
   }
 }

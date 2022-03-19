@@ -3,12 +3,7 @@
 /**
  * override
  */
-:global {
-  .#{$lihkg-class-reply-item} {
-    @apply overflow-visible;
-  }
-
-  .#{$lihkg-class-right-panel-container} {
-    @apply relative;
-  }
+#{$lihkg-selector-right-panel-container} {
+  /** for positioning the announcement */
+  @apply relative;
 }

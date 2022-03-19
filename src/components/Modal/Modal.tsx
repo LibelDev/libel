@@ -3,29 +3,28 @@ import FocusTrap from 'focus-trap-react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
 import IDsContext from './IDsContext';
-import styles from './Modal.scss';
+import styles from './Modal.module.scss';
 
 interface IProps {
   /**
-   * indicate the open state
+   * indicate the open state, default: false
    */
   open?: boolean;
   /**
-   * show backdrop
+   * show backdrop, default: true
    */
   backdrop?: boolean;
   /**
-   * allow to press escape key to dismiss the modal
+   * allow to press escape key to dismiss the modal, default: true
    */
   escape?: boolean;
   /**
-   * allow to click on backdrop to dismiss the modal 
+   * allow to click on backdrop to dismiss the modal, default: true
    */
   fragile?: boolean;
   /**
@@ -34,9 +33,17 @@ interface IProps {
   onClose: () => void;
 }
 
-export type TProps = IProps & MappedHTMLAttributes<'div'>;
+interface IComponent {
+  Header: typeof Header;
+  Body: typeof Body;
+  Footer: typeof Body;
+}
 
-const Modal: React.FunctionComponent<TProps> = (props) => {
+export type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+
+type TModal = IComponent & React.FunctionComponent<TProps>;
+
+const Modal: TModal = (props) => {
   const {
     id,
     className,
@@ -58,7 +65,6 @@ const Modal: React.FunctionComponent<TProps> = (props) => {
     title: `${_id}-title`,
     body: `${_id}-body`
   }), [_id]);
-
 
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     if (fragile && event.target === backdropRef.current) {
@@ -120,8 +126,10 @@ const Modal: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+Modal.Header = Header;
+Modal.Body = Body;
+Modal.Footer = Footer;
+
 Modal.displayName = 'Modal';
 
 export default Modal;
-
-export { Header, Body, Footer };

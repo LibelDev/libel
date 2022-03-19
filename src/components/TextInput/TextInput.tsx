@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
-import styles from './TextInput.scss';
+import styles from './TextInput.module.scss';
 
 interface IProps {
   error?: React.ReactNode;

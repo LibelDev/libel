@@ -1,0 +1,26 @@
+@import '../../stylesheets/base';
+
+.container {
+  @apply cursor-default;
+
+  &:empty {
+    @apply hidden;
+  }
+}
+
+.snipe-button {
+  color: $color-grey05;
+  font-size: 1.2rem;
+
+  &:hover {
+    color: $color-black;
+
+    @include dark-mode() {
+      color: $color-white;
+    }
+  }
+
+  &:hover {
+    @apply no-underline;
+  }
+}

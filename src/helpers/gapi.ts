@@ -1,3 +1,4 @@
+import Singleton from '../models/Singleton';
 import { appendScript } from './dom';
 
 type TClientDriveFilesGetRequestWithoutFileId = Omit<Parameters<typeof gapi.client.drive.files.get>[0], 'fileId'>;
@@ -5,11 +6,13 @@ type TSpaces = ('drive' | 'appDataFolder')[];
 
 const loadClient = (apiName: string): Promise<void> => {
   return new Promise((resolve) => {
+    const { gapi } = window;
     gapi.load(apiName, resolve);
   });
 };
 
 const initClient = (apiKey: string, discoveryDocs: string[], clientId: string, scopes: string[]) => {
+  const { gapi } = window;
   return gapi.client.init({
     apiKey,
     discoveryDocs,
@@ -19,33 +22,26 @@ const initClient = (apiKey: string, discoveryDocs: string[], clientId: string, s
 };
 
 const init = () => {
-  const script = appendScript('https://apis.google.com/js/api.js');
-  let ready = false;
-  let callback = (gapi: typeof window.gapi) => { };
-  script.addEventListener('load', async () => {
-    await loadClient('client:auth2');
-    const apiKey = process.env.GOOGLE_API_KEY!;
-    const discoveryDocs = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
-    const clientId = process.env.GOOGLE_CLIENT_ID!;
-    const scopes = ['https://www.googleapis.com/auth/drive.appdata'];
-    await initClient(apiKey, discoveryDocs, clientId, scopes);
-    callback(window.gapi);
-    ready = true;
-  });
-  return () => {
-    return new Promise<typeof window.gapi>((resolve) => {
-      callback = resolve;
-      if (ready) {
-        resolve(window.gapi);
-      }
+  return new Promise<typeof gapi>((resolve) => {
+    const src = 'https://apis.google.com/js/api.js';
+    const script = appendScript(src);
+    script.addEventListener('load', async () => {
+      await loadClient('client:auth2');
+      const apiKey = process.env.GOOGLE_API_KEY!;
+      const discoveryDocs = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
+      const clientId = process.env.GOOGLE_CLIENT_ID!;
+      const scopes = ['https://www.googleapis.com/auth/drive.appdata'];
+      await initClient(apiKey, discoveryDocs, clientId, scopes);
+      resolve(window.gapi);
     });
-  };
+  });
 };
 
-export const ready = init();
+const singleton = new Singleton(init());
+export const ready = () => singleton.get();
 
 /**
- * Google Drive V3 API
+ * Google Drive V3 API wrapper
  */
 export const drive = {
   /**
@@ -53,11 +49,14 @@ export const drive = {
    * @async
    * @param {string} name file name
    */
-  async ensure (name: string): Promise<[gapi.client.Response<gapi.client.drive.File>, boolean]> {
-    const response = await this.getByName(name);
-    if (response) { return [response, false]; }
-    const _response = await this.create(name);
-    return [_response, true];
+  async ensure (name: string): Promise<[gapi.client.drive.File, boolean]> {
+    const file = await this.getByName(name);
+    if (file) {
+      return [file, false];
+    }
+    const response = await this.create(name);
+    const { result } = response;
+    return [result, true];
   },
   /**
    * create file
@@ -68,9 +67,8 @@ export const drive = {
    */
   async create (name: string, parents: string[] = ['appDataFolder'], fields: string[] = ['id', 'name', 'createdTime', 'modifiedTime']) {
     const gapi = await ready();
-    const resource = { name, parents };
     return gapi.client.drive.files.create({
-      resource,
+      resource: { name, parents },
       fields: fields.join(', ')
     });
   },
@@ -97,9 +95,9 @@ export const drive = {
    * get the list of files under "appDataFolder"
    * @async
    * @param {TSpaces} spaces default: `["appDataFolder"]`
-   * @param {string[]} fields file fields to be included in the response, default: `["id", "name"]`
+   * @param {string[]} fields file fields to be included in the response, default: `["id", "name", "createdTime", "modifiedTime"]`
    */
-  async list (spaces: TSpaces = ['appDataFolder'], fields: string[] = ['id', 'name']) {
+  async list (spaces: TSpaces = ['appDataFolder'], fields: string[] = ['id', 'name', 'createdTime', 'modifiedTime']) {
     const gapi = await ready();
     return gapi.client.drive.files.list({
       spaces: spaces.join(''),
@@ -115,6 +113,7 @@ export const drive = {
    * @template R the type of the response result
    */
   async getById<R = gapi.client.drive.File> (id: string, request?: TClientDriveFilesGetRequestWithoutFileId) {
+    const gapi = await ready();
     const fields = ['id', 'name', 'createdTime', 'modifiedTime'];
     return gapi.client.drive.files.get({
       fileId: id,
@@ -126,19 +125,33 @@ export const drive = {
    * get the file by name
    * @async
    * @param {string} name file name
-   * @param {TClientDriveFilesGetRequestWithoutFileId} request the request object for `gapi.client.drive.files.get`
-   * @template R the type of the response result
    */
-  async getByName<R = gapi.client.drive.File> (name: string, request?: TClientDriveFilesGetRequestWithoutFileId) {
+  async getByName (name: string) {
     const response = await this.list();
     const { result } = response;
     const { files } = result;
     if (files) {
       for (const file of files) {
         if (file.name === name) {
-          return this.getById<R>(file.id!, request);
+          return file;
         }
       }
+    }
+  },
+  async deleteById (id: string) {
+    const gapi = await ready();
+    return gapi.client.drive.files.delete({
+      fileId: id
+    });
+  },
+  /**
+   * delete the file by name
+   * @param {string} name file name
+   */
+  async deleteByName (name: string) {
+    const file = await this.getByName(name);
+    if (file) {
+      return this.deleteById(file.id!);
     }
   }
 };

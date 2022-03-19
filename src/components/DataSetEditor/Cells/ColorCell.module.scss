@@ -1,0 +1,14 @@
+td {
+  &.color-cell {
+    @apply p-0;
+  }
+}
+
+.color-picker {
+  &,
+  > div,
+  input {
+    @apply h-full;
+    @apply w-full;
+  }
+}

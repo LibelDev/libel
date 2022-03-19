@@ -1,17 +1,19 @@
 import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
+import * as gtag from '../../../../helpers/gtag';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
 import { selectSubscriptions } from '../../../../store/selectors';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import { useTypedDispatch, useTypedSelector } from '../../../../store/store';
+import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../../types/icon';
 import IconButton from '../../../IconButton/IconButton';
 
 const AddSubscriptionButton: React.FunctionComponent = () => {
-  const dispatch = useDispatch();
-  const subscriptions = useSelector(selectSubscriptions) as Subscription[];
+  const dispatch = useTypedDispatch();
+  const subscriptions = useTypedSelector(selectSubscriptions);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -22,6 +24,8 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
         const subscription = new Subscription('', url, true);
         dispatch(subscriptionsActions.add(subscription));
         dispatch(subscriptionsActions.load(subscriptions.length));
+        // analytics
+        gtag.event(EventAction.Add, { event_category: EventCategory.Subscription, event_label: subscription.name });
       } else {
         // already subscribed, simply load the remote data again
         const index = subscriptions.indexOf(subscription);
@@ -34,12 +38,12 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
     <IconButton
       className={lihkgCssClasses.settingOptionButton}
       icon={IconName.Plus}
-      aria-label={TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
-      data-tip={TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
-      title={TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
+      aria-label={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
+      data-tip={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
+      title={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
       onClick={handleClick}
     >
-      {TEXTS.ADD_SUBSCRIPTION_BUTTON_TEXT}
+      {TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
     </IconButton>
   );
 };

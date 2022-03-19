@@ -1,88 +1,72 @@
 import formatRelative from 'date-fns/formatRelative';
 import { zhHK } from 'date-fns/locale';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
 import * as TEXTS from '../../../../constants/texts';
-import { ready } from '../../../../helpers/gapi';
+import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
-import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.scss';
+import { useTypedSelector } from '../../../../store/store';
 import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
-import styles from './SyncWithGoogleDrive.scss';
+import SettingOptionButton from '../../SettingOptionButton/SettingOptionButton';
+import styles from './SyncWithGoogleDrive.module.scss';
 
 const SyncWithGoogleDrive: React.FunctionComponent = () => {
-  const [user, setUser] = useState<gapi.auth2.GoogleUser | null>(null);
-  const [signedIn, setSignedIn] = useState(false);
-  const meta = useSelector(selectMeta);
-  const sync = useSelector(selectSync);
+  const [auth, user, signedIn] = useGoogleAuthorization();
+  const meta = useTypedSelector(selectMeta);
+  const sync = useTypedSelector(selectSync);
 
-  const localizedLastSyncedTime = useMemo(() => {
+  const lastSyncedTimeHintText = useMemo(() => {
     if (meta.lastSyncedTime) {
       const date = new Date(meta.lastSyncedTime);
       const now = new Date();
-      return formatRelative(date, now, { locale: zhHK });
+      const displayTime = formatRelative(date, now, { locale: zhHK });
+      return `${TEXTS.CLOUD_SYNC_LABEL_PREFIX_LAST_SYNCED_TIME_HINT} ${displayTime}`;
     }
   }, [meta.lastSyncedTime]);
 
   const handleSignIn: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const gapi = await ready();
-    const auth = gapi.auth2.getAuthInstance();
-    auth.signIn();
-  }, []);
+    if (auth) {
+      auth.signIn();
+    }
+  }, [auth]);
 
   const handleSignout: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    const gapi = await ready();
-    const auth = gapi.auth2.getAuthInstance();
-    auth.signOut();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      const gapi = await ready();
-      const auth = gapi.auth2.getAuthInstance();
-      // bind state change handlers
-      auth.isSignedIn.listen(setSignedIn);
-      auth.currentUser.listen(setUser);
-      // initial state
-      const signedIn = auth.isSignedIn.get();
-      setSignedIn(signedIn);
-      const user = auth.currentUser.get();
-      setUser(user);
-    })();
-  }, []);
+    if (auth) {
+      auth.signOut();
+    }
+  }, [auth]);
 
   return (
     <React.Fragment>
       <div className={styles.label}>
         <img className={styles.logo} src={logo} alt='' />
         <div className={styles.info}>
-          {TEXTS.CLOUD_SYNC_GOOGLE_DRIVE_LABEL_TEXT}
+          {TEXTS.CLOUD_SYNC_LABEL_GOOGLE_DRIVE}
           {
-            signedIn && user && (
+            user && signedIn && (
               <React.Fragment>
                 <small className={styles.hint}>
                   <Icon className={styles.icon} icon={IconName.Verified} />
-                  {TEXTS.CLOUD_SYNC_GOOGLE_DRIVE_ACCOUNT_PREFIX}{' '}
+                  {TEXTS.CLOUD_SYNC_LABEL_PREFIX_CONNECTED_ACCOUNT}{' '}
                   {user.getBasicProfile().getEmail()}
                 </small>
                 {
                   sync.loading ? (
                     <small className={styles.hint}>
                       <LoadingSpinner className={styles.icon} />
-                      {TEXTS.CLOUD_SYNC_SYNC_IN_PROGRESS_LABEL_TEXT}
+                      {TEXTS.CLOUD_SYNC_LABEL_SYNC_IN_PROGRESS}
                     </small>
                   ) : (
                     <React.Fragment>
                       {
-                        !!localizedLastSyncedTime && (
+                        !!lastSyncedTimeHintText && (
                           <small className={styles.hint}>
                             <Icon className={styles.icon} icon={IconName.CloudUpload} />
-                            {TEXTS.CLOUD_SYNC_LAST_SYNCED_AT_LABEL_TEXT}{' '}
-                            {localizedLastSyncedTime}
+                            {lastSyncedTimeHintText}
                           </small>
                         )
                       }
@@ -90,7 +74,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                         !!sync.error && (
                           <small className={styles.hint}>
                             <Icon className={styles.icon} icon={IconName.CommentAlert} />
-                            {TEXTS.CLOUD_SYNC_ERROR}
+                            {TEXTS.CLOUD_SYNC_ERROR_GENERIC_ERROR}
                           </small>
                         )
                       }
@@ -102,18 +86,13 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
           }
         </div>
       </div>
-      <a
-        href="#"
-        role="button"
-        className={lihkgCssClasses.settingOptionButton}
-        onClick={signedIn ? handleSignout : handleSignIn}
-      >
+      <SettingOptionButton onClick={signedIn ? handleSignout : handleSignIn}>
         {
           signedIn ?
-            TEXTS.GOOGLE_SIGNOUT_BUTTON_TEXT :
-            TEXTS.GOOGLE_AUTHORIZE_BUTTON_TEXT
+            TEXTS.BUTTON_TEXT_GOOGLE_SIGNOUT :
+            TEXTS.BUTTON_TEXT_GOOGLE_AUTHORIZE
         }
-      </a>
+      </SettingOptionButton>
     </React.Fragment>
   );
 };

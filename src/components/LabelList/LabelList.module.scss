@@ -1,0 +1,44 @@
+@import '../../stylesheets/base';
+
+.container {
+  &:empty {
+    @apply hidden;
+  }
+
+  // when it is inside thread item inner {
+  :global(#{$lihkg-selector-thread-item-inner}) > & {
+    @apply mb-2;
+    @apply ml-5;
+  }
+
+  // when it is inside the reply item inner
+  :global(#{$lihkg-selector-reply-item-inner}) > & {
+    @apply mb-2;
+  }
+
+  // // when it is beside the nickname
+  // :global(#{$lihkg-selector-nickname}) ~ & {
+  //   @apply ml-4 mr-2;
+  // }
+
+  // when it is inside the user card modal
+  :global(#{$lihkg-selector-modal}) & {
+    @apply mt-4;
+
+    .label-list {
+      @apply justify-center;
+    }
+  }
+}
+
+.label-list {
+  @apply flex flex-wrap items-center;
+  @apply list-none;
+  @apply text-base;
+  @apply -m-1;
+  @apply p-0;
+
+  > li {
+    @apply m-1;
+  }
+}

@@ -1,36 +1,40 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-import { StateType } from 'typesafe-actions';
+import { ActionType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
+import { selectSubscriptions } from '../selectors';
 import { TRootState } from '../store';
-import { selectSubscriptions } from './../selectors';
 
 interface ITogglePayload {
   index: number;
   enabled?: boolean;
 }
 
+type TAsyncThunkConfig = {
+  state: TRootState;
+};
+
 const initialState: Subscription[] = [];
 
 /**
  * load the remote subscription data
  */
-const load = createAsyncThunk<IRemoteSubscription, number>(
+export const load = createAsyncThunk<IRemoteSubscription, number, TAsyncThunkConfig>(
   'subscriptions/load',
   async (index, thunk) => {
     try {
-      const state = thunk.getState() as TRootState;
+      const state = thunk.getState();
       const subscriptions = selectSubscriptions(state);
       const subscription = subscriptions[index];
       const remoteSubscription = await subscription.fetch();
       if (remoteSubscription) {
         return remoteSubscription;
       }
-      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_VALIDATION_ERROR);
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT);
     } catch (err) {
       console.error(err);
-      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_FETCH_ERROR);
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_FAILED_TO_FETCH);
     }
   }
 );
@@ -50,13 +54,12 @@ const slice = createSlice({
     },
     toggle: (state, action: PayloadAction<ITogglePayload>) => {
       const { index, enabled } = action.payload;
-      const _subscription = state[index];
-      _subscription.enabled = enabled ?? !_subscription.enabled;
+      const subscription = state[index];
+      subscription.enabled = enabled ?? !subscription.enabled;
     },
-    update: (state, action: PayloadAction<(Subscription | ISerializedSubscription)[]>) => {
-      const { payload } = action;
-      const subscriptions = payload.map(Subscription.deserialize);
-      return subscriptions;
+    update: (state, action: PayloadAction<Subscription[] | ISerializedSubscription[]>) => {
+      const { payload: subscriptions } = action;
+      return subscriptions.map(Subscription.deserialize);
     }
   },
   extraReducers: (builder) => {
@@ -85,7 +88,7 @@ const slice = createSlice({
   }
 });
 
-type TState = StateType<typeof slice.reducer>;
+type TState = ReturnType<typeof slice.reducer>;
 
 export const SetTransform = createTransform<TState, ISerializedSubscription[]>(
   /**
@@ -109,5 +112,8 @@ export const actions = {
   ...slice.actions,
   load
 };
+
+// export type TActions = ReturnType<typeof slice.actions[keyof typeof slice.actions]>;
+export type TActions = ActionType<typeof slice.actions>;
 
 export default slice;

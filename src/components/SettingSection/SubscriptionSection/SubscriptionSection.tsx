@@ -1,20 +1,19 @@
 import classnames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import * as TEXTS from '../../../constants/texts';
 import { selectSubscriptions } from '../../../store/selectors';
-import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.scss';
+import { useTypedSelector } from '../../../store/store';
+import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import AddSubscriptionButton from './AddSubscriptionButton/AddSubscriptionButton';
 import SubscriptionItem from './SubscriptionItem/SubscriptionItem';
-import styles from './SubscriptionSection.scss';
-import Subscription from '../../../models/Subscription';
+import styles from './SubscriptionSection.module.scss';
 
 const SubscriptionSection: React.FunctionComponent = () => {
-  const subscriptions = useSelector(selectSubscriptions) as Subscription[];
+  const subscriptions = useTypedSelector(selectSubscriptions);
   return (
     <React.Fragment>
       <small className={classnames(lihkgCssClasses.settingSectionTitle, styles.sectionTitle)}>
-        {TEXTS.SETTING_SUBSCRIPTION_SECTION_TITLE}
+        {TEXTS.SETTINGS_SECTION_TITLE_SUBSCRIPTION}
         <AddSubscriptionButton />
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>

@@ -8,11 +8,13 @@ export interface ISerializedSubscription {
   enabled: boolean;
 }
 
-export interface IRemoteSubscription extends IDataSet, Pick<ISerializedSubscription, 'name'> {
+export interface IBasicSubscription extends Pick<ISerializedSubscription, 'name'> {
   version: string;
   homepage?: string;
   color?: string;
 }
+
+export interface IRemoteSubscription extends IDataSet, IBasicSubscription { }
 
 export interface ISubscription extends ISerializedSubscription, IRemoteSubscription {
   loaded: boolean;
@@ -64,9 +66,9 @@ class Subscription extends DataSet implements ISubscription {
       object instanceof this
       || (
         super.implements(object)
+        && 'name' in object
         && 'url' in object
         && 'enabled' in object
-        && 'name' in object
         && 'version' in object
       )
     );
@@ -80,19 +82,9 @@ class Subscription extends DataSet implements ISubscription {
     return new Subscription(name, url, enabled);
   }
 
-  /**
-   * prepare for storage
-   */
-  static serialize (subscription: Subscription | ISerializedSubscription) {
-    if (subscription instanceof Subscription) {
-      const { url, enabled, name } = subscription;
-      return { url, enabled, name };
-    }
-    return subscription;
-  }
-
-  serialize () {
-    return Subscription.serialize(this);
+  serialize (): ISerializedSubscription {
+    const { url, enabled, name } = this;
+    return { url, enabled, name };
   }
 
   enable () {

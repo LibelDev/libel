@@ -1,0 +1,17 @@
+@import '../../../stylesheets/base';
+
+.badge {
+  @apply flex items-center justify-center;
+  @apply text-xs;
+  @apply p-1;
+  @apply rounded-full;
+  background-color: $color-grey05;
+  color: $color-white;
+  min-height: 1.5rem;
+  min-width: 1.5rem;
+
+  @include dark-mode() {
+    background-color: $color-grey06;
+    color: $color-grey05;
+  }
+}

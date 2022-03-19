@@ -3,7 +3,7 @@ import React from 'react';
 import { IconName } from '../../types/icon';
 import BaseButton, { TProps as TBaseButtonProps } from '../BaseButton/BaseButton';
 import Icon from '../Icon/Icon';
-import styles from './BaseIconButton.scss';
+import styles from './BaseIconButton.module.scss';
 
 interface IProps {
   icon: IconName;

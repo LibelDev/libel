@@ -1,0 +1,39 @@
+@import '../../stylesheets/base';
+
+$height: 2.25rem;
+
+.label {
+  @apply mr-4;
+  line-height: $height;
+}
+
+.input {
+  input {
+    @apply w-full;
+
+    &[type='text'] {
+      height: $height;
+    }
+
+    &:disabled {
+      @apply cursor-not-allowed;
+      @apply opacity-20;
+    }
+
+    &:focus {
+      outline: 1px solid $color-yellow01;
+
+      @include dark-mode() {
+        outline: 1px solid rgba($color-yellow01, 0.6);
+      }
+    }
+  }
+}
+
+.error {
+  @apply mt-2;
+
+  .icon {
+    @apply mr-2;
+  }
+}

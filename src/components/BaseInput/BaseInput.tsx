@@ -1,17 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import useElementID from '../../hooks/useElementID';
 import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
-import styles from './BaseInput.scss';
+import styles from './BaseInput.module.scss';
 
 interface IProps {
   label?: React.ReactNode;
   error?: React.ReactNode;
 }
 
-export type TProps = IProps & MappedHTMLAttributes<'input'>;
+export type TProps = IProps & React.ComponentPropsWithoutRef<'input'>;
 
 const BaseInput: React.FunctionComponent<TProps> = (props) => {
   const { id, className, disabled, label, error, ...otherProps } = props;
@@ -30,10 +29,10 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
           </span>
         )
       }
-      <div>
+      <div className={styles.input}>
         <input
           id={_id}
-          className={classNames(className, styles.input)}
+          className={className}
           disabled={disabled}
           aria-describedby={errorID}
           {...otherProps}

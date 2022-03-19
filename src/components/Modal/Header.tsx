@@ -1,21 +1,31 @@
+import classNames from 'classnames';
 import React, { useContext } from 'react';
-import { MappedHTMLAttributes } from '../../helpers/types';
 import { IconName } from '../../types/icon';
 import IconButton from '../IconButton/IconButton';
-import styles from './Header.scss';
+import styles from './Header.module.scss';
 import IDsContext from './IDsContext';
 
-interface IProps  {
+interface IProps {
+  border?: boolean;
   onClose: () => void;
 }
 
-type TProps = IProps & MappedHTMLAttributes<'div'>
+type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const Header: React.FunctionComponent<TProps> = (props) => {
-  const { children, onClose } = props;
+  const { border = true, onClose, children } = props;
   const { title: id } = useContext(IDsContext);
   return (
-    <div className={styles.header}>
+    <div
+      className={
+        classNames(
+          styles.header,
+          {
+            [styles.border]: border
+          }
+        )
+      }
+    >
       <h2 id={id} className={styles.title}>
         {children}
       </h2>
