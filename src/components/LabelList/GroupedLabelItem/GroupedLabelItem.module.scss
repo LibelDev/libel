@@ -33,6 +33,7 @@
   transition-property: opacity, transform, visibility;
   @apply duration-300;
   @apply max-h-32;
+  @apply box-content;
   @apply overflow-y-auto;
   z-index: 1;
 
