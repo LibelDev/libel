@@ -7,6 +7,7 @@
   border-color: #aaaaaa;
   @apply px-2 py-1;
   @apply text-sm;
+  @apply transition-shadow;
 
   @include dark-mode() {
     border-color: #444443;
@@ -14,6 +15,14 @@
 
   :global(.#{$lihkg-class-thread-heading-text}) & {
     @apply py-0;
+  }
+
+  &.active {
+    @include glow();
+
+    @include dark-mode() {
+      @include glow($color: #ffffff);
+    }
   }
 
   .badge {
@@ -34,6 +43,9 @@
 .label-info-list {
   @include hide-scrollbar();
   @include invisible();
+  @apply rounded;
+  @apply -my-2;
+  @apply py-2;
   @apply transform;
   @apply translate-y-4;
   transition-property: opacity, transform, visibility;

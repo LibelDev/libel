@@ -1,5 +1,6 @@
-import { autoUpdate, useFloating } from '@floating-ui/react-dom';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import { autoUpdate, flip, useFloating } from '@floating-ui/react-dom';
+import classNames from 'classnames';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
 import { IGroupedLabelItem } from '../../../types/label';
 import LabelItem from '../../LabelItem/LabelItem';
@@ -15,19 +16,45 @@ export interface IProps {
 
 const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
   const { text, items, floatingConfig } = props;
+  const [active, setActive] = useState(false);
 
-  /* omit the unnecessary hooks if there is no label info list */
+  const _className = useMemo(() => (
+    classNames(
+      styles.labelItem,
+      {
+        [styles.active]: active
+      }
+    )
+  ), [active]);
+
+  const handleMouseEnter: React.MouseEventHandler<HTMLElement> = useCallback(() => {
+    setActive(true);
+  }, []);
+
+  const handleMouseLeave: React.MouseEventHandler<HTMLElement> = useCallback(() => {
+    setActive(false);
+  }, []);
+
+  /**
+   * omit the unnecessary hooks if there is no label info list  
+   * CAVEAT: conditional hooks may cause React warnings
+   * if conditions are changed between renderings
+   */
   if (!floatingConfig) {
     return (
-      <LabelItem className={styles.labelItem}>
+      <LabelItem className={_className} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         {text}
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
     );
   }
 
-  const [labelListInfoRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>(0.2);
-  const { x, y, reference, floating, strategy, update, refs } = useFloating(floatingConfig);
+  const [labelListInfoRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>(0.3);
+  const _floatingConfig = useMemo(() => ({
+    middleware: [flip()],
+    ...floatingConfig,
+  }), [floatingConfig]);
+  const { x, y, reference, floating, strategy, update, refs } = useFloating(_floatingConfig);
 
   const labelInfoListStyle: React.CSSProperties = useMemo(() => ({
     ...fadeoutScrollStyle,
@@ -36,10 +63,15 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
     left: x ?? ''
   }), [strategy, x, y, fadeoutScrollStyle]);
 
-  const updateLabelInfoListRef = useCallback((element: HTMLUListElement) => {
+  const updateLabelInfoListRef: React.RefCallback<HTMLUListElement> = useCallback((element: HTMLUListElement) => {
     labelListInfoRef.current = element;
     floating(element);
   }, [floating]);
+
+  const handleMouseEnterWithFloatingUpdate: React.MouseEventHandler<HTMLElement> = useCallback((event) => {
+    handleMouseEnter(event);
+    update();
+  }, [handleMouseEnter]);
 
   useEffect(() => {
     const { reference, floating } = refs;
@@ -51,15 +83,22 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <React.Fragment>
-      <LabelItem ref={reference} className={styles.labelItem} onMouseEnter={update}>
+      <LabelItem
+        ref={reference}
+        className={_className}
+        onMouseEnter={handleMouseEnterWithFloatingUpdate}
+        onMouseLeave={handleMouseLeave}
+      >
         {text}
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
       <LabelInfoList
         ref={updateLabelInfoListRef}
         className={styles.labelInfoList}
-        items={items}
         style={labelInfoListStyle}
+        items={items}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       />
     </React.Fragment>
   );

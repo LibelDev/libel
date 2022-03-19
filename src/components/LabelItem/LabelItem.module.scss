@@ -10,8 +10,4 @@
   @include dark-mode() {
     border-color: #444443;
   }
-
-  :global(.#{$lihkg-class-thread-heading-text}) & {
-    @apply py-0;
-  }
 }

@@ -50,7 +50,7 @@ class App {
             const nodes = Array.from(mutation.addedNodes);
             for (const node of nodes) {
               if (node.nodeType === document.ELEMENT_NODE) {
-                const handle = LIHKG.mutationHandlerFactory(node as Element);
+                const handle = LIHKG.addedNodeMutationHandlerFactory(node as Element);
                 if (handle) {
                   window.requestAnimationFrame(() => {
                     handle(node as Element, store);

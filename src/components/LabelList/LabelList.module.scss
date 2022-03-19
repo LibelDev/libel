@@ -1,8 +1,6 @@
 @import '../../stylesheets/base';
 
 .container {
-  // @apply flex items-center;
-
   &:empty {
     @apply hidden;
   }
@@ -18,10 +16,10 @@
     @apply mb-2;
   }
 
-  // when it is beside the nickname
-  :global(#{$lihkg-selector-nickname}) ~ & {
-    @apply ml-4 mr-2;
-  }
+  // // when it is beside the nickname
+  // :global(#{$lihkg-selector-nickname}) ~ & {
+  //   @apply ml-4 mr-2;
+  // }
 
   // when it is inside the user card modal
   :global(#{$lihkg-selector-modal}) & {
@@ -37,29 +35,16 @@
   @apply flex flex-wrap items-center;
   @apply list-none;
   @apply text-base;
-  @apply -mx-2 -my-1;
+  @apply -m-1;
   @apply p-0;
 
   > li {
-    @apply mx-2 my-1;
+    @apply m-1;
   }
 }
 
 .label-item {
-  @apply inline-flex items-center;
-  @apply px-2 py-1;
   @apply relative;
-  @apply border border-solid rounded;
-  border-color: #aaaaaa;
-  @apply text-sm;
-
-  @include dark-mode() {
-    border-color: #444443;
-  }
-
-  :global(.#{$lihkg-class-thread-heading-text}) & {
-    @apply py-0;
-  }
 
   .badge {
     @apply flex items-center justify-center;

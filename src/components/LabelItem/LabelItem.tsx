@@ -10,7 +10,7 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
-  const { className, children, color } = props;
+  const { className, children, color, ...otherProps } = props;
 
   const style: Partial<React.CSSProperties> | undefined = useMemo(() => (color ? {
     backgroundColor: color,
@@ -19,7 +19,17 @@ const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
   } : undefined), [color]);
 
   return (
-    <div ref={ref} className={classNames(className, styles.labelItem)} style={style}>
+    <div
+      ref={ref}
+      className={
+        classNames(
+          className,
+          styles.labelItem
+        )
+      }
+      style={style}
+      {...otherProps}
+    >
       {children}
     </div>
   );

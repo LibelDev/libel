@@ -251,11 +251,11 @@ const handleReplyItemInnerMutation = (node: Element, store: Store) => {
 };
 
 const handleReplyButtonMutation = (node: Element, store: Store) => {
-  const replyItemHeader = node.parentElement!;
-  handleReplyItemHeaderMutation(replyItemHeader, store);
+  const replyItemInnerHeader = node.parentElement!;
+  handleReplyItemInnerHeaderMutation(replyItemInnerHeader, store);
 };
 
-const handleReplyItemHeaderMutation = (node: Element, store: Store) => {
+const handleReplyItemInnerHeaderMutation = (node: Element, store: Store) => {
   const user = getUserIDFromNode(node);
   if (user) {
     const replyButton = node.querySelector(`.${IconName.Reply}`);
@@ -280,8 +280,8 @@ export const handleDataPostIdAttributeMutation = (node: Element, store: Store) =
   handleReplyItemInnerMutation(_node, store);
 };
 
-export const mutationHandlerFactory = (node: Element) => {
-  debug('mutationHandlerFactory', node);
+export const addedNodeMutationHandlerFactory = (node: Element) => {
+  debug('addedNodeMutationHandlerFactory', node);
   /** when render the thread item */
   if (isThreadItem(node)) return handleThreadItemMutation;
   /** when render the user card modal */
@@ -292,7 +292,7 @@ export const mutationHandlerFactory = (node: Element) => {
   if (isEmoteMenu(node)) return handleEmoteMenuMutation;
   /** when render the reply list (probably when enter the thread or go to next page) */
   if (isReplyList(node)) return handleReplyListMutation;
-  /** when render the reply item (probably inside the reply modal) */
+  /** when render the reply item (probably switch to another thread or inside the reply modal) */
   if (isReplyItem(node)) return handleReplyItemMutation;
   /** when expand the short reply item */
   if (isReplyButton(node)) return handleReplyButtonMutation;
