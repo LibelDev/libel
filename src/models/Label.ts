@@ -7,7 +7,7 @@ import { getShareID } from '../helpers/lihkg';
 type TLabelText = string;
 
 export interface ILabel {
-  id: string;
+  id?: string;
   text: TLabelText;
   reason?: string;
   /** @deprecated */
@@ -32,7 +32,7 @@ export interface ILabelDatum {
 
 class Label implements ILabel {
   [immerable] = true;
-  id: string;
+  id?: string;
   text: string;
   reason?: string;
   /** @deprecated */
@@ -43,7 +43,7 @@ class Label implements ILabel {
   image?: string;
 
   constructor (
-    id: string,
+    id: string | undefined,
     text: string,
     reason?: string,
     url?: string,

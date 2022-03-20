@@ -34,7 +34,7 @@ abstract class DataSet implements IDataSet {
             // backward compatible
             const text = label;
             // `id` will be patched later
-            return new Label('', text);
+            return new Label(undefined, text);
           }
           return Label.deserialize(label);
         });

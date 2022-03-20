@@ -97,7 +97,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const draftLabel = useMemo(() => {
     const { text } = formData;
-    const label = new Label('DRAFT', text || TEXTS.LABEL_FORM_PREVIEW_LABEL_DUMMY_TEXT);
+    const label = new Label(undefined, text || TEXTS.LABEL_FORM_PREVIEW_LABEL_DUMMY_TEXT);
     return label;
   }, [formData]);
 
