@@ -2,7 +2,7 @@
   "name": "libel",
   "namespace": "libel",
   "displayName": "Libel",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Label users on LIHKG",
   "author": "kitce <kitce.dev@gmail.com>",
   "repository": {
@@ -81,7 +81,7 @@
     "css-loader": "^5.2.0",
     "cssnano": "^5.1.4",
     "dotenv": "^10.0.0",
-    "identity-obj-proxy": "^3.0.0",
+    "identity-obj-proxy": "^3.1.0",
     "jest": "^27.5.1",
     "postcss": "^8.2.9",
     "postcss-loader": "^5.2.0",

@@ -1,3 +1,23 @@
+## v3.1.0 (2022-03-20)
+
+### Fix
+
+- **label-item**: update style
+- **label-item**: remove `color`
+- **label-form**: remove label preview
+- **store**: update storage instance before loading into the store
+- **helpers**: update `merge.ts`
+- **models**: update `Label#id` type
+
+### Refactor
+
+- update imports
+- **helpers**: move rendering-related methods from `lihkg.ts` to `mutation.ts`
+
+### Feat
+
+- **file**: update `_export` to not compress to the JSON
+
 ## v3.0.0 (2022-03-20)
 
 ### Fix
