@@ -1,6 +1,8 @@
 import { produce } from 'immer';
-import { IDataSet } from '../models/DataSet';
-import { ISerializedSubscription } from './../models/Subscription';
+import type { IDataSet } from '../models/DataSet';
+import type { ISerializedSubscription } from './../models/Subscription';
+import { isEqual as isLabelEqual } from './label';
+import { isEqual as isSubscriptionEqual } from './subscription';
 
 export enum MergeDirection {
   IncomingToLocal,
@@ -26,16 +28,16 @@ export const mergeDataSet = <T extends IDataSet> (dataSetA: T, dataSetB: T, prun
       /** existing user in B */
       if (labelsB) {
         if (prune) {
-          /** prune the missing A */
+          /** prune the missing B in A */
           dataA[userA] = dataA[userA]?.filter((labelA) => {
-            const labelB = labelsB.find((labelB) => labelB.id === labelA.id || labelB.text === labelA.text);
+            const labelB = labelsB.find((labelB) => isLabelEqual(labelA, labelB));
             return !!labelB;
           });
         }
         /** merge B into A */
         const labelsA = dataA[userA]!;
         for (const labelB of labelsB) {
-          const labelA = labelsA.find((labelA) => labelA.id === labelB.id || labelA.text === labelB.text);
+          const labelA = labelsA.find((labelA) => isLabelEqual(labelA, labelB, true));
           if (labelA) {
             /** existing label */
             labelA.text = labelB.text;
@@ -73,15 +75,15 @@ export const mergeDataSet = <T extends IDataSet> (dataSetA: T, dataSetB: T, prun
  * @returns {ISerializedSubscription[]}
  */
 export const mergeSubscriptions = (subscriptionsA: ISerializedSubscription[], subscriptionsB: ISerializedSubscription[], prune: boolean): ISerializedSubscription[] => {
-  /** prune the missing A */
+  /** prune the missing B in A */
   const _subscriptionsA = !prune ? subscriptionsA : subscriptionsA.filter((subscriptionA) => {
-    const subscriptionB = subscriptionsB.find(({ url }) => url === subscriptionA.url);
+    const subscriptionB = subscriptionsB.find((subscriptionB) => isSubscriptionEqual(subscriptionA, subscriptionB));
     return !!subscriptionB;
   });
   return produce(_subscriptionsA, (subscriptionsA) => {
     /** existing subscriptions */
     for (const subscriptionA of subscriptionsA) {
-      const subscriptionB = subscriptionsB.find((subscriptionB) => subscriptionB.url === subscriptionA.url);
+      const subscriptionB = subscriptionsB.find((subscriptionB) => isSubscriptionEqual(subscriptionA, subscriptionB));
       if (subscriptionB) {
         subscriptionA.name = subscriptionB.name;
         subscriptionA.enabled = subscriptionB.enabled;
@@ -89,7 +91,7 @@ export const mergeSubscriptions = (subscriptionsA: ISerializedSubscription[], su
     }
     /** new subscriptions */
     for (const subscriptionB of subscriptionsB) {
-      const subscriptionA = subscriptionsA.find((subscriptionA) => subscriptionA.url === subscriptionB.url);
+      const subscriptionA = subscriptionsA.find((subscriptionA) => isSubscriptionEqual(subscriptionA, subscriptionB));
       if (!subscriptionA) {
         subscriptionsA.push(subscriptionB);
       }

@@ -1,9 +1,9 @@
 import { shortenedHost } from '../constants/lihkg';
-import { IDataSet } from '../models/DataSet';
-import { IGroupedLabel } from '../types/label';
-import { IPost } from '../types/lihkg';
-import { ILabel, ISource } from './../models/Label';
-import { TTracablePost } from './../types/lihkg';
+import type { IDataSet } from '../models/DataSet';
+import type { IGroupedLabel } from '../types/label';
+import type { IPost } from '../types/lihkg';
+import type { ILabel, ISource } from './../models/Label';
+import type { TTracablePost } from './../types/lihkg';
 import { counter } from './counter';
 import { getShareID } from './lihkg';
 
@@ -62,4 +62,29 @@ export const groupByText = (user: string, dataSets: IDataSet[]) => {
     }
     return groupedLabels;
   }, []);
+};
+
+/**
+ * compare two label objects to check equality
+ * @param {ILabel} labelA the target A to be compare
+ * @param {ILabel} labelB the target B to be compare
+ * @param {boolean} [strict=true] enable strict equality checking
+ */
+export const isEqual = (labelA: ILabel, labelB: ILabel, strict = false) => {
+  if (labelA.id && labelB.id) {
+    // `id` determines everything
+    return labelA.id === labelB.id;
+  }
+  /**
+   * either one of them is stale
+   * attempt to compare something else
+   */
+  return (
+    labelA.text === labelB.text
+    && (
+      strict ? (
+        labelA.reason === labelB.reason
+      ) : true
+    )
+  );
 };

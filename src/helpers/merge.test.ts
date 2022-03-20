@@ -135,6 +135,37 @@ describe('mergeDataSet', () => {
     expect(merged.data['2']![0]).toBe(dataSetB.data['2']![0]);
     expect(merged.data['2']![1]).toBe(dataSetB.data['2']![1]);
   });
+
+  it('should have 1 user, 3 labels', () => {
+    const dataSetA: IDataSet = {
+      data: {
+        '1': [
+          { text: 'Label 1A', reason: 'Reason A' },
+          { text: 'Label 1A', reason: 'Reason B' },
+          { text: 'Label 1B' }
+        ]
+      }
+    };
+    const dataSetB: IDataSet = {
+      data: {
+        '1': [
+          { id: '1', text: 'Label 1A', reason: 'Reason A' },
+          { id: '2', text: 'Label 1A', reason: 'Reason B' },
+          { id: '3', text: 'Label 1B' }
+        ]
+      }
+    };
+    const merged = mergeDataSet(dataSetA, dataSetB, true);
+    expect(Object.keys(merged.data).length).toBe(1);
+    const mergedLabels = merged.data['1']!;
+    expect(mergedLabels.length).toBe(3);
+    for (let i = 0; i < mergedLabels.length; i++) {
+      const mergedLabel = mergedLabels[i];
+      expect(mergedLabel.id).toEqual(dataSetA.data['1']![i].id);
+      expect(mergedLabel.text).toEqual(dataSetB.data['1']![i].text);
+      expect(mergedLabel.reason).toEqual(dataSetB.data['1']![i].reason);
+    }
+  });
 });
 
 describe('mergeSubscriptions', () => {
