@@ -33,18 +33,7 @@
     &.color {
       .color-picker {
         @apply flex items-center;
-        @apply mt-2;
-
-        .preview {
-          @apply flex items-center;
-
-          .label-item {
-            @apply inline-block;
-            @apply ml-2;
-            @include text-ellipsis();
-            max-width: 5rem;
-          }
-        }
+        @apply ml-4;
 
         .input {
           @apply ml-auto;

@@ -9,11 +9,10 @@ import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
-import Label, { ILabel } from '../../models/Label';
+import type { ILabel } from '../../models/Label';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
-import LabelItem from '../LabelItem/LabelItem';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.module.scss';
@@ -94,12 +93,6 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   });
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [error, setError] = useState('');
-
-  const draftLabel = useMemo(() => {
-    const { text } = formData;
-    const label = new Label(undefined, text || TEXTS.LABEL_FORM_PREVIEW_LABEL_DUMMY_TEXT);
-    return label;
-  }, [formData]);
 
   const screenshot = useScreenshot(toggleButtonState.isCaptureReply ? cache.targetReply : null, useMemo(() => ({
     onclone: (document, element) => {
@@ -208,33 +201,23 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           onChange={handleToggleButtonChange}
         >
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
+          {
+            toggleButtonState.isCustomColor && (
+              <div className={styles.colorPicker}>
+                <ColorPicker
+                  border
+                  rounded
+                  className={styles.input}
+                  disabled={loading}
+                  name="color"
+                  value={formData.color || ''}
+                  error={inputErrors.color}
+                  onChange={handleInputChange}
+                />
+              </div>
+            )
+          }
         </ToggleButton>
-        {
-          toggleButtonState.isCustomColor && (
-            <div className={styles.colorPicker}>
-              <span className={styles.preview}>
-                {TEXTS.LABEL_FORM_PREVIEW_LABEL_LABEL_TEXT}
-                {
-                  draftLabel.text && (
-                    <LabelItem className={styles.labelItem} color={formData.color}>
-                      {draftLabel.text}
-                    </LabelItem>
-                  )
-                }
-              </span>
-              <ColorPicker
-                border
-                rounded
-                className={styles.input}
-                disabled={loading}
-                name="color"
-                value={formData.color || ''}
-                error={inputErrors.color}
-                onChange={handleInputChange}
-              />
-            </div>
-          )
-        }
       </div>
       {
         label ? (
