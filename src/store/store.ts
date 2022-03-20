@@ -76,8 +76,8 @@ const loadRemoteSubscriptions = async (subscriptions: Subscription[]) => {
 
 export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => {
   debug('loadDataIntoStore:data', data);
-  // update the store referring to the storage instance
-  const { config, meta, personal, subscriptions } = Storage.deserialize(data);
+  // update the storage instance reference
+  const { config, meta, personal, subscriptions } = storage.update(data);
   if (config) {
     store.dispatch(configActions.update(config));
   }
@@ -87,8 +87,6 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
   await loadRemoteSubscriptions(subscriptions);
-  // update the storage instance reference
-  storage.update(data);
 };
 
 /**
