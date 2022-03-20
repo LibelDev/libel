@@ -13,12 +13,7 @@
 
   @include dark-mode() {
     background-color: $color-black02;
-    border-color: $color-grey06;
   }
-
-  // .reason {
-  //   @apply leading-6;
-  // }
 
   .reason + .buttons {
     @apply mt-2;
