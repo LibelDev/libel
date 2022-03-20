@@ -1,5 +1,5 @@
-import { IDataSet } from './../models/DataSet';
-import { ILabel } from './../models/Label';
+import type { IDataSet } from './../models/DataSet';
+import type { ILabel } from './../models/Label';
 
 export interface IGroupedLabelItem {
   user: string;

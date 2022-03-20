@@ -1,9 +1,9 @@
 import joi from 'joi';
-import { ILabelDatum } from '../models/Label';
-import { ISerializedStorage } from '../models/Storage';
+import type { ILabelDatum } from '../models/Label';
+import type { ISerializedStorage } from '../models/Storage';
+import config from './config';
 import data from './data';
 import label from './label';
-import config from './config';
 import meta from './meta';
 import personal from './personal';
 import * as subscription from './subscription';

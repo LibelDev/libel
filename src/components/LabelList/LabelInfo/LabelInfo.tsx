@@ -1,8 +1,8 @@
 import classnames from 'classnames';
 import React, { useMemo } from 'react';
 import { getShareURL } from '../../../helpers/label';
-import { IDataSet } from '../../../models/DataSet';
-import { ILabel } from '../../../models/Label';
+import type { IDataSet } from '../../../models/DataSet';
+import type { ILabel } from '../../../models/Label';
 import Subscription from '../../../models/Subscription';
 import EditLabelButton from './EditLabelButton/EditLabelButton';
 import LabelImageButton from './LabelImageButton/LabelImageButton';

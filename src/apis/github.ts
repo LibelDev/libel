@@ -1,4 +1,4 @@
-import { IRelease } from '../types/github';
+import type { IRelease } from '../types/github';
 
 const baseURL = 'https://api.github.com';
 

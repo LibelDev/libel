@@ -3,9 +3,9 @@ import React from 'react';
 import { name, repository } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { versionUpdate } from '../../templates/announcements';
-import { IRelease } from '../../types/github';
-import { IconName } from '../../types/icon';
+import type { IRelease } from '../../types/github';
 import Announcement from '../Announcement/Announcement';
+import { IconName } from '../Icon/types';
 import styles from './NewVersionAnnouncement.module.scss';
 
 interface IProps {

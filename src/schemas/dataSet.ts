@@ -1,5 +1,5 @@
 import joi from 'joi';
-import { IDataSet } from './../models/DataSet';
+import type { IDataSet } from './../models/DataSet';
 import data from './data';
 
 const schema = joi.object<IDataSet>({

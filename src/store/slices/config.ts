@@ -3,7 +3,7 @@ import { persistReducer } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Config, { IConfig } from '../../models/Config';
-import { IBasicSubscription } from './../../models/Subscription';
+import type { IBasicSubscription } from './../../models/Subscription';
 
 interface IUpdateSubscriptionTemplatePayload {
   index: number;

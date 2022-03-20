@@ -1,4 +1,4 @@
-import { IDataSet } from '../models/DataSet';
+import type { IDataSet } from '../models/DataSet';
 import Label from '../models/Label';
 import Personal from '../models/Personal';
 

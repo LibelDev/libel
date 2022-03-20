@@ -1,11 +1,11 @@
 import { render } from 'mustache';
 import cache from '../cache';
 import { getUserRegistrationDate } from '../helpers/lihkg';
-import { ILabel } from '../models/Label';
+import type { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
 import { promotion, snipingHeader, snipingLabelItem, snipingLabelScreenshot, snipingTemplate, subscriptionItem } from '../templates/sniping/sniping';
-import { IDraft } from '../types/lihkg';
+import type { IDraft } from '../types/lihkg';
 import { CUSTOM_SNIPING_TEMPLATE_DRAFT_TITLE, CUSTOM_SNIPING_TEMPLATE_MAPPING } from './../constants/sniping';
 import { DRAFTS_KEY } from './../constants/storage';
 import { createDataSetUserFilter } from './../store/selectors';

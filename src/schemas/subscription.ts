@@ -1,6 +1,6 @@
 import joi from 'joi';
 import { HEX_COLOR } from '../constants/regexes';
-import { IRemoteSubscription, ISerializedSubscription } from './../models/Subscription';
+import type { IRemoteSubscription, ISerializedSubscription } from './../models/Subscription';
 import data from './data';
 
 export const serialized = joi.object<ISerializedSubscription>({

@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import React from 'react';
-import { IconName } from '../../types/icon';
+import type { IconName } from './types';
 
 interface IProps {
   icon: IconName;

@@ -1,6 +1,6 @@
 import { Middleware } from '@reduxjs/toolkit';
 import { actions as metaActions } from '../slices/meta';
-import { TRootState } from '../store';
+import type { TRootState } from '../store';
 
 interface IOptions {
   whitelist?: string[];

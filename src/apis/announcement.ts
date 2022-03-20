@@ -1,5 +1,5 @@
 import { publicDataURL } from '../../config/config';
-import { IconName } from '../types/icon';
+import type { IconName } from '../components/Icon/types';
 
 interface IAnnouncement {
   id?: string; // added in 1.0.18

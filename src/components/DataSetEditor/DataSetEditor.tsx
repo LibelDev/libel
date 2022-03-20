@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { deduplicate } from '../../helpers/array';
 import { mapDataSetToSpreadsheetEntries, mapSpreadsheetEntriesToDataSet } from '../../helpers/spreadsheet';
 import { replaceNewLines } from '../../helpers/string';
-import { IDataSet } from '../../models/DataSet';
+import type { IDataSet } from '../../models/DataSet';
 import Personal from '../../models/Personal';
 import * as config from './config';
 import styles from './DataSetEditor.module.scss';

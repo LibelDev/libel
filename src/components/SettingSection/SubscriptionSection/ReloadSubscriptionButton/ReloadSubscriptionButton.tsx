@@ -7,7 +7,7 @@ import Subscription from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
-import { IconName } from '../../../../types/icon';
+import { IconName } from '../../../Icon/types';
 import IconButton from '../../../IconButton/IconButton';
 
 interface IProps {

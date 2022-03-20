@@ -1,5 +1,5 @@
-import { IDataSet } from '../models/DataSet';
-import { ISerializedSubscription } from '../models/Subscription';
+import type { IDataSet } from '../models/DataSet';
+import type { ISerializedSubscription } from '../models/Subscription';
 import { mergeDataSet, mergeSubscriptions } from './merge';
 
 describe('mergeDataSet', () => {

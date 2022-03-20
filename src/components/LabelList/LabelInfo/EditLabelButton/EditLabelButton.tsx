@@ -2,10 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { EventAction, EventCategory, EventLabel } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
 import * as gtag from '../../../../helpers/gtag';
-import { ILabel } from '../../../../models/Label';
+import type { ILabel } from '../../../../models/Label';
 import { actions as personalActions } from '../../../../store/slices/personal';
 import { useTypedDispatch } from '../../../../store/store';
-import { IconName } from '../../../../types/icon';
+import { IconName } from '../../../Icon/types';
 import IconButton from '../../../IconButton/IconButton';
 import LabelFormModal, { TLabelFormProps } from '../../../LabelFormModal/LabelFormModal';
 

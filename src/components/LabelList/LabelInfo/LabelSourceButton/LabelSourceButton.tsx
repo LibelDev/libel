@@ -1,8 +1,7 @@
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import Label from '../../../../models/Label';
-import { IconName } from '../../../../types/icon';
 import Icon from '../../../Icon/Icon';
+import { IconName } from '../../../Icon/types';
 
 interface IProps {
   url?: string;

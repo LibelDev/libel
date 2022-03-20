@@ -1,7 +1,7 @@
 import React from 'react';
-import { IBasicSubscription } from '../../../../models/Subscription';
-import { IconName } from '../../../../types/icon';
+import type { IBasicSubscription } from '../../../../models/Subscription';
 import Icon from '../../../Icon/Icon';
+import { IconName } from '../../../Icon/types';
 
 interface IProps {
   subscription: IBasicSubscription;

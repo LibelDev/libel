@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { useContext } from 'react';
-import { IconName } from '../../types/icon';
+import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import styles from './Header.module.scss';
 import IDsContext from './IDsContext';

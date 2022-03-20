@@ -1,4 +1,4 @@
-import { IUploadResponse } from '../types/nacx';
+import type { IUploadResponse } from '../types/nacx';
 
 const baseURL = 'https://api.na.cx';
 

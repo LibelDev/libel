@@ -1,5 +1,5 @@
 import { immerable } from 'immer';
-import { IBasicSubscription } from './Subscription';
+import type { IBasicSubscription } from './Subscription';
 
 export interface ISerializedConfig {
   isIconMapUnlocked: boolean;

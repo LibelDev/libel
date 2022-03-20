@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { IGroupedLabelItem } from '../../../types/label';
+import type { IGroupedLabelItem } from '../../../types/label';
 import LabelInfo from '../LabelInfo/LabelInfo';
 import styles from './LabelInfoList.module.scss';
 

@@ -4,7 +4,7 @@ import { ActionType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
 import { selectSubscriptions } from '../selectors';
-import { TRootState } from '../store';
+import type { TRootState } from '../store';
 
 interface ITogglePayload {
   index: number;

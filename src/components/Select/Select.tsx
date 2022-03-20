@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import useElementID from '../../hooks/useElementID';
-import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
+import { IconName } from '../Icon/types';
 import styles from './Select.module.scss';
 
 interface IProps {

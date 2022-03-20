@@ -8,7 +8,7 @@ import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
-import { IconName } from '../../types/icon';
+import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
 import styles from './SnipeButton.module.scss';

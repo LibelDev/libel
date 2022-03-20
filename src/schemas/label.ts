@@ -1,5 +1,5 @@
 import joi from 'joi';
-import { ILabel } from '../models/Label';
+import type { ILabel } from '../models/Label';
 import { HEX_COLOR } from './../constants/regexes';
 
 export const id = joi.string().trim();

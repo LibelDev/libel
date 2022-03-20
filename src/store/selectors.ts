@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import Data from '../models/Data';
 import Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { TRootState } from './store';
+import type { TRootState } from './store';
 
 export const selectConfig = (state: TRootState) => state.config;
 

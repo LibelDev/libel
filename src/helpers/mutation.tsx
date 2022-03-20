@@ -10,6 +10,7 @@ import cache from '../cache';
 import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
 import addLabelButtonStyles from '../components/AddLabelButton/AddLabelButton.module.scss';
 import announcementStyles from '../components/Announcement/Announcement.module.scss';
+import { IconName } from '../components/Icon/types';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.module.scss';
 import SettingSection from '../components/SettingSection/SettingSection';
@@ -24,7 +25,6 @@ import * as TEXTS from '../constants/texts';
 import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import { IconName } from '../types/icon';
 import { insertAfter } from './dom';
 import { waitForRightPanelContainer } from './lihkg';
 

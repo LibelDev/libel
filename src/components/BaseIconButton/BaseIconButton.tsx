@@ -1,20 +1,20 @@
 import classnames from 'classnames';
 import React from 'react';
-import { IconName } from '../../types/icon';
-import BaseButton, { TProps as TBaseButtonProps } from '../BaseButton/BaseButton';
+import Button, { TProps as TButtonProps } from '../Button/Button';
 import Icon from '../Icon/Icon';
+import type { IconName } from '../Icon/types';
 import styles from './BaseIconButton.module.scss';
 
 interface IProps {
   icon: IconName;
 }
 
-export type TProps = IProps & TBaseButtonProps;
+export type TProps = IProps & TButtonProps;
 
 const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
   const { className, children, icon, ...otherProps } = props;
   return (
-    <BaseButton
+    <Button
       {...otherProps}
       className={classnames(className, styles.baseIconButton)}
     >
@@ -26,7 +26,7 @@ const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
           )
         }
       </React.Fragment>
-    </BaseButton>
+    </Button>
   );
 };
 

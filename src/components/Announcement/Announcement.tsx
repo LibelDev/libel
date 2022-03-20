@@ -10,8 +10,8 @@ import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement'
 import * as gtag from '../../helpers/gtag';
 import { isViewport, Viewport } from '../../helpers/responsive';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
-import { IconName } from '../../types/icon';
 import Icon from '../Icon/Icon';
+import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import styles from './Announcement.module.scss';
 

@@ -1,7 +1,7 @@
 import { autoUpdate, flip, useFloating } from '@floating-ui/react-dom';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
-import { IGroupedLabelItem } from '../../../types/label';
+import type { IGroupedLabelItem } from '../../../types/label';
 import LabelItem from '../../LabelItem/LabelItem';
 import LabelInfoList from '../LabelInfoList/LabelInfoList';
 import Badge from './Badge';
