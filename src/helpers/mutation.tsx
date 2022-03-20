@@ -217,6 +217,8 @@ const handleReplyListMutation = (node: Element, store: TStore, persistor: Persis
   const nodes = Array.from(node.querySelectorAll(lihkgSelectors.replyItemInner));
   for (const node of nodes) {
     handleReplyItemInnerMutation(node, store, persistor);
+    const replyItemInnerHeader = node.querySelector(lihkgSelectors.replyItemInnerHeader)!;
+    handleReplyItemInnerHeaderMutation(replyItemInnerHeader, store, persistor);
   }
 };
 
