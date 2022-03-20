@@ -41,12 +41,11 @@ export const decompress = (body: string) => {
 export const _export = async () => {
   await storage.load();
   const json = storage.json();
-  const body = compress(json);
   const now = new Date();
   const timestamp = format(now, exportFilenameTimestampFormat);
   const filename = render(filenames.data.export, { timestamp });
   // TODO so sad, there is no way to detect whether the user has downloaded the file or not
-  download(filename, body, 'text/plain');
+  download(filename, json, 'text/plain');
   return storage;
 };
 
