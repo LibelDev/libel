@@ -68,7 +68,7 @@ export const groupByText = (user: string, dataSets: IDataSet[]) => {
  * compare two label objects to check equality
  * @param {ILabel} labelA the target A to be compare
  * @param {ILabel} labelB the target B to be compare
- * @param {boolean} [strict=true] enable strict equality checking
+ * @param {boolean} [strict=false] enable strict equality checking
  */
 export const isEqual = (labelA: ILabel, labelB: ILabel, strict = false) => {
   if (labelA.id && labelB.id) {
