@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { IRemoteSubscription } from '../../../models/Subscription';
 import type { IGroupedLabelItem } from '../../../types/label';
 import LabelInfo from '../LabelInfo/LabelInfo';
 import styles from './LabelInfoList.module.scss';
@@ -23,6 +24,7 @@ const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) =>
                 user={user}
                 index={index}
                 label={label}
+                color={(dataSet as IRemoteSubscription).color}
                 dataSet={dataSet}
               />
             </li>
