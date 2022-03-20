@@ -1,7 +1,8 @@
 // import debugFactory from 'debug';
 import Handsontable from 'handsontable';
 import { AutocompleteCellType, registerCellType, TextCellType } from 'handsontable/cellTypes';
-import { CopyPaste, DropdownMenu, Filters, registerPlugin, UndoRedo } from 'handsontable/plugins';
+import { registerLanguageDictionary, zhTW } from 'handsontable/i18n';
+import { ContextMenu, CopyPaste, registerPlugin, UndoRedo } from 'handsontable/plugins';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as TEXTS from '../../constants/texts';
@@ -13,11 +14,11 @@ import UserIDCell from './Cells/UserIDCell';
 // const debug = debugFactory('libel:component:DataSetEditor:config');
 
 // register cell types and plugins
+registerLanguageDictionary(zhTW);
 registerCellType(AutocompleteCellType);
 registerCellType(TextCellType);
+registerPlugin(ContextMenu);
 registerPlugin(CopyPaste);
-registerPlugin(DropdownMenu);
-registerPlugin(Filters);
 registerPlugin(UndoRedo);
 
 const columns: Handsontable.ColumnSettings[] = [
@@ -130,6 +131,7 @@ const colHeaders = [
 
 export const settings: Handsontable.GridSettings = {
   licenseKey: process.env.HANDSONTABLE_LICENSE_KEY,
+  language: zhTW.languageCode,
   height: 300,
   width: 800,
   columns,
@@ -141,8 +143,7 @@ export const settings: Handsontable.GridSettings = {
   allowInvalid: false,
   wordWrap: false,
   // plugins
+  contextMenu: ['remove_row'],
   copyPaste: true,
-  dropdownMenu: false,
-  filters: false,
   undo: true
 };

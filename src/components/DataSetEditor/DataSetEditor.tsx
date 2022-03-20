@@ -13,7 +13,7 @@ import styles from './DataSetEditor.module.scss';
 
 interface IProps {
   dataSet: IDataSet;
-  onChange?: (changes: Handsontable.CellChange[]) => void;
+  onChange?: (changes?: Handsontable.CellChange[]) => void;
   onSubmit?: (dataSet: Personal) => void;
 }
 
@@ -69,12 +69,19 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
     }
   }, []);
 
+  const handleAfterRemoveRow = useCallback(() => {
+    if (onChange) {
+      onChange();
+    }
+  }, []);
+
   useEffect(() => {
     if (ref.current) {
       const hotInstance = new Handsontable(ref.current, {
         ...settings,
         data: entries,
-        beforeChange: handleBeforeChange
+        beforeChange: handleBeforeChange,
+        afterRemoveRow: handleAfterRemoveRow
       });
       setHotInstance(hotInstance);
     }
