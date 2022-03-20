@@ -1,10 +1,9 @@
-import debugFactory from 'debug';
 import { useFloating } from '@floating-ui/react-dom';
-import { Store } from '@reduxjs/toolkit';
-import produce from 'immer';
+// import debugFactory from 'debug';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import type { Persistor } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { namespace } from '../../package.json';
 import cache from '../cache';
@@ -22,27 +21,16 @@ import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleBu
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
-import { persistor } from '../store/store';
+import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
 import { IconName } from '../types/icon';
-import { IIconMap, IUser, TTracablePost } from '../types/lihkg';
-import { insertAfter, waitForElement } from './dom';
-import { findReduxStore, IReactRootElement } from './redux';
+import { insertAfter } from './dom';
+import { waitForRightPanelContainer } from './lihkg';
 
-// type TRendererContainer = Parameters<Renderer>[1];
 type TFloatingConfig = Parameters<typeof useFloating>[0];
 
-enum ShareType {
-  Thread = 1,
-  Reply = 2
-}
-
-const debug = debugFactory('libel:helper:lihkg');
-
-export const getUserRegistrationDate = (user: IUser) => {
-  return new Date(user.create_time * 1000);
-};
+// const debug = debugFactory('libel:helper:mutation');
 
 const isThreadItem = (node: Element) => {
   return node.matches(lihkgSelectors.threadItem);
@@ -100,7 +88,7 @@ const isModalTitleMatched = (node: Element, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = (user: string, store: Store, container: Element) => {
+const renderAddLabelButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
   const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
   const targetReply = cache.getReply(postID);
   if (targetReply) {
@@ -117,7 +105,7 @@ const renderAddLabelButton = (user: string, store: Store, container: Element) =>
   }
 };
 
-const renderLabelList = (user: string, store: Store, floatingConfig: TFloatingConfig, container: Element) => {
+const renderLabelList = (user: string, store: TStore, persistor: Persistor, floatingConfig: TFloatingConfig, container: Element) => {
   (container as Element).classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
@@ -132,7 +120,7 @@ const renderLabelList = (user: string, store: Store, floatingConfig: TFloatingCo
   );
 };
 
-const renderSnipeButton = (user: string, store: Store, container: Element) => {
+const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
   (container as Element).classList.add(lihkgCssClasses.replyToolbarButton);
   (container as Element).classList.add(snipeButtonStyles.container);
   ReactDOM.render(
@@ -145,7 +133,7 @@ const renderSnipeButton = (user: string, store: Store, container: Element) => {
   );
 };
 
-const renderSettingSection = (store: Store, container: Element) => {
+const renderSettingSection = (store: TStore, persistor: Persistor, container: Element) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -156,7 +144,7 @@ const renderSettingSection = (store: Store, container: Element) => {
   );
 };
 
-const renderUnlockIconMapToggleButton = (store: Store, container: Element) => {
+const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -175,7 +163,7 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   ReactDOM.render(announcement, container);
 };
 
-const handleThreadItemMutation = (node: Element, store: Store) => {
+const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const threadLink = node.querySelector(lihkgSelectors.threadLink)!;
   const href = threadLink.getAttribute('href')!;
   const threadId = href.match(REGEXES.THREAD_URL)![1];
@@ -185,11 +173,11 @@ const handleThreadItemMutation = (node: Element, store: Store) => {
     const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner)!;
     const container = document.createElement('div');
     threadItemInner.insertAdjacentElement('afterbegin', container);
-    renderLabelList(user, store, undefined, container);
+    renderLabelList(user, store, persistor, undefined, container);
   }
 };
 
-const handleUserCardModalMutation = (node: Element, store: Store) => {
+const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const doxButtonSelector = `${lihkgSelectors.userCardButtonsContainer} > a[href^="/profile"]`;
   const doxButton = node.querySelector(doxButtonSelector);
   const href = doxButton?.getAttribute('href');
@@ -200,44 +188,44 @@ const handleUserCardModalMutation = (node: Element, store: Store) => {
     const labelListContainer = document.createElement('div');
     modelContentInner.appendChild(labelListContainer);
     const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
-    renderLabelList(user, store, floatingConfig, labelListContainer);
+    renderLabelList(user, store, persistor, floatingConfig, labelListContainer);
     const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
     const addLabelButtonContainer = document.createElement('div');
     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
     userCardButtonsContainer.appendChild(addLabelButtonContainer);
-    renderAddLabelButton(user, store, addLabelButtonContainer);
+    renderAddLabelButton(user, store, persistor, addLabelButtonContainer);
   }
 };
 
-const handleSettingsModalMutation = (node: Element, store: Store) => {
+const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
   const container = document.createElement('div');
   container.classList.add(settingSectionStyles.container);
   modelContentInner.appendChild(container);
-  renderSettingSection(store, container);
+  renderSettingSection(store, persistor, container);
 };
 
-const handleEmoteMenuMutation = (node: Element, store: Store) => {
+const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
   const container = document.createElement('div');
   container.classList.add(unlockIconMapToggleButtonStyles.container);
   toolbar!.appendChild(container);
-  renderUnlockIconMapToggleButton(store, container);
+  renderUnlockIconMapToggleButton(store, persistor, container);
 };
 
-const handleReplyListMutation = (node: Element, store: Store) => {
+const handleReplyListMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const nodes = Array.from(node.querySelectorAll(lihkgSelectors.replyItemInner));
   for (const node of nodes) {
-    handleReplyItemInnerMutation(node, store);
+    handleReplyItemInnerMutation(node, store, persistor);
   }
 };
 
-const handleReplyItemMutation = (node: Element, store: Store) => {
+const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const _node = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(_node, store);
+  handleReplyItemInnerMutation(_node, store, persistor);
 };
 
-const handleReplyItemInnerMutation = (node: Element, store: Store) => {
+const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   if (user) {
     const containerCacheKey = `__${namespace}__cache__container__`;
@@ -245,17 +233,17 @@ const handleReplyItemInnerMutation = (node: Element, store: Store) => {
     const container = document.createElement('div');
     node.insertAdjacentElement('afterbegin', container);
     const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
-    renderLabelList(user, store, floatingConfig, container);
+    renderLabelList(user, store, persistor, floatingConfig, container);
     (node as any)[containerCacheKey] = container;
   }
 };
 
-const handleReplyButtonMutation = (node: Element, store: Store) => {
+const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const replyItemInnerHeader = node.parentElement!;
-  handleReplyItemInnerHeaderMutation(replyItemInnerHeader, store);
+  handleReplyItemInnerHeaderMutation(replyItemInnerHeader, store, persistor);
 };
 
-const handleReplyItemInnerHeaderMutation = (node: Element, store: Store) => {
+const handleReplyItemInnerHeaderMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   if (user) {
     const replyButton = node.querySelector(`.${IconName.Reply}`);
@@ -264,24 +252,24 @@ const handleReplyItemInnerHeaderMutation = (node: Element, store: Store) => {
       (node as any)[containerCacheKey]?.remove();
       const container = document.createElement('div');
       insertAfter(container, replyButton);
-      renderSnipeButton(user, store, container);
+      renderSnipeButton(user, store, persistor, container);
       (node as any)[containerCacheKey] = container;
     }
   }
 };
 
-const handleReplyModalMutation = (node: Element, store: Store) => {
+const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const _node = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(_node, store);
+  handleReplyItemInnerMutation(_node, store, persistor);
 };
 
-export const handleDataPostIdAttributeMutation = (node: Element, store: Store) => {
+export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const _node = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(_node, store);
+  handleReplyItemInnerMutation(_node, store, persistor);
 };
 
 export const addedNodeMutationHandlerFactory = (node: Element) => {
-  debug('addedNodeMutationHandlerFactory', node);
+  // debug('addedNodeMutationHandlerFactory', node);
   /** when render the thread item */
   if (isThreadItem(node)) return handleThreadItemMutation;
   /** when render the user card modal */
@@ -298,71 +286,4 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   if (isReplyButton(node)) return handleReplyButtonMutation;
   /** when render reply modal */
   if (isReplyModal(node)) return handleReplyModalMutation;
-};
-
-export const waitForSubmissionForm = () => {
-  return waitForElement(lihkgSelectors.submissionForm);
-};
-
-const waitForRightPanelContainer = async () => {
-  const splitView = await waitForElement(lihkgSelectors.splitView);
-  return splitView.querySelector(lihkgSelectors.rightPanelContainer)!;
-};
-
-/**
- * get the original LIHKG redux store
- */
-export const getStore = () => {
-  const app = document.querySelector(lihkgSelectors.app);
-  const store = findReduxStore(app as IReactRootElement);
-  return store;
-};
-
-/**
- * unlock all icons
- * @param {IIconMap} iconMap the original LIHKG icon map
- * @returns the unlocked icon map
- */
-export const unlockIconMap = (iconMap: IIconMap) => {
-  return produce(iconMap, (iconMap) => {
-    const keys = Object.keys(iconMap);
-    for (const key of keys) {
-      const iconSet = iconMap[key];
-      iconSet.icons = { ...iconSet.icons, ...iconSet.special }; // unlock all special icons
-      delete iconSet.showOn; // unlock all icon sets by removing the show conditions
-    }
-  });
-};
-
-/**
- * get the share id of the reply
- * @copyright the implementation is a reference from LIHKG source code
- * @param {TTracablePost} post the label source 
- * @returns the share id
- */
-export const getShareID = (post: TTracablePost) => {
-  const e = post.thread_id; // thread id
-  if (post.msg_num === '1') {
-    return e;
-  }
-  const t = ShareType.Reply; // the share type: thread or reply
-  const n = parseInt(post.msg_num, 10); // the share variable: page number or message number
-  const x = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQR'; // the hash seed
-  const C = (e: number, t: string) => {
-    let n;
-    let r = '';
-    while (e > 0) {
-      r = t[n = (e - 1) % t.length] + r;
-      e = parseInt(((e - n) / t.length).toString(), 10);
-    }
-    return r;
-  };
-  if (t > 0) {
-    const r = n.toString().length - 1;
-    const i = r << 1 | t - 1;
-    return C(parseInt(`${e}${n}`, 10), x) + 'STUVWXYZ'[i];
-  }
-  // since `type > 0` will always be `true`
-  // this will neven happen, but just keep this for consistency
-  return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };

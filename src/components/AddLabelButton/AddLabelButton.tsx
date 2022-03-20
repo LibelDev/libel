@@ -6,7 +6,7 @@ import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
-import { IPost } from '../../types/lihkg';
+import type { IPost } from '../../types/lihkg';
 import Button from '../Button/Button';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
 import styles from './AddLabelButton.module.scss';

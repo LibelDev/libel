@@ -6,9 +6,9 @@ import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
 import Storage from '../models/Storage';
-import Subscription from '../models/Subscription';
+import type Subscription from '../models/Subscription';
 import storage from '../storage';
-import { ISerializedStorage, IStorage } from './../models/Storage';
+import type { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
 import reducer, { persistedReducer } from './reducer';
 import { actions as configActions } from './slices/config';
@@ -101,6 +101,7 @@ export const persistor = persistStore(store, null, async () => {
   await loadRemoteSubscriptions(subscriptions);
 });
 
+export type TStore = typeof store;
 export type TRootState = ReturnType<typeof reducer>;
 export type TAppDispatch = typeof store.dispatch;
 

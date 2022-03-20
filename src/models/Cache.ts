@@ -1,6 +1,6 @@
-import { IPost, IQuoteListResponseData, IReplyListResponseData } from '../types/lihkg';
-import { IThread, IThreadListResponseData } from '../types/lihkg';
-import { IUser } from '../types/lihkg';
+import type { IPost, IQuoteListResponseData, IReplyListResponseData } from '../types/lihkg';
+import type { IThread, IThreadListResponseData } from '../types/lihkg';
+import type { IUser } from '../types/lihkg';
 
 type TThreads = { [thread: string]: IThread | undefined; };
 type TReplies = { [post: string]: IPost | undefined; };

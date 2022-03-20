@@ -1,25 +1,27 @@
-import { Store } from '@reduxjs/toolkit';
 import React from 'react';
+import type { Persistor } from 'redux-persist';
 import { fetchAnnouncements } from '../apis/announcement';
 import Announcement from '../components/Announcement/Announcement';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import { hasRead } from '../helpers/announecement';
-import * as LIHKG from '../helpers/lihkg';
+import { addedNodeMutationHandlerFactory, handleDataPostIdAttributeMutation, isNickname, renderAnnouncement } from '../helpers/mutation';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
-import { IQuoteListResponseData, IReplyListResponseData } from '../types/lihkg';
-import { IThreadListResponseData } from '../types/lihkg';
-import Cache from './Cache';
+import type { TStore } from '../store/store';
+import type { IQuoteListResponseData, IReplyListResponseData, IThreadListResponseData } from '../types/lihkg';
+import type Cache from './Cache';
 
 class App {
   private cache: Cache;
-  private store: Store;
+  private store: TStore;
+  private persistor: Persistor;
 
-  constructor (cache: Cache, store: Store) {
+  constructor (cache: Cache, store: TStore, persistor: Persistor) {
     this.cache = cache;
     this.store = store;
+    this.persistor = persistor;
   }
 
   async start () {
@@ -40,7 +42,7 @@ class App {
    * @private
    */
   private bootstrap () {
-    const { store } = this;
+    const { store, persistor } = this;
 
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -50,10 +52,10 @@ class App {
             const nodes = Array.from(mutation.addedNodes);
             for (const node of nodes) {
               if (node.nodeType === document.ELEMENT_NODE) {
-                const handle = LIHKG.addedNodeMutationHandlerFactory(node as Element);
+                const handle = addedNodeMutationHandlerFactory(node as Element);
                 if (handle) {
                   window.requestAnimationFrame(() => {
-                    handle(node as Element, store);
+                    handle(node as Element, store, persistor);
                   });
                 }
               }
@@ -65,7 +67,7 @@ class App {
             if (mutation.attributeName === ATTRIBUTES.dataPostId) {
               const { target } = mutation;
               window.requestAnimationFrame(() => {
-                LIHKG.handleDataPostIdAttributeMutation(target as Element, store);
+                handleDataPostIdAttributeMutation(target as Element, store, persistor);
               });
             }
             break;
@@ -91,7 +93,7 @@ class App {
     document.addEventListener('click', (event) => {
       try {
         const { parentElement } = event.target as Element;
-        if (parentElement && LIHKG.isNickname(parentElement)) {
+        if (parentElement && isNickname(parentElement)) {
           const { parentElement: replyElement } = parentElement.parentElement?.parentElement!;
           cache.targetReply = replyElement;
         }
@@ -135,7 +137,7 @@ class App {
       for (const announcement of announcements) {
         const { id, icon, body, endAt, forced } = announcement;
         if ((!id || !hasRead(id)) && (!endAt || now <= endAt)) {
-          LIHKG.renderAnnouncement(
+          renderAnnouncement(
             <Announcement id={id} icon={icon} forced={forced}>
               <span dangerouslySetInnerHTML={{ __html: body }} />
             </Announcement>
@@ -151,7 +153,7 @@ class App {
     try {
       const [available, currentVersion, newVersion, latestRelease] = await checkUpdate();
       if (available) {
-        LIHKG.renderAnnouncement(
+        renderAnnouncement(
           <NewVersionAnnouncement
             currentVersion={currentVersion}
             newVersion={newVersion!}
