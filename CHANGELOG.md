@@ -1,3 +1,9 @@
+## Unreleased
+
+### Fix
+
+- **sniping**: missing snipe button
+
 ## v3.1.0 (2022-03-20)
 
 ### Fix
@@ -8,20 +14,6 @@
 - **store**: update storage instance before loading into the store
 - **helpers**: update `merge.ts`
 - **models**: update `Label#id` type
-
-### Refactor
-
-- update imports
-- **helpers**: move rendering-related methods from `lihkg.ts` to `mutation.ts`
-
-### Feat
-
-- **file**: update `_export` to not compress to the JSON
-
-## v3.0.0 (2022-03-20)
-
-### Fix
-
 - **label-list**: update label info list box-sizing
 - **label-info**: remove shadow
 - **dom**: apply `requestAnimationFrame` when handling mutations
@@ -42,6 +34,8 @@
 
 ### Refactor
 
+- update imports
+- **helpers**: move rendering-related methods from `lihkg.ts` to `mutation.ts`
 - **stylesheets**: use variables for colors
 - **label-list**: update label item layout
 - **constants**: update texts
@@ -85,6 +79,7 @@
 
 ### Feat
 
+- **file**: update `_export` to not compress to the JSON
 - **label-list**: update label list layout
 - **label-list**: update label list layout
 - **label-list**: update label list layout
