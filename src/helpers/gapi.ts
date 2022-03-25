@@ -37,7 +37,8 @@ const init = () => {
   });
 };
 
-const singleton = new Singleton(init());
+const source = init();
+const singleton = new Singleton(source);
 export const ready = () => singleton.get();
 
 /**
