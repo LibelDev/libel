@@ -23,7 +23,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
             TEXTS.LABEL_FORM_MODAL_TITLE_ADD_LABEL
         }
       </Modal.Header>
-      <Modal.Body padding>
+      <Modal.Body>
         <LabelForm
           id={formID}
           user={user}
