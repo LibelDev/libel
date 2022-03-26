@@ -19,7 +19,7 @@ const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
       <Modal.Header onClose={onClose}>
         {TEXTS.SUBSCRIPTION_MAKER_MODAL_TITLE}
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body padding>
         <SubscriptionMaker
           id={formID}
           dataSet={dataSet}

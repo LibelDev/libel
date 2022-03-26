@@ -168,7 +168,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       <div className={styles.inputField}>
         <TextInput
-          className={styles.input}
+          className={styles.textInput}
           disabled={loading}
           label={TEXTS.LABEL_FORM_FIELD_LABEL_TEXT}
           name="text"
@@ -181,7 +181,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       </div>
       <div className={styles.inputField}>
         <TextInput
-          className={styles.input}
+          className={styles.textInput}
           disabled={loading}
           label={TEXTS.LABEL_FORM_FIELD_LABEL_REASON}
           placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_REASON}
@@ -207,7 +207,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                 <ColorPicker
                   border
                   rounded
-                  className={styles.input}
+                  className={styles.textInput}
                   disabled={loading}
                   name="color"
                   value={formData.color || ''}
@@ -224,7 +224,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** edit label */
           <div className={styles.inputField}>
             <TextInput
-              className={styles.input}
+              className={styles.textInput}
               disabled={loading}
               label={TEXTS.LABEL_FORM_FIELD_LABEL_IMAGE}
               placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_IMAGE}

@@ -164,7 +164,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       onSubmit={handleSubmit}
       aria-describedby={errorID}
     >
-      <div className={styles.inputField}>
+      <div className={classNames(styles.inputField, styles.template)}>
         <Select
           className={styles.select}
           border

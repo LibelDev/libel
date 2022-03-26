@@ -1,18 +1,16 @@
 @import '../../stylesheets/base';
 
 .label-form {
-  @apply p-4;
-
-  > * + * {
-    @apply mt-4;
-  }
-
   .user-icon {
     @apply mr-2;
   }
 
   .input-field {
-    .input {
+    &:not(:first-child) {
+      @apply mt-4;
+    }
+
+    .text-input {
       > span {
         @apply flex-1;
       }
@@ -90,5 +88,9 @@
         }
       }
     }
+  }
+
+  .error {
+    @apply mt-4;
   }
 }
