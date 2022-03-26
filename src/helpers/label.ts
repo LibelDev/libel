@@ -46,18 +46,21 @@ export const getShareURL = (label: ILabel) => {
   return label.url;
 };
 
-export const groupByText = (user: string, dataSets: IDataSet[]) => {
+export const groupByText = (dataSets: IDataSet[]) => {
   return dataSets.reduce<IGroupedLabel[]>((groupedLabels, dataSet) => {
-    const labels = dataSet.data[user];
-    if (labels) {
-      for (let index = 0; index < labels.length; index++) {
-        const label = labels[index];
-        let groupedLabel = groupedLabels.find(({ text }) => text === label.text);
-        if (!groupedLabel) {
-          groupedLabel = { text: label.text, items: [] };
-          groupedLabels.push(groupedLabel);
+    const users = Object.keys(dataSet.data);
+    for (const user of users) {
+      const labels = dataSet.data[user];
+      if (labels) {
+        for (let index = 0; index < labels.length; index++) {
+          const label = labels[index];
+          let groupedLabel = groupedLabels.find(({ text }) => text === label.text);
+          if (!groupedLabel) {
+            groupedLabel = { text: label.text, items: [] };
+            groupedLabels.push(groupedLabel);
+          }
+          groupedLabel.items.push({ user, index, label, dataSet });
         }
-        groupedLabel.items.push({ user, index, label, dataSet });
       }
     }
     return groupedLabels;

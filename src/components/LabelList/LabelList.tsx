@@ -17,7 +17,8 @@ const LabelList: React.FunctionComponent<IProps> = (props) => {
   const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
 
   const groupedLabels = useMemo(() => {
-    return groupByText(user, [personal, ...subscriptions]);
+    const dataSets = [personal, ...subscriptions];
+    return groupByText(dataSets);
   }, [personalLabels, subscriptionLabels]);
 
   if (groupedLabels.length === 0) {
