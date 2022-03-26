@@ -36,7 +36,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
     gtag.event(EventAction.Close, { event_category: EventCategory.Modal, event_label: EventLabel.EditLabel });
   }, []);
 
-  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = useCallback(async (event, data) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmit'] = useCallback(async (data) => {
     const { text, reason, color, image } = data;
     dispatch(personalActions.edit({ user, index, text, reason, color, image }));
     handleModalClose();
@@ -61,7 +61,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
         escape={false}
         fragile={false}
         onClose={handleModalClose}
-        onSubmission={handleLabelFormSubmit}
+        onSubmit={handleLabelFormSubmit}
       />
     </React.Fragment>
   );

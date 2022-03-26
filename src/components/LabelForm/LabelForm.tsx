@@ -52,10 +52,10 @@ interface IProps {
    * @async
    * @throws {string} error message
    */
-  onSubmission: (event: React.FormEvent<HTMLFormElement>, data: TFormData) => Promise<void>;
+  onSubmit: (data: TFormData) => Promise<void>;
 }
 
-export type TProps = IProps & React.ComponentPropsWithoutRef<'form'>;
+export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
 
 const schema = joi.object({
   text: joi.string().trim().required().messages({
@@ -82,7 +82,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     user,
     label,
     loading,
-    onSubmission,
+    onSubmit,
     ...otherProps
   } = props;
 
@@ -140,14 +140,14 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       setInputErrors(_inputErrors);
     } else {
       try {
-        await onSubmission(event, value);
+        await onSubmit(value);
       } catch (err) {
         if (typeof err === 'string') {
           setError(err);
         }
       }
     }
-  }, [onSubmission, formData, toggleButtonState, inputErrors, screenshot]);
+  }, [onSubmit, formData, toggleButtonState, inputErrors, screenshot]);
 
   return (
     <form
