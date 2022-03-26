@@ -774,8 +774,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.11
     dev: true
 
-  /@maxim_mazurok/gapi.client.drive/3.0.20220313:
-    resolution: {integrity: sha512-qsFKbVkpJQfvo1RdR/WCyaLii8QQrtVWa3WAqLyH8CryZbQ7ZcHOcEAdXyyutijq+OnN53eWiZhxqlyoB5B30Q==}
+  /@maxim_mazurok/gapi.client.drive/3.0.20220321:
+    resolution: {integrity: sha512-4nQjehaG2baTaeJuS04jEvhK7WNxmeD7BtVcoD9F1yCgmT7TNw3OhGK/PyrjTEXxzBlTrpERenfkG7k7XeUrnA==}
     dependencies:
       '@types/gapi.client': 1.0.5
     dev: true
@@ -999,7 +999,7 @@ packages:
   /@types/gapi.client.drive/3.0.13:
     resolution: {integrity: sha512-JFkHqQj9RA8MpvfvwdX8VU0Sbu7FMGqBR9dAmkocekWdD/y5Z/a/A6Y37EEqKW/dT8t7F3RpgUDUPlhp3snAlw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.drive': 3.0.20220313
+      '@maxim_mazurok/gapi.client.drive': 3.0.20220321
     dev: true
 
   /@types/gapi.client/1.0.5:
