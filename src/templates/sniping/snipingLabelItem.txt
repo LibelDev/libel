@@ -5,7 +5,7 @@
 {{ #shareURL }}
 [size=3]詳情：{{{ shareURL }}}[/size=3]
 {{ /shareURL }}
-{{ > snipingLabelScreenshot }}
+{{ > snipingLabelImage }}
 {{ #subscription }}
 [size=2]由 [b][orange]{{ subscription.name }}[/orange][/b] 提供[/size=2]
 {{ /subscription }}[/quote]
