@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import useElementID from '../../hooks/useElementID';
 import Icon from '../Icon/Icon';
@@ -28,10 +29,9 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
           </span>
         )
       }
-      <div className={styles.input}>
+      <div className={classNames(className, styles.input)}>
         <input
           id={_id}
-          className={className}
           disabled={disabled}
           aria-describedby={errorID}
           {...otherProps}

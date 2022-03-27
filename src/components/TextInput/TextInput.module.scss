@@ -4,25 +4,28 @@
   @apply flex items-start;
 
   .input {
-    @apply relative;
-    @apply rounded;
-    @apply border border-solid;
-    @apply text-base;
-    @apply text-current;
-    background-color: $color-white;
-    border-color: $color-grey03;
-    padding: 0.4em;
+    @apply flex-1;
 
-    @include dark-mode() {
-      background-color: $color-black03;
-      border-color: $color-grey08;
-    }
-
-    &.error {
-      border-color: $color-red01;
+    input[type='text'] {
+      @apply rounded;
+      @apply border border-solid;
+      @apply text-base;
+      @apply text-current;
+      background-color: $color-white;
+      border-color: $color-grey03;
+      padding: 0.4em;
 
       @include dark-mode() {
+        background-color: $color-black03;
+        border-color: $color-grey08;
+      }
+
+      &.error {
         border-color: $color-red01;
+
+        @include dark-mode() {
+          border-color: $color-red01;
+        }
       }
     }
   }

@@ -1,6 +1,8 @@
 @import '../../stylesheets/base';
 
 .label-form {
+  @apply w-60;
+
   .user-icon {
     @apply mr-2;
   }
@@ -11,14 +13,6 @@
     }
 
     .text-input {
-      > span {
-        @apply flex-1;
-      }
-
-      input[type='text'] {
-        width: 200px;
-      }
-
       .error {
         @apply mt-4;
 

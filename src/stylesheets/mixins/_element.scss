@@ -22,3 +22,9 @@
 @mixin glow($blur-radius: 0.5rem, $spread-radius: 0.125rem, $color: $color-black) {
   box-shadow: 0 0 $blur-radius $spread-radius rgba($color, 0.5);
 }
+
+@mixin reset-list() {
+  @apply list-none;
+  @apply m-0;
+  @apply p-0;
+}

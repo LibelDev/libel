@@ -1,20 +1,14 @@
 @import '../../stylesheets/base';
 
 .subscription-maker {
+  @apply w-60;
+
   .input-field {
     &:not(:first-child) {
       @apply mt-4;
     }
 
     .text-input {
-      > span {
-        @apply flex-1;
-      }
-
-      input[type='text'] {
-        width: 200px;
-      }
-
       .error {
         @apply mt-4;
 
@@ -33,12 +27,12 @@
         > div {
           @apply flex-1;
         }
+      }
 
-        & + .remove {
-          @apply ml-2;
-          font-size: inherit;
-          line-height: 2.25rem;
-        }
+      .remove {
+        @apply ml-2;
+        @apply text-base;
+        line-height: 2.25rem;
       }
     }
 

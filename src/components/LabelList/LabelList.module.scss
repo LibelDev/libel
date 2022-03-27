@@ -32,11 +32,10 @@
 }
 
 .label-list {
+  @include reset-list();
   @apply flex flex-wrap items-center;
-  @apply list-none;
   @apply text-base;
   @apply -m-1;
-  @apply p-0;
 
   > li {
     @apply m-1;
