@@ -1,7 +1,16 @@
 @import '../../stylesheets/base';
 
+$height: 2.25rem;
+
 .text-input {
   @apply flex items-start;
+  @apply relative;
+
+  $padding: 0.4em;
+
+  label {
+    line-height: $height;
+  }
 
   .input {
     @apply flex-1;
@@ -12,20 +21,37 @@
       @apply text-base;
       @apply text-current;
       background-color: $color-white;
-      border-color: $color-grey03;
-      padding: 0.4em;
+      border: solid 1px $color-grey03;
+      height: $height;
+      padding: $padding;
 
       @include dark-mode() {
         background-color: $color-black03;
         border-color: $color-grey08;
       }
 
-      &.error {
+      &:focus {
+        border-color: $color-yellow01;
+
+        @include dark-mode() {
+          border-color: rgba($color-yellow01, 0.6);
+        }
+      }
+    }
+
+    &.error {
+      input[type='text'] {
         border-color: $color-red01;
 
         @include dark-mode() {
           border-color: $color-red01;
         }
+      }
+    }
+
+    &.has-icon {
+      input[type='text'] {
+        padding-left: $padding * 2 + 1em;
       }
     }
   }
