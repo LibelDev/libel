@@ -12,6 +12,14 @@ $height: 2.25rem;
     line-height: $height;
   }
 
+  .icon {
+    @apply absolute;
+    @apply top-1/2;
+    left: $padding;
+    @apply transform;
+    @apply -translate-y-1/2;
+  }
+
   .input {
     @apply flex-1;
 
