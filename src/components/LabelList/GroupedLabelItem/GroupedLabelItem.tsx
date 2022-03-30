@@ -10,6 +10,7 @@ import styles from './GroupedLabelItem.module.scss';
 export interface IProps {
   text: string;
   items: IGroupedLabelItem[];
+  /** control the floating config of the `LabelInfoList` component */
   floatingConfig?: Parameters<typeof useFloating>[0];
 }
 
@@ -59,7 +60,7 @@ const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
 
   return (
     <React.Fragment>
-      <LabelItem ref={reference} className={styles.labelItem}>
+      <LabelItem ref={reference} className={styles.labelItem} onMouseEnter={update}>
         {text}
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
