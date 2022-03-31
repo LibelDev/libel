@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
@@ -11,10 +12,18 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const Header: React.FunctionComponent<TProps> = (props) => {
-  const { onClose, children } = props;
+  const { className, onClose, children, ...otherProps } = props;
   const { title: id } = useContext(IDsContext);
   return (
-    <div className={styles.header}>
+    <div
+      {...otherProps}
+      className={
+        classNames(
+          className,
+          styles.header
+        )
+      }
+    >
       <h2 id={id} className={styles.title}>
         {children}
       </h2>
