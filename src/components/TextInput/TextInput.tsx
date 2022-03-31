@@ -8,12 +8,13 @@ import styles from './TextInput.module.scss';
 interface IProps {
   icon?: IconName;
   error?: React.ReactNode;
+  invalid?: boolean;
 }
 
 export type TProps = IProps & TBaseInputProps;
 
 const TextInput: React.FunctionComponent<TProps> = (props) => {
-  const { className, icon, error, ...otherProps } = props;
+  const { className, icon, error, invalid, ...otherProps } = props;
   return (
     <div className={classNames(className, styles.textInput)}>
       {
@@ -28,8 +29,7 @@ const TextInput: React.FunctionComponent<TProps> = (props) => {
           classNames(
             styles.input,
             {
-              [styles.hasIcon]: !!icon,
-              [styles.error]: !!error
+              [styles.invalid]: invalid || !!error
             }
           )
         }

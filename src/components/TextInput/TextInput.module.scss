@@ -18,6 +18,12 @@ $height: 2.25rem;
     left: $padding;
     @apply transform;
     @apply -translate-y-1/2;
+
+    & + div {
+      input[type='text'] {
+        padding-left: $padding * 2 + 1em;
+      }
+    }
   }
 
   .input {
@@ -47,7 +53,7 @@ $height: 2.25rem;
       }
     }
 
-    &.error {
+    &.invalid {
       input[type='text'] {
         border-color: $color-red01;
 
