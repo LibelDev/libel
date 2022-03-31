@@ -1,7 +1,7 @@
 @import '../../stylesheets/base';
 
 .footer {
-  @apply flex;
+  @apply flex flex-shrink-0;
   @apply h-12;
   background-color: $color-white;
   border-top: solid 1px $color-grey02;
