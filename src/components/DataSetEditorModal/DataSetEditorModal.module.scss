@@ -1,0 +1,9 @@
+.body {
+  @apply flex items-stretch;
+  @apply max-h-80;
+  @apply w-80;
+}
+
+.data-set-editor {
+  @apply w-full;
+}

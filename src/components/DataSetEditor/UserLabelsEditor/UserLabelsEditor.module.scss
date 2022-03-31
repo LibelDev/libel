@@ -1,0 +1,81 @@
+@import '../../../stylesheets/base';
+
+.user {
+  @apply flex items-center;
+  @apply mb-2;
+
+  .link {
+    @apply ml-2;
+  }
+}
+
+.link {
+  &,
+  &:hover {
+    @apply no-underline;
+  }
+
+  @include dark-mode() {
+    color: $color-blue01;
+  }
+}
+
+.label-list {
+  @include reset-list();
+  @apply -mt-2;
+
+  > li {
+    @apply flex items-center;
+    @apply relative;
+    @apply py-2;
+
+    & + li {
+      border-top: solid 1px $color-grey02;
+
+      @include dark-mode() {
+        border-color: $color-grey06;
+      }
+    }
+
+    .hint {
+      @apply absolute;
+      @apply top-1/2 left-1/2;
+      @apply transform;
+      @apply -translate-x-1/2 -translate-y-1/2;
+      @apply whitespace-nowrap;
+      @include glow-text(1rem, rgba($color-black, 0.5));
+
+      @include dark-mode() {
+        @include glow-text(1rem, rgba($color-white, 0.5));
+      }
+    }
+  }
+}
+
+.remove {
+  @apply text-base;
+}
+
+.text-input {
+  &.text {
+    @apply ml-2;
+
+    > div {
+      @apply w-20;
+    }
+  }
+
+  &.reason {
+    @apply flex-1;
+    @apply ml-2;
+
+    > div {
+      @apply w-full;
+    }
+  }
+}
+
+.source {
+  @apply mx-2;
+  @apply text-base;
+}
