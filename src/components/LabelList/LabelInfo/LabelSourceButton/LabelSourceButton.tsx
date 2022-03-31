@@ -10,10 +10,10 @@ interface IProps {
 type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
 
 const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, url } = props;
+  const { url, ...otherProps } = props;
   return url ? (
     <a
-      className={className}
+      {...otherProps}
       href={url}
       target="_blank"
       aria-label={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
