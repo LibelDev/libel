@@ -4,22 +4,24 @@ import styles from './Body.module.scss';
 import IDsContext from './IDsContext';
 
 interface IProps {
-  spacious?: boolean;
+  compact?: boolean;
 }
 
 type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
 
 const Body: React.FunctionComponent<TProps> = (props) => {
-  const { spacious = true, children } = props;
+  const { className, compact = false, children, ...otherProps } = props;
   const { body: id } = useContext(IDsContext);
   return (
     <div
+      {...otherProps}
       id={id}
       className={
         classNames(
+          className,
           styles.body,
           {
-            [styles.spacious]: spacious
+            [styles.compact]: compact
           }
         )
       }
