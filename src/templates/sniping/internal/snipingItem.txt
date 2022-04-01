@@ -1,11 +1,11 @@
-[quote]【{{ text }}】
-{{ #reason }}
-[size=3]事蹟：{{ reason }}[/size=3]
-{{ /reason }}
+[quote]【{{ label.text }}】
+{{ #label.reason }}
+[size=3]事蹟：{{ label.reason }}[/size=3]
+{{ /label.reason }}
 {{ #shareURL }}
 [size=3]詳情：{{{ shareURL }}}[/size=3]
 {{ /shareURL }}
-{{ > snipingLabelImage }}
+{{ > snipingItemImage }}
 {{ #subscription }}
 [size=2]由 [b][orange]{{ subscription.name }}[/orange][/b] 提供[/size=2]
 {{ /subscription }}[/quote]

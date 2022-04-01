@@ -3,5 +3,4 @@
 註冊日期：__&註冊日期__
 
 __&標籤項目__
-[right][size=2]__&訂閱名單__[/size=2][/right]
-[right][size=2]__&宣傳簽名__[/size=2][/right]
+[right][size=2]__&訂閱名單__[/size=2][/right][right][size=2]__&宣傳簽名__[/size=2][/right]

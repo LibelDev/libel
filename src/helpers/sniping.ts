@@ -2,9 +2,10 @@ import { render } from 'mustache';
 import cache from '../cache';
 import { getUserRegistrationDate } from '../helpers/lihkg';
 import type { ILabel } from '../models/Label';
-import Personal from '../models/Personal';
+import type Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import defaultTemplate, { promotion, snipingHeader, snipingLabelImage, snipingLabelItem, subscriptionItem } from '../templates/sniping';
+import defaultTemplate from '../templates/sniping/default.txt';
+import { promotion, snipingItem, snipingItemImage, subscriptionItem } from '../templates/sniping/internal';
 import type { IDraft } from '../types/lihkg';
 import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING } from './../constants/sniping';
 import { DRAFTS_KEY } from './../constants/storage';
@@ -13,7 +14,8 @@ import { format, Format } from './date';
 import { getShareURL } from './label';
 import { localStorage } from './storage';
 
-interface ISnipeLabelItem extends ILabel {
+interface ISnipingItem {
+  label: ILabel;
   shareURL?: string;
   subscription: Subscription | null;
 }
@@ -43,24 +45,24 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const dataSets = ([] as (Personal | Subscription)[])
       .concat(personal, _subscriptions)
       .map(createDataSetUserFilter(userID));
-    const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
-      const _labels = (dataSet.data[userID] || []).map((label) => ({
-        ...label,
+    const snipingItems = dataSets.reduce<ISnipingItem[]>((snipingItems, dataSet) => {
+      const _snipingItems = (dataSet.data[userID] || []).map<ISnipingItem>((label) => ({
+        label,
         shareURL: getShareURL(label),
         subscription: Subscription.implements(dataSet) ? dataSet : null
       }));
-      return labels.concat(_labels);
+      return [...snipingItems, ..._snipingItems];
     }, []);
     const view = {
       user: {
         ...user,
         registrationDate: format(getUserRegistrationDate(user), Format.Display)
       },
-      labels,
+      snipingItems,
       subscriptions: _subscriptions
     };
     const snipingTemplate = getTemplate();
-    const partials = { snipingHeader, snipingLabelItem, snipingLabelImage, subscriptionItem, promotion };
+    const partials = { snipingItem, snipingItemImage, subscriptionItem, promotion };
     return render(snipingTemplate, view, partials);
   }
 };
