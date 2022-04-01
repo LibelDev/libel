@@ -47,12 +47,7 @@
         }
 
         .error {
-          @apply flex items-center justify-center;
-          @apply w-full;
-
-          .icon {
-            @apply mr-2;
-          }
+          @apply justify-center;
         }
 
         .image {
@@ -84,7 +79,7 @@
     }
   }
 
-  .error {
+  > .error {
     @apply mt-4;
   }
 }

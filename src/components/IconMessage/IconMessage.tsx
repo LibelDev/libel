@@ -5,20 +5,21 @@ import type { IconName } from '../Icon/types';
 import styles from './IconMessage.module.scss';
 
 interface IProps {
+  as?: React.ElementType;
   icon: IconName;
 }
 
-export type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 
-type TProps = IProps & TComponentProps;
+export type TProps = IProps & TComponentProps;
 
 const IconMessage: React.FunctionComponent<TProps> = (props) => {
-  const { className, icon, children, ...otherProps } = props;
+  const { className, as: Component = 'div', icon, children, ...otherProps } = props;
   return (
-    <div {...otherProps} className={classNames(className, styles.error)}>
+    <Component {...otherProps} className={classNames(className, styles.iconMessage)}>
       <Icon className={styles.icon} icon={icon} />
       {children}
-    </div>
+    </Component>
   );
 };
 

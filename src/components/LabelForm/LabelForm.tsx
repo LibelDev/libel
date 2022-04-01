@@ -11,6 +11,7 @@ import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import ColorPicker from '../ColorPicker/ColorPicker';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
 import TextInput from '../TextInput/TextInput';
@@ -252,10 +253,9 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                 <div className={styles.preview}>
                   {
                     screenshot.error ? (
-                      <span className={styles.error}>
-                        <Icon className={styles.icon} icon={IconName.CommentAlert} />
+                      <ErrorMessage className={styles.error}>
                         {TEXTS.LABEL_FORM_CAPTURE_ERROR}
-                      </span>
+                      </ErrorMessage>
                     ) : (
                       screenshot.url && (
                         <a
@@ -278,10 +278,12 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       {
         !!error && (
-          <div id={errorID} className={styles.error}>
-            <Icon className={styles.icon} icon={IconName.CommentAlert} />
+          <ErrorMessage
+            id={errorID}
+            className={styles.error}
+          >
             {error}
-          </div>
+          </ErrorMessage>
         )
       }
     </form>

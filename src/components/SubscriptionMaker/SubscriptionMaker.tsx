@@ -14,7 +14,7 @@ import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
 import ColorPicker from '../ColorPicker/ColorPicker';
-import Icon from '../Icon/Icon';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import Select from '../Select/Select';
@@ -254,10 +254,9 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       </div>
       {
         !!error && (
-          <div id={errorID} className={styles.error}>
-            <Icon className={styles.icon} icon={IconName.CommentAlert} />
+          <ErrorMessage id={errorID} className={styles.error}>
             {error}
-          </div>
+          </ErrorMessage>
         )
       }
     </form>

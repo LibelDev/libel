@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import useElementID from '../../hooks/useElementID';
-import Icon from '../Icon/Icon';
-import { IconName } from '../Icon/types';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './BaseInput.module.scss';
 
 interface IProps {
@@ -37,13 +36,10 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
           {...otherProps}
         />
         {
-          error && (
-            <div className={styles.error}>
-              <div id={errorID}>
-                <Icon className={styles.icon} icon={IconName.CommentAlert} />
-                {error}
-              </div>
-            </div>
+          !!error && (
+            <ErrorMessage id={errorID} className={styles.error}>
+              {error}
+            </ErrorMessage>
           )
         }
       </div>
