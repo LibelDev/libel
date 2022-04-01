@@ -74,8 +74,8 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
     isCustomColor: !!formData.color
   });
-  const [inputErrors, setInputErrors] = useState<IInputErrors>({});
-  const [error, setError] = useState('');
+  const [inputErrors, setInputErrors] = useState<IInputErrors | null>(null);
+  const [formError, setFormError] = useState('');
 
   const _id = id || useElementID(SubscriptionMaker.displayName!);
   const name = `${namespace}-${SubscriptionMaker.displayName!}`;
@@ -87,7 +87,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     const subscriptionTemplate = subscriptionTemplates[index];
     setSubscriptionTemplateIndex(index);
     setFormData(subscriptionTemplate || initialFormData);
-    setInputErrors({});
+    setInputErrors(null);
   }, [subscriptionTemplates]);
 
   const handleSubscriptionTemplateRemoveButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
@@ -97,11 +97,11 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       dispatch(configActions.removeSubscriptionTemplate(subscriptionTemplateIndex));
       setSubscriptionTemplateIndex(-1);
       setFormData(initialFormData);
-      setInputErrors({});
+      setInputErrors(null);
     }
   }, [subscriptionTemplateIndex]);
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+  const handleTextInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     setInputErrors({ ...inputErrors, [name]: undefined });
@@ -142,7 +142,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
         await onSubmit(event, subscription);
       } catch (err) {
         if (typeof err === 'string') {
-          setError(err);
+          setFormError(err);
         }
       }
     }
@@ -200,8 +200,8 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_NAME}
           name="name"
           value={formData.name || ''}
-          error={inputErrors.name}
-          onChange={handleInputChange}
+          error={inputErrors?.name}
+          onChange={handleTextInputChange}
           autoFocus
           autoComplete="on"
         />
@@ -212,8 +212,8 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_VERSION}
           name="version"
           value={formData.version || ''}
-          error={inputErrors.version}
-          onChange={handleInputChange}
+          error={inputErrors?.version}
+          onChange={handleTextInputChange}
         />
       </div>
       <div className={styles.inputField}>
@@ -223,8 +223,8 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           placeholder={TEXTS.SUBSCRIPTION_MAKER_FIELD_PLACEHOLDER_HOMEPAGE}
           name="homepage"
           value={formData.homepage || ''}
-          error={inputErrors.homepage}
-          onChange={handleInputChange}
+          error={inputErrors?.homepage}
+          onChange={handleTextInputChange}
         />
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
@@ -244,8 +244,8 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
                   className={styles.input}
                   name="color"
                   value={formData.color || ''}
-                  error={inputErrors.color}
-                  onChange={handleInputChange}
+                  error={inputErrors?.color}
+                  onChange={handleTextInputChange}
                 />
               </div>
             )
@@ -253,9 +253,9 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
         </ToggleButton>
       </div>
       {
-        !!error && (
+        !!formError && (
           <ErrorMessage id={errorID} className={styles.error}>
-            {error}
+            {formError}
           </ErrorMessage>
         )
       }

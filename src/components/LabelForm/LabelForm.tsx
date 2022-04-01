@@ -93,7 +93,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     isCaptureReply: false
   });
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
-  const [error, setError] = useState('');
+  const [formError, setFormError] = useState('');
 
   const screenshot = useScreenshot(toggleButtonState.isCaptureReply ? cache.targetReply : null, useMemo(() => ({
     onclone: (document, element) => {
@@ -107,7 +107,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const _user = cache.getUser(user);
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+  const handleTextInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     setInputErrors({ ...inputErrors, [name]: undefined });
@@ -144,7 +144,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         await onSubmit(value);
       } catch (err) {
         if (typeof err === 'string') {
-          setError(err);
+          setFormError(err);
         }
       }
     }
@@ -175,7 +175,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           name="text"
           value={formData.text || ''}
           error={inputErrors.text}
-          onChange={handleInputChange}
+          onChange={handleTextInputChange}
           autoFocus
           autoComplete="on"
         />
@@ -189,7 +189,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           name="reason"
           value={formData.reason || ''}
           error={inputErrors.reason}
-          onChange={handleInputChange}
+          onChange={handleTextInputChange}
           autoComplete="on"
         />
       </div>
@@ -213,7 +213,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                   name="color"
                   value={formData.color || ''}
                   error={inputErrors.color}
-                  onChange={handleInputChange}
+                  onChange={handleTextInputChange}
                 />
               </div>
             )
@@ -232,7 +232,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               name="image"
               value={formData.image || ''}
               error={inputErrors.image}
-              onChange={handleInputChange}
+              onChange={handleTextInputChange}
             />
           </div>
         ) : (
@@ -277,12 +277,12 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         )
       }
       {
-        !!error && (
+        !!formError && (
           <ErrorMessage
             id={errorID}
             className={styles.error}
           >
-            {error}
+            {formError}
           </ErrorMessage>
         )
       }
