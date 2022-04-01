@@ -7,7 +7,9 @@ interface IProps {
   url?: string;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
   const { url, ...otherProps } = props;

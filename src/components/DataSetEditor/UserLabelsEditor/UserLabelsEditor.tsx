@@ -28,17 +28,19 @@ export interface IProps {
    * @param {number} index the index of the item in the filtered array
    * @param {ILabel} label the new label
    */
-  onChange: TBivarianceHack<(user: string, index: number, label: ILabel) => void>;
+  onChange: (user: string, index: number, label: ILabel) => void;
   /**
    * remove event handler
    * @param {string} user the grouped user ID
    * @param {number} index the index of the item in the filtered array
    */
-  onRemove: TBivarianceHack<(user: string, index: number) => void>;
-  onScroll: TBivarianceHack<(target: HTMLLIElement) => void>;
+  onRemove: (user: string, index: number) => void;
+  onScroll: (target: HTMLLIElement) => void;
 }
 
-type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'onScroll'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'onScroll'>;
+
+type TProps = IProps & TComponentProps;
 
 const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
 

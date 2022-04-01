@@ -33,7 +33,7 @@ interface IInputErrors {
   [name: string]: string | undefined;
 }
 
-interface IProps {
+export interface IProps {
   /**
    * the data set of the subscription
    */
@@ -43,10 +43,12 @@ interface IProps {
    * @async
    * @throws {string} error message
    */
-  onSubmit: (event: React.FormEvent<HTMLFormElement>, subscription: IRemoteSubscription) => Promise<void>;
+  onSubmit: (subscription: IRemoteSubscription) => void;
 }
 
-export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+
+export type TProps = IProps & TComponentProps;
 
 const debug = debugFactory('libel:component:SubscriptionMaker');
 
@@ -113,7 +115,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     setToggleButtonState({ ...toggleButtonState, [name]: checked });
   }, [toggleButtonState]);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(async (event) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
     event.preventDefault();
     const _formData: TFormData = {
       ...formData,
@@ -137,7 +139,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
         } else {
           dispatch(configActions.updateSubscriptionTemplate(subscriptionTemplateIndex, value));
         }
-        await onSubmit(event, subscription);
+        onSubmit(subscription);
       } catch (err) {
         if (typeof err === 'string') {
           setFormError(err);

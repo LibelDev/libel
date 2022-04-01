@@ -15,7 +15,9 @@ interface IProps {
   label: ILabel;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'button'>;
+
+type TProps = IProps & TComponentProps;
 
 const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label } = props;

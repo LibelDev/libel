@@ -3,7 +3,7 @@ import { IconName } from '../../Icon/types';
 import TextInput, { TProps as TTextInputProps } from '../../TextInput/TextInput';
 
 export interface IProps {
-  onChange: TBivarianceHack<(keyword: string) => void>;
+  onChange: (keyword: string) => void;
 }
 
 type TProps = IProps & Omit<TTextInputProps, 'onChange'>;

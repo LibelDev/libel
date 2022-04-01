@@ -9,7 +9,9 @@ interface IProps {
   items: TLabelsGroupItem[];
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'ul'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'ul'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) => {
   const { className, items, ...otherProps } = props;

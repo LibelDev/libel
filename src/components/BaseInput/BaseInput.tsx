@@ -9,7 +9,9 @@ interface IProps {
   error?: React.ReactNode;
 }
 
-export type TProps = IProps & React.ComponentPropsWithoutRef<'input'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'input'>;
+
+export type TProps = IProps & TComponentProps;
 
 const BaseInput: React.FunctionComponent<TProps> = (props) => {
   const { id, className, disabled, label, error, ...otherProps } = props;

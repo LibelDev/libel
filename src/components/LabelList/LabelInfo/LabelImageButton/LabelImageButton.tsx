@@ -4,11 +4,13 @@ import type { ILabel } from '../../../../models/Label';
 import Icon from '../../../Icon/Icon';
 import { IconName } from '../../../Icon/types';
 
-interface IProps  {
+interface IProps {
   label: ILabel;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'a'>
+type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelImageButton: React.FunctionComponent<TProps> = (props) => {
   const { className, label } = props;

@@ -7,7 +7,9 @@ interface IProps {
   subscription: IBasicSubscription;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelProviderIcon: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription } = props;

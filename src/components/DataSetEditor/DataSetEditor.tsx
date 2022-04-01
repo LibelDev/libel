@@ -18,13 +18,15 @@ interface IAutoScrollUserLabelIndex {
   [user: string]: number; // label index
 }
 
-interface IProps {
+export interface IProps {
   dataSet: IDataSet;
-  onChange?: TBivarianceHack<(user: string, index: number, label: ILabel) => void>;
-  onSubmit: TBivarianceHack<(dataSet: Personal) => void>;
+  onChange?: (user: string, index: number, label: ILabel) => void;
+  onSubmit: (dataSet: Personal) => void;
 }
 
-export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onChange' | 'onSubmit'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onChange' | 'onSubmit'>;
+
+export type TProps = IProps & TComponentProps;
 
 const debug = debugFactory('libel:component:DataSetEditor');
 

@@ -19,7 +19,9 @@ interface IProps {
   dataSet?: IDataSet;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   const { className, user, index, label, color, dataSet } = props;

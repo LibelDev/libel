@@ -9,7 +9,9 @@ interface IProps {
   onClose: () => void;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const Header: React.FunctionComponent<TProps> = (props) => {
   const { className, onClose, children, ...otherProps } = props;

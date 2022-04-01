@@ -12,7 +12,9 @@ interface IProps {
   error?: React.ReactNode;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'select'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'select'>;
+
+type TProps = IProps & TComponentProps;
 
 const Select: React.FunctionComponent<TProps> = (props) => {
   const { id, className, border, label, error, ...otherProps } = props;

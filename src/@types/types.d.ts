@@ -1,1 +1,0 @@
-declare type TBivarianceHack<T> = { bivarianceHack: T; }['bivarianceHack'];

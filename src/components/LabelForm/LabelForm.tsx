@@ -57,7 +57,9 @@ interface IProps {
   onSubmit: (data: TFormData) => Promise<void>;
 }
 
-export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+
+export type TProps = IProps & TComponentProps;
 
 const schema = joi.object({
   text: joi.string().trim().required().messages({

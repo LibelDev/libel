@@ -4,7 +4,9 @@ import styles from './Footer.module.scss';
 
 interface IProps { }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const Footer: React.FunctionComponent<TProps> = (props) => {
   const { className, ...otherProps } = props;

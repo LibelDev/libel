@@ -7,7 +7,9 @@ interface IProps {
   compact?: boolean;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const Body: React.FunctionComponent<TProps> = (props) => {
   const { className, compact = false, children, ...otherProps } = props;
