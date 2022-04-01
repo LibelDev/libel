@@ -72,7 +72,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                         )
                       }
                       {
-                        true && (
+                        !!sync.error && (
                           <ErrorMessage as='small' className={styles.hint}>
                             {TEXTS.CLOUD_SYNC_ERROR_GENERIC_ERROR}
                           </ErrorMessage>
