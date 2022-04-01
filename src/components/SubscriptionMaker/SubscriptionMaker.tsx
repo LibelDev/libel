@@ -7,6 +7,7 @@ import { EventAction, EventCategory } from '../../constants/ga';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
+import { mapValidationError } from '../../helpers/validation';
 import useElementID from '../../hooks/useElementID';
 import type { IDataSet } from '../../models/DataSet';
 import type { IRemoteSubscription } from '../../models/Subscription';
@@ -121,14 +122,11 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
-      const _inputErrors = { ...inputErrors };
-      const { details } = error;
-      for (const { context, message } of details) {
-        const { key } = context!;
-        Object.assign(_inputErrors, { [key!]: message });
+      const _inputErrors = mapValidationError<IInputErrors>(error, (inputErrors, key, label, value, message) => {
         // analytics
         gtag.event(EventAction.Error, { event_category: EventCategory.SubscriptionMaker, event_label: key });
-      }
+        return { ...inputErrors, [key!]: message };
+      }, { ...inputErrors });
       setInputErrors(_inputErrors);
     } else {
       try {
