@@ -35,6 +35,11 @@ export interface IProps {
    * @param {number} index the index of the item in the filtered array
    */
   onRemove: (user: string, index: number) => void;
+  /**
+   * custom scroll event handler  
+   * fire when `autoScrollLabelIndex` changed and successfully scroll to target label
+   * @param {HTMLLIElement} target the target element that scrolled into view
+   */
   onScroll: (target: HTMLLIElement) => void;
 }
 
