@@ -35,7 +35,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const [labelsGroups, setLabelsGroups] = useState(mapDataSetToLabelsGroupsGroupedByUser(dataSet));
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserLabelIndex, setAutoScrollUserLabelIndex] = useState<IAutoScrollUserLabelIndex>();
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
     setKeyword(keyword);
@@ -100,7 +100,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       const _labelIndex = labelIndex as number;
       setAutoScrollUserLabelIndex({ [_user]: _labelIndex });
     } else {
-      setError('');
+      setError(null);
       onSubmit(dataSet);
     }
   }, [onSubmit, labelsGroups]);
@@ -150,7 +150,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
               }
             </div>
             {
-              error !== '' && (
+              !!error && (
                 <ErrorMessage className={styles.error}>
                   {error}
                 </ErrorMessage>

@@ -76,7 +76,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     isCustomColor: !!formData.color
   });
   const [inputErrors, setInputErrors] = useState<IInputErrors | null>(null);
-  const [formError, setFormError] = useState('');
+  const [formError, setFormError] = useState<string | null>(null);
 
   const _id = id || useElementID(SubscriptionMaker.displayName!);
   const name = `${namespace}-${SubscriptionMaker.displayName!}`;

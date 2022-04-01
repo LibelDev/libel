@@ -250,7 +250,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               !screenshot.loading && (screenshot.error || screenshot.url) && (
                 <div className={styles.preview}>
                   {
-                    screenshot.error ? (
+                    !!screenshot.error ? (
                       <ErrorMessage className={styles.error}>
                         {TEXTS.LABEL_FORM_CAPTURE_ERROR}
                       </ErrorMessage>
@@ -276,10 +276,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       {
         !!formError && (
-          <ErrorMessage
-            id={errorID}
-            className={styles.error}
-          >
+          <ErrorMessage id={errorID} className={styles.error}>
             {formError}
           </ErrorMessage>
         )
