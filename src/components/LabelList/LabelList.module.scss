@@ -11,8 +11,8 @@
     @apply ml-5;
   }
 
-  // when it is inside the reply item inner
-  :global(#{$lihkg-selector-reply-item-inner}) > & {
+  // when it is inside the reply item inner body
+  :global(#{$lihkg-selector-reply-item-inner-body}) > & {
     @apply mb-2;
   }
 
