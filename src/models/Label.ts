@@ -1,5 +1,4 @@
 import { immerable } from 'immer';
-import { getShareURL } from '../helpers/label';
 
 type TLabelText = string;
 
@@ -67,18 +66,14 @@ class Label implements ILabel {
     return new Label(id, text, reason, url, date, source, color, image);
   }
 
-  get shareURL () {
-    return getShareURL(this);
-  }
-
-  clone (deep?: boolean) {
-    const { id, text, reason, url, date, source, color, image } = this;
-    const clone = new Label(id, text, reason, url, date, source, color, image);
-    if (deep) {
-      clone.source = source && { ...source };
-    }
-    return clone;
-  }
+  // clone (deep?: boolean) {
+  //   const { id, text, reason, url, date, source, color, image } = this;
+  //   const clone = new Label(id, text, reason, url, date, source, color, image);
+  //   if (deep) {
+  //     clone.source = source && { ...source };
+  //   }
+  //   return clone;
+  // }
 }
 
 export default Label;

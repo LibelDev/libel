@@ -10,6 +10,7 @@ import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING } from
 import { DRAFTS_KEY } from './../constants/storage';
 import { createDataSetUserFilter } from './../store/selectors';
 import { format, Format } from './date';
+import { getShareURL } from './label';
 import { localStorage } from './storage';
 
 interface ISnipeLabelItem extends ILabel {
@@ -45,7 +46,7 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
       const _labels = (dataSet.data[userID] || []).map((label) => ({
         ...label,
-        shareURL: label.shareURL,
+        shareURL: getShareURL(label),
         subscription: Subscription.implements(dataSet) ? dataSet : null
       }));
       return labels.concat(_labels);
