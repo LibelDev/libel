@@ -3,7 +3,7 @@ import debugFactory from 'debug';
 import produce from 'immer';
 import React, { useCallback, useMemo, useState } from 'react';
 import * as TEXTS from '../../constants/texts';
-import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, groupDataSetByUser, mapLabelsGroupsToDataSet } from '../../helpers/dataSet';
+import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
 import type Personal from '../../models/Personal';
@@ -14,7 +14,7 @@ import Filter, { IProps as IFilterProps } from './Filter/Filter';
 import UserLabelsEditor, { IProps as IUserLabelsEditorProps } from './UserLabelsEditor/UserLabelsEditor';
 
 interface IAutoScrollUserLabelIndex {
-  /** always scroll to one user and label */
+  /** only scroll to one user and label */
   [user: string]: number; // label index
 }
 
@@ -32,7 +32,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const { className, dataSet, onChange, onSubmit, ...otherProps } = props;
 
   const [keyword, setKeyword] = useState('');
-  const [labelsGroups, setLabelsGroups] = useState(groupDataSetByUser(dataSet));
+  const [labelsGroups, setLabelsGroups] = useState(mapDataSetToLabelsGroupsGroupedByUser(dataSet));
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserLabelIndex, setAutoScrollUserLabelIndex] = useState<IAutoScrollUserLabelIndex>();
   const [error, setError] = useState('');
@@ -87,7 +87,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
     event.preventDefault();
-    const dataSet = mapLabelsGroupsToDataSet(labelsGroups);
+    const dataSet = mapLabelsGroupsGroupedByUserToDataSet(labelsGroups);
     debug('handleSubmit:dataSet', dataSet);
     const { error } = schema.validate(dataSet);
     if (error) {

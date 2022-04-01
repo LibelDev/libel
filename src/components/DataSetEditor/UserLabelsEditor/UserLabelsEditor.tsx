@@ -2,11 +2,11 @@ import classNames from 'classnames';
 import debugFactory from 'debug';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as TEXTS from '../../../constants/texts';
+import type { ILabelsGroupItem } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
 import { mapValidationError } from '../../../helpers/validation';
 import type { ILabel } from '../../../models/Label';
 import schema from '../../../schemas/label';
-import type { ILabelsGroupGroupedByUser } from '../../../types/label';
 import Icon from '../../Icon/Icon';
 import { IconName } from '../../Icon/types';
 import IconButton from '../../IconButton/IconButton';
@@ -18,7 +18,9 @@ export interface IError {
   [name: string]: boolean | undefined;
 }
 
-export interface IProps extends ILabelsGroupGroupedByUser {
+export interface IProps {
+  user: string;
+  items: ILabelsGroupItem[];
   autoScrollLabelIndex?: number;
   /**
    * change event handler

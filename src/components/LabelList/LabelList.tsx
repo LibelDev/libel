@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { groupDataSetsByLabelText } from '../../helpers/dataSet';
+import { mapDataSetsToLabelsGroupsGroupedByText } from '../../helpers/labelList';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import GroupedLabelItem, { IProps as IGroupedLabelItemProps } from './GroupedLabelItem/GroupedLabelItem';
@@ -16,20 +16,20 @@ const LabelList: React.FunctionComponent<IProps> = (props) => {
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
   const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
 
-  const groupedLabelItems = useMemo(() => {
+  const labelsGroups = useMemo(() => {
     const dataSets = [personal, ...subscriptions];
-    return groupDataSetsByLabelText(dataSets);
+    return mapDataSetsToLabelsGroupsGroupedByText(dataSets);
   }, [personalLabels, subscriptionLabels]);
 
-  if (groupedLabelItems.length === 0) {
+  if (labelsGroups.length === 0) {
     return null;
   }
 
   return (
     <ul className={styles.labelList}>
       {
-        groupedLabelItems.map((groupedLabelItem, index) => {
-          const { text, items } = groupedLabelItem;
+        labelsGroups.map((labelsGroup, index) => {
+          const { text, items } = labelsGroup;
           return (
             <li key={index}>
               <GroupedLabelItem
