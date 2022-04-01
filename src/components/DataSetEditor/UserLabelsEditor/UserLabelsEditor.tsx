@@ -10,7 +10,7 @@ import schema from '../../../schemas/label';
 import Icon from '../../Icon/Icon';
 import { IconName } from '../../Icon/types';
 import IconButton from '../../IconButton/IconButton';
-import LabelSourceButton from '../../LabelList/LabelInfo/LabelSourceButton/LabelSourceButton';
+import LabelSourceButton from '../../LabelSourceButton/LabelSourceButton';
 import TextInput from '../../TextInput/TextInput';
 import styles from './UserLabelsEditor.module.scss';
 

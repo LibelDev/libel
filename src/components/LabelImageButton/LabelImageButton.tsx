@@ -1,8 +1,8 @@
 import React from 'react';
-import * as TEXTS from '../../../../constants/texts';
-import type { ILabel } from '../../../../models/Label';
-import Icon from '../../../Icon/Icon';
-import { IconName } from '../../../Icon/types';
+import * as TEXTS from '../../constants/texts';
+import type { ILabel } from '../../models/Label';
+import Icon from '../Icon/Icon';
+import { IconName } from '../Icon/types';
 
 interface IProps {
   label: ILabel;

@@ -1,15 +1,15 @@
 import classnames from 'classnames';
 import React, { useMemo } from 'react';
-import { getShareURL } from '../../../helpers/label';
-import type { IDataSet } from '../../../models/DataSet';
-import type { ILabel } from '../../../models/Label';
-import Subscription from '../../../models/Subscription';
-import EditLabelButton from './EditLabelButton/EditLabelButton';
-import LabelImageButton from './LabelImageButton/LabelImageButton';
+import { getShareURL } from '../../helpers/label';
+import type { IDataSet } from '../../models/DataSet';
+import type { ILabel } from '../../models/Label';
+import Subscription from '../../models/Subscription';
+import EditLabelButton from '../EditLabelButton/EditLabelButton';
+import LabelImageButton from '../LabelImageButton/LabelImageButton';
+import LabelProviderIcon from '../LabelProviderIcon/LabelProviderIcon';
+import LabelSourceButton from '../LabelSourceButton/LabelSourceButton';
+import RemoveLabelButton from '../RemoveLabelButton/RemoveLabelButton';
 import styles from './LabelInfo.module.scss';
-import LabelProviderIcon from './LabelProviderIcon/LabelProviderIcon';
-import LabelSourceButton from './LabelSourceButton/LabelSourceButton';
-import RemoveLabelButton from './RemoveLabelButton/RemoveLabelButton';
 
 interface IProps {
   user: string;

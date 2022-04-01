@@ -1,7 +1,7 @@
 import React from 'react';
-import * as TEXTS from '../../../../constants/texts';
-import Icon from '../../../Icon/Icon';
-import { IconName } from '../../../Icon/types';
+import * as TEXTS from '../../constants/texts';
+import Icon from '../Icon/Icon';
+import { IconName } from '../Icon/types';
 
 interface IProps {
   url?: string;
