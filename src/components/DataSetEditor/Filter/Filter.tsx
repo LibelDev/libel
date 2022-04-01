@@ -14,7 +14,7 @@ const Filter: React.FunctionComponent<TProps> = (props) => {
   const handleKeywordChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { value } = event.currentTarget;
     onChange(value);
-  }, []);
+  }, [onChange]);
 
   return (
     <TextInput
