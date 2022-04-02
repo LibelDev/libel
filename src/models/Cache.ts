@@ -1,6 +1,4 @@
-import type { IPost, IQuoteListResponseData, IReplyListResponseData } from '../types/lihkg';
-import type { IThread, IThreadListResponseData } from '../types/lihkg';
-import type { IUser } from '../types/lihkg';
+import type { IPost, IQuoteListResponseData, IReplyListResponseData, IThread, IThreadListResponseData, IUser } from '../types/lihkg';
 
 type TThreads = { [thread: string]: IThread | undefined; };
 type TReplies = { [post: string]: IPost | undefined; };
@@ -10,7 +8,6 @@ class Cache {
   private threads: TThreads = {};
   private replies: TReplies = {};
   private users: TUsers = {};
-  targetReply: HTMLElement | null = null;
 
   getThread (id: string) {
     return this.threads[id];

@@ -2,7 +2,6 @@ import { faTag } from '@fortawesome/free-solid-svg-icons/faTag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
-import cache from '../../cache';
 import * as ATTRIBUTES from '../../constants/attributes';
 import { EventAction, EventCategory, EventLabel } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
@@ -28,12 +27,14 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [targetReply, setTargetReply] = useState<HTMLElement | null>(null);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     if (!loading) {
-      const targetReply = document.querySelector<HTMLDivElement>(ATTRIBUTES.dataPostId);
-      cache.targetReply = targetReply;
+      const targetReplySelector = `[${ATTRIBUTES.dataPostId}="${post.post_id}"]`;
+      const targetReply = document.querySelector<HTMLDivElement>(targetReplySelector);
+      setTargetReply(targetReply);
       setOpen(true);
       // analytics
       gtag.event(EventAction.Open, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
@@ -99,6 +100,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
         escape={false}
         fragile={false}
         loading={loading}
+        targetReply={targetReply}
         onClose={handleLabelFormModalClose}
         onSubmit={handleLabelFormSubmit}
       />

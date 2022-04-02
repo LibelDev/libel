@@ -9,7 +9,7 @@ import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import useElementID from '../../hooks/useElementID';
-import useScreenshot from '../../hooks/useScreenshot';
+import useScreenshot, { TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -28,8 +28,8 @@ type TFormData = TLabelData & {
 };
 
 interface IToggleButtonState {
-  isCustomColor: boolean;
-  isCaptureReply: boolean;
+  useCustomColor: boolean;
+  useScreenshot: boolean;
 }
 
 interface IInputErrors {
@@ -49,6 +49,10 @@ interface IProps {
    * the loading state
    */
   loading?: boolean;
+  /**
+   * the target reply element for screenshot
+   */
+  targetReply?: HTMLElement | null;
   /**
    * custom onSubmit event handler
    * @async
@@ -80,29 +84,22 @@ const initialFormData: TFormData = {
 };
 
 const LabelForm: React.FunctionComponent<TProps> = (props) => {
-  const {
-    id,
-    className,
-    user,
-    label,
-    loading,
-    onSubmit,
-    ...otherProps
-  } = props;
+  const { id, className, user, label, loading, targetReply, onSubmit, ...otherProps } = props;
 
   const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
-    isCustomColor: !!formData.color,
-    isCaptureReply: false
+    useCustomColor: !!formData.color,
+    useScreenshot: false
   });
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [formError, setFormError] = useState('');
 
-  const screenshot = useScreenshot(toggleButtonState.isCaptureReply ? cache.targetReply : null, useMemo(() => ({
+  const options: TUseScreenshotOptions = useMemo(() => ({
     onclone: (document, element) => {
       element.style.width = '600px';
     }
-  }), []));
+  }), []);
+  const screenshot = useScreenshot(toggleButtonState.useScreenshot, targetReply, options);
 
   const _id = id || useElementID(LabelForm.displayName!);
   const name = `${namespace}-${LabelForm.displayName!}`;
@@ -125,7 +122,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     event.preventDefault();
     const _formData: TFormData = {
       ...formData,
-      color: toggleButtonState.isCustomColor ? formData.color : undefined, // unset if it is disabled
+      color: toggleButtonState.useCustomColor ? formData.color : undefined, // unset if it is disabled
       meta: {
         ...formData.meta,
         screenshot: screenshot.blob
@@ -196,14 +193,14 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
           fullWidth
-          checked={toggleButtonState.isCustomColor}
-          name="isCustomColor"
+          checked={toggleButtonState.useCustomColor}
+          name="useCustomColor"
           disabled={loading}
           onChange={handleToggleButtonChange}
         >
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
           {
-            toggleButtonState.isCustomColor && (
+            toggleButtonState.useCustomColor && (
               <div className={styles.colorPicker}>
                 <ColorPicker
                   border
@@ -240,9 +237,9 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           <div className={classNames(styles.inputField, styles.screenshot)}>
             <ToggleButton
               fullWidth
-              checked={toggleButtonState.isCaptureReply}
+              checked={toggleButtonState.useScreenshot}
               disabled={loading}
-              name="isCaptureReply"
+              name="useReplyScreenshot"
               loading={screenshot.loading}
               onChange={handleToggleButtonChange}
             >
