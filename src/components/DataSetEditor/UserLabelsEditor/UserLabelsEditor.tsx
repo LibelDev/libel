@@ -6,6 +6,7 @@ import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../hel
 import { getShareURL } from '../../../helpers/label';
 import useLazyRender, { IOptions as ILazyRenderOptions } from '../../../hooks/useLazyRender';
 import type { ILabel } from '../../../models/Label';
+import ColorPicker from '../../ColorPicker/ColorPicker';
 import Icon from '../../Icon/Icon';
 import { IconName } from '../../Icon/types';
 import IconButton from '../../IconButton/IconButton';
@@ -67,7 +68,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
   /** validation error for each item */
   const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
 
-  const handleTextInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.currentTarget;
     const { index } = event.currentTarget.dataset;
     const _index = parseInt(index!); // the index of the item in the filtered array
@@ -125,24 +126,34 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       onClick={handleRemoveButtonClick}
                     />
                     <TextInput
-                      className={classNames(styles.textInput, styles.text)}
+                      className={classNames(styles.inputField, styles.text)}
                       name='text'
                       value={draft.text}
                       data-index={index}
                       disabled={removed}
                       invalid={errors[index].text}
                       placeholder={TEXTS.LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_TEXT}
-                      onChange={handleTextInputChange}
+                      onChange={handleInputChange}
                     />
                     <TextInput
-                      className={classNames(styles.textInput, styles.reason)}
+                      className={classNames(styles.inputField, styles.reason)}
                       name='reason'
                       value={draft.reason || ''}
                       data-index={index}
                       disabled={removed}
                       invalid={errors[index].reason}
                       placeholder={TEXTS.LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_REASON}
-                      onChange={handleTextInputChange}
+                      onChange={handleInputChange}
+                    />
+                    <ColorPicker
+                      border
+                      rounded
+                      className={styles.inputField}
+                      name='color'
+                      value={draft.color || ''}
+                      data-index={index}
+                      disabled={removed}
+                      onChange={handleInputChange}
                     />
                     <LabelSourceButton
                       className={classNames(styles.link, styles.source)}

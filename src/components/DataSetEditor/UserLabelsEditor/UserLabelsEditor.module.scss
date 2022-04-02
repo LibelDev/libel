@@ -63,10 +63,10 @@
   @apply text-base;
 }
 
-.text-input {
-  &.text {
-    @apply ml-2;
+.input-field {
+  @apply ml-2;
 
+  &.text {
     > div {
       @apply w-20;
     }
@@ -74,7 +74,6 @@
 
   &.reason {
     @apply flex-1;
-    @apply ml-2;
 
     > div {
       @apply w-full;

@@ -29,7 +29,6 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
       <Modal.Body className={styles.body}>
         <DataSetEditor
           id={formID}
-          className={styles.dataSetEditor}
           dataSet={dataSet}
           onChange={onChange}
           onSubmit={onSubmit}
