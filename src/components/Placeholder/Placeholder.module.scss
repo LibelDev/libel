@@ -1,0 +1,27 @@
+@import '../../stylesheets/base';
+
+.placeholder {
+  // fix background size to have consistent visiual effect for multiple placeholders
+  $background-height: 100px;
+  $background-width: 1000px;
+
+  @keyframes move {
+    from {
+      background-position-x: -($background-width / 2);
+    }
+    to {
+      background-position-x: ($background-width / 2);
+    }
+  }
+
+  @apply relative;
+  height: 21px; // default height
+  border-radius: 3px;
+  background-image: linear-gradient(90deg, #fafafa 0, #eee 50%, #fafafa);
+  background-size: $background-width $background-height;
+  animation: move 3s linear forwards infinite;
+
+  @include dark-mode() {
+    background-image: linear-gradient(90deg, #222 0, #333 50%, #222);
+  }
+}
