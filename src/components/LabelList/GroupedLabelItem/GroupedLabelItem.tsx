@@ -14,11 +14,13 @@ export interface IProps {
   floatingConfig?: Parameters<typeof useFloating>[0];
 }
 
-const GroupedLabelItem: React.FunctionComponent<IProps> = (props) => {
+type TProps = IProps;
+
+const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
   const { text, items, floatingConfig } = props;
 
   /**
-   * omit the unnecessary hooks if there is no label info list  
+   * omit the unnecessary hooks if there is no label info list
    * CAVEAT: conditional hooks may cause React warnings
    * if conditions are changed between renderings
    */
