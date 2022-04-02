@@ -92,7 +92,7 @@ const isModalTitleMatched = (node: Element, title: string) => {
   return false;
 };
 
-const renderLabelList = (user: string, store: TStore, persistor: Persistor, floatingConfig: TFloatingConfig, container: Element) => {
+const renderLabelList = (user: string, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
@@ -178,29 +178,24 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
     const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner)!;
     const container = document.createElement('div');
     threadItemInner.insertAdjacentElement('afterbegin', container);
-    renderLabelList(user, store, persistor, undefined, container);
+    renderLabelList(user, undefined, store, persistor, container);
   }
 };
 
-// const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-//   const doxButtonSelector = `${lihkgSelectors.userCardButtonsContainer} > a[href^="/profile"]`;
-//   const doxButton = node.querySelector(doxButtonSelector);
-//   const href = doxButton?.getAttribute('href');
-//   const matched = href?.match(REGEXES.PROFILE_URL);
-//   if (matched) {
-//     const [, user] = matched;
-//     const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
-//     const labelListContainer = document.createElement('div');
-//     modelContentInner.appendChild(labelListContainer);
-//     const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
-//     renderLabelList(user, store, persistor, floatingConfig, labelListContainer);
-//     const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
-//     const addLabelButtonContainer = document.createElement('div');
-//     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
-//     userCardButtonsContainer.appendChild(addLabelButtonContainer);
-//     renderAddLabelButton(user, store, persistor, addLabelButtonContainer);
-//   }
-// };
+const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const doxButtonSelector = `${lihkgSelectors.userCardButtonsContainer} > a[href^="/profile"]`;
+  const doxButton = node.querySelector(doxButtonSelector);
+  const href = doxButton?.getAttribute('href');
+  const matched = href?.match(REGEXES.PROFILE_URL);
+  if (matched) {
+    const [, user] = matched;
+    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
+    const container = document.createElement('div');
+    modelContentInner.appendChild(container);
+    const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
+    renderLabelList(user, floatingConfig, store, persistor, container);
+  }
+};
 
 const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
@@ -241,7 +236,7 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
     const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody)!;
     replyItemInnerBody.insertAdjacentElement('afterbegin', container);
     const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
-    renderLabelList(user, store, persistor, floatingConfig, container);
+    renderLabelList(user, floatingConfig, store, persistor, container);
     (node as any)[containerCacheKey] = container;
   }
 };
@@ -294,8 +289,8 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   debug('addedNodeMutationHandlerFactory', node);
   /** when render the thread item */
   if (isThreadItem(node)) return handleThreadItemMutation;
-  // /** when render the user card modal */
-  // if (isUserCardModal(node)) return handleUserCardModalMutation;
+  /** when render the user card modal */
+  if (isUserCardModal(node)) return handleUserCardModalMutation;
   /** when render the settings modal */
   if (isSettingsModal(node)) return handleSettingsModalMutation;
   /** when render the emote menu */
