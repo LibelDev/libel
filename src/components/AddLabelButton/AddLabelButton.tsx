@@ -1,3 +1,5 @@
+import { faTag } from '@fortawesome/free-solid-svg-icons/faTag';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
 import cache from '../../cache';
@@ -9,7 +11,6 @@ import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
 import type { IPost } from '../../types/lihkg';
-import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
 import styles from './AddLabelButton.module.scss';
@@ -85,7 +86,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
     <React.Fragment>
       <IconButton
         className={styles.addLabelButton}
-        icon={IconName.BookOpenPageVariant}
+        icon={<FontAwesomeIcon icon={faTag} />}
         aria-label={TEXTS.BUTTON_TEXT_ADD_LABEL}
         data-tip={TEXTS.BUTTON_TEXT_ADD_LABEL}
         title={TEXTS.BUTTON_TEXT_ADD_LABEL}
