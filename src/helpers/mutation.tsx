@@ -92,25 +92,8 @@ const isModalTitleMatched = (node: Element, title: string) => {
   return false;
 };
 
-const renderAddLabelButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
-  const postID = cache.targetReply?.getAttribute(ATTRIBUTES.dataPostId)!;
-  const targetReply = cache.getReply(postID);
-  if (targetReply) {
-    ReactDOM.render(
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <AddLabelButton user={user} targetReply={targetReply}>
-            {TEXTS.BUTTON_TEXT_ADD_LABEL}
-          </AddLabelButton>
-        </PersistGate>
-      </Provider>,
-      container
-    );
-  }
-};
-
 const renderLabelList = (user: string, store: TStore, persistor: Persistor, floatingConfig: TFloatingConfig, container: Element) => {
-  (container as Element).classList.add(labelListStyles.container);
+  container.classList.add(labelListStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -124,9 +107,27 @@ const renderLabelList = (user: string, store: TStore, persistor: Persistor, floa
   );
 };
 
+const renderAddLabelButton = (user: string, postID: string | null, store: TStore, persistor: Persistor, container: Element) => {
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(addLabelButtonStyles.container);
+  const post = postID && cache.getReply(postID);
+  if (post) {
+    ReactDOM.render(
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <AddLabelButton user={user} post={post}>
+            {TEXTS.BUTTON_TEXT_ADD_LABEL}
+          </AddLabelButton>
+        </PersistGate>
+      </Provider>,
+      container
+    );
+  }
+};
+
 const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
-  (container as Element).classList.add(lihkgCssClasses.replyToolbarButton);
-  (container as Element).classList.add(snipeButtonStyles.container);
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(snipeButtonStyles.container);
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
@@ -181,25 +182,25 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
   }
 };
 
-const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const doxButtonSelector = `${lihkgSelectors.userCardButtonsContainer} > a[href^="/profile"]`;
-  const doxButton = node.querySelector(doxButtonSelector);
-  const href = doxButton?.getAttribute('href');
-  const matched = href?.match(REGEXES.PROFILE_URL);
-  if (matched) {
-    const [, user] = matched;
-    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
-    const labelListContainer = document.createElement('div');
-    modelContentInner.appendChild(labelListContainer);
-    const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
-    renderLabelList(user, store, persistor, floatingConfig, labelListContainer);
-    const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
-    const addLabelButtonContainer = document.createElement('div');
-    addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
-    userCardButtonsContainer.appendChild(addLabelButtonContainer);
-    renderAddLabelButton(user, store, persistor, addLabelButtonContainer);
-  }
-};
+// const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
+//   const doxButtonSelector = `${lihkgSelectors.userCardButtonsContainer} > a[href^="/profile"]`;
+//   const doxButton = node.querySelector(doxButtonSelector);
+//   const href = doxButton?.getAttribute('href');
+//   const matched = href?.match(REGEXES.PROFILE_URL);
+//   if (matched) {
+//     const [, user] = matched;
+//     const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
+//     const labelListContainer = document.createElement('div');
+//     modelContentInner.appendChild(labelListContainer);
+//     const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
+//     renderLabelList(user, store, persistor, floatingConfig, labelListContainer);
+//     const userCardButtonsContainer = node.querySelector(lihkgSelectors.userCardButtonsContainer)!;
+//     const addLabelButtonContainer = document.createElement('div');
+//     addLabelButtonContainer.classList.add(addLabelButtonStyles.container);
+//     userCardButtonsContainer.appendChild(addLabelButtonContainer);
+//     renderAddLabelButton(user, store, persistor, addLabelButtonContainer);
+//   }
+// };
 
 const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
@@ -262,12 +263,19 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
   if (user) {
     const replyButton = node.querySelector(`.${IconName.Reply}`);
     if (replyButton) {
-      const containerCacheKey = `__${namespace}__cache__container__`;
-      (node as any)[containerCacheKey]?.remove();
-      const container = document.createElement('div');
-      insertAfter(container, replyButton);
-      renderSnipeButton(user, store, persistor, container);
-      (node as any)[containerCacheKey] = container;
+      /* add label button */
+      const addLabelButtonContainer = document.createElement('div');
+      const replyItemInner = node.parentElement!.parentElement!;
+      const postID = replyItemInner.getAttribute(ATTRIBUTES.dataPostId);
+      insertAfter(addLabelButtonContainer, replyButton);
+      renderAddLabelButton(user, postID, store, persistor, addLabelButtonContainer);
+      /* snipe button */
+      const snipeButtonContainerCacheKey = `__${namespace}__cache__snipe_button_container__`;
+      (node as any)[snipeButtonContainerCacheKey]?.remove();
+      const snipeButtonContainer = document.createElement('div');
+      insertAfter(snipeButtonContainer, addLabelButtonContainer);
+      renderSnipeButton(user, store, persistor, snipeButtonContainer);
+      (node as any)[snipeButtonContainerCacheKey] = snipeButtonContainer;
     }
   }
 };
@@ -286,8 +294,8 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   debug('addedNodeMutationHandlerFactory', node);
   /** when render the thread item */
   if (isThreadItem(node)) return handleThreadItemMutation;
-  /** when render the user card modal */
-  if (isUserCardModal(node)) return handleUserCardModalMutation;
+  // /** when render the user card modal */
+  // if (isUserCardModal(node)) return handleUserCardModalMutation;
   /** when render the settings modal */
   if (isSettingsModal(node)) return handleSettingsModalMutation;
   /** when render the emote menu */

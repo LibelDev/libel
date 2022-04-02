@@ -9,18 +9,14 @@
 }
 
 .snipe-button {
-  color: $color-grey05;
-  font-size: 1.2rem;
+  font-size: 1em;
 
+  &:focus,
   &:hover {
     color: $color-black;
 
     @include dark-mode() {
       color: $color-white;
     }
-  }
-
-  &:hover {
-    @apply no-underline;
   }
 }
