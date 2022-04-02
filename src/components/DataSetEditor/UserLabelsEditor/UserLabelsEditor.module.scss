@@ -1,0 +1,87 @@
+@import '../../../stylesheets/base';
+
+.user-labels-editor {
+  min-height: 78px + 1px; // 1px: border
+  border-bottom: solid 1px $color-grey02;
+
+  @include dark-mode() {
+    border-color: $color-grey06;
+  }
+}
+
+.user {
+  @apply flex items-center;
+
+  .link {
+    @apply ml-2;
+  }
+}
+
+.link {
+  &,
+  &:hover {
+    @apply no-underline;
+  }
+
+  @include dark-mode() {
+    color: $color-blue01;
+  }
+}
+
+.label-list {
+  @include reset-list();
+
+  > li {
+    @apply flex items-center;
+    @apply relative;
+    @apply py-2;
+
+    & + li {
+      border-top: solid 1px $color-grey02;
+
+      @include dark-mode() {
+        border-color: $color-grey06;
+      }
+    }
+
+    .hint {
+      @apply absolute;
+      @apply top-1/2 left-1/2;
+      @apply transform;
+      @apply -translate-x-1/2 -translate-y-1/2;
+      @apply whitespace-nowrap;
+      @include glow-text(1rem, rgba($color-black, 0.5));
+
+      @include dark-mode() {
+        @include glow-text(1rem, rgba($color-white, 0.5));
+      }
+    }
+  }
+}
+
+.remove {
+  @apply text-base;
+}
+
+.input-field {
+  @apply ml-2;
+
+  &.text {
+    > div {
+      @apply w-20;
+    }
+  }
+
+  &.reason {
+    @apply flex-1;
+
+    > div {
+      @apply w-full;
+    }
+  }
+}
+
+.source {
+  @apply mx-2;
+  @apply text-base;
+}

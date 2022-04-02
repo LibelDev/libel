@@ -1,17 +1,29 @@
 @import '../../stylesheets/base';
 
 .data-set-editor {
-  // overrider Handsontable's styles
-  :global {
-    .handsontable {
-      .htBorders {
-        .wtBorder {
-          &.corner {
-            // hide the cell corner (a.k.a. the fill handle)
-            @apply hidden #{!important};
-          }
-        }
+  @apply flex flex-col;
+  @apply w-80;
+}
+
+.filter-result {
+  @apply mt-4;
+  @apply flex-1;
+  @apply overflow-x-hidden;
+  @apply overflow-y-auto;
+}
+
+.labels-group-list {
+  @include reset-list();
+
+  > li {
+    & + li {
+      .user-labels-editor {
+        @apply pt-2;
       }
     }
   }
+}
+
+.error {
+  @apply mt-4;
 }

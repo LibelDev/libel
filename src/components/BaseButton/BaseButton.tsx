@@ -8,19 +8,19 @@ interface IProps {
   loading?: boolean;
 }
 
-type TAnchorHTMLAttributes = React.ComponentPropsWithoutRef<'a'>;
-type TButtonHTMLAttributes = React.ComponentPropsWithoutRef<'button'>;
+type TAnchorComponentProps = React.ComponentPropsWithoutRef<'a'>;
+type TButtonComponentProps = React.ComponentPropsWithoutRef<'button'>;
 
-type HTMLAttributesWithAs<K extends keyof JSX.IntrinsicElements> = {
+type TComponentPropsWithAs<K extends keyof JSX.IntrinsicElements> = {
   as?: K;
 } & React.ComponentPropsWithoutRef<K>;
 
-type AnchorHTMLAttributesWithAs = HTMLAttributesWithAs<'a'>;
-type ButtonHTMLAttributesWithAs = HTMLAttributesWithAs<'button'>;
+type TAnchorComponentPropsWithAs = TComponentPropsWithAs<'a'>;
+type TButtonComponentPropsWithAs = TComponentPropsWithAs<'button'>;
 
 export type TProps = IProps & (
-  AnchorHTMLAttributesWithAs |
-  ButtonHTMLAttributesWithAs
+  TAnchorComponentPropsWithAs |
+  TButtonComponentPropsWithAs
 );
 
 const BaseButton: React.FunctionComponent<TProps> = (props) => {
@@ -44,7 +44,7 @@ const BaseButton: React.FunctionComponent<TProps> = (props) => {
       children
     )
   );
-  return React.createElement(as, _props as TAnchorHTMLAttributes & TButtonHTMLAttributes, _children);
+  return React.createElement(as, _props as TAnchorComponentProps & TButtonComponentProps, _children);
 };
 
 export default BaseButton;

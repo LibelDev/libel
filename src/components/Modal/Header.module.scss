@@ -5,11 +5,8 @@
   @apply pl-4;
   height: 3rem;
   background-color: $color-white;
+  border-bottom: solid 1px $color-grey02;
   color: $color-black;
-  
-  &.border {
-    border-bottom: solid 1px $color-grey02;
-  }
 
   @include dark-mode() {
     background-color: $color-black02;

@@ -17,7 +17,9 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;

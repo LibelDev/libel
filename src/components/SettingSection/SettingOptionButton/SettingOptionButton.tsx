@@ -12,7 +12,9 @@ interface IProps {
   variant?: Variant;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'a'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
+
+type TProps = IProps & TComponentProps;
 
 const SettingOptionButton: React.FunctionComponent<TProps> = (props) => {
   const { disabled, variant, className, onClick, ...otherProps } = props;

@@ -1,30 +1,40 @@
-class Singleton<T> {
-  private value: T | PromiseLike<T>;
-  private awaited?: T;
+type TMaybePromise<T> = T | PromiseLike<T>;
 
-  constructor (value: T | PromiseLike<T>) {
-    this.value = value;
+class Singleton<T> {
+  /**
+   * the source of the singleton
+   * @private
+   */
+  private source: T | PromiseLike<T>;
+  /** 
+   * the awaited value of the source
+   * @private
+   */
+  private value!: T;
+
+  constructor (source: T | PromiseLike<T>) {
+    this.source = source;
   }
 
   get () {
-    const { value, awaited } = this;
-    if (isPromiseLike(value)) {
+    const { source, value } = this;
+    if (isPromiseLike(source)) {
       return new Promise<T>(async (resolve) => {
-        if (!awaited) {
-          this.awaited = await value;
+        if (!value) {
+          this.value = await source;
         }
-        resolve(this.awaited!);
+        resolve(this.value);
       });
     }
-    if (!awaited) {
-      this.awaited = value;
+    if (!value) {
+      this.value = source;
     }
-    return this.awaited!;
+    return this.value;
   }
 }
 
 export default Singleton;
 
-function isPromiseLike<T> (value: T | PromiseLike<T>): value is PromiseLike<T> {
+function isPromiseLike<T> (value: TMaybePromise<T>): value is PromiseLike<T> {
   return ('then' in value);
 }

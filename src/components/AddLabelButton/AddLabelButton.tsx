@@ -38,7 +38,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     gtag.event(EventAction.Close, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
   }, []);
 
-  const handleLabelFormSubmit: TLabelFormProps['onSubmission'] = useCallback(async (event, data) => {
+  const handleLabelFormSubmit: TLabelFormProps['onSubmit'] = useCallback(async (data) => {
     const { text, reason, color, image, meta } = data;
     const source = mapPostToSource(targetReply);
     const payload: IAddLabelPayload = { user, text, reason, color, image, source };
@@ -90,7 +90,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
         fragile={false}
         loading={loading}
         onClose={handleLabelFormModalClose}
-        onSubmission={handleLabelFormSubmit}
+        onSubmit={handleLabelFormSubmit}
       />
     </React.Fragment>
   );

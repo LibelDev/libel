@@ -4,7 +4,9 @@ import styles from './LoadingSpinner.module.scss';
 
 interface IProps { }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'i'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'i'>;
+
+type TProps = IProps & TComponentProps;
 
 const LoadingSpinner: React.FunctionComponent<TProps> = (props) => {
   const { className } = props;

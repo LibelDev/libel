@@ -1,6 +1,7 @@
+@import '../../../stylesheets/base';
+
 .label-info-list {
-  @apply list-none;
-  @apply p-0;
+  @include reset-list();
 
   > li + li {
     @apply mt-2;

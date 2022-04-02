@@ -6,6 +6,7 @@ import * as TEXTS from '../../../../constants/texts';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
 import { useTypedSelector } from '../../../../store/store';
+import ErrorMessage from '../../../ErrorMessage/ErrorMessage';
 import Icon from '../../../Icon/Icon';
 import { IconName } from '../../../Icon/types';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
@@ -72,10 +73,9 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                       }
                       {
                         !!sync.error && (
-                          <small className={styles.hint}>
-                            <Icon className={styles.icon} icon={IconName.CommentAlert} />
+                          <ErrorMessage as='small' className={styles.hint}>
                             {TEXTS.CLOUD_SYNC_ERROR_GENERIC_ERROR}
-                          </small>
+                          </ErrorMessage>
                         )
                       }
                     </React.Fragment>

@@ -2,33 +2,37 @@ import { render } from 'mustache';
 import cache from '../cache';
 import { getUserRegistrationDate } from '../helpers/lihkg';
 import type { ILabel } from '../models/Label';
-import Personal from '../models/Personal';
+import type Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
-import { promotion, snipingHeader, snipingLabelItem, snipingLabelScreenshot, snipingTemplate, subscriptionItem } from '../templates/sniping/sniping';
+import defaultTemplate from '../templates/sniping/default.txt';
+import { promotion, snipingItem, snipingItemImage, subscriptionItem } from '../templates/sniping/internal';
 import type { IDraft } from '../types/lihkg';
-import { CUSTOM_SNIPING_TEMPLATE_DRAFT_TITLE, CUSTOM_SNIPING_TEMPLATE_MAPPING } from './../constants/sniping';
+import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING } from './../constants/sniping';
 import { DRAFTS_KEY } from './../constants/storage';
 import { createDataSetUserFilter } from './../store/selectors';
 import { format, Format } from './date';
+import { getShareURL } from './label';
 import { localStorage } from './storage';
 
-interface ISnipeLabelItem extends ILabel {
+interface ISnipingItem {
+  label: ILabel;
   shareURL?: string;
   subscription: Subscription | null;
 }
 
-const getSnipingTemplateDraft = () => {
+const getCustomTemplate = () => {
   const json = localStorage.getItem(DRAFTS_KEY);
   const drafts = (json && JSON.parse(json) || []) as IDraft[];
-  return drafts.find((draft) => draft.title === CUSTOM_SNIPING_TEMPLATE_DRAFT_TITLE);
+  const draft = drafts.find((draft) => draft.title === SNIPING_TEMPLATE_DRAFT_TITLE);
+  return draft?.content;
 };
 
-const getSnipingTemplate = () => {
-  const draft = getSnipingTemplateDraft();
-  const body = draft?.content || snipingTemplate;
+const getTemplate = () => {
+  const customTemplate = getCustomTemplate();
+  const body = customTemplate || defaultTemplate;
   return render(
     body,
-    CUSTOM_SNIPING_TEMPLATE_MAPPING,
+    SNIPING_TEMPLATE_VARIABLES_MAPPING,
     {},
     { tags: ['__', '__'] }
   );
@@ -41,24 +45,24 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const dataSets = ([] as (Personal | Subscription)[])
       .concat(personal, _subscriptions)
       .map(createDataSetUserFilter(userID));
-    const labels = dataSets.reduce<ISnipeLabelItem[]>((labels, dataSet) => {
-      const _labels = (dataSet.data[userID] || []).map((label) => ({
-        ...label,
-        shareURL: label.shareURL,
+    const snipingItems = dataSets.reduce<ISnipingItem[]>((snipingItems, dataSet) => {
+      const _snipingItems = (dataSet.data[userID] || []).map<ISnipingItem>((label) => ({
+        label,
+        shareURL: getShareURL(label),
         subscription: Subscription.implements(dataSet) ? dataSet : null
       }));
-      return labels.concat(_labels);
+      return [...snipingItems, ..._snipingItems];
     }, []);
     const view = {
       user: {
         ...user,
         registrationDate: format(getUserRegistrationDate(user), Format.Display)
       },
-      labels,
+      snipingItems,
       subscriptions: _subscriptions
     };
-    const snipingTemplate = getSnipingTemplate();
-    const partials = { snipingHeader, snipingLabelItem, snipingLabelScreenshot, subscriptionItem, promotion };
+    const snipingTemplate = getTemplate();
+    const partials = { snipingItem, snipingItemImage, subscriptionItem, promotion };
     return render(snipingTemplate, view, partials);
   }
 };

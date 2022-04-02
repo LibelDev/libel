@@ -16,7 +16,7 @@ export const waitForElement = (selector: string): Promise<Element> => {
     return Promise.resolve(element);
   }
   return new Promise((resolve) => {
-    const observer = new MutationObserver((mutations) => {
+    const observer = new MutationObserver((mutations, observer) => {
       for (const mutation of mutations) {
         switch (mutation.type) {
           case 'childList': {

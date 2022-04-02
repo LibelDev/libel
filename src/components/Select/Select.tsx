@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import useElementID from '../../hooks/useElementID';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
 import styles from './Select.module.scss';
@@ -11,7 +12,9 @@ interface IProps {
   error?: React.ReactNode;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'select'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'select'>;
+
+type TProps = IProps & TComponentProps;
 
 const Select: React.FunctionComponent<TProps> = (props) => {
   const { id, className, border, label, error, ...otherProps } = props;
@@ -45,13 +48,10 @@ const Select: React.FunctionComponent<TProps> = (props) => {
           <Icon className={styles.icon} icon={IconName.ChevronDown} />
         </div>
         {
-          error && (
-            <div className={styles.error}>
-              <div id={errorID}>
-                <Icon className={styles.icon} icon={IconName.CommentAlert} />
-                {error}
-              </div>
-            </div>
+          !!error && (
+            <ErrorMessage id={errorID} className={styles.error}>
+              {error}
+            </ErrorMessage>
           )
         }
       </div>

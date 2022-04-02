@@ -7,10 +7,10 @@ import Modal, { TProps as TModalProps } from '../Modal/Modal';
 
 interface IProps { }
 
-type TProps = IProps & TModalProps & TLabelFormProps;
+type TProps = IProps & Omit<TModalProps, 'onSubmit'> & TLabelFormProps;
 
 const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
-  const { onClose, user, label, loading, onSubmission, ...otherProps } = props;
+  const { onClose, user, label, loading, onSubmit, ...otherProps } = props;
 
   const formID = useElementID(LabelForm.displayName!);
 
@@ -29,7 +29,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
           user={user}
           label={label}
           loading={loading}
-          onSubmission={onSubmission}
+          onSubmit={onSubmit}
         />
       </Modal.Body>
       <Modal.Footer>

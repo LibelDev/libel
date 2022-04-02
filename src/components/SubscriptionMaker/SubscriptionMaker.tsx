@@ -7,6 +7,7 @@ import { EventAction, EventCategory } from '../../constants/ga';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
+import { mapValidationError } from '../../helpers/validation';
 import useElementID from '../../hooks/useElementID';
 import type { IDataSet } from '../../models/DataSet';
 import type { IRemoteSubscription } from '../../models/Subscription';
@@ -14,7 +15,7 @@ import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
 import ColorPicker from '../ColorPicker/ColorPicker';
-import Icon from '../Icon/Icon';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import Select from '../Select/Select';
@@ -32,7 +33,7 @@ interface IInputErrors {
   [name: string]: string | undefined;
 }
 
-interface IProps {
+export interface IProps {
   /**
    * the data set of the subscription
    */
@@ -42,10 +43,12 @@ interface IProps {
    * @async
    * @throws {string} error message
    */
-  onSubmit: (event: React.FormEvent<HTMLFormElement>, subscription: IRemoteSubscription) => Promise<void>;
+  onSubmit: (subscription: IRemoteSubscription) => void;
 }
 
-export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+
+export type TProps = IProps & TComponentProps;
 
 const debug = debugFactory('libel:component:SubscriptionMaker');
 
@@ -74,8 +77,8 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
     isCustomColor: !!formData.color
   });
-  const [inputErrors, setInputErrors] = useState<IInputErrors>({});
-  const [error, setError] = useState('');
+  const [inputErrors, setInputErrors] = useState<IInputErrors | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const _id = id || useElementID(SubscriptionMaker.displayName!);
   const name = `${namespace}-${SubscriptionMaker.displayName!}`;
@@ -87,7 +90,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     const subscriptionTemplate = subscriptionTemplates[index];
     setSubscriptionTemplateIndex(index);
     setFormData(subscriptionTemplate || initialFormData);
-    setInputErrors({});
+    setInputErrors(null);
   }, [subscriptionTemplates]);
 
   const handleSubscriptionTemplateRemoveButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
@@ -97,7 +100,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       dispatch(configActions.removeSubscriptionTemplate(subscriptionTemplateIndex));
       setSubscriptionTemplateIndex(-1);
       setFormData(initialFormData);
-      setInputErrors({});
+      setInputErrors(null);
     }
   }, [subscriptionTemplateIndex]);
 
@@ -112,7 +115,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     setToggleButtonState({ ...toggleButtonState, [name]: checked });
   }, [toggleButtonState]);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(async (event) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
     event.preventDefault();
     const _formData: TFormData = {
       ...formData,
@@ -121,14 +124,11 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
-      const _inputErrors = { ...inputErrors };
-      const { details } = error;
-      for (const { context, message } of details) {
-        const { key } = context!;
-        Object.assign(_inputErrors, { [key!]: message });
+      const _inputErrors = mapValidationError<IInputErrors>(error, (inputErrors, key, label, value, message) => {
         // analytics
         gtag.event(EventAction.Error, { event_category: EventCategory.SubscriptionMaker, event_label: key });
-      }
+        return { ...inputErrors, [key!]: message };
+      }, { ...inputErrors });
       setInputErrors(_inputErrors);
     } else {
       try {
@@ -139,10 +139,10 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
         } else {
           dispatch(configActions.updateSubscriptionTemplate(subscriptionTemplateIndex, value));
         }
-        await onSubmit(event, subscription);
+        onSubmit(subscription);
       } catch (err) {
         if (typeof err === 'string') {
-          setError(err);
+          setFormError(err);
         }
       }
     }
@@ -164,7 +164,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       onSubmit={handleSubmit}
       aria-describedby={errorID}
     >
-      <div className={styles.inputField}>
+      <div className={classNames(styles.inputField, styles.template)}>
         <Select
           className={styles.select}
           border
@@ -200,7 +200,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_NAME}
           name="name"
           value={formData.name || ''}
-          error={inputErrors.name}
+          error={inputErrors?.name}
           onChange={handleInputChange}
           autoFocus
           autoComplete="on"
@@ -212,7 +212,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_VERSION}
           name="version"
           value={formData.version || ''}
-          error={inputErrors.version}
+          error={inputErrors?.version}
           onChange={handleInputChange}
         />
       </div>
@@ -223,7 +223,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           placeholder={TEXTS.SUBSCRIPTION_MAKER_FIELD_PLACEHOLDER_HOMEPAGE}
           name="homepage"
           value={formData.homepage || ''}
-          error={inputErrors.homepage}
+          error={inputErrors?.homepage}
           onChange={handleInputChange}
         />
       </div>
@@ -244,7 +244,6 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
                   className={styles.input}
                   name="color"
                   value={formData.color || ''}
-                  error={inputErrors.color}
                   onChange={handleInputChange}
                 />
               </div>
@@ -253,11 +252,10 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
         </ToggleButton>
       </div>
       {
-        !!error && (
-          <div id={errorID} className={styles.error}>
-            <Icon className={styles.icon} icon={IconName.CommentAlert} />
-            {error}
-          </div>
+        !!formError && (
+          <ErrorMessage id={errorID} className={styles.error}>
+            {formError}
+          </ErrorMessage>
         )
       }
     </form>

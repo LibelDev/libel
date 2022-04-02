@@ -1,0 +1,3 @@
+{{ #label.image }}
+[img]{{{ label.image }}}[/img]
+{{ /label.image }}
