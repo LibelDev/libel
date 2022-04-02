@@ -1,8 +1,16 @@
 @import '../../../stylesheets/base';
 
+.user-labels-editor {
+  min-height: 78px + 1px; // 1px: border
+  border-bottom: solid 1px $color-grey02;
+
+  @include dark-mode() {
+    border-color: $color-grey06;
+  }
+}
+
 .user {
   @apply flex items-center;
-  @apply mb-2;
 
   .link {
     @apply ml-2;
@@ -22,7 +30,6 @@
 
 .label-list {
   @include reset-list();
-  @apply -mt-2;
 
   > li {
     @apply flex items-center;

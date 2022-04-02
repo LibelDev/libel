@@ -13,9 +13,9 @@ import styles from './DataSetEditor.module.scss';
 import Filter, { IProps as IFilterProps } from './Filter/Filter';
 import UserLabelsEditor, { IProps as IUserLabelsEditorProps } from './UserLabelsEditor/UserLabelsEditor';
 
-interface IAutoScrollUserLabelIndex {
-  /** only scroll to one user and label */
-  [user: string]: number; // label index
+interface IAutoScrollUserItemIndex {
+  /** only scroll to one user and item */
+  [user: string]: number; // item index
 }
 
 export interface IProps {
@@ -36,7 +36,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const [keyword, setKeyword] = useState('');
   const [labelsGroups, setLabelsGroups] = useState(mapDataSetToLabelsGroupsGroupedByUser(dataSet));
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
-  const [autoScrollUserLabelIndex, setAutoScrollUserLabelIndex] = useState<IAutoScrollUserLabelIndex>();
+  const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
 
   const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
@@ -84,7 +84,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
 
   const handleUserLabelsScroll: IUserLabelsEditorProps['onScroll'] = useCallback(() => {
     // allow scrolling to the same label again
-    setAutoScrollUserLabelIndex(undefined);
+    setAutoScrollUserItemIndex(undefined);
   }, []);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
@@ -100,7 +100,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       const [, user, labelIndex] = path;
       const _user = user as string;
       const _labelIndex = labelIndex as number;
-      setAutoScrollUserLabelIndex({ [_user]: _labelIndex });
+      setAutoScrollUserItemIndex({ [_user]: _labelIndex });
     } else {
       setError(null);
       onSubmit(dataSet);
@@ -135,9 +135,10 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
                       filteredLabelsGroups.map(({ user, items }, index) => (
                         <li key={user}>
                           <UserLabelsEditor
+                            className={styles.userLabelsEditor}
                             user={user}
                             items={items}
-                            autoScrollLabelIndex={autoScrollUserLabelIndex && autoScrollUserLabelIndex[user]}
+                            autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
                             onChange={handleUserLabelsChange}
                             onRemove={handleUserLabelsRemove}
                             onScroll={handleUserLabelsScroll}

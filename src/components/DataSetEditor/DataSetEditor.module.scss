@@ -16,11 +16,8 @@
 
   > li {
     & + li {
-      @apply pt-2;
-      border-top: solid 1px $color-grey02;
-
-      @include dark-mode() {
-        border-color: $color-grey06;
+      .user-labels-editor {
+        @apply pt-2;
       }
     }
   }
