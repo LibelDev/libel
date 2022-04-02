@@ -1,4 +1,54 @@
-## Unreleased
+## v3.2.0 (2022-04-02)
+
+### Feat
+
+- **editor**: add label color input field
+- **editor**: apply lazy rendering to `UserLabelsEditor`
+- **components**: add `Placeholder`
+- **editor**: rewrite `DataSetEditor`
+- **components**: add `ErrorMessage`
+- **components**: add `IconMessage`
+- **components**: add prop `invalid` to indicate invalid state without error message
+- **modal**: `Header` will spread props now
+- **components**: update floating position on mouse enter
+- **components**: add prop `icon` to `TextInput`
+- **editor**: remove row
+
+### Refactor
+
+- **components**: revise stylesheet
+- **editor**: revise validation logic
+- **dom**: consume the `observer` instance from the callback
+- **typings**: update typings
+- **sniping**: update sniping template rendering logic
+- **components**: revise error
+- **models**: remove `Label#shareURL` and `Label#clone()`
+- **components**: reuse `mapValidationError`
+- **components**: update typings and variables
+- **components**: reuse `ErrorMessage`
+- **typings**: update typings, imports and variables
+- **components**: remove unnecessary `className` and spread props
+- **modal**: revised `spacious` into `compact`
+- **components**: update style
+- **components**: update style
+- **components**: update `Modal` style
+- **models**: update style
+- **components**: update `groupedLabels` logic
+- **typings**: changed `onSubmission` to `onSubmit`
+- **sniping**: rename and move files
+- **models**: update `Singleton`
+
+### Fix
+
+- **editor**: missing `handleKeywordChange` dependencies
+- **mutation**: issue of not rendering label list and snipe button for blocked users
+- **components**: unexpected hardcoded `true` condition
+- **mutation**: missing snipe button
+- **modal**: issue of `Footer` being shrinked
+- **dependencies**: incorrect `identity-obj-proxy` version
+- **label-info**: missing subscription color
+
+## v3.1.1 (2022-03-21)
 
 ### Fix
 
@@ -14,6 +64,20 @@
 - **store**: update storage instance before loading into the store
 - **helpers**: update `merge.ts`
 - **models**: update `Label#id` type
+
+### Refactor
+
+- update imports
+- **helpers**: move rendering-related methods from `lihkg.ts` to `mutation.ts`
+
+### Feat
+
+- **file**: update `_export` to not compress to the JSON
+
+## v3.0.0 (2022-03-21)
+
+### Fix
+
 - **label-list**: update label info list box-sizing
 - **label-info**: remove shadow
 - **dom**: apply `requestAnimationFrame` when handling mutations
@@ -34,8 +98,6 @@
 
 ### Refactor
 
-- update imports
-- **helpers**: move rendering-related methods from `lihkg.ts` to `mutation.ts`
 - **stylesheets**: use variables for colors
 - **label-list**: update label item layout
 - **constants**: update texts
@@ -79,7 +141,6 @@
 
 ### Feat
 
-- **file**: update `_export` to not compress to the JSON
 - **label-list**: update label list layout
 - **label-list**: update label list layout
 - **label-list**: update label list layout
