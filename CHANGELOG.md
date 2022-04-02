@@ -1,3 +1,22 @@
+## v3.3.0 (2022-04-03)
+
+### Fix
+
+- **cache**: remove `Cache#targetReply`
+- **mutation**: recover user card modal mutation
+- **dependencies**: incorrect `@types/redux-state-sync` version
+- **mutation**: conflicts with "LIHKG Show User Info"
+
+### Feat
+
+- **components**: update add label button icon
+- **components**: update `BaseIconButton` to support custom icon element
+- **mutation**: move add label button to beside of the reply button
+
+### Refactor
+
+- **typings**: update typings
+
 ## v3.2.0 (2022-04-02)
 
 ### Feat
