@@ -14,12 +14,14 @@ interface IProps {
   release: IRelease;
 }
 
+type TProps = IProps;
+
 const getUserScriptURL = (release: IRelease) => {
   const { tag_name } = release;
   return `${repository.url}/raw/${tag_name}/dist/${name}.user.js`;
 };
 
-const NewVersionAnnouncement: React.FunctionComponent<IProps> = (props) => {
+const NewVersionAnnouncement: React.FunctionComponent<TProps> = (props) => {
   const { currentVersion, newVersion, release } = props;
   const oldVersionMessage = render(versionUpdate.oldVersionMessage, { currentVersion });
   const newVersionMessage = render(versionUpdate.newVersionMessage, { newVersion });

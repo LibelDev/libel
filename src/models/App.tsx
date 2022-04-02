@@ -6,7 +6,7 @@ import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVers
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import { hasRead } from '../helpers/announecement';
-import { addedNodeMutationHandlerFactory, handleDataPostIdAttributeMutation, isNickname, renderAnnouncement } from '../helpers/mutation';
+import { addedNodeMutationHandlerFactory, handleDataPostIdAttributeMutation, renderAnnouncement } from '../helpers/mutation';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
 import type { TStore } from '../store/store';
@@ -33,7 +33,6 @@ class App {
   }
 
   private bindEvents () {
-    this.bindCurrentReplyCacher();
     this.bindRequestInterceptor();
   }
 
@@ -81,26 +80,6 @@ class App {
       childList: true,
       attributes: true,
       attributeFilter: [ATTRIBUTES.dataPostId]
-    });
-  }
-
-  /**
-   * cache the target reply
-   * @private
-   */
-  private bindCurrentReplyCacher () {
-    const { cache } = this;
-    document.addEventListener('click', (event) => {
-      try {
-        const { parentElement } = event.target as Element;
-        if (parentElement && isNickname(parentElement)) {
-          const { parentElement: replyElement } = parentElement.parentElement?.parentElement!;
-          cache.targetReply = replyElement;
-        }
-      } catch (err) {
-        console.error(err);
-        cache.targetReply = null;
-      }
     });
   }
 

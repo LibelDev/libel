@@ -6,7 +6,7 @@ import type { IconName } from '../Icon/types';
 import styles from './BaseIconButton.module.scss';
 
 interface IProps {
-  icon: IconName;
+  icon: IconName | JSX.Element;
 }
 
 export type TProps = IProps & TButtonProps;
@@ -19,7 +19,13 @@ const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
       className={classnames(className, styles.baseIconButton)}
     >
       <React.Fragment>
-        <Icon className={styles.icon} icon={icon} />
+        {
+          typeof icon === 'string' ? (
+            <Icon className={styles.icon} icon={icon} />
+          ) : (
+            <span className={styles.icon}>{icon}</span>
+          )
+        }
         {
           children && (
             <span>{children}</span>

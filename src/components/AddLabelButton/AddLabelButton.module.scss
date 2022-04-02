@@ -1,9 +1,22 @@
+@import '../../stylesheets/base';
+
 .container {
   @apply cursor-default;
+
+  &:empty {
+    @apply hidden;
+  }
 }
 
 .add-label-button {
-  @apply absolute top-0 left-0;
-  @apply h-full w-full;
   font-size: 1em;
+
+  &:focus,
+  &:hover {
+    color: $color-black;
+
+    @include dark-mode() {
+      color: $color-white;
+    }
+  }
 }

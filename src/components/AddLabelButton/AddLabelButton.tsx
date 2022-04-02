@@ -1,5 +1,8 @@
+import { faTag } from '@fortawesome/free-solid-svg-icons/faTag';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
+import * as ATTRIBUTES from '../../constants/attributes';
 import { EventAction, EventCategory, EventLabel } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
@@ -7,25 +10,31 @@ import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
 import type { IPost } from '../../types/lihkg';
-import Button from '../Button/Button';
+import IconButton from '../IconButton/IconButton';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
 import styles from './AddLabelButton.module.scss';
 
 interface IProps {
   user: string;
-  targetReply: IPost;
+  post: IPost;
 }
 
-const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
-  const { user, targetReply, children } = props;
+type TProps = IProps;
+
+const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
+  const { user, post } = props;
 
   const dispatch = useTypedDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [targetReply, setTargetReply] = useState<HTMLElement | null>(null);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     if (!loading) {
+      const targetReplySelector = `[${ATTRIBUTES.dataPostId}="${post.post_id}"]`;
+      const targetReply = document.querySelector<HTMLDivElement>(targetReplySelector);
+      setTargetReply(targetReply);
       setOpen(true);
       // analytics
       gtag.event(EventAction.Open, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
@@ -40,7 +49,7 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
 
   const handleLabelFormSubmit: TLabelFormProps['onSubmit'] = useCallback(async (data) => {
     const { text, reason, color, image, meta } = data;
-    const source = mapPostToSource(targetReply);
+    const source = mapPostToSource(post);
     const payload: IAddLabelPayload = { user, text, reason, color, image, source };
     setLoading(true);
     const { screenshot } = meta;
@@ -72,23 +81,26 @@ const AddLabelButton: React.FunctionComponent<IProps> = (props) => {
     handleLabelFormModalClose();
     // analytics
     gtag.event(EventAction.Add, { event_category: EventCategory.Label, event_label: text });
-  }, [user, targetReply, handleLabelFormModalClose]);
+  }, [user, post, handleLabelFormModalClose]);
 
   return (
     <React.Fragment>
-      <Button
+      <IconButton
         className={styles.addLabelButton}
-        loading={loading}
+        icon={<FontAwesomeIcon icon={faTag} />}
+        aria-label={TEXTS.BUTTON_TEXT_ADD_LABEL}
+        data-tip={TEXTS.BUTTON_TEXT_ADD_LABEL}
+        title={TEXTS.BUTTON_TEXT_ADD_LABEL}
+        disabled={loading}
         onClick={handleClick}
-      >
-        {children}
-      </Button>
+      />
       <LabelFormModal
         open={open}
         user={user}
         escape={false}
         fragile={false}
         loading={loading}
+        targetReply={targetReply}
         onClose={handleLabelFormModalClose}
         onSubmit={handleLabelFormSubmit}
       />
