@@ -1,3 +1,4 @@
+@use 'sass:math';
 @import '../../stylesheets/base';
 
 .placeholder {
@@ -7,10 +8,10 @@
 
   @keyframes move {
     from {
-      background-position-x: -($background-width / 2);
+      background-position-x: -(math.div($background-width, 2));
     }
     to {
-      background-position-x: ($background-width / 2);
+      background-position-x: math.div($background-width, 2);
     }
   }
 
