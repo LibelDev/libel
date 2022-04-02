@@ -1,7 +1,9 @@
 import type { IDataSet } from '../models/DataSet';
 import Label, { ILabel } from '../models/Label';
 import Personal from '../models/Personal';
+import schema from '../schemas/label';
 import { getSearchRegex } from './regex';
+import { mapValidationError } from './validation';
 
 /**
  * labels group item
@@ -13,6 +15,10 @@ export type ILabelsGroupItem = [original: ILabel, draft: ILabel, removed: boolea
 interface ILabelsGroupGroupedByUser {
   user: string;
   items: ILabelsGroupItem[];
+}
+
+interface IErrorState {
+  [name: string]: boolean | undefined;
 }
 
 export const mapDataSetToLabelsGroupsGroupedByUser = (dataSet: IDataSet) => {
@@ -75,4 +81,15 @@ export const findLabelsGroupByUser = <T extends ILabelsGroupGroupedByUser> (labe
   const index = labelsGroups.findIndex((labelsGroup) => labelsGroup.user === user);
   const labelsGroup = labelsGroups[index];
   return [index, labelsGroup];
+};
+
+export const mapLabelsGroupItemsToErrorStates = (items: ILabelsGroupItem[]) => {
+  return items.map<IErrorState>((item) => {
+    const [, draft] = item;
+    const { error } = schema.validate(draft);
+    return mapValidationError<IErrorState>(error, (error, key) => {
+      error[key!] = true;
+      return error;
+    }, {});
+  });
 };

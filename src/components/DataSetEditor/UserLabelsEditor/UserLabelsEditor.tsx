@@ -2,21 +2,15 @@ import classNames from 'classnames';
 import debugFactory from 'debug';
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as TEXTS from '../../../constants/texts';
-import type { ILabelsGroupItem } from '../../../helpers/dataSetEditor';
+import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
-import { mapValidationError } from '../../../helpers/validation';
 import type { ILabel } from '../../../models/Label';
-import schema from '../../../schemas/label';
 import Icon from '../../Icon/Icon';
 import { IconName } from '../../Icon/types';
 import IconButton from '../../IconButton/IconButton';
 import LabelSourceButton from '../../LabelSourceButton/LabelSourceButton';
 import TextInput from '../../TextInput/TextInput';
 import styles from './UserLabelsEditor.module.scss';
-
-export interface IError {
-  [name: string]: boolean | undefined;
-}
 
 export interface IProps {
   user: string;
@@ -52,21 +46,12 @@ const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
 const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => {
   const { user, items, autoScrollLabelIndex = -1, onChange, onRemove, onScroll } = props;
 
-  const errors = useMemo(() => {
-    return items.map<IError>((item) => {
-      const [, draft] = item;
-      const { error } = schema.validate(draft);
-      const _error = mapValidationError<IError>(error, (error, key) => {
-        error[key!] = true;
-        return error;
-      }, {});
-      return _error;
-    });
-  }, [items]);
 
   const listRef = useRef<HTMLOListElement>(null);
 
   const userProfileURL = `/profile/${user}`;
+  /** validation error for each item */
+  const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
 
   const handleTextInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.currentTarget;
