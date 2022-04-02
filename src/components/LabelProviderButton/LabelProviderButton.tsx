@@ -11,7 +11,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
 
 type TProps = IProps & TComponentProps;
 
-const LabelProviderIcon: React.FunctionComponent<TProps> = (props) => {
+const LabelProviderButton: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription } = props;
   const { name, homepage } = subscription;
   return (
@@ -28,4 +28,4 @@ const LabelProviderIcon: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
-export default LabelProviderIcon;
+export default LabelProviderButton;

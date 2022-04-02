@@ -6,7 +6,7 @@ import type { ILabel } from '../../models/Label';
 import Subscription from '../../models/Subscription';
 import EditLabelButton from '../EditLabelButton/EditLabelButton';
 import LabelImageButton from '../LabelImageButton/LabelImageButton';
-import LabelProviderIcon from '../LabelProviderIcon/LabelProviderIcon';
+import LabelProviderIcon from '../LabelProviderButton/LabelProviderButton';
 import LabelSourceButton from '../LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from '../RemoveLabelButton/RemoveLabelButton';
 import styles from './LabelInfo.module.scss';
