@@ -1,6 +1,8 @@
-import { Options } from 'html2canvas';
+import type { Options } from 'html2canvas';
 import { useEffect, useState } from 'react';
 import { toImageURL } from '../helpers/canvas';
+
+export type TOptions = Partial<Options>;
 
 interface IState {
   loading: boolean;
@@ -18,11 +20,11 @@ const initialState: IState = {
   canvas: null
 };
 
-const useScreenshot = (element?: HTMLElement | null, options?: Partial<Options>): IState => {
+const useScreenshot = (enabled: boolean, element?: HTMLElement | null, options?: TOptions): IState => {
   const [state, setState] = useState(initialState);
   useEffect(() => {
     (async () => {
-      if (element) {
+      if (enabled && element) {
         setState({ ...state, loading: true });
         try {
           const [url, blob, canvas] = await toImageURL(element, options);
@@ -34,7 +36,7 @@ const useScreenshot = (element?: HTMLElement | null, options?: Partial<Options>)
         setState(initialState);
       }
     })();
-  }, [element, options]);
+  }, [enabled, element, options]);
   return state;
 };
 

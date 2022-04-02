@@ -1,5 +1,8 @@
 .base-icon-button {
-  @apply inline-flex items-center justify-center;
+  &,
+  .icon {
+    @apply inline-flex items-center justify-center;
+  }
 
   .icon {
     &:not(:only-child) {
