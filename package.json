@@ -2,7 +2,7 @@
   "name": "libel",
   "namespace": "libel",
   "displayName": "Libel",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Label users on LIHKG",
   "author": "kitce <kitce.dev@gmail.com>",
   "repository": {
@@ -70,7 +70,7 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/redux-persist": "^4.3.1",
-    "@types/redux-state-sync": "^3.1.1",
+    "@types/redux-state-sync": "^3.2.0",
     "@types/sass": "^1.16.0",
     "@types/semver": "^7.3.6",
     "@types/tailwindcss": "^2.0.2",
