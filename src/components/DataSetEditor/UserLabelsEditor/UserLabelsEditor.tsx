@@ -110,7 +110,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
           <React.Fragment>
             <div className={styles.user}>
               <Icon icon={IconName.Account} />
-              <a className={styles.link} href={userProfileURL} target='_blank'>
+              <a className={styles.link} href={userProfileURL} target="_blank">
                 {user}
               </a>
             </div>
@@ -127,7 +127,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                     />
                     <TextInput
                       className={classNames(styles.inputField, styles.text)}
-                      name='text'
+                      name="text"
                       value={draft.text}
                       data-index={index}
                       disabled={removed}
@@ -137,7 +137,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                     />
                     <TextInput
                       className={classNames(styles.inputField, styles.reason)}
-                      name='reason'
+                      name="reason"
                       value={draft.reason || ''}
                       data-index={index}
                       disabled={removed}
@@ -149,7 +149,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       border
                       rounded
                       className={styles.inputField}
-                      name='color'
+                      name="color"
                       value={draft.color || ''}
                       data-index={index}
                       disabled={removed}

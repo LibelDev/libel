@@ -110,7 +110,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const _user = cache.getUser(user);
 
-  const handleTextInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     setInputErrors({ ...inputErrors, [name]: undefined });
@@ -175,7 +175,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           name="text"
           value={formData.text || ''}
           error={inputErrors.text}
-          onChange={handleTextInputChange}
+          onChange={handleInputChange}
           autoFocus
           autoComplete="on"
         />
@@ -189,7 +189,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           name="reason"
           value={formData.reason || ''}
           error={inputErrors.reason}
-          onChange={handleTextInputChange}
+          onChange={handleInputChange}
           autoComplete="on"
         />
       </div>
@@ -213,7 +213,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                   name="color"
                   value={formData.color || ''}
                   error={inputErrors.color}
-                  onChange={handleTextInputChange}
+                  onChange={handleInputChange}
                 />
               </div>
             )
@@ -232,7 +232,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               name="image"
               value={formData.image || ''}
               error={inputErrors.image}
-              onChange={handleTextInputChange}
+              onChange={handleInputChange}
             />
           </div>
         ) : (

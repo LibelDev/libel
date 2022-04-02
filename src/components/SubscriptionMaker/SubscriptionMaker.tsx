@@ -104,7 +104,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     }
   }, [subscriptionTemplateIndex]);
 
-  const handleTextInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
     setInputErrors({ ...inputErrors, [name]: undefined });
@@ -201,7 +201,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           name="name"
           value={formData.name || ''}
           error={inputErrors?.name}
-          onChange={handleTextInputChange}
+          onChange={handleInputChange}
           autoFocus
           autoComplete="on"
         />
@@ -213,7 +213,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           name="version"
           value={formData.version || ''}
           error={inputErrors?.version}
-          onChange={handleTextInputChange}
+          onChange={handleInputChange}
         />
       </div>
       <div className={styles.inputField}>
@@ -224,7 +224,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           name="homepage"
           value={formData.homepage || ''}
           error={inputErrors?.homepage}
-          onChange={handleTextInputChange}
+          onChange={handleInputChange}
         />
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
@@ -244,8 +244,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
                   className={styles.input}
                   name="color"
                   value={formData.color || ''}
-                  error={inputErrors?.color}
-                  onChange={handleTextInputChange}
+                  onChange={handleInputChange}
                 />
               </div>
             )
