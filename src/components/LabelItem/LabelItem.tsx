@@ -4,7 +4,9 @@ import styles from './LabelItem.module.scss';
 
 interface IProps { }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
   const { className, children, ...otherProps } = props;

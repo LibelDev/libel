@@ -17,7 +17,9 @@ interface IProps {
   user: string;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'button'>;
+
+type TProps = IProps & TComponentProps;
 
 const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const { className, user } = props;

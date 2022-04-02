@@ -7,10 +7,12 @@ import { EventAction, EventCategory } from '../../constants/ga';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
+import { mapValidationError } from '../../helpers/validation';
 import useElementID from '../../hooks/useElementID';
 import useScreenshot from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import ColorPicker from '../ColorPicker/ColorPicker';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
 import TextInput from '../TextInput/TextInput';
@@ -52,10 +54,12 @@ interface IProps {
    * @async
    * @throws {string} error message
    */
-  onSubmission: (event: React.FormEvent<HTMLFormElement>, data: TFormData) => Promise<void>;
+  onSubmit: (data: TFormData) => Promise<void>;
 }
 
-export type TProps = IProps & React.ComponentPropsWithoutRef<'form'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+
+export type TProps = IProps & TComponentProps;
 
 const schema = joi.object({
   text: joi.string().trim().required().messages({
@@ -82,7 +86,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     user,
     label,
     loading,
-    onSubmission,
+    onSubmit,
     ...otherProps
   } = props;
 
@@ -92,7 +96,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     isCaptureReply: false
   });
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
-  const [error, setError] = useState('');
+  const [formError, setFormError] = useState('');
 
   const screenshot = useScreenshot(toggleButtonState.isCaptureReply ? cache.targetReply : null, useMemo(() => ({
     onclone: (document, element) => {
@@ -129,25 +133,22 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
-      const _inputErrors = { ...inputErrors };
-      const { details } = error;
-      for (const { context, message } of details) {
-        const { key } = context!;
-        Object.assign(_inputErrors, { [key!]: message });
+      const _inputErrors = mapValidationError<IInputErrors>(error, (inputErrors, key, label, value, message) => {
         // analytics
         gtag.event(EventAction.Error, { event_category: EventCategory.LabelForm, event_label: key });
-      }
+        return { ...inputErrors, [key!]: message };
+      }, { ...inputErrors });
       setInputErrors(_inputErrors);
     } else {
       try {
-        await onSubmission(event, value);
+        await onSubmit(value);
       } catch (err) {
         if (typeof err === 'string') {
-          setError(err);
+          setFormError(err);
         }
       }
     }
-  }, [onSubmission, formData, toggleButtonState, inputErrors, screenshot]);
+  }, [onSubmit, formData, toggleButtonState, inputErrors, screenshot]);
 
   return (
     <form
@@ -168,7 +169,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       <div className={styles.inputField}>
         <TextInput
-          className={styles.input}
+          className={styles.textInput}
           disabled={loading}
           label={TEXTS.LABEL_FORM_FIELD_LABEL_TEXT}
           name="text"
@@ -181,7 +182,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       </div>
       <div className={styles.inputField}>
         <TextInput
-          className={styles.input}
+          className={styles.textInput}
           disabled={loading}
           label={TEXTS.LABEL_FORM_FIELD_LABEL_REASON}
           placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_REASON}
@@ -207,7 +208,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                 <ColorPicker
                   border
                   rounded
-                  className={styles.input}
+                  className={styles.textInput}
                   disabled={loading}
                   name="color"
                   value={formData.color || ''}
@@ -224,7 +225,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** edit label */
           <div className={styles.inputField}>
             <TextInput
-              className={styles.input}
+              className={styles.textInput}
               disabled={loading}
               label={TEXTS.LABEL_FORM_FIELD_LABEL_IMAGE}
               placeholder={TEXTS.LABEL_FORM_FIELD_PLACEHOLDER_IMAGE}
@@ -251,11 +252,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               !screenshot.loading && (screenshot.error || screenshot.url) && (
                 <div className={styles.preview}>
                   {
-                    screenshot.error ? (
-                      <span className={styles.error}>
-                        <Icon className={styles.icon} icon={IconName.CommentAlert} />
+                    !!screenshot.error ? (
+                      <ErrorMessage className={styles.error}>
                         {TEXTS.LABEL_FORM_CAPTURE_ERROR}
-                      </span>
+                      </ErrorMessage>
                     ) : (
                       screenshot.url && (
                         <a
@@ -277,11 +277,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         )
       }
       {
-        !!error && (
-          <div id={errorID} className={styles.error}>
-            <Icon className={styles.icon} icon={IconName.CommentAlert} />
-            {error}
-          </div>
+        !!formError && (
+          <ErrorMessage id={errorID} className={styles.error}>
+            {formError}
+          </ErrorMessage>
         )
       }
     </form>

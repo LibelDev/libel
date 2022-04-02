@@ -1,3 +1,0 @@
-會員編號：{{ user.user_id }}
-會員名稱：{{ user.nickname }}
-註冊日期：{{ user.registrationDate }}

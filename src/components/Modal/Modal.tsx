@@ -39,7 +39,9 @@ interface IComponent {
   Footer: typeof Body;
 }
 
-export type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+export type TProps = IProps & TComponentProps;
 
 type TModal = IComponent & React.FunctionComponent<TProps>;
 

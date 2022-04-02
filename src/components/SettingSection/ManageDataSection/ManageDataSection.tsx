@@ -9,14 +9,15 @@ import * as gtag from '../../../helpers/gtag';
 import { mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
 import Personal from '../../../models/Personal';
 import type { ISerializedStorage } from '../../../models/Storage';
-import type { IRemoteSubscription } from '../../../models/Subscription';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
 import { actions as personalActions } from '../../../store/slices/personal';
 import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
 import BaseInput from '../../BaseInput/BaseInput';
+import type { IProps as IDataSetEditorProps } from '../../DataSetEditor/DataSetEditor';
 import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
+import type { IProps as ISubscriptionMakerProps } from '../../SubscriptionMaker/SubscriptionMaker';
 import SubscriptionMakerModal from '../../SubscriptionMakerModal/SubscriptionMakerModal';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 import styles from './ManageDataSection.module.scss';
@@ -38,14 +39,11 @@ const ManageDataSection: React.FunctionComponent = () => {
   const [isSubscriptionMakerModalOpened, setIsSubscriptionMakerModalOpened] = useState(false);
   const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
 
+  /* data set editor */
   const handleEditDataSetButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     setIsDataSetEditorModalOpened(true);
     setIsDataSetEditorDirty(false);
-  }, []);
-
-  const handleDataSetEditorChange = useCallback(() => {
-    setIsDataSetEditorDirty(true);
   }, []);
 
   const handleDataSetEditorModalClose = useCallback(() => {
@@ -61,7 +59,11 @@ const ManageDataSection: React.FunctionComponent = () => {
     setIsDataSetEditorModalOpened(false);
   }, [personal, isDataSetEditorDirty]);
 
-  const handleDataSetEditorSubmit = useCallback((dataSet: Personal) => {
+  const handleDataSetEditorChange: IDataSetEditorProps['onChange'] = useCallback(() => {
+    setIsDataSetEditorDirty(true);
+  }, []);
+
+  const handleDataSetEditorSubmit: IDataSetEditorProps['onSubmit'] = useCallback((dataSet) => {
     const confirmed = window.confirm(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_CONFIRMATION);
     if (confirmed) {
       debug('handleDataSetEditorSubmit', dataSet);
@@ -71,6 +73,7 @@ const ManageDataSection: React.FunctionComponent = () => {
     }
   }, []);
 
+  /* subscription maker */
   const handleMakeSubscriptionButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     setIsSubscriptionMakerModalOpened(true);
@@ -80,7 +83,7 @@ const ManageDataSection: React.FunctionComponent = () => {
     setIsSubscriptionMakerModalOpened(false);
   }, []);
 
-  const handleSubscriptionMakerSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>, subscription: IRemoteSubscription) => {
+  const handleSubscriptionMakerSubmit: ISubscriptionMakerProps['onSubmit'] = useCallback((subscription) => {
     const filename = `${subscription.name}.json`;
     const json = JSON.stringify(subscription, null, 2);
     download(filename, json, 'text/plain');

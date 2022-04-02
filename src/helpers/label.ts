@@ -1,6 +1,6 @@
+import format from 'date-fns/format';
+import { displayDateFormat } from '../constants/label';
 import { shortenedHost } from '../constants/lihkg';
-import type { IDataSet } from '../models/DataSet';
-import type { IGroupedLabel } from '../types/label';
 import type { IPost } from '../types/lihkg';
 import type { ILabel, ISource } from './../models/Label';
 import type { TTracablePost } from './../types/lihkg';
@@ -46,28 +46,17 @@ export const getShareURL = (label: ILabel) => {
   return label.url;
 };
 
-export const groupByText = (user: string, dataSets: IDataSet[]) => {
-  return dataSets.reduce<IGroupedLabel[]>((groupedLabels, dataSet) => {
-    const labels = dataSet.data[user];
-    if (labels) {
-      for (let index = 0; index < labels.length; index++) {
-        const label = labels[index];
-        let groupedLabel = groupedLabels.find(({ text }) => text === label.text);
-        if (!groupedLabel) {
-          groupedLabel = { text: label.text, items: [] };
-          groupedLabels.push(groupedLabel);
-        }
-        groupedLabel.items.push({ user, index, label, dataSet });
-      }
-    }
-    return groupedLabels;
-  }, []);
+export const getDisplayDate = (label: ILabel, dateFormat = displayDateFormat) => {
+  const { date } = label;
+  if (date) {
+    return format(date, dateFormat);
+  }
 };
 
 /**
  * compare two label objects to check equality
- * @param {ILabel} labelA the target A to be compare
- * @param {ILabel} labelB the target B to be compare
+ * @param {ILabel} labelA the target A
+ * @param {ILabel} labelB the target B
  * @param {boolean} [strict=false] enable strict equality checking
  */
 export const isEqual = (labelA: ILabel, labelB: ILabel, strict = false) => {

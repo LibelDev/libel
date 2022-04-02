@@ -1,14 +1,17 @@
 import classNames from 'classnames';
 import React from 'react';
-import type { IGroupedLabelItem } from '../../../types/label';
-import LabelInfo from '../LabelInfo/LabelInfo';
+import type { TLabelsGroupItem } from '../../../helpers/labelList';
+import { IRemoteSubscription } from '../../../models/Subscription';
+import LabelInfo from '../../LabelInfo/LabelInfo';
 import styles from './LabelInfoList.module.scss';
 
 interface IProps {
-  items: IGroupedLabelItem[];
+  items: TLabelsGroupItem[];
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'ul'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'ul'>;
+
+type TProps = IProps & TComponentProps;
 
 const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) => {
   const { className, items, ...otherProps } = props;
@@ -16,13 +19,14 @@ const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) =>
     <ul ref={ref} className={classNames(className, styles.labelInfoList)} {...otherProps}>
       {
         items.map((item, key) => {
-          const { user, index, label, dataSet } = item;
+          const [user, index, label, dataSet] = item;
           return (
             <li key={key}>
               <LabelInfo
                 user={user}
                 index={index}
                 label={label}
+                color={(dataSet as IRemoteSubscription).color}
                 dataSet={dataSet}
               />
             </li>

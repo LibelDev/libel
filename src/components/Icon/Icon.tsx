@@ -6,7 +6,9 @@ interface IProps {
   icon: IconName;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'i'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'i'>;
+
+type TProps = IProps & TComponentProps;
 
 const Icon: React.FunctionComponent<TProps> = (props) => {
   const { className, icon, ...otherProps } = props;

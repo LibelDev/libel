@@ -58,6 +58,12 @@ export const DATA_SET_EDITOR_MESSAGE_SAVE_CONFIRMATION = '你確定要儲存個�
 export const DATA_SET_EDITOR_MESSAGE_SAVE_SUCCESS = '已儲存個人標籤記錄';
 export const DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET = '未有任何個人標籤記錄';
 export const DATA_SET_EDITOR_MESSAGE_CLOSE_CONFIRMATION = `你確定要放棄變更並關閉【${DATA_SET_EDITOR_MODAL_TITLE}】？`;
+export const DATA_SET_EDITOR_FILTER_PLACEHOLDER = '搜尋用戶編號、標籤名稱或原因...';
+export const DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT = '沒有找到相關記錄';
+export const DATA_SET_EDITOR_ERROR_INVALID_LABEL = '標籤資料錯誤，請修正後再儲存。';
+export const LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_TEXT = '標籤';
+export const LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_REASON = '原因';
+export const LABEL_EDITOR_LABEL_ITEM_HINT_TEXT_REMOVE = '標籤會於儲存後被刪除';
 
 // make subscription
 export const BUTTON_TEXT_MAKE_SUBSCRIPTION = '將個人標籤記錄製作成訂閱名單';

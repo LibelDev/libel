@@ -5,6 +5,7 @@ import useElementID from '../../hooks/useElementID';
 import Button from '../Button/Button';
 import DataSetEditor, { TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
+import styles from './DataSetEditorModal.module.scss';
 
 interface IProps { }
 
@@ -22,22 +23,16 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal {...otherProps} onClose={onClose}>
-      <Modal.Header border={empty} onClose={onClose}>
+      <Modal.Header onClose={onClose}>
         {TEXTS.DATA_SET_EDITOR_MODAL_TITLE}
       </Modal.Header>
-      <Modal.Body padding={empty}>
-        {
-          !empty ? (
-            <DataSetEditor
-              id={formID}
-              dataSet={dataSet}
-              onChange={onChange}
-              onSubmit={onSubmit}
-            />
-          ) : (
-            TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET
-          )
-        }
+      <Modal.Body className={styles.body}>
+        <DataSetEditor
+          id={formID}
+          dataSet={dataSet}
+          onChange={onChange}
+          onSubmit={onSubmit}
+        />
       </Modal.Body>
       {
         !empty && (

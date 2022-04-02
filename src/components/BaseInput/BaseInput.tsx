@@ -1,7 +1,7 @@
+import classNames from 'classnames';
 import React from 'react';
 import useElementID from '../../hooks/useElementID';
-import Icon from '../Icon/Icon';
-import { IconName } from '../Icon/types';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './BaseInput.module.scss';
 
 interface IProps {
@@ -9,7 +9,9 @@ interface IProps {
   error?: React.ReactNode;
 }
 
-export type TProps = IProps & React.ComponentPropsWithoutRef<'input'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'input'>;
+
+export type TProps = IProps & TComponentProps;
 
 const BaseInput: React.FunctionComponent<TProps> = (props) => {
   const { id, className, disabled, label, error, ...otherProps } = props;
@@ -28,22 +30,18 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
           </span>
         )
       }
-      <div className={styles.input}>
+      <div className={classNames(className, styles.input)}>
         <input
           id={_id}
-          className={className}
           disabled={disabled}
           aria-describedby={errorID}
           {...otherProps}
         />
         {
-          error && (
-            <div className={styles.error}>
-              <div id={errorID}>
-                <Icon className={styles.icon} icon={IconName.CommentAlert} />
-                {error}
-              </div>
-            </div>
+          !!error && (
+            <ErrorMessage id={errorID} className={styles.error}>
+              {error}
+            </ErrorMessage>
           )
         }
       </div>

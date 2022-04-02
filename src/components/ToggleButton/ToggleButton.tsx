@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import BaseInput, { TProps as IBaseInputProps } from '../BaseInput/BaseInput';
+import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './ToggleButton.module.scss';
 
@@ -27,7 +27,7 @@ interface IProps {
   flip?: boolean;
 }
 
-type TProps = IProps & IBaseInputProps;
+type TProps = IProps & TBaseInputProps;
 
 const ToggleButton: React.FunctionComponent<TProps> = (props) => {
   const { className, children, checked, disabled, loading, fullWidth, simple, small, flip, ...otherProps } = props;

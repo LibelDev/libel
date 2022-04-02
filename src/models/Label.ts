@@ -1,8 +1,4 @@
-import format from 'date-fns/format';
 import { immerable } from 'immer';
-import { shortenedHost } from '../constants/lihkg';
-import { mapSourceToPost, getShareURL } from '../helpers/label';
-import { getShareID } from '../helpers/lihkg';
 
 type TLabelText = string;
 
@@ -70,25 +66,14 @@ class Label implements ILabel {
     return new Label(id, text, reason, url, date, source, color, image);
   }
 
-  get displayDate () {
-    const { date } = this;
-    if (date) {
-      return format(date, 'yyyy年MM月dd日 HH:mm:ss');
-    }
-  }
-
-  get shareURL () {
-    return getShareURL(this);
-  }
-
-  clone (deep?: boolean) {
-    const { id, text, reason, url, date, source, color, image } = this;
-    const clone = new Label(id, text, reason, url, date, source, color, image);
-    if (deep) {
-      clone.source = source && { ...source };
-    }
-    return clone;
-  }
+  // clone (deep?: boolean) {
+  //   const { id, text, reason, url, date, source, color, image } = this;
+  //   const clone = new Label(id, text, reason, url, date, source, color, image);
+  //   if (deep) {
+  //     clone.source = source && { ...source };
+  //   }
+  //   return clone;
+  // }
 }
 
 export default Label;

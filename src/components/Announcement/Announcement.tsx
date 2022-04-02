@@ -20,7 +20,9 @@ interface IProps {
   forced?: boolean;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
 
 const announcementElements: HTMLDivElement[] = [];
 

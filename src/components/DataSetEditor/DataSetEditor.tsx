@@ -1,84 +1,111 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
-import Handsontable from 'handsontable';
 import produce from 'immer';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { deduplicate } from '../../helpers/array';
-import { mapDataSetToSpreadsheetEntries, mapSpreadsheetEntriesToDataSet } from '../../helpers/spreadsheet';
-import { replaceNewLines } from '../../helpers/string';
+import React, { useCallback, useMemo, useState } from 'react';
+import * as TEXTS from '../../constants/texts';
+import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
 import type { IDataSet } from '../../models/DataSet';
-import Personal from '../../models/Personal';
-import * as config from './config';
+import type { ILabel } from '../../models/Label';
+import type Personal from '../../models/Personal';
+import schema from '../../schemas/dataSet';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './DataSetEditor.module.scss';
+import Filter, { IProps as IFilterProps } from './Filter/Filter';
+import UserLabelsEditor, { IProps as IUserLabelsEditorProps } from './UserLabelsEditor/UserLabelsEditor';
 
-interface IProps {
-  dataSet: IDataSet;
-  onChange?: (changes: Handsontable.CellChange[]) => void;
-  onSubmit?: (dataSet: Personal) => void;
+interface IAutoScrollUserItemIndex {
+  /** only scroll to one user and item */
+  [user: string]: number; // item index
 }
 
-export type TProps = IProps & Omit<React.ComponentPropsWithoutRef<'form'>, 'onChange' | 'onSubmit'>;
+export interface IProps {
+  dataSet: IDataSet;
+  onChange?: (user: string, index: number, label: ILabel) => void;
+  onSubmit: (dataSet: Personal) => void;
+}
 
-type TCellChange = [
-  number,
-  string | number,
-  string | null,
-  string | null
-];
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onChange' | 'onSubmit'>;
+
+export type TProps = IProps & TComponentProps;
 
 const debug = debugFactory('libel:component:DataSetEditor');
 
 const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
-  const { dataSet, className, onChange, onSubmit, ...otherProps } = props;
+  const { className, dataSet, onChange, onSubmit, ...otherProps } = props;
 
-  const [hotInstance, setHotInstance] = useState<Handsontable | null>(null);
-  const ref = useRef<HTMLDivElement>(null);
+  const [keyword, setKeyword] = useState('');
+  const [labelsGroups, setLabelsGroups] = useState(mapDataSetToLabelsGroupsGroupedByUser(dataSet));
+  const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
+  const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
+  const [error, setError] = useState<string | null>(null);
 
-  // memoize the data to avoid changes from outside
-  const entries = useMemo(() => {
-    const entries = mapDataSetToSpreadsheetEntries(dataSet);
-    debug('entries', entries);
-    return entries;
+  const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
+    setKeyword(keyword);
   }, []);
 
-  const settings = useMemo(() => {
-    return produce(config.settings, (settings) => {
-      const texts = entries.map(({ label }) => label.text);
-      const [, textColumn] = settings.columns as Handsontable.ColumnSettings[];
-      textColumn.source = deduplicate(texts);
-    });
-  }, [entries]);
+  const handleUserLabelsChange: IUserLabelsEditorProps['onChange'] = useCallback((user, index, label) => {
+    const [labelsGroupIndex, labelsGroup] = findLabelsGroupByUser(labelsGroups, user);
+    if (labelsGroup) {
+      const { items } = labelsGroup;
+      const [, filteredLabelsGroup] = findLabelsGroupByUser(filteredLabelsGroups, user);
+      const filteredLabelsGroupItem = filteredLabelsGroup?.items[index];
+      const itemIndex = items.findIndex((item) => item === filteredLabelsGroupItem);
+      const _labelsGroups = produce(labelsGroups, (labelsGroups) => {
+        const labelsGroup = labelsGroups[labelsGroupIndex];
+        const { items } = labelsGroup;
+        const item = items[itemIndex];
+        // update the draft
+        item[1] = label;
+      });
+      setLabelsGroups(_labelsGroups);
+      if (onChange) {
+        onChange(user, itemIndex, label);
+      }
+    }
+  }, [labelsGroups, filteredLabelsGroups]);
+
+  const handleUserLabelsRemove: IUserLabelsEditorProps['onRemove'] = useCallback((user, index) => {
+    const [labelsGroupIndex, labelsGroup] = findLabelsGroupByUser(labelsGroups, user);
+    if (labelsGroup) {
+      const { items } = labelsGroup;
+      const [, filteredLabelsGroup] = findLabelsGroupByUser(filteredLabelsGroups, user);
+      const filteredLabelsGroupItem = filteredLabelsGroup?.items[index];
+      const itemIndex = items.findIndex((item) => item === filteredLabelsGroupItem);
+      const _labelsGroups = produce(labelsGroups, (labelsGroups) => {
+        const labelsGroup = labelsGroups[labelsGroupIndex];
+        const { items } = labelsGroup;
+        const item = items[itemIndex];
+        // toggle the `removed` flag
+        item[2] = !item[2];
+      });
+      setLabelsGroups(_labelsGroups);
+    }
+  }, [labelsGroups, filteredLabelsGroups]);
+
+  const handleUserLabelsScroll: IUserLabelsEditorProps['onScroll'] = useCallback(() => {
+    // allow scrolling to the same label again
+    setAutoScrollUserItemIndex(undefined);
+  }, []);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback((event) => {
     event.preventDefault();
-    if (onSubmit) {
-      const dataSet = mapSpreadsheetEntriesToDataSet(entries);
+    const dataSet = mapLabelsGroupsGroupedByUserToDataSet(labelsGroups);
+    debug('handleSubmit:dataSet', dataSet);
+    const { error } = schema.validate(dataSet);
+    if (error) {
+      setError(TEXTS.DATA_SET_EDITOR_ERROR_INVALID_LABEL);
+      debug('handleSubmit:error', error);
+      const { details } = error;
+      const { path } = details[0];
+      const [, user, labelIndex] = path;
+      const _user = user as string;
+      const _labelIndex = labelIndex as number;
+      setAutoScrollUserItemIndex({ [_user]: _labelIndex });
+    } else {
+      setError(null);
       onSubmit(dataSet);
     }
-  }, [entries]);
-
-  const handleBeforeChange = useCallback((changes: Handsontable.CellChange[], source: Handsontable.ChangeSource) => {
-    if (changes && source === 'edit') {
-      for (const change of changes) {
-        const [, , , newValue] = change as TCellChange;
-        change[3] = newValue && replaceNewLines(newValue, ' ');
-      }
-      if (onChange) {
-        onChange(changes);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (ref.current) {
-      const hotInstance = new Handsontable(ref.current, {
-        ...settings,
-        data: entries,
-        beforeChange: handleBeforeChange
-      });
-      setHotInstance(hotInstance);
-    }
-  }, [entries, settings, handleBeforeChange]);
+  }, [onSubmit, labelsGroups]);
 
   return (
     <form
@@ -91,7 +118,52 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       }
       onSubmit={handleSubmit}
     >
-      <div ref={ref} />
+      {
+        labelsGroups.length > 0 ? (
+          <React.Fragment>
+            <Filter
+              autoFocus
+              value={keyword}
+              placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
+              onChange={handleFilterChange}
+            />
+            <div className={styles.filterResult}>
+              {
+                filteredLabelsGroups.length > 0 ? (
+                  <ol className={styles.labelsGroupList}>
+                    {
+                      filteredLabelsGroups.map(({ user, items }, index) => (
+                        <li key={user}>
+                          <UserLabelsEditor
+                            className={styles.userLabelsEditor}
+                            user={user}
+                            items={items}
+                            autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
+                            onChange={handleUserLabelsChange}
+                            onRemove={handleUserLabelsRemove}
+                            onScroll={handleUserLabelsScroll}
+                          />
+                        </li>
+                      ))
+                    }
+                  </ol>
+                ) : (
+                  TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
+                )
+              }
+            </div>
+            {
+              !!error && (
+                <ErrorMessage className={styles.error}>
+                  {error}
+                </ErrorMessage>
+              )
+            }
+          </React.Fragment>
+        ) : (
+          TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET
+        )
+      }
     </form>
   );
 };

@@ -7,11 +7,13 @@ import { IconName } from '../../../Icon/types';
 import IconLink from '../../../IconLink/IconLink';
 import styles from './SubscriptionHomepageButton.module.scss';
 
-interface IProps  {
+interface IProps {
   subscription: Subscription;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'a'>
+type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
+
+type TProps = IProps & TComponentProps;
 
 const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, ...otherProps } = props;

@@ -1,46 +1,38 @@
 @import '../../stylesheets/base';
 
 .subscription-maker {
-  @apply p-4;
-
-  > * + * {
-    @apply mt-4;
-  }
+  @apply w-60;
 
   .input-field {
-    @apply flex items-start;
-
-    .select {
-      @apply flex-1;
-
-      > div {
-        @apply flex-1;
-      }
-
-      & + .remove {
-        @apply ml-2;
-        font-size: inherit;
-        line-height: 2.25rem;
-      }
+    &:not(:first-child) {
+      @apply mt-4;
     }
 
     .text-input {
-      @apply flex-1;
-
-      > span {
-        @apply flex-1;
-      }
-
-      > div {
-        width: 200px;
-      }
-
       .error {
         @apply mt-4;
 
         .icon {
           @apply mr-2;
         }
+      }
+    }
+
+    &.template {
+      @apply flex items-start;
+
+      .select {
+        @apply flex-1;
+
+        > div {
+          @apply flex-1;
+        }
+      }
+
+      .remove {
+        @apply ml-2;
+        @apply text-base;
+        line-height: 2.25rem;
       }
     }
 

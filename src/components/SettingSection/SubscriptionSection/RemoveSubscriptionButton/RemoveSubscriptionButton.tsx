@@ -17,7 +17,9 @@ interface IProps {
   index: number;
 }
 
-type TProps = IProps & React.ComponentPropsWithoutRef<'button'>;
+type TComponentProps = React.ComponentPropsWithoutRef<'button'>;
+
+type TProps = IProps & TComponentProps;
 
 const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;

@@ -51,18 +51,18 @@ export const unlockIconMap = (iconMap: IIconMap) => {
 };
 
 /**
- * get the share id of the reply
- * @copyright the implementation is a reference from LIHKG source code
+ * get the share ID of the reply
+ * @copyright the implementation is a reference from LIHKG production build
  * @param {TTracablePost} post the label source 
- * @returns the share id
+ * @returns the share ID
  */
 export const getShareID = (post: TTracablePost) => {
-  const e = post.thread_id; // thread id
+  const e = post.thread_id; // thread ID
   if (post.msg_num === '1') {
     return e;
   }
   const t = ShareType.Reply; // the share type: thread or reply
-  const n = parseInt(post.msg_num, 10); // the share variable: page number or message number
+  const n = parseInt(post.msg_num, 10); // the share variable: message number
   const x = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQR'; // the hash seed
   const C = (e: number, t: string) => {
     let n;
@@ -78,7 +78,7 @@ export const getShareID = (post: TTracablePost) => {
     const i = r << 1 | t - 1;
     return C(parseInt(`${e}${n}`, 10), x) + 'STUVWXYZ'[i];
   }
-  // since `type > 0` will always be `true`
+  // since `t > 0` will always be `true`
   // this will neven happen, but just keep this for consistency
   return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };

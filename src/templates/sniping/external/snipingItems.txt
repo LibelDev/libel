@@ -1,0 +1,3 @@
+{{ #snipingItems }}
+{{ >snipingItem }}
+{{ /snipingItems }}

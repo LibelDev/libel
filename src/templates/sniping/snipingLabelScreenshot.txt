@@ -1,3 +1,0 @@
-{{ #image }}
-[img]{{{ image }}}[/img]
-{{ /image }}
