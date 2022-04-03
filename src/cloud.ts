@@ -8,7 +8,7 @@ import store from './store/store';
 
 let unregister: (() => void) | null = null;
 
-const sync = async (auth: gapi.auth2.GoogleAuth) => {
+export const sync = async (auth: gapi.auth2.GoogleAuth) => {
   const signedIn = auth.isSignedIn.get();
   if (signedIn) {
     const state = store.getState();
@@ -32,7 +32,7 @@ const register = (auth: gapi.auth2.GoogleAuth) => {
   };
 };
 
-(async () => {
+export const bootstrap = async () => {
   const gapi = await ready();
   const auth = gapi.auth2.getAuthInstance();
   // bind state change handlers
@@ -47,4 +47,4 @@ const register = (auth: gapi.auth2.GoogleAuth) => {
   });
   // initial sync
   sync(auth);
-})();
+};
