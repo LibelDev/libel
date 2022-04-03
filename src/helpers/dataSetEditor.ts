@@ -47,10 +47,20 @@ export const mapLabelsGroupsGroupedByUserToDataSet = (labelsGroups: ILabelsGroup
 };
 
 export const filterLabelsGroupsByKeyword = <T extends ILabelsGroupGroupedByUser> (labelsGroups: T[], keyword: string) => {
-  if (keyword === '') {
+  const _keyword = keyword.trim();
+  if (_keyword === '') {
     return labelsGroups;
   }
-  const regex = getSearchRegex(keyword);
+  const keywords = _keyword.split(/\s/);
+  if (keywords.length > 1) {
+    // filter each keyword recursively
+    let _labelsGroups = labelsGroups;
+    for (const keyword of keywords) {
+      _labelsGroups = filterLabelsGroupsByKeyword(_labelsGroups, keyword);
+    }
+    return _labelsGroups;
+  }
+  const regex = getSearchRegex(keywords[0]);
   return labelsGroups.reduce<T[]>((labelsGroups, labelsGroup) => {
     const { user, items } = labelsGroup;
     if (regex.test(user)) {

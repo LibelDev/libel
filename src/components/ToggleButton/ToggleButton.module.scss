@@ -30,7 +30,7 @@
       @apply -translate-y-1/2;
       @apply opacity-0;
       z-index: 1;
-  
+
       &:not(:disabled) {
         @apply cursor-pointer;
       }
@@ -97,7 +97,7 @@
   }
 
   &.small {
-    input input[type='checkbox'],
+    .input input[type='checkbox'],
     .button {
       height: 0.6rem;
       width: 1.2rem;
@@ -118,7 +118,7 @@
       @apply mr-0 ml-4;
     }
 
-    input input[type='checkbox'] {
+    .input input[type='checkbox'] {
       @apply -translate-x-full;
     }
   }

@@ -20,7 +20,7 @@ interface IAutoScrollUserItemIndex {
 
 export interface IProps {
   dataSet: IDataSet;
-  onChange?: (user: string, index: number, label: ILabel) => void;
+  onChange?: (user: string, index: number, label?: ILabel) => void;
   onSubmit: (dataSet: Personal) => void;
 }
 
@@ -38,6 +38,8 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
+
+  const empty = labelsGroups.length === 0;
 
   const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
     setKeyword(keyword);
@@ -62,7 +64,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
         onChange(user, itemIndex, label);
       }
     }
-  }, [labelsGroups, filteredLabelsGroups]);
+  }, [onChange, labelsGroups, filteredLabelsGroups]);
 
   const handleUserLabelsRemove: IUserLabelsEditorProps['onRemove'] = useCallback((user, index) => {
     const [labelsGroupIndex, labelsGroup] = findLabelsGroupByUser(labelsGroups, user);
@@ -79,8 +81,11 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
         item[2] = !item[2];
       });
       setLabelsGroups(_labelsGroups);
+      if (onChange) {
+        onChange(user, itemIndex);
+      }
     }
-  }, [labelsGroups, filteredLabelsGroups]);
+  }, [onChange, labelsGroups, filteredLabelsGroups]);
 
   const handleUserLabelsScroll: IUserLabelsEditorProps['onScroll'] = useCallback(() => {
     // allow scrolling to the same label again
@@ -113,13 +118,16 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       className={
         classNames(
           className,
-          styles.dataSetEditor
+          styles.dataSetEditor,
+          {
+            [styles.empty]: empty
+          }
         )
       }
       onSubmit={handleSubmit}
     >
       {
-        labelsGroups.length > 0 ? (
+        !empty ? (
           <React.Fragment>
             <Filter
               autoFocus

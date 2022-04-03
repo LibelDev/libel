@@ -5,7 +5,7 @@ import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
-import type Subscription from '../models/Subscription';
+import type { ISerializedSubscription, ISubscription } from '../models/Subscription';
 import storage from '../storage';
 import type { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
@@ -61,12 +61,12 @@ const store = configureStore({
 initMessageListener(store);
 
 /**
- * load the subscriptions data from remote  
+ * load the subscriptions data from remote
  * NOTE: this function is not really async (i.e. it resolves immediately)
  * @async
- * @param {Subscription[]} subscriptions 
+ * @param {(ISubscription | ISerializedSubscription)[]} subscriptions
  */
-const loadRemoteSubscriptions = async (subscriptions: Subscription[]) => {
+const loadRemoteSubscriptions = async (subscriptions: (ISubscription | ISerializedSubscription)[]) => {
   const { dispatch } = store;
   for (let i = 0; i < subscriptions.length; i++) {
     dispatch(subscriptionsActions.load(i));
@@ -75,8 +75,7 @@ const loadRemoteSubscriptions = async (subscriptions: Subscription[]) => {
 
 export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => {
   debug('loadDataIntoStore:data', data);
-  // update the storage instance
-  const { config, meta, personal, subscriptions } = storage.update(data);
+  const { config, meta, personal, subscriptions } = data;
   if (config) {
     store.dispatch(configActions.update(config));
   }
@@ -86,6 +85,8 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
   await loadRemoteSubscriptions(subscriptions);
+  // update the storage instance
+  storage.update(data);
 };
 
 /**

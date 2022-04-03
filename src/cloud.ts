@@ -8,12 +8,15 @@ import store from './store/store';
 
 let unregister: (() => void) | null = null;
 
-const sync = async (auth: gapi.auth2.GoogleAuth) => {
+export const sync = async (auth: gapi.auth2.GoogleAuth) => {
   const signedIn = auth.isSignedIn.get();
   if (signedIn) {
     const state = store.getState();
     const sync = selectSync(state);
     if (!sync.loading) {
+      if (unregister) {
+        unregister();
+      }
       await cloud.sync();
       unregister = register(auth); // register next sync
       // analytics
@@ -23,16 +26,14 @@ const sync = async (auth: gapi.auth2.GoogleAuth) => {
 };
 
 const register = (auth: gapi.auth2.GoogleAuth) => {
-  const timer = setTimeout(async () => {
-    await sync(auth);
-  }, interval);
+  const id = setTimeout(() => sync(auth), interval);
   return () => {
-    clearTimeout(timer);
+    clearTimeout(id);
     unregister = null;
   };
 };
 
-(async () => {
+export const bootstrap = async () => {
   const gapi = await ready();
   const auth = gapi.auth2.getAuthInstance();
   // bind state change handlers
@@ -47,4 +48,4 @@ const register = (auth: gapi.auth2.GoogleAuth) => {
   });
   // initial sync
   sync(auth);
-})();
+};

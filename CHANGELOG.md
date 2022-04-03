@@ -1,3 +1,26 @@
+## v3.4.0 (2022-04-04)
+
+### Fix
+
+- **cloud-sync**: issue of empty storage being uploaded to cloud after clearing local data
+- **cloud-sync**: unexpected sync action due to uncanceled sync registration
+- **editor**: missing dependency `onChange`
+- **store**: incorrect data loading logic
+- **components**: incorrect toggle button `input` selectors
+
+### Feat
+
+- **editor**: update data set editor layout
+- **modal**: update `Modal` responsive layout
+- **editor**: trigger `onChange` when removing an item
+- **cloud-sync**: trigger sync from cloud main script instead of cloud helper
+- **editor**: enhance `filterLabelsGroupsByKeyword`
+- **cloud-sync**: update `SycnWithGoogleDrive`
+
+### Refactor
+
+- expose `bootstrap()`
+
 ## v3.3.0 (2022-04-03)
 
 ### Fix

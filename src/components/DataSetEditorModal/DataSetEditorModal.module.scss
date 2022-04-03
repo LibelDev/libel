@@ -1,4 +1,7 @@
 .body {
-  @apply flex items-stretch;
-  @apply max-h-80;
+  @apply flex;
+
+  .data-set-editor {
+    @apply flex-1;
+  }
 }

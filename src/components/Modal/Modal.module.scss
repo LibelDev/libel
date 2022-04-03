@@ -23,12 +23,21 @@
     @apply rounded;
     @apply relative;
     @apply overflow-hidden;
+    @apply w-full;
     background-color: $color-white01;
     box-shadow: 0 4px 8px rgba($color-black, 0.2);
     max-height: 80vh;
 
     @include dark-mode() {
       background-color: $color-black01;
+    }
+
+    @include mobile-mode() {
+      @apply max-h-full;
+    }
+
+    @screen md {
+      @apply w-auto;
     }
   }
 }

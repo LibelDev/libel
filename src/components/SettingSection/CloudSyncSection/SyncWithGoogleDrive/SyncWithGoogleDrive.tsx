@@ -1,11 +1,19 @@
+import classNames from 'classnames';
+import add from 'date-fns/add';
 import formatRelative from 'date-fns/formatRelative';
 import { zhHK } from 'date-fns/locale';
+import { render } from 'mustache';
 import React, { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
+import * as cloud from '../../../../cloud';
+import { interval } from '../../../../constants/sync';
 import * as TEXTS from '../../../../constants/texts';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
 import { useTypedSelector } from '../../../../store/store';
+import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
+import * as messages from '../../../../templates/messages';
+import Button from '../../../Button/Button';
 import ErrorMessage from '../../../ErrorMessage/ErrorMessage';
 import Icon from '../../../Icon/Icon';
 import { IconName } from '../../../Icon/types';
@@ -18,14 +26,24 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
   const meta = useTypedSelector(selectMeta);
   const sync = useTypedSelector(selectSync);
 
-  const lastSyncedTimeHintText = useMemo(() => {
+  const infoHints = useMemo(() => {
     if (meta.lastSyncedTime) {
-      const date = new Date(meta.lastSyncedTime);
       const now = new Date();
-      const displayTime = formatRelative(date, now, { locale: zhHK });
-      return `${TEXTS.CLOUD_SYNC_LABEL_PREFIX_LAST_SYNCED_TIME_HINT} ${displayTime}`;
+      const lastSyncedTime = formatRelative(meta.lastSyncedTime, now, { locale: zhHK });
+      const nextSyncTime = formatRelative(add(meta.lastSyncedTime, { seconds: interval / 1000 }), now, { locale: zhHK });
+      return [
+        render(messages.sync.lastSyncedTime, { lastSyncedTime }),
+        render(messages.sync.nextSyncTime, { nextSyncTime })
+      ];
     }
   }, [meta.lastSyncedTime]);
+
+  const handleSyncNowButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
+    event.preventDefault();
+    if (auth) {
+      cloud.sync(auth);
+    }
+  }, [auth]);
 
   const handleSignIn: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -43,7 +61,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
 
   return (
     <React.Fragment>
-      <div className={styles.label}>
+      <div className={styles.sync}>
         <img className={styles.logo} src={logo} alt='' />
         <div className={styles.info}>
           {TEXTS.CLOUD_SYNC_LABEL_GOOGLE_DRIVE}
@@ -52,30 +70,56 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
               <React.Fragment>
                 <small className={styles.hint}>
                   <Icon className={styles.icon} icon={IconName.Verified} />
-                  {TEXTS.CLOUD_SYNC_LABEL_PREFIX_CONNECTED_ACCOUNT}{' '}
-                  {user.getBasicProfile().getEmail()}
+                  <span>
+                    {TEXTS.CLOUD_SYNC_LABEL_PREFIX_CONNECTED_ACCOUNT}{' '}
+                    {user.getBasicProfile().getEmail()}
+                  </span>
                 </small>
                 {
                   sync.loading ? (
                     <small className={styles.hint}>
                       <LoadingSpinner className={styles.icon} />
-                      {TEXTS.CLOUD_SYNC_LABEL_SYNC_IN_PROGRESS}
+                      <span>
+                        {TEXTS.CLOUD_SYNC_LABEL_SYNC_IN_PROGRESS}
+                      </span>
                     </small>
                   ) : (
                     <React.Fragment>
                       {
-                        !!lastSyncedTimeHintText && (
-                          <small className={styles.hint}>
+                        !!infoHints && (
+                          <small className={classNames(styles.hint, styles.info)}>
                             <Icon className={styles.icon} icon={IconName.CloudUpload} />
-                            {lastSyncedTimeHintText}
+                            <div>
+                              {
+                                infoHints.map((hint, index) => (
+                                  <div key={index}>
+                                    <span>
+                                      {hint}
+                                    </span>
+                                  </div>
+                                ))
+                              }
+                            </div>
                           </small>
                         )
                       }
                       {
-                        !!sync.error && (
+                        !!sync.error ? (
                           <ErrorMessage as='small' className={styles.hint}>
                             {TEXTS.CLOUD_SYNC_ERROR_GENERIC_ERROR}
                           </ErrorMessage>
+                        ) : (
+                          <Button
+                            className={
+                              classNames(
+                                lihkgCssClasses.settingOptionButton,
+                                styles.button
+                              )
+                            }
+                            onClick={handleSyncNowButtonClick}
+                          >
+                            {TEXTS.BUTTON_TEXT_SYNC_NOW}
+                          </Button>
                         )
                       }
                     </React.Fragment>
