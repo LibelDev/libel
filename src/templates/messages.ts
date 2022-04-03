@@ -6,3 +6,8 @@ export const success = {
   import: `成功匯入${stats.total}`,
   export: `成功匯出${stats.total}`
 };
+
+export const sync = {
+  lastSyncedTime: `最後同步於 {{ lastSyncedTime }}`,
+  nextSyncTime: `下次同步時間為 {{ nextSyncTime }}`
+}

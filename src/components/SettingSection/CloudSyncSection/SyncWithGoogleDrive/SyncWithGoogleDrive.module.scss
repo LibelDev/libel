@@ -1,24 +1,34 @@
-.label {
-  &,
-  .hint {
-    @apply flex items-center;
-  }
-  
+.sync {
+  @apply flex items-center;
+
   .logo {
     @apply w-10;
   }
 
-  .info {
+  > .info {
     @apply mx-4;
   }
 
   .hint {
+    @apply flex items-center;
     @apply mt-2;
     @apply text-xs;
-    @apply opacity-50;
+
+    &.info {
+      @apply items-start;
+    }
+
+    .icon,
+    span {
+      @apply opacity-50;
+    }
 
     .icon {
       @apply mr-2;
     }
+  }
+
+  .button {
+    @apply mt-2;
   }
 }
