@@ -2,7 +2,10 @@
 
 .data-set-editor {
   @apply flex flex-col;
-  @apply w-80;
+
+  &:not(.empty) {
+    min-width: 28rem;
+  }
 }
 
 .filter-result {

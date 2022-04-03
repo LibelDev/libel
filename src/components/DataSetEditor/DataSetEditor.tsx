@@ -39,6 +39,8 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
 
+  const empty = labelsGroups.length === 0;
+
   const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
     setKeyword(keyword);
   }, []);
@@ -116,13 +118,16 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       className={
         classNames(
           className,
-          styles.dataSetEditor
+          styles.dataSetEditor,
+          {
+            [styles.empty]: empty
+          }
         )
       }
       onSubmit={handleSubmit}
     >
       {
-        labelsGroups.length > 0 ? (
+        !empty ? (
           <React.Fragment>
             <Filter
               autoFocus
