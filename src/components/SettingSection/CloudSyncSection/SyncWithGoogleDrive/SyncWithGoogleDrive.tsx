@@ -5,9 +5,9 @@ import { zhHK } from 'date-fns/locale';
 import { render } from 'mustache';
 import React, { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
+import * as cloud from '../../../../cloud';
 import { interval } from '../../../../constants/sync';
 import * as TEXTS from '../../../../constants/texts';
-import * as cloud from '../../../../helpers/cloud';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
 import { useTypedSelector } from '../../../../store/store';
@@ -40,8 +40,10 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
 
   const handleSyncNowButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    cloud.sync();
-  }, []);
+    if (auth) {
+      cloud.sync(auth);
+    }
+  }, [auth]);
 
   const handleSignIn: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -97,26 +99,27 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                                   </div>
                                 ))
                               }
-                              <Button
-                                className={
-                                  classNames(
-                                    lihkgCssClasses.settingOptionButton,
-                                    styles.button
-                                  )
-                                }
-                                onClick={handleSyncNowButtonClick}
-                              >
-                                {TEXTS.BUTTON_TEXT_SYNC_NOW}
-                              </Button>
                             </div>
                           </small>
                         )
                       }
                       {
-                        !!sync.error && (
+                        !!sync.error ? (
                           <ErrorMessage as='small' className={styles.hint}>
                             {TEXTS.CLOUD_SYNC_ERROR_GENERIC_ERROR}
                           </ErrorMessage>
+                        ) : (
+                          <Button
+                            className={
+                              classNames(
+                                lihkgCssClasses.settingOptionButton,
+                                styles.button
+                              )
+                            }
+                            onClick={handleSyncNowButtonClick}
+                          >
+                            {TEXTS.BUTTON_TEXT_SYNC_NOW}
+                          </Button>
                         )
                       }
                     </React.Fragment>
