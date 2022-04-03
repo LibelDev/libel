@@ -14,6 +14,9 @@ export const sync = async (auth: gapi.auth2.GoogleAuth) => {
     const state = store.getState();
     const sync = selectSync(state);
     if (!sync.loading) {
+      if (unregister) {
+        unregister();
+      }
       await cloud.sync();
       unregister = register(auth); // register next sync
       // analytics
@@ -23,11 +26,9 @@ export const sync = async (auth: gapi.auth2.GoogleAuth) => {
 };
 
 const register = (auth: gapi.auth2.GoogleAuth) => {
-  const timer = setTimeout(async () => {
-    await sync(auth);
-  }, interval);
+  const id = setTimeout(() => sync(auth), interval);
   return () => {
-    clearTimeout(timer);
+    clearTimeout(id);
     unregister = null;
   };
 };
