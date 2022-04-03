@@ -62,7 +62,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
         onChange(user, itemIndex, label);
       }
     }
-  }, [labelsGroups, filteredLabelsGroups]);
+  }, [onChange, labelsGroups, filteredLabelsGroups]);
 
   const handleUserLabelsRemove: IUserLabelsEditorProps['onRemove'] = useCallback((user, index) => {
     const [labelsGroupIndex, labelsGroup] = findLabelsGroupByUser(labelsGroups, user);
