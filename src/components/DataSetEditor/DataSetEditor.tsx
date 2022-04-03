@@ -20,7 +20,7 @@ interface IAutoScrollUserItemIndex {
 
 export interface IProps {
   dataSet: IDataSet;
-  onChange?: (user: string, index: number, label: ILabel) => void;
+  onChange?: (user: string, index: number, label?: ILabel) => void;
   onSubmit: (dataSet: Personal) => void;
 }
 
@@ -79,8 +79,11 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
         item[2] = !item[2];
       });
       setLabelsGroups(_labelsGroups);
+      if (onChange) {
+        onChange(user, itemIndex);
+      }
     }
-  }, [labelsGroups, filteredLabelsGroups]);
+  }, [onChange, labelsGroups, filteredLabelsGroups]);
 
   const handleUserLabelsScroll: IUserLabelsEditorProps['onScroll'] = useCallback(() => {
     // allow scrolling to the same label again
