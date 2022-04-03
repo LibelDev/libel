@@ -58,11 +58,11 @@ export const sync = async () => {
         debug('sync:meta', lastSyncedTime, lastModifiedTime, modifiedTime);
         /**
          * NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
-         * 
+         *
          * `lastSyncedTime === modifiedTime` => the file was updated from this instance in the previous sync
          * => if `lastModifiedTime > modifiedTime` (i.e. local is newer than remote), merge local into remote
          * => otherwise, merge remote into local
-         * 
+         *
          * `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
          * => then always merge remote into local
          */
@@ -84,10 +84,9 @@ export const sync = async () => {
         await loadDataIntoStore(storage);
       }
     }
-    // upload the storage to cloud
-    await storage.load();
+    // the storage instance here has already been updated
     const json = storage.json();
-    debug('sync:storage', storage);
+    // upload the storage to cloud
     const { result } = await upload(file.id!, json);
     const modifiedTime = new Date(result.modifiedTime!).getTime();
     debug('sync:modifiedTime', modifiedTime);
