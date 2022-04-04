@@ -32,6 +32,18 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
+const labelListContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
+const snipeButtonContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
+const addLabelButtonontainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
+
+declare global {
+  interface Element {
+    [labelListContainerSymbol]?: Element;
+    [snipeButtonContainerSymbol]?: Element;
+    [addLabelButtonontainerSymbol]?: Element;
+  }
+}
+
 const isThreadItem = (node: Element) => {
   return node.matches(lihkgSelectors.threadItem);
 };
@@ -54,6 +66,10 @@ const isReplyList = (node: Element) => {
 
 const isReplyItem = (node: Element) => {
   return node.matches(lihkgSelectors.replyItem);
+};
+
+const isReplyItemInner = (node: Element) => {
+  return node.matches(lihkgSelectors.replyItemInner);
 };
 
 const isReplyItemInnerBody = (node: Element) => {
@@ -169,16 +185,20 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
 };
 
 const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const threadLink = node.querySelector(lihkgSelectors.threadLink)!;
-  const href = threadLink.getAttribute('href')!;
-  const threadId = href.match(REGEXES.THREAD_URL)![1];
-  const thread = cache.getThread(threadId);
-  if (thread) {
-    const { user_id: user } = thread;
-    const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner)!;
-    const container = document.createElement('div');
-    threadItemInner.insertAdjacentElement('afterbegin', container);
-    renderLabelList(user, undefined, store, persistor, container);
+  const threadLink = node.querySelector(lihkgSelectors.threadLink);
+  const href = threadLink?.getAttribute('href');
+  const threadId = href?.match(REGEXES.THREAD_URL)![1];
+  if (threadId) {
+    const thread = cache.getThread(threadId);
+    if (thread) {
+      const { user_id: user } = thread;
+      const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner);
+      if (threadItemInner) {
+        const container = document.createElement('div');
+        threadItemInner.insertAdjacentElement('afterbegin', container);
+        renderLabelList(user, undefined, store, persistor, container);
+      }
+    }
   }
 };
 
@@ -189,20 +209,24 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
   const matched = href?.match(REGEXES.PROFILE_URL);
   if (matched) {
     const [, user] = matched;
-    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
-    const container = document.createElement('div');
-    modelContentInner.appendChild(container);
-    const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
-    renderLabelList(user, floatingConfig, store, persistor, container);
+    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
+    if (modelContentInner) {
+      const container = document.createElement('div');
+      modelContentInner.appendChild(container);
+      const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
+      renderLabelList(user, floatingConfig, store, persistor, container);
+    }
   }
 };
 
 const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
-  const container = document.createElement('div');
-  container.classList.add(settingSectionStyles.container);
-  modelContentInner.appendChild(container);
-  renderSettingSection(store, persistor, container);
+  const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
+  if (modelContentInner) {
+    const container = document.createElement('div');
+    container.classList.add(settingSectionStyles.container);
+    modelContentInner.appendChild(container);
+    renderSettingSection(store, persistor, container);
+  }
 };
 
 const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -221,31 +245,66 @@ const handleReplyListMutation = (node: Element, store: TStore, persistor: Persis
 };
 
 const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
-  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading)!;
-  handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
+  if (replyItemInner) {
+    handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  }
 };
 
 const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const user = getUserIDFromNode(node);
-  if (user) {
-    const containerCacheKey = `__${namespace}__cache__container__`;
-    (node as any)[containerCacheKey]?.remove();
-    const container = document.createElement('div');
-    const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody)!;
-    replyItemInnerBody.insertAdjacentElement('afterbegin', container);
-    const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
-    renderLabelList(user, floatingConfig, store, persistor, container);
-    (node as any)[containerCacheKey] = container;
+  const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody);
+  if (replyItemInnerBody) {
+    handleReplyItemInnerBodyMutation(replyItemInnerBody, store, persistor);
   }
 };
 
 const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.parentElement!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
-  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading)!;
-  handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading);
+  if (replyItemInnerBodyHeading) {
+    handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  }
+};
+
+const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const user = getUserIDFromNode(node);
+  if (user) {
+    const replyItemInnerBody = node.parentElement;
+    if (replyItemInnerBody) {
+      /* label list */
+      if (replyItemInnerBody[labelListContainerSymbol]) {
+        ReactDOM.unmountComponentAtNode(replyItemInnerBody[labelListContainerSymbol]!);
+        replyItemInnerBody[labelListContainerSymbol]!.remove();
+      }
+      const container = document.createElement('div');
+      replyItemInnerBody.insertAdjacentElement('afterbegin', container);
+      const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
+      renderLabelList(user, floatingConfig, store, persistor, container);
+      replyItemInnerBody[labelListContainerSymbol] = container;
+    }
+    const replyButton = node.querySelector(`.${IconName.Reply}`);
+    if (replyButton) {
+      /* add label button */
+      if (replyButton[addLabelButtonontainerSymbol]) {
+        ReactDOM.unmountComponentAtNode(replyButton[addLabelButtonontainerSymbol]!);
+        replyButton[addLabelButtonontainerSymbol]!.remove();
+      }
+      const addLabelButtonContainer = document.createElement('div');
+      const replyItemInner = node.parentElement!.parentElement!;
+      const postID = replyItemInner.getAttribute(ATTRIBUTES.dataPostId);
+      insertAfter(addLabelButtonContainer, replyButton);
+      renderAddLabelButton(user, postID, store, persistor, addLabelButtonContainer);
+      replyButton[addLabelButtonontainerSymbol] = addLabelButtonContainer;
+      /* snipe button */
+      if (replyButton[snipeButtonContainerSymbol]) {
+        ReactDOM.unmountComponentAtNode(replyButton[snipeButtonContainerSymbol]!);
+        replyButton[snipeButtonContainerSymbol]!.remove();
+      }
+      const snipeButtonContainer = document.createElement('div');
+      insertAfter(snipeButtonContainer, addLabelButtonContainer);
+      renderSnipeButton(user, store, persistor, snipeButtonContainer);
+      replyButton[snipeButtonContainerSymbol] = snipeButtonContainer;
+    }
+  }
 };
 
 const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -253,36 +312,16 @@ const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Pers
   handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
 };
 
-const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const user = getUserIDFromNode(node);
-  if (user) {
-    const replyButton = node.querySelector(`.${IconName.Reply}`);
-    if (replyButton) {
-      /* add label button */
-      const addLabelButtonContainer = document.createElement('div');
-      const replyItemInner = node.parentElement!.parentElement!;
-      const postID = replyItemInner.getAttribute(ATTRIBUTES.dataPostId);
-      insertAfter(addLabelButtonContainer, replyButton);
-      renderAddLabelButton(user, postID, store, persistor, addLabelButtonContainer);
-      /* snipe button */
-      const snipeButtonContainerCacheKey = `__${namespace}__cache__snipe_button_container__`;
-      (node as any)[snipeButtonContainerCacheKey]?.remove();
-      const snipeButtonContainer = document.createElement('div');
-      insertAfter(snipeButtonContainer, addLabelButtonContainer);
-      renderSnipeButton(user, store, persistor, snipeButtonContainer);
-      (node as any)[snipeButtonContainerCacheKey] = snipeButtonContainer;
-    }
+
+const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
+  if (replyItemInner) {
+    handleReplyItemInnerMutation(replyItemInner, store, persistor);
   }
 };
 
-const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
-};
-
 export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  handleReplyItemInnerMutation(node, store, persistor);
 };
 
 export const addedNodeMutationHandlerFactory = (node: Element) => {
@@ -299,6 +338,8 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   if (isReplyList(node)) return handleReplyListMutation;
   /** when render the reply item (probably switch to another thread or inside the reply modal) */
   if (isReplyItem(node)) return handleReplyItemMutation;
+  /** when render the reply item in reply modal*/
+  if (isReplyItemInner(node)) return handleReplyItemInnerMutation;
   /** when show blocked user reply item */
   if (isReplyItemInnerBody(node)) return handleReplyItemInnerBodyMutation;
   /** when expand the short reply item */

@@ -9,7 +9,7 @@ import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from '.
 import { loadDataIntoStore } from './../store/store';
 import { compress, decompress } from './file';
 import * as gapi from './gapi';
-import { MergeDirection, mergeDataSet, mergeSubscriptions } from './merge';
+import { mergeConfig, mergeDataSet, MergeDirection, mergeSubscriptions } from './merge';
 
 const debug = debugFactory('libel:helper:cloud');
 
@@ -69,13 +69,13 @@ export const sync = async () => {
         // merge with local data
         const mergeDirection = ((lastSyncedTime === modifiedTime) && (lastModifiedTime > modifiedTime)) ? MergeDirection.LocalToIncoming : MergeDirection.IncomingToLocal;
         debug('sync:mergeDirection', MergeDirection[mergeDirection]);
-        const [[personalA, personalB], [subscriptionsA, subscriptionsB]] = (
+        const [[configA, configB], [personalA, personalB], [subscriptionsA, subscriptionsB]] = (
           mergeDirection === MergeDirection.LocalToIncoming ?
-            [[remoteStorage.personal, personal.plain()], [remoteStorage.subscriptions, subscriptions]] :
-            [[personal.plain(), remoteStorage.personal], [subscriptions, remoteStorage.subscriptions]]
+            [[remoteStorage.config, config], [remoteStorage.personal, personal.plain()], [remoteStorage.subscriptions, subscriptions]] :
+            [[config, remoteStorage.config], [personal.plain(), remoteStorage.personal], [subscriptions, remoteStorage.subscriptions]]
         );
         const storage: ISerializedStorage = {
-          config: { ...config, ...remoteStorage.config },
+          config: mergeConfig(configA, configB, true),
           // CAVEAT: ignore `meta` here
           personal: mergeDataSet(personalA, personalB, true),
           subscriptions: mergeSubscriptions(subscriptionsA, subscriptionsB, true)

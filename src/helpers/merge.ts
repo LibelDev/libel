@@ -1,5 +1,6 @@
 import { produce } from 'immer';
-import type { IDataSet } from '../models/DataSet';
+import type { ISerializedConfig } from '../models/Config';
+import type { ISerializedDataSet } from '../models/DataSet';
 import type { ISerializedSubscription } from './../models/Subscription';
 import { isEqual as isLabelEqual } from './label';
 import { isEqual as isSubscriptionEqual } from './subscription';
@@ -9,15 +10,45 @@ export enum MergeDirection {
   LocalToIncoming
 }
 
+export const mergeConfig = <T extends ISerializedConfig> (configA: T | undefined, configB: T | undefined, prune: boolean) => {
+  if (!configA) { return configB; }
+  if (!configB) { return configA; }
+  return produce(configA, (configA) => {
+    const { subscriptionTemplates: subscriptionTemplatesB } = configB;
+    if (prune) {
+      /** prune the missing B in A */
+      configA.subscriptionTemplates = configA.subscriptionTemplates.filter((subscriptionTemplateA) => {
+        const subscriptionTemplateB = subscriptionTemplatesB.find((subscriptionTemplateB) => subscriptionTemplateA.name === subscriptionTemplateB.name);
+        return !!subscriptionTemplateB;
+      });
+    }
+    /** merge B into A */
+    configA.isIconMapUnlocked = configB.isIconMapUnlocked;
+    for (const subscriptionTemplateB of subscriptionTemplatesB) {
+      const subscriptionTemplateA = configA.subscriptionTemplates.find((subscriptionTemplateA) => subscriptionTemplateA.name === subscriptionTemplateB.name);
+      if (subscriptionTemplateA) {
+        /** existing subscription template */
+        subscriptionTemplateA.name = subscriptionTemplateB.name;
+        subscriptionTemplateA.version = subscriptionTemplateB.version;
+        subscriptionTemplateA.homepage = subscriptionTemplateB.homepage;
+        subscriptionTemplateA.color = subscriptionTemplateB.color;
+      } else {
+        /* new subscription template */
+        configA.subscriptionTemplates.push(subscriptionTemplateB);
+      }
+    }
+  });
+};
+
 /**
  * merge the data sets
- * @template {IDataSet} T
+ * @template {ISerializedDataSet} T
  * @param {T} dataSetA the target data set
  * @param {T} dataSetB the incoming data set
  * @param {boolean} prune prune the labels from dataSetA if it does not exist in dataSetB
  * @returns {T}
  */
-export const mergeDataSet = <T extends IDataSet> (dataSetA: T, dataSetB: T, prune: boolean): T => {
+export const mergeDataSet = <T extends ISerializedDataSet> (dataSetA: T, dataSetB: T, prune: boolean): T => {
   return produce(dataSetA, (dataSetA) => {
     const { data: dataA } = dataSetA;
     const { data: dataB } = dataSetB;

@@ -1,3 +1,19 @@
+## v3.4.1 (2022-04-05)
+
+### Fix
+
+- **merge**: add `mergeConfig`
+- **schemas**: missing `subscriptionTemplates` in `config` schema
+- **mutation**: issue of not showing labels or showing the labels on incorrect user in reply modal
+- **mutation**: cannot display labels on replies after any blocked user's reply (#8)
+- **label-form**: cannot enable auto screenshot (#10)
+
+### Refactor
+
+- **mutation**: unmount the component before removing the container from DOM
+- **helpers**: update `getAvailableLabelID` to `getNextLabelID`
+- **helpers**: update `getShareURL`
+
 ## v3.4.0 (2022-04-04)
 
 ### Fix

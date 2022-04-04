@@ -3,7 +3,6 @@ import { displayDateFormat } from '../constants/label';
 import { shortenedHost } from '../constants/lihkg';
 import type { IPost } from '../types/lihkg';
 import type { ILabel, ISource } from './../models/Label';
-import type { TTracablePost } from './../types/lihkg';
 import { counter } from './counter';
 import { getShareID } from './lihkg';
 
@@ -15,16 +14,17 @@ export const mapPostToSource = (post: IPost): ISource => {
   };
 };
 
-export const mapSourceToPost = (source: ISource): TTracablePost => {
-  return {
-    thread_id: source.thread,
-    page: source.page,
-    msg_num: source.messageNumber
-  };
+const getLastID = (labels: ILabel[]) => {
+  const _labels = labels.filter((label) => !!label.id);
+  _labels.sort((a, b) => parseInt(b.id!) - parseInt(a.id!));
+  const last = _labels[0];
+  return last ? last.id! : '0';
 };
 
-export const getAvailableLabelID = (labels: ILabel[]) => {
-  const count = counter(1);
+export const getNextLabelID = (labels: ILabel[]) => {
+  const lastID = getLastID(labels);
+  const initial = parseInt(lastID) + 1;
+  const count = counter(initial);
   while (true) {
     const { value } = count.next();
     const id = `${value}`;
@@ -38,8 +38,7 @@ export const getAvailableLabelID = (labels: ILabel[]) => {
 export const getShareURL = (label: ILabel) => {
   const { source } = label;
   if (source) {
-    const post = mapSourceToPost(source);
-    const shareID = getShareID(post);
+    const shareID = getShareID(source);
     return `${shortenedHost}/${shareID}`;
   }
   // fallback to the deprecated url

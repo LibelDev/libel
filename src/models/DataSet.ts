@@ -1,7 +1,7 @@
 import { immerable } from 'immer';
 import dataSchema from '../schemas/data';
 import dataSetSchema from '../schemas/dataSet';
-import { getAvailableLabelID } from './../helpers/label';
+import { getNextLabelID } from './../helpers/label';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 
@@ -93,7 +93,7 @@ abstract class DataSet implements IDataSet {
   add (user: string, data: Pick<ILabel, 'text' | 'reason' | 'source' | 'color' | 'image'>) {
     this.data[user] = this.data[user] || [];
     const labels = this.data[user]!;
-    const id = getAvailableLabelID(labels);
+    const id = getNextLabelID(labels);
     const { text, reason, source, color, image } = data;
     const { href: url } = window.location;
     const date = Date.now();
@@ -140,7 +140,7 @@ abstract class DataSet implements IDataSet {
       const labels = data[user]!;
       for (const label of labels) {
         if (!label.id) {
-          const id = getAvailableLabelID(labels);
+          const id = getNextLabelID(labels);
           label.id = id;
         }
       }
