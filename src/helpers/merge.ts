@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import type { IDataSet } from '../models/DataSet';
+import type { ISerializedDataSet } from '../models/DataSet';
 import type { ISerializedSubscription } from './../models/Subscription';
 import { isEqual as isLabelEqual } from './label';
 import { isEqual as isSubscriptionEqual } from './subscription';
@@ -11,13 +11,13 @@ export enum MergeDirection {
 
 /**
  * merge the data sets
- * @template {IDataSet} T
+ * @template {ISerializedDataSet} T
  * @param {T} dataSetA the target data set
  * @param {T} dataSetB the incoming data set
  * @param {boolean} prune prune the labels from dataSetA if it does not exist in dataSetB
  * @returns {T}
  */
-export const mergeDataSet = <T extends IDataSet> (dataSetA: T, dataSetB: T, prune: boolean): T => {
+export const mergeDataSet = <T extends ISerializedDataSet> (dataSetA: T, dataSetB: T, prune: boolean): T => {
   return produce(dataSetA, (dataSetA) => {
     const { data: dataA } = dataSetA;
     const { data: dataB } = dataSetB;
