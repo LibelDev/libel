@@ -14,10 +14,17 @@ export const mapPostToSource = (post: IPost): ISource => {
   };
 };
 
+const getLastID = (labels: ILabel[]) => {
+  const _labels = labels.filter((label) => !!label.id);
+  _labels.sort((a, b) => parseInt(b.id!) - parseInt(a.id!));
+  const last = _labels[0];
+  return last ? last.id! : '0';
 };
 
-export const getAvailableLabelID = (labels: ILabel[]) => {
-  const count = counter(1);
+export const getNextLabelID = (labels: ILabel[]) => {
+  const lastID = getLastID(labels);
+  const initial = parseInt(lastID) + 1;
+  const count = counter(initial);
   while (true) {
     const { value } = count.next();
     const id = `${value}`;
