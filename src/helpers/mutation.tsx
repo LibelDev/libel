@@ -33,14 +33,14 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 const debug = debugFactory('libel:helper:mutation');
 
 const labelListContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
-const snipeButtonContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
 const addLabelButtonontainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
+const snipeButtonContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
 
 declare global {
   interface Element {
     [labelListContainerSymbol]?: Element;
-    [snipeButtonContainerSymbol]?: Element;
     [addLabelButtonontainerSymbol]?: Element;
+    [snipeButtonContainerSymbol]?: Element;
   }
 }
 
