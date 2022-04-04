@@ -32,6 +32,14 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
+const containerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
+
+declare global {
+  interface Element {
+    [containerSymbol]?: Element;
+  }
+}
+
 const isThreadItem = (node: Element) => {
   return node.matches(lihkgSelectors.threadItem);
 };
@@ -242,15 +250,17 @@ const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persis
 const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   if (user) {
-    const containerCacheKey = `__${namespace}__cache__container__`;
-    (node as any)[containerCacheKey]?.remove();
+    if (node[containerSymbol]) {
+      ReactDOM.unmountComponentAtNode(node[containerSymbol]!);
+      node[containerSymbol]!.remove();
+    }
     const container = document.createElement('div');
     const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody);
     if (replyItemInnerBody) {
       replyItemInnerBody.insertAdjacentElement('afterbegin', container);
       const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
       renderLabelList(user, floatingConfig, store, persistor, container);
-      (node as any)[containerCacheKey] = container;
+      node[containerSymbol] = container;
     }
   }
 };
@@ -281,12 +291,9 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
       insertAfter(addLabelButtonContainer, replyButton);
       renderAddLabelButton(user, postID, store, persistor, addLabelButtonContainer);
       /* snipe button */
-      const snipeButtonContainerCacheKey = `__${namespace}__cache__snipe_button_container__`;
-      (node as any)[snipeButtonContainerCacheKey]?.remove();
       const snipeButtonContainer = document.createElement('div');
       insertAfter(snipeButtonContainer, addLabelButtonContainer);
       renderSnipeButton(user, store, persistor, snipeButtonContainer);
-      (node as any)[snipeButtonContainerCacheKey] = snipeButtonContainer;
     }
   }
 };
