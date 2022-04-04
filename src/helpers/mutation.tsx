@@ -169,16 +169,20 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
 };
 
 const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const threadLink = node.querySelector(lihkgSelectors.threadLink)!;
-  const href = threadLink.getAttribute('href')!;
-  const threadId = href.match(REGEXES.THREAD_URL)![1];
-  const thread = cache.getThread(threadId);
-  if (thread) {
-    const { user_id: user } = thread;
-    const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner)!;
-    const container = document.createElement('div');
-    threadItemInner.insertAdjacentElement('afterbegin', container);
-    renderLabelList(user, undefined, store, persistor, container);
+  const threadLink = node.querySelector(lihkgSelectors.threadLink);
+  const href = threadLink?.getAttribute('href');
+  const threadId = href?.match(REGEXES.THREAD_URL)![1];
+  if (threadId) {
+    const thread = cache.getThread(threadId);
+    if (thread) {
+      const { user_id: user } = thread;
+      const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner);
+      if (threadItemInner) {
+        const container = document.createElement('div');
+        threadItemInner.insertAdjacentElement('afterbegin', container);
+        renderLabelList(user, undefined, store, persistor, container);
+      }
+    }
   }
 };
 
@@ -189,20 +193,24 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
   const matched = href?.match(REGEXES.PROFILE_URL);
   if (matched) {
     const [, user] = matched;
-    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
-    const container = document.createElement('div');
-    modelContentInner.appendChild(container);
-    const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
-    renderLabelList(user, floatingConfig, store, persistor, container);
+    const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
+    if (modelContentInner) {
+      const container = document.createElement('div');
+      modelContentInner.appendChild(container);
+      const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
+      renderLabelList(user, floatingConfig, store, persistor, container);
+    }
   }
 };
 
 const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`)!;
-  const container = document.createElement('div');
-  container.classList.add(settingSectionStyles.container);
-  modelContentInner.appendChild(container);
-  renderSettingSection(store, persistor, container);
+  const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
+  if (modelContentInner) {
+    const container = document.createElement('div');
+    container.classList.add(settingSectionStyles.container);
+    modelContentInner.appendChild(container);
+    renderSettingSection(store, persistor, container);
+  }
 };
 
 const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -221,10 +229,14 @@ const handleReplyListMutation = (node: Element, store: TStore, persistor: Persis
 };
 
 const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
-  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading)!;
-  handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
+  if (replyItemInner) {
+    handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  }
+  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading);
+  if (replyItemInnerBodyHeading) {
+    handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  }
 };
 
 const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -233,19 +245,23 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
     const containerCacheKey = `__${namespace}__cache__container__`;
     (node as any)[containerCacheKey]?.remove();
     const container = document.createElement('div');
-    const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody)!;
-    replyItemInnerBody.insertAdjacentElement('afterbegin', container);
-    const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
-    renderLabelList(user, floatingConfig, store, persistor, container);
-    (node as any)[containerCacheKey] = container;
+    const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody);
+    if (replyItemInnerBody) {
+      replyItemInnerBody.insertAdjacentElement('afterbegin', container);
+      const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
+      renderLabelList(user, floatingConfig, store, persistor, container);
+      (node as any)[containerCacheKey] = container;
+    }
   }
 };
 
 const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const replyItemInner = node.parentElement!;
   handleReplyItemInnerMutation(replyItemInner, store, persistor);
-  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading)!;
-  handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading);
+  if (replyItemInnerBodyHeading) {
+    handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  }
 };
 
 const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -276,13 +292,17 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
 };
 
 const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
+  if (replyItemInner) {
+    handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  }
 };
 
 export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner)!;
-  handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
+  if (replyItemInner) {
+    handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  }
 };
 
 export const addedNodeMutationHandlerFactory = (node: Element) => {
