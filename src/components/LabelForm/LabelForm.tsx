@@ -239,7 +239,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               fullWidth
               checked={toggleButtonState.useScreenshot}
               disabled={loading}
-              name="useReplyScreenshot"
+              name="useScreenshot"
               loading={screenshot.loading}
               onChange={handleToggleButtonChange}
             >
