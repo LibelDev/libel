@@ -6,7 +6,7 @@ import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
 import { download, _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
-import { mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
+import { mergeConfig, mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
 import Personal from '../../../models/Personal';
 import type { ISerializedStorage } from '../../../models/Storage';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
@@ -114,7 +114,7 @@ const ManageDataSection: React.FunctionComponent = () => {
       try {
         const incoming = await _import(file);
         const storage: ISerializedStorage = {
-          config: { ...config, ...incoming.config },
+          config: mergeConfig(config, incoming.config, false),
           // CAVEAT: ignore `meta` here
           personal: mergeDataSet(personal.plain(), incoming.personal, false),
           subscriptions: mergeSubscriptions(subscriptions, incoming.subscriptions, false)

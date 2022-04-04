@@ -1,17 +1,152 @@
-import type { IDataSet } from '../models/DataSet';
+import type { ISerializedConfig } from '../models/Config';
+import type { ISerializedDataSet } from '../models/DataSet';
 import type { ISerializedSubscription } from '../models/Subscription';
-import { mergeDataSet, mergeSubscriptions } from './merge';
+import { mergeConfig, mergeDataSet, mergeSubscriptions } from './merge';
+
+
+describe('mergeConfig', () => {
+  it('should unlock icon map (do nothing)', () => {
+    const configA: ISerializedConfig = {
+      isIconMapUnlocked: true,
+      subscriptionTemplates: []
+    };
+    const merged = mergeConfig(configA, undefined, false)!;
+    expect(merged).toBe(configA);
+  });
+
+  it('should unlock icon map (replace)', () => {
+    const configB: ISerializedConfig = {
+      isIconMapUnlocked: true,
+      subscriptionTemplates: []
+    };
+    const merged = mergeConfig(undefined, configB, false)!;
+    expect(merged).toBe(configB);
+  });
+
+  it('should unlock icon map (merge)', () => {
+    const configA: ISerializedConfig = {
+      isIconMapUnlocked: false,
+      subscriptionTemplates: []
+    };
+    const configB: ISerializedConfig = {
+      isIconMapUnlocked: true,
+      subscriptionTemplates: []
+    };
+    const merged = mergeConfig(configA, configB, false)!;
+    expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
+    expect(merged.subscriptionTemplates.length).toBe(0);
+  });
+
+  it('should unlock icon map and have 2 subscription templates (merged)', () => {
+    const configA: ISerializedConfig = {
+      isIconMapUnlocked: false,
+      subscriptionTemplates: [
+        {
+          name: 'Subscription A',
+          version: '1.0'
+        },
+        {
+          name: 'Subscription B',
+          version: '1.0'
+        }
+      ]
+    };
+    const configB: ISerializedConfig = {
+      isIconMapUnlocked: true,
+      subscriptionTemplates: [
+        {
+          name: 'Subscription A',
+          version: '2.0'
+        }
+      ]
+    };
+    const merged = mergeConfig(configA, configB, false)!;
+    expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
+    expect(merged.subscriptionTemplates.length).toBe(2);
+    expect(merged.subscriptionTemplates[0]).toEqual(configB.subscriptionTemplates[0]);
+    expect(merged.subscriptionTemplates[1]).toEqual(configA.subscriptionTemplates[1]);
+  });
+
+  it('should unlock icon map and have 3 subscription templates (merged)', () => {
+    const configA: ISerializedConfig = {
+      isIconMapUnlocked: false,
+      subscriptionTemplates: [
+        {
+          name: 'Subscription A',
+          version: '1.0'
+        },
+        {
+          name: 'Subscription B',
+          version: '1.0'
+        }
+      ]
+    };
+    const configB: ISerializedConfig = {
+      isIconMapUnlocked: true,
+      subscriptionTemplates: [
+        {
+          name: 'Subscription B',
+          version: '2.0'
+        },
+        {
+          name: 'Subscription C',
+          version: '1.0'
+        }
+      ]
+    };
+    const merged = mergeConfig(configA, configB, false)!;
+    expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
+    expect(merged.subscriptionTemplates.length).toBe(3);
+    expect(merged.subscriptionTemplates[0]).toEqual(configA.subscriptionTemplates[0]);
+    expect(merged.subscriptionTemplates[1]).toEqual(configB.subscriptionTemplates[0]);
+    expect(merged.subscriptionTemplates[2]).toEqual(configB.subscriptionTemplates[1]);
+  });
+
+  it('should unlock icon map and have 2 subscription templates (merged, prune)', () => {
+    const configA: ISerializedConfig = {
+      isIconMapUnlocked: false,
+      subscriptionTemplates: [
+        {
+          name: 'Subscription A',
+          version: '1.0'
+        },
+        {
+          name: 'Subscription B',
+          version: '1.0'
+        }
+      ]
+    };
+    const configB: ISerializedConfig = {
+      isIconMapUnlocked: true,
+      subscriptionTemplates: [
+        {
+          name: 'Subscription B',
+          version: '2.0'
+        },
+        {
+          name: 'Subscription C',
+          version: '1.0'
+        }
+      ]
+    };
+    const merged = mergeConfig(configA, configB, true)!;
+    expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
+    expect(merged.subscriptionTemplates.length).toBe(2);
+    expect(merged.subscriptionTemplates[0]).toEqual(configB.subscriptionTemplates[0]);
+    expect(merged.subscriptionTemplates[1]).toEqual(configB.subscriptionTemplates[1]);
+  });
+});
 
 describe('mergeDataSet', () => {
   it('should have 1 user, 1 label', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A' }
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 2B' }
@@ -25,14 +160,14 @@ describe('mergeDataSet', () => {
   });
 
   it('should have 1 user, 2 labels', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A' }
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '1': [
           { id: '2', text: 'Label 2B' }
@@ -47,14 +182,14 @@ describe('mergeDataSet', () => {
   });
 
   it('should have 2 users, 2 labels', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A' }
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '2': [
           { id: '1', text: 'Label 1B' }
@@ -70,14 +205,14 @@ describe('mergeDataSet', () => {
   });
 
   it('should have 1 user, 1 label', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A' }
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '1': [
           { id: '2', text: 'Label 2B' }
@@ -91,14 +226,14 @@ describe('mergeDataSet', () => {
   });
 
   it('should have 1 user, 2 labels', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A' }
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1B' },
@@ -114,14 +249,14 @@ describe('mergeDataSet', () => {
   });
 
   it('should have 1 user, 2 labels', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A' }
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '2': [
           { id: '1', text: 'Label 1B' },
@@ -137,7 +272,7 @@ describe('mergeDataSet', () => {
   });
 
   it('should have 1 user, 3 labels', () => {
-    const dataSetA: IDataSet = {
+    const dataSetA: ISerializedDataSet = {
       data: {
         '1': [
           { text: 'Label 1A', reason: 'Reason A' },
@@ -146,7 +281,7 @@ describe('mergeDataSet', () => {
         ]
       }
     };
-    const dataSetB: IDataSet = {
+    const dataSetB: ISerializedDataSet = {
       data: {
         '1': [
           { id: '1', text: 'Label 1A', reason: 'Reason A' },
