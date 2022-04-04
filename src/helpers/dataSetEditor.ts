@@ -9,6 +9,7 @@ import { mapValidationError } from './validation';
  * labels group item
  * @typedef {ILabel} origianl the original object that will not be updated
  * @typedef {ILabel} draft the draft object that will be updated
+ * @typedef {boolean} removed indicate whether the item will be removed
  */
 export type ILabelsGroupItem = [original: ILabel, draft: ILabel, removed: boolean];
 
