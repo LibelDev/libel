@@ -3,7 +3,6 @@ import { displayDateFormat } from '../constants/label';
 import { shortenedHost } from '../constants/lihkg';
 import type { IPost } from '../types/lihkg';
 import type { ILabel, ISource } from './../models/Label';
-import type { TTracablePost } from './../types/lihkg';
 import { counter } from './counter';
 import { getShareID } from './lihkg';
 
@@ -15,12 +14,6 @@ export const mapPostToSource = (post: IPost): ISource => {
   };
 };
 
-export const mapSourceToPost = (source: ISource): TTracablePost => {
-  return {
-    thread_id: source.thread,
-    page: source.page,
-    msg_num: source.messageNumber
-  };
 };
 
 export const getAvailableLabelID = (labels: ILabel[]) => {
@@ -38,8 +31,7 @@ export const getAvailableLabelID = (labels: ILabel[]) => {
 export const getShareURL = (label: ILabel) => {
   const { source } = label;
   if (source) {
-    const post = mapSourceToPost(source);
-    const shareID = getShareID(post);
+    const shareID = getShareID(source);
     return `${shortenedHost}/${shareID}`;
   }
   // fallback to the deprecated url

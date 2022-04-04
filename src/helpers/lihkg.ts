@@ -1,7 +1,8 @@
 // import debugFactory from 'debug';
 import produce from 'immer';
+import { ISource } from '../models/Label';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import type { IIconMap, IUser, TTracablePost } from '../types/lihkg';
+import type { IIconMap, IUser } from '../types/lihkg';
 import { waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
 
@@ -53,16 +54,16 @@ export const unlockIconMap = (iconMap: IIconMap) => {
 /**
  * get the share ID of the reply
  * @copyright the implementation is a reference from LIHKG production build
- * @param {TTracablePost} post the label source 
+ * @param {ISource} source the label source
  * @returns the share ID
  */
-export const getShareID = (post: TTracablePost) => {
-  const e = post.thread_id; // thread ID
-  if (post.msg_num === '1') {
+export const getShareID = (source: ISource) => {
+  const e = source.thread; // thread ID
+  if (source.messageNumber === '1') {
     return e;
   }
   const t = ShareType.Reply; // the share type: thread or reply
-  const n = parseInt(post.msg_num, 10); // the share variable: message number
+  const n = parseInt(source.messageNumber, 10); // the share variable: message number
   const x = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQR'; // the hash seed
   const C = (e: number, t: string) => {
     let n;
