@@ -1,22 +1,29 @@
 import React from 'react';
 import ClearDataSection from './ClearDataSection/ClearDataSection';
 import CloudSyncSection from './CloudSyncSection/CloudSyncSection';
-import ManageDataSection from './ManageDataSection/ManageDataSection';
 import Footer from './Footer/Footer';
-import Header from './Header/Header';
+import ManageDataSection from './ManageDataSection/ManageDataSection';
 import SubscriptionSection from './SubscriptionSection/SubscriptionSection';
 
-const SettingSection: React.FunctionComponent = () => {
+interface IProps { }
+
+type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+
+type TProps = IProps & TComponentProps;
+
+const Settings: React.FunctionComponent<TProps> = (props) => {
+  const { className, ...otherProps } = props;
   return (
-    <React.Fragment>
-      <Header />
+    <div className={className} {...otherProps}>
       <SubscriptionSection />
       <CloudSyncSection />
       <ManageDataSection />
       <ClearDataSection />
       <Footer />
-    </React.Fragment>
+    </div>
   );
 };
 
-export default SettingSection;
+Settings.displayName = 'Settings';
+
+export default Settings;

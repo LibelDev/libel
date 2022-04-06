@@ -13,8 +13,9 @@ import announcementStyles from '../components/Announcement/Announcement.module.s
 import { IconName } from '../components/Icon/types';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.module.scss';
-import SettingSection from '../components/SettingSection/SettingSection';
-import settingSectionStyles from '../components/SettingSection/SettingSection.module.scss';
+// import Settings from '../components/Settings/Settings';
+// import settingsStyles from '../components/Settings/Settings.module.scss';
+import SettingsModalToggleButton from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
 import SnipeButton from '../components/SnipeButton/SnipeButton';
 import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
 import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
@@ -44,6 +45,10 @@ declare global {
   }
 }
 
+const isDrawer = (node: Element) => {
+  return node.matches(lihkgSelectors.drawer);
+};
+
 const isThreadItem = (node: Element) => {
   return node.matches(lihkgSelectors.threadItem);
 };
@@ -52,9 +57,9 @@ const isUserCardModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.LIHKG_USER_CARD_MODAL_TITLE);
 };
 
-const isSettingsModal = (node: Element) => {
-  return isModalTitleMatched(node, TEXTS.LIHKG_SETTINGS_MODAL_TITLE);
-};
+// const isSettingsModal = (node: Element) => {
+//   return isModalTitleMatched(node, TEXTS.LIHKG_SETTINGS_MODAL_TITLE);
+// };
 
 const isEmoteMenu = (node: Element) => {
   return node.matches(lihkgSelectors.emoteMenu);
@@ -108,6 +113,18 @@ const isModalTitleMatched = (node: Element, title: string) => {
   return false;
 };
 
+const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
+  container.classList.add(lihkgCssClasses.drawerSidebarItem);
+  ReactDOM.render(
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <SettingsModalToggleButton />
+      </PersistGate>
+    </Provider>,
+    container
+  );
+};
+
 const renderLabelList = (user: string, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(labelListStyles.container);
   ReactDOM.render(
@@ -154,16 +171,17 @@ const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, co
   );
 };
 
-const renderSettingSection = (store: TStore, persistor: Persistor, container: Element) => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <SettingSection />
-      </PersistGate>
-    </Provider>,
-    container
-  );
-};
+// const renderSettings = (store: TStore, persistor: Persistor, container: Element) => {
+//   container.classList.add(settingsStyles.container);
+//   ReactDOM.render(
+//     <Provider store={store}>
+//       <PersistGate persistor={persistor}>
+//         <Settings />
+//       </PersistGate>
+//     </Provider>,
+//     container
+//   );
+// };
 
 const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   ReactDOM.render(
@@ -182,6 +200,15 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   const rightPanelContainer = await waitForRightPanelContainer();
   rightPanelContainer?.insertBefore(container, rightPanelContainer.firstChild);
   ReactDOM.render(announcement, container);
+};
+
+const handleDrawerMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const drawerSidebarTopItemsContainer = node.querySelector(lihkgSelectors.drawerSidebarTopItemsContainer);
+  if (drawerSidebarTopItemsContainer) {
+    const container = document.createElement('div');
+    drawerSidebarTopItemsContainer.appendChild(container);
+    renderSettingsModalToggleButton(store, persistor, container);
+  }
 };
 
 const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -219,15 +246,14 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
   }
 };
 
-const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
-  if (modelContentInner) {
-    const container = document.createElement('div');
-    container.classList.add(settingSectionStyles.container);
-    modelContentInner.appendChild(container);
-    renderSettingSection(store, persistor, container);
-  }
-};
+// const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
+//   const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
+//   if (modelContentInner) {
+//     const container = document.createElement('div');
+//     modelContentInner.appendChild(container);
+//     renderSettings(store, persistor, container);
+//   }
+// };
 
 const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
@@ -326,12 +352,14 @@ export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, 
 
 export const addedNodeMutationHandlerFactory = (node: Element) => {
   debug('addedNodeMutationHandlerFactory', node);
+  /** when render the drawer */
+  if (isDrawer(node)) return handleDrawerMutation;
   /** when render the thread item */
   if (isThreadItem(node)) return handleThreadItemMutation;
   /** when render the user card modal */
   if (isUserCardModal(node)) return handleUserCardModalMutation;
-  /** when render the settings modal */
-  if (isSettingsModal(node)) return handleSettingsModalMutation;
+  // /** when render the settings modal */
+  // if (isSettingsModal(node)) return handleSettingsModalMutation;
   /** when render the emote menu */
   if (isEmoteMenu(node)) return handleEmoteMenuMutation;
   /** when render the reply list (probably when enter the thread or go to next page) */
