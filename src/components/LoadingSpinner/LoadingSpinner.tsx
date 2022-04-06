@@ -9,11 +9,12 @@ type TComponentProps = React.ComponentPropsWithoutRef<'i'>;
 type TProps = IProps & TComponentProps;
 
 const LoadingSpinner: React.FunctionComponent<TProps> = (props) => {
-  const { className } = props;
+  const { className, ...otherProps } = props;
   return (
     <i
       className={classnames(className, styles.loadingSpinner)}
-      aria-hidden={true}
+      aria-hidden
+      {...otherProps}
     />
   );
 };
