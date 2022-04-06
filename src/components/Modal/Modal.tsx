@@ -68,6 +68,10 @@ const Modal: TModal = (props) => {
     body: `${_id}-body`
   }), [_id]);
 
+  const focusTrapOptions = useMemo(() => ({
+    escapeDeactivates: escape
+  }), [escape]);
+
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     if (fragile && event.target === backdropRef.current) {
       onClose();
@@ -97,7 +101,7 @@ const Modal: TModal = (props) => {
   return (
     ReactDOM.createPortal(
       <IDsContext.Provider value={ids}>
-        <FocusTrap>
+        <FocusTrap focusTrapOptions={focusTrapOptions}>
           <div
             ref={ref}
             id={_id}
