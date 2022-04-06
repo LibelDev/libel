@@ -1,19 +1,15 @@
 @import '../../../stylesheets/base';
 
 .footer {
-  @apply flex items-center flex-wrap;
+  @apply block;
   @apply opacity-50;
   @apply px-4;
   padding-top: 0.8rem;
+}
 
-  .stats {
-    @apply w-full;
-    @apply mb-2;
-  }
-
-  .version {
-    @apply mr-auto;
-  }
+.info {
+  @apply flex items-center justify-between;
+  @apply mt-2;
 
   a {
     color: $color-grey09;

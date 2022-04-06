@@ -7,23 +7,29 @@
     @apply w-1;
     @apply self-stretch;
     @apply rounded-sm;
-    background-color: $color-grey06;
   }
 
   .name {
+    @apply flex items-center;
     @apply flex-1;
-    @apply break-all;
 
     @screen md {
-      @apply max-w-md;
+      max-width: 250px;
     }
 
     > a {
+      @apply inline-block;
+      @apply mr-4;
+      @include text-ellipsis();
       color: $color-grey09;
 
       @include dark-mode() {
         color: $color-white;
       }
+    }
+
+    .info-icon {
+      @apply ml-auto;
     }
   }
 

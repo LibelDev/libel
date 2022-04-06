@@ -16,10 +16,14 @@ const Footer: React.FunctionComponent = () => {
   const stats = render(messages.stats.total, { users, labels, subscriptions });
   return (
     <small className={styles.footer}>
-      <div className={styles.stats}>{stats}</div>
-      <span className={styles.version}>{displayName} {version}</span>
-      <a href={repository.url} target="_blank">{BUTTON_TEXT_SOURCE_CODE}</a>
-      <a href={licenseURL} target="_blank">{BUTTON_TEXT_LICENSE}</a>
+      {stats}
+      <div className={styles.info}>
+        <span>{displayName} {version}</span>
+        <span>
+          <a href={repository.url} target="_blank">{BUTTON_TEXT_SOURCE_CODE}</a>
+          <a href={licenseURL} target="_blank">{BUTTON_TEXT_LICENSE}</a>
+        </span>
+      </div>
     </small>
   );
 };

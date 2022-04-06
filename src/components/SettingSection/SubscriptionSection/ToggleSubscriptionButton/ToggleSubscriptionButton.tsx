@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import Subscription from '../../../../models/Subscription';
+import type { ISubscription } from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch } from '../../../../store/store';
 import ToggleButton from '../../../ToggleButton/ToggleButton';
 
 interface IProps {
-  subscription: Subscription;
+  subscription: ISubscription;
   index: number;
 }
 

@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
 import * as gtag from '../../../../helpers/gtag';
-import Subscription from '../../../../models/Subscription';
+import type { ISubscription } from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
 import { useTypedDispatch } from '../../../../store/store';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
@@ -13,7 +13,7 @@ import { IconName } from '../../../Icon/types';
 import IconButton from '../../../IconButton/IconButton';
 
 interface IProps {
-  subscription: Subscription;
+  subscription: ISubscription;
   index: number;
 }
 

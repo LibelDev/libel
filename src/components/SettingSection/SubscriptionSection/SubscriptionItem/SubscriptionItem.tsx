@@ -1,8 +1,7 @@
 import classnames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useMemo } from 'react';
 import * as TEXTS from '../../../../constants/texts';
-import useDataSetThemeColorStyle from '../../../../hooks/useDataSetThemeColorStyle';
-import Subscription from '../../../../models/Subscription';
+import type { ISubscription } from '../../../../models/Subscription';
 import Icon from '../../../Icon/Icon';
 import { IconName } from '../../../Icon/types';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
@@ -13,7 +12,7 @@ import ToggleSubscriptionButton from '../ToggleSubscriptionButton/ToggleSubscrip
 import styles from './SubscriptionItem.module.scss';
 
 interface IProps {
-  subscription: Subscription;
+  subscription: ISubscription;
   index: number;
 }
 
@@ -24,44 +23,49 @@ type TProps = IProps & TComponentProps;
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
 
-  const dataSetThemeColorStyle = useDataSetThemeColorStyle(subscription, useCallback((color) => ({
-    backgroundColor: color
-  }), []));
+  const style = useMemo(() => {
+    const { color } = subscription;
+    return { backgroundColor: color };
+  }, [subscription]);
 
   return (
     <div className={classnames(className, styles.subscription)}>
       <i
         className={styles.bar}
-        style={dataSetThemeColorStyle}
+        style={style}
         aria-hidden
       />
-      {
-        subscription.error ? (
-          <Icon
-            icon={IconName.CommentAlert}
-            aria-label={subscription.error}
-            data-tip={subscription.error}
-            title={subscription.error}
-          />
-        ) : (
-          subscription.loading ? (
-            <LoadingSpinner />
-          ) : (
-            subscription.version && (
-              <Icon
-                icon={IconName.Verified}
-                aria-label={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
-                data-tip={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
-                title={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
-              />
-            )
-          )
-        )
-      }
       <span className={styles.name}>
         <a href={subscription.url} target="_blank">
           {subscription.name || subscription.url}
         </a>
+        {
+          subscription.error ? (
+            <Icon
+              className={styles.infoIcon}
+              icon={IconName.CommentAlert}
+              aria-hidden={false}
+              aria-label={subscription.error}
+              data-tip={subscription.error}
+              title={subscription.error}
+            />
+          ) : (
+            subscription.loading ? (
+              <LoadingSpinner className={styles.infoIcon} />
+            ) : (
+              subscription.loaded && (
+                <Icon
+                  className={styles.infoIcon}
+                  icon={IconName.Verified}
+                  aria-hidden={false}
+                  aria-label={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                  data-tip={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                  title={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                />
+              )
+            )
+          )
+        }
       </span>
       <SubscriptionHomepageButton
         className={styles.iconButton}
