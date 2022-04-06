@@ -15,7 +15,7 @@ const Icon: React.FunctionComponent<TProps> = (props) => {
   return (
     <i
       className={classnames(className, icon)}
-      aria-hidden={true}
+      aria-hidden
       {...otherProps}
     />
   );

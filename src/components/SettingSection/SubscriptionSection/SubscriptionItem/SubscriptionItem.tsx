@@ -33,7 +33,7 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
       <i
         className={styles.bar}
         style={dataSetThemeColorStyle}
-        aria-hidden={true}
+        aria-hidden
       />
       {
         subscription.error ? (
