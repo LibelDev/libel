@@ -29,7 +29,7 @@ const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
         )
       }
       icon={IconName.Link}
-      href={disabled ? homepage : undefined}
+      href={!disabled ? homepage : undefined}
       target="_blank"
       disabled={disabled}
       aria-label={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
