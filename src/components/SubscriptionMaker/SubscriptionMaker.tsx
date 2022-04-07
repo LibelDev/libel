@@ -176,7 +176,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           </option>
           {
             subscriptionTemplates.map((subscriptionTemplate, index) => (
-              <option key={index} value={index}>
+              <option key={subscriptionTemplate.name} value={index}>
                 {subscriptionTemplate.name}
               </option>
             ))

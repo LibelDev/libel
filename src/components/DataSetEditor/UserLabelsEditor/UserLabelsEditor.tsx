@@ -116,8 +116,8 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
             </div>
             <ol className={styles.labelList}>
               {
-                items.map(([, draft, removed], index) => (
-                  <li key={index}>
+                items.map(([original, draft, removed], index) => (
+                  <li key={original.id}>
                     <IconButton
                       className={styles.remove}
                       value={index}

@@ -18,10 +18,10 @@ const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) =>
   return (
     <ul ref={ref} className={classNames(className, styles.labelInfoList)} {...otherProps}>
       {
-        items.map((item, key) => {
+        items.map((item) => {
           const [user, index, label, dataSet] = item;
           return (
-            <li key={key}>
+            <li key={label.id}>
               <LabelInfo
                 user={user}
                 index={index}
