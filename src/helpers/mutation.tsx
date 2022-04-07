@@ -148,9 +148,7 @@ const renderAddLabelButton = (user: string, postID: string | null, store: TStore
     ReactDOM.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <AddLabelButton user={user} post={post}>
-            {TEXTS.BUTTON_TEXT_ADD_LABEL}
-          </AddLabelButton>
+          <AddLabelButton user={user} post={post} />
         </PersistGate>
       </Provider>,
       container
