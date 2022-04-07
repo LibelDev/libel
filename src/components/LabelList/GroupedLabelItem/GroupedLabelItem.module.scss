@@ -35,7 +35,8 @@
   @apply max-h-32;
   @apply box-content;
   @apply overflow-y-auto;
-  z-index: 1;
+  /** just above the YouTube preview */
+  z-index: 3;
 
   &:hover {
     @include visible();
