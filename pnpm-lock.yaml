@@ -15,7 +15,6 @@ specifiers:
   '@types/gapi.client.drive': ^3.0.13
   '@types/gtag.js': ^0.0.8
   '@types/jest': ^27.4.1
-  '@types/joi': ^17.2.3
   '@types/lodash': ^4.14.168
   '@types/lz-string': ^1.3.34
   '@types/mustache': ^4.1.1
@@ -23,7 +22,6 @@ specifiers:
   '@types/postcss-preset-env': ^6.7.2
   '@types/react': ^17.0.3
   '@types/react-dom': ^17.0.3
-  '@types/redux-persist': ^4.3.1
   '@types/redux-state-sync': ^3.1.1
   '@types/sass': ^1.16.0
   '@types/semver': ^7.3.6
@@ -117,7 +115,6 @@ devDependencies:
   '@types/gapi.client.drive': 3.0.13
   '@types/gtag.js': 0.0.8
   '@types/jest': 27.4.1
-  '@types/joi': 17.2.3
   '@types/lodash': 4.14.177
   '@types/lz-string': 1.3.34
   '@types/mustache': 4.1.2
@@ -125,7 +122,6 @@ devDependencies:
   '@types/postcss-preset-env': 6.7.3
   '@types/react': 17.0.35
   '@types/react-dom': 17.0.11
-  '@types/redux-persist': 4.3.1
   '@types/redux-state-sync': 3.1.2
   '@types/sass': 1.43.0
   '@types/semver': 7.3.9
@@ -1552,11 +1548,13 @@ packages:
 
   /@hapi/hoek/9.2.1:
     resolution: {integrity: sha512-gfta+H8aziZsm8pZa0vj04KO6biEiisppNgA1kbJvFrrWu9Vm7eaUEy76DIxsuTaWvti5fkJVhllWc6ZTE+Mdw==}
+    dev: false
 
   /@hapi/topo/5.1.0:
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
     dependencies:
       '@hapi/hoek': 9.2.1
+    dev: false
 
   /@istanbuljs/load-nyc-config/1.1.0:
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
@@ -1781,8 +1779,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.11
     dev: true
 
-  /@maxim_mazurok/gapi.client.drive/3.0.20220324:
-    resolution: {integrity: sha512-lOcu24KlGYlYGPbTAxXtytChNcpdIc9s8WBNwRAJp3Q8KFTJ4/HPmk9Q2ql2OaOUAeSoujnLGzruJwGJ92K7hw==}
+  /@maxim_mazurok/gapi.client.drive/3.0.20220331:
+    resolution: {integrity: sha512-HH1pEOucGtrGaVOzQReE1vx0VGE2VBweAeAfZaBwS8Iz05v+81d+DBoyFDDDEUdVg8ZPU9cA1443L2IOBC6x4g==}
     dependencies:
       '@types/gapi.client': 1.0.5
     dev: true
@@ -1848,12 +1846,15 @@ packages:
     resolution: {integrity: sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==}
     dependencies:
       '@hapi/hoek': 9.2.1
+    dev: false
 
   /@sideway/formula/3.0.0:
     resolution: {integrity: sha512-vHe7wZ4NOXVfkoRb8T5otiENVlT7a3IAiw7H5M2+GO+9CDgcVUUsX1zalAztCmwyOr2RUTGJdgB+ZvSVqmdHmg==}
+    dev: false
 
   /@sideway/pinpoint/2.0.0:
     resolution: {integrity: sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==}
+    dev: false
 
   /@sindresorhus/is/0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
@@ -2157,7 +2158,7 @@ packages:
   /@types/gapi.client.drive/3.0.13:
     resolution: {integrity: sha512-JFkHqQj9RA8MpvfvwdX8VU0Sbu7FMGqBR9dAmkocekWdD/y5Z/a/A6Y37EEqKW/dT8t7F3RpgUDUPlhp3snAlw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.drive': 3.0.20220324
+      '@maxim_mazurok/gapi.client.drive': 3.0.20220331
     dev: true
 
   /@types/gapi.client/1.0.5:
@@ -2219,13 +2220,6 @@ packages:
     dependencies:
       jest-matcher-utils: 27.5.1
       pretty-format: 27.5.1
-    dev: true
-
-  /@types/joi/17.2.3:
-    resolution: {integrity: sha512-dGjs/lhrWOa+eO0HwgxCSnDm5eMGCsXuvLglMghJq32F6q5LyyNuXb41DHzrg501CKNOSSAHmfB7FDGeUnDmzw==}
-    deprecated: This is a stub types definition. joi provides its own type definitions, so you do not need this installed.
-    dependencies:
-      joi: 17.4.2
     dev: true
 
   /@types/js-cookie/2.2.7:
@@ -2311,15 +2305,6 @@ packages:
       '@types/prop-types': 15.7.4
       '@types/scheduler': 0.16.2
       csstype: 3.0.10
-
-  /@types/redux-persist/4.3.1:
-    resolution: {integrity: sha1-qkyHaFngvqUVXl95gOW4xGmdwuY=}
-    deprecated: This is a stub types definition for redux-persist (https://github.com/rt2zz/redux-persist). redux-persist provides its own type definitions, so you don't need @types/redux-persist installed!
-    dependencies:
-      redux-persist: 6.0.0
-    transitivePeerDependencies:
-      - redux
-    dev: true
 
   /@types/redux-state-sync/3.1.2:
     resolution: {integrity: sha512-l5erpFpkZ3/0YCA5Kx8exbaB8PJE1cePaXx/Qhq52hvqTOy1+xQCz/90Ipfu0sypQ480PS54nuVAV7lv+F6CWg==}
@@ -6347,6 +6332,7 @@ packages:
       '@sideway/address': 4.1.2
       '@sideway/formula': 3.0.0
       '@sideway/pinpoint': 2.0.0
+    dev: false
 
   /join-path/1.1.1:
     resolution: {integrity: sha1-EFNaEm0ky9Zff/zfFe8uYxB2tQU=}
@@ -8649,6 +8635,7 @@ packages:
     resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
     peerDependencies:
       redux: '>4.0.0'
+    dev: false
 
   /redux-state-sync/3.1.2:
     resolution: {integrity: sha512-HJtyqckwb56iE2OvNOLwjW+Qnn7xA/R+jqP4mdYnSREk0bKVs4gVbE4bsiUZGOw5DzXlz5jHozg1x38gggWArQ==}
