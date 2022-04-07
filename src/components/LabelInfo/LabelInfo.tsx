@@ -85,4 +85,6 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+LabelInfo.displayName = 'LabelInfo';
+
 export default LabelInfo;

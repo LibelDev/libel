@@ -17,4 +17,6 @@ const Badge: React.FunctionComponent<TProps> = (props) => {
   ) : null;
 };
 
+Badge.displayName = 'Badge';
+
 export default Badge;

@@ -94,4 +94,6 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
   );
 };
 
+ClearDataSection.displayName = 'ClearDataSection';
+
 export default ClearDataSection;

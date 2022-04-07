@@ -37,4 +37,6 @@ const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) =>
   );
 });
 
+LabelInfoList.displayName = 'LabelInfoList';
+
 export default LabelInfoList;

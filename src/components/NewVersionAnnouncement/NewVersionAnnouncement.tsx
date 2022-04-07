@@ -37,4 +37,6 @@ const NewVersionAnnouncement: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+NewVersionAnnouncement.displayName = 'NewVersionAnnouncement';
+
 export default NewVersionAnnouncement;

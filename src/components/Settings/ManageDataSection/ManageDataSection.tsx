@@ -196,4 +196,6 @@ const ManageDataSection: React.FunctionComponent = () => {
   );
 };
 
+ManageDataSection.displayName = 'ManageDataSection';
+
 export default ManageDataSection;

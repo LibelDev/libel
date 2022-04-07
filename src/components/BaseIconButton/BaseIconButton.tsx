@@ -36,4 +36,6 @@ const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+BaseIconButton.displayName = 'BaseIconButton';
+
 export default BaseIconButton;

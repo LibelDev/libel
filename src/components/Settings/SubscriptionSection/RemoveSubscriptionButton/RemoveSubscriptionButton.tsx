@@ -50,4 +50,6 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+RemoveSubscriptionButton.displayName = 'RemoveSubscriptionButton';
+
 export default RemoveSubscriptionButton;

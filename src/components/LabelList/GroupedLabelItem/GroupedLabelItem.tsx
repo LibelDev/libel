@@ -76,4 +76,6 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+GroupedLabelItem.displayName = 'GroupedLabelItem';
+
 export default GroupedLabelItem;

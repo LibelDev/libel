@@ -36,4 +36,6 @@ const ColorPicker: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+ColorPicker.displayName = 'ColorPicker';
+
 export default ColorPicker;

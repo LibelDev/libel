@@ -75,4 +75,6 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+ToggleButton.displayName = 'ToggleButton';
+
 export default ToggleButton;

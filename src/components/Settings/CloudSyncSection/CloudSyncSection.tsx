@@ -22,4 +22,6 @@ const CloudSyncSection: React.FunctionComponent<TProps> = () => {
   );
 };
 
+CloudSyncSection.displayName = 'CloudSyncSection';
+
 export default CloudSyncSection;

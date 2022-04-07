@@ -47,4 +47,6 @@ const BaseButton: React.FunctionComponent<TProps> = (props) => {
   return React.createElement(as, _props as TAnchorComponentProps & TButtonComponentProps, _children);
 };
 
+BaseButton.displayName = 'BaseButton';
+
 export default BaseButton;

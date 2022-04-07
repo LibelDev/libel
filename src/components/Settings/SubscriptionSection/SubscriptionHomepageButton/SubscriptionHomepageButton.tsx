@@ -40,4 +40,6 @@ const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+SubscriptionHomepageButton.displayName = 'SubscriptionHomepageButton';
+
 export default SubscriptionHomepageButton;

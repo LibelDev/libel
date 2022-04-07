@@ -48,6 +48,6 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
-BaseInput.displayName = 'Input';
+BaseInput.displayName = 'BaseInput';
 
 export default BaseInput;

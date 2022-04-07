@@ -29,4 +29,6 @@ const LabelImageButton: React.FunctionComponent<TProps> = (props) => {
   ) : null;
 };
 
+LabelImageButton.displayName = 'LabelImageButton';
+
 export default LabelImageButton;

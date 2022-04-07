@@ -28,4 +28,6 @@ const LabelProviderButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+LabelProviderButton.displayName = 'LabelProviderButton';
+
 export default LabelProviderButton;

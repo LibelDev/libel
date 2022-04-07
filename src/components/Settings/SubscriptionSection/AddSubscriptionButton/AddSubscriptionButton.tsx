@@ -48,4 +48,6 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
   );
 };
 
+AddSubscriptionButton.displayName = 'AddSubscriptionButton';
+
 export default AddSubscriptionButton;

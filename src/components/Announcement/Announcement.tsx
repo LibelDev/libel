@@ -108,4 +108,6 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+Announcement.displayName = 'Announcement';
+
 export default Announcement;

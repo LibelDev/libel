@@ -50,4 +50,6 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+RemoveLabelButton.displayName = 'RemoveLabelButton';
+
 export default RemoveLabelButton;

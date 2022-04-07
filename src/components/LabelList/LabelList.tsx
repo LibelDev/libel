@@ -47,4 +47,6 @@ const LabelList: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+LabelList.displayName = 'LabelList';
+
 export default LabelList;

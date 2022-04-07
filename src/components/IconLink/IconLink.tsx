@@ -16,4 +16,6 @@ const IconLink: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+IconLink.displayName = 'IconLink';
+
 export default IconLink;

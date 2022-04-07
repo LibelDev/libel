@@ -38,4 +38,6 @@ const Header: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+Header.displayName = 'Header';
+
 export default Header;

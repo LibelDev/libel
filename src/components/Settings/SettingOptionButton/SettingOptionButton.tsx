@@ -39,4 +39,6 @@ const SettingOptionButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+SettingOptionButton.displayName = 'SettingOptionButton';
+
 export default SettingOptionButton;

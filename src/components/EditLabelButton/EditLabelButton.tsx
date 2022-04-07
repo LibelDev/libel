@@ -69,4 +69,6 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+EditLabelButton.displayName = 'EditLabelButton';
+
 export default EditLabelButton;

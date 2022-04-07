@@ -141,4 +141,6 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
   );
 };
 
+SyncWithGoogleDrive.displayName = 'SyncWithGoogleDrive';
+
 export default SyncWithGoogleDrive;

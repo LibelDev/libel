@@ -35,4 +35,6 @@ const SubscriptionSection: React.FunctionComponent = () => {
   );
 };
 
+SubscriptionSection.displayName = 'SubscriptionSection';
+
 export default SubscriptionSection;

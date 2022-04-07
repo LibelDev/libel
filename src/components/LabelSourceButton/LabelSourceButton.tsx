@@ -27,4 +27,6 @@ const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
   ) : null;
 };
 
+LabelSourceButton.displayName = 'LabelSourceButton';
+
 export default LabelSourceButton;

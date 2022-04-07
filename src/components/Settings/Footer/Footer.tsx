@@ -28,4 +28,6 @@ const Footer: React.FunctionComponent = () => {
   );
 };
 
+Footer.displayName = 'Footer';
+
 export default Footer;

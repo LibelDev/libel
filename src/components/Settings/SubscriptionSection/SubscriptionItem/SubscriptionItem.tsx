@@ -89,4 +89,6 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+SubscriptionItem.displayName = 'SubscriptionItem';
+
 export default SubscriptionItem;

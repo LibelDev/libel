@@ -21,4 +21,6 @@ const Icon: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+Icon.displayName = 'Icon';
+
 export default Icon;

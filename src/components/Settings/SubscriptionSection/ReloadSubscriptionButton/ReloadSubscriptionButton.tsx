@@ -44,4 +44,6 @@ const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+ReloadSubscriptionButton.displayName = 'ReloadSubscriptionButton';
+
 export default ReloadSubscriptionButton;

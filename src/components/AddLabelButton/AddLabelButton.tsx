@@ -108,4 +108,6 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+AddLabelButton.displayName = 'AddLabelButton';
+
 export default AddLabelButton;

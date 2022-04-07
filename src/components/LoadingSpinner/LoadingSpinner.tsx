@@ -19,4 +19,6 @@ const LoadingSpinner: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+LoadingSpinner.displayName = 'LoadingSpinner';
+
 export default LoadingSpinner;
