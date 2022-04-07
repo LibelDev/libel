@@ -1,7 +1,7 @@
 import { useFloating } from '@floating-ui/react-dom';
 import debugFactory from 'debug';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot, Root } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import type { Persistor } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -33,15 +33,34 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
-const labelListContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
-const addLabelButtonontainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
-const snipeButtonContainerSymbol: unique symbol = Symbol(`__${namespace}__container__`);
+const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+
+type TMutationCacheSymbol = (
+  typeof labelListMutationCacheSymbol |
+  typeof addLabelButtonMutationCacheSymbol |
+  typeof snipeButtonMutationCacheSymbol
+);
+
+interface IMutationCache {
+  container: HTMLElement;
+  root: Root;
+}
+
+type TUnmontableMutationHandler = (
+  /** the reference element to attach the mutation cache */
+  reference: Element,
+  /** the cache symbol key */
+  cacheSymbol: TMutationCacheSymbol,
+  render: (reference: Element) => IMutationCache
+) => IMutationCache;
 
 declare global {
   interface Element {
-    [labelListContainerSymbol]?: Element;
-    [addLabelButtonontainerSymbol]?: Element;
-    [snipeButtonContainerSymbol]?: Element;
+    [labelListMutationCacheSymbol]?: IMutationCache;
+    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
+    [snipeButtonMutationCacheSymbol]?: IMutationCache;
   }
 }
 
@@ -115,19 +134,21 @@ const isModalTitleMatched = (node: Element, title: string) => {
 
 const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(lihkgCssClasses.drawerSidebarItem);
-  ReactDOM.render(
+  const root = createRoot(container);
+  root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <SettingsModalToggleButton />
       </PersistGate>
-    </Provider>,
-    container
+    </Provider>
   );
+  return root;
 };
 
 const renderLabelList = (user: string, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(labelListStyles.container);
-  ReactDOM.render(
+  const root = createRoot(container);
+  root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <LabelList
@@ -135,61 +156,65 @@ const renderLabelList = (user: string, floatingConfig: TFloatingConfig, store: T
           floatingConfig={floatingConfig}
         />
       </PersistGate>
-    </Provider>,
-    container
+    </Provider>
   );
+  return root;
 };
 
-const renderAddLabelButton = (user: string, postID: string | null, store: TStore, persistor: Persistor, container: Element) => {
+const renderAddLabelButton = (user: string, postID: string | null | undefined, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(lihkgCssClasses.replyToolbarButton);
   container.classList.add(addLabelButtonStyles.container);
   const post = postID && cache.getReply(postID);
+  const root = createRoot(container);
   if (post) {
-    ReactDOM.render(
+    root.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <AddLabelButton user={user} post={post} />
         </PersistGate>
-      </Provider>,
-      container
+      </Provider>
     );
   }
+  return root;
 };
 
 const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(lihkgCssClasses.replyToolbarButton);
   container.classList.add(snipeButtonStyles.container);
-  ReactDOM.render(
+  const root = createRoot(container);
+  root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <SnipeButton user={user} />
       </PersistGate>
-    </Provider>,
-    container
+    </Provider>
   );
+  return root;
 };
 
 // const renderSettings = (store: TStore, persistor: Persistor, container: Element) => {
 //   container.classList.add(settingsStyles.container);
-//   ReactDOM.render(
+//   const root = createRoot(container);
+//   root.render(
 //     <Provider store={store}>
 //       <PersistGate persistor={persistor}>
 //         <Settings />
 //       </PersistGate>
-//     </Provider>,
-//     container
+//     </Provider>
 //   );
+//   return root;
 // };
 
 const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
-  ReactDOM.render(
+  const root = createRoot(container);
+  root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <UnlockIconMapToggleButton />
       </PersistGate>
-    </Provider>,
-    container
+    </Provider>
   );
+  return root;
 };
 
 export const renderAnnouncement = async (announcement: React.ReactElement) => {
@@ -197,7 +222,22 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   container.classList.add(announcementStyles.container);
   const rightPanelContainer = await waitForRightPanelContainer();
   rightPanelContainer?.insertBefore(container, rightPanelContainer.firstChild);
-  ReactDOM.render(announcement, container);
+  const root = createRoot(container);
+  root.render(announcement);
+  return root;
+};
+
+/**
+ * handle unmountable mutation
+ * @description unmount the root and remove the container from the previous mutation, then attach new mutation cache
+ * @private
+ */
+const _handleUnmountableMutation: TUnmontableMutationHandler = (reference, symbol, render) => {
+  reference[symbol]?.root.unmount();
+  reference[symbol]?.container.remove();
+  const cache = render(reference);
+  reference[symbol] = cache;
+  return cache;
 };
 
 const handleDrawerMutation = (node: Element, store: TStore, persistor: Persistor) => {
@@ -295,38 +335,32 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
     const replyItemInnerBody = node.parentElement;
     if (replyItemInnerBody) {
       /* label list */
-      if (replyItemInnerBody[labelListContainerSymbol]) {
-        ReactDOM.unmountComponentAtNode(replyItemInnerBody[labelListContainerSymbol]!);
-        replyItemInnerBody[labelListContainerSymbol]!.remove();
-      }
-      const container = document.createElement('div');
-      replyItemInnerBody.insertAdjacentElement('afterbegin', container);
-      const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
-      renderLabelList(user, floatingConfig, store, persistor, container);
-      replyItemInnerBody[labelListContainerSymbol] = container;
+      _handleUnmountableMutation(replyItemInnerBody, labelListMutationCacheSymbol, (reference) => {
+        const container = document.createElement('div');
+        reference.insertAdjacentElement('afterbegin', container);
+        const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
+        const root = renderLabelList(user, floatingConfig, store, persistor, container);
+        return { container, root };
+      });
     }
     const replyButton = node.querySelector(`.${IconName.Reply}`);
     if (replyButton) {
       /* add label button */
-      if (replyButton[addLabelButtonontainerSymbol]) {
-        ReactDOM.unmountComponentAtNode(replyButton[addLabelButtonontainerSymbol]!);
-        replyButton[addLabelButtonontainerSymbol]!.remove();
-      }
-      const addLabelButtonContainer = document.createElement('div');
-      const replyItemInner = node.parentElement!.parentElement!;
-      const postID = replyItemInner.getAttribute(ATTRIBUTES.dataPostId);
-      insertAfter(addLabelButtonContainer, replyButton);
-      renderAddLabelButton(user, postID, store, persistor, addLabelButtonContainer);
-      replyButton[addLabelButtonontainerSymbol] = addLabelButtonContainer;
+      const { container: addLabelButtonContainer } = _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
+        const replyItemInner = node.parentElement?.parentElement;
+        const postID = replyItemInner?.getAttribute(ATTRIBUTES.dataPostId);
+        const container = document.createElement('div');
+        insertAfter(container, reference);
+        const root = renderAddLabelButton(user, postID, store, persistor, container);
+        return { container, root };
+      });
       /* snipe button */
-      if (replyButton[snipeButtonContainerSymbol]) {
-        ReactDOM.unmountComponentAtNode(replyButton[snipeButtonContainerSymbol]!);
-        replyButton[snipeButtonContainerSymbol]!.remove();
-      }
-      const snipeButtonContainer = document.createElement('div');
-      insertAfter(snipeButtonContainer, addLabelButtonContainer);
-      renderSnipeButton(user, store, persistor, snipeButtonContainer);
-      replyButton[snipeButtonContainerSymbol] = snipeButtonContainer;
+      _handleUnmountableMutation(replyButton, snipeButtonMutationCacheSymbol, (reference) => {
+        const container = document.createElement('div');
+        insertAfter(container, addLabelButtonContainer);
+        const root = renderSnipeButton(user, store, persistor, container);
+        return { container, root };
+      });
     }
   }
 };
