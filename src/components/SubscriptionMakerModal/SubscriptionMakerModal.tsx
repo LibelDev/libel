@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
-import useElementID from '../../hooks/useElementID';
 import Button from '../Button/Button';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
 import SubscriptionMaker, { TProps as TSubscriptionMakerProps } from '../SubscriptionMaker/SubscriptionMaker';
@@ -10,9 +9,9 @@ interface IProps { }
 type TProps = IProps & Omit<TModalProps, 'onSubmit'> & TSubscriptionMakerProps;
 
 const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
-  const { onClose, dataSet, onSubmit, ...otherProps } = props;
+  const { id, onClose, dataSet, onSubmit, ...otherProps } = props;
 
-  const formID = useElementID(SubscriptionMaker.displayName!);
+  const _id = id || useId();
 
   return (
     <Modal {...otherProps} onClose={onClose}>
@@ -21,13 +20,13 @@ const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Header>
       <Modal.Body>
         <SubscriptionMaker
-          id={formID}
+          id={_id}
           dataSet={dataSet}
           onSubmit={onSubmit}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button form={formID} type="submit">
+        <Button form={_id} type="submit">
           {TEXTS.SUBSCRIPTION_MAKER_BUTTON_TEXT_SUBMIT}
         </Button>
       </Modal.Footer>

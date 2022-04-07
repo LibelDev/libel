@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
-import useElementID from '../../hooks/useElementID';
 import Button from '../Button/Button';
 import LabelForm, { TProps as TLabelFormProps } from '../LabelForm/LabelForm';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
@@ -14,7 +13,7 @@ type TProps = IProps & TComponentProps & TLabelFormProps;
 const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
   const { onClose, user, label, loading, targetReply, onSubmit, ...otherProps } = props;
 
-  const formID = useElementID(LabelForm.displayName!);
+  const _formId = useId();
 
   return (
     <Modal {...otherProps} onClose={onClose}>
@@ -27,7 +26,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Header>
       <Modal.Body>
         <LabelForm
-          id={formID}
+          id={_formId}
           user={user}
           label={label}
           loading={loading}
@@ -37,7 +36,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          form={formID}
+          form={_formId}
           type="submit"
           loading={loading}
         >

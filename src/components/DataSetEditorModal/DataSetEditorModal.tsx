@@ -1,7 +1,6 @@
 // import debugFactory from 'debug';
-import React from 'react';
+import React, { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
-import useElementID from '../../hooks/useElementID';
 import Button from '../Button/Button';
 import DataSetEditor, { TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
@@ -16,7 +15,7 @@ type TProps = IProps & Omit<TModalProps, 'onChange' | 'onSubmit'> & TDataSetEdit
 const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
   const { id, dataSet, onChange, onSubmit, onClose, ...otherProps } = props;
 
-  const formID = useElementID(DataSetEditor.displayName!);
+  const _formId = useId();
 
   const users = Object.keys(dataSet.data);
   const empty = users.length === 0;
@@ -28,7 +27,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Header>
       <Modal.Body className={styles.body}>
         <DataSetEditor
-          id={formID}
+          id={_formId}
           className={styles.dataSetEditor}
           dataSet={dataSet}
           onChange={onChange}
@@ -38,7 +37,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
       {
         !empty && (
           <Modal.Footer>
-            <Button form={formID} type="submit">
+            <Button form={_formId} type="submit">
               {TEXTS.DATA_SET_EDITOR_BUTTON_TEXT_SAVE}
             </Button>
           </Modal.Footer>

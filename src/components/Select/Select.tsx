@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
-import useElementID from '../../hooks/useElementID';
+import React, { useId } from 'react';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
@@ -19,8 +18,8 @@ type TProps = IProps & TComponentProps;
 const Select: React.FunctionComponent<TProps> = (props) => {
   const { id, className, border, label, error, ...otherProps } = props;
 
-  const _id = id || useElementID(Select.displayName!);
-  const errorID = `${_id}-error`;
+  const _id = id || useId();
+  const _errorId = `${_id}-error`;
 
   return (
     <div className={classNames(className, styles.wrapper)}>
@@ -49,7 +48,7 @@ const Select: React.FunctionComponent<TProps> = (props) => {
         </div>
         {
           !!error && (
-            <ErrorMessage id={errorID} className={styles.error}>
+            <ErrorMessage id={_errorId} className={styles.error}>
               {error}
             </ErrorMessage>
           )

@@ -1,9 +1,8 @@
 import classNames from 'classNames';
 import FocusTrap from 'focus-trap-react';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useId, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
-import useElementID from '../../hooks/useElementID';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
@@ -61,12 +60,11 @@ const Modal: TModal = (props) => {
   const backdropRef = React.createRef<HTMLDivElement>();
   const innerRef = React.createRef<HTMLDivElement>();
 
-  const _id = id || useElementID(Modal.displayName!);
-
-  const ids = useMemo(() => ({
+  const _id = id || useId();
+  const _ids = {
     title: `${_id}-title`,
     body: `${_id}-body`
-  }), [_id]);
+  };
 
   const focusTrapOptions = useMemo(() => ({
     escapeDeactivates: escape
@@ -100,7 +98,7 @@ const Modal: TModal = (props) => {
 
   return (
     ReactDOM.createPortal(
-      <IDsContext.Provider value={ids}>
+      <IDsContext.Provider value={_ids}>
         <FocusTrap focusTrapOptions={focusTrapOptions}>
           <div
             ref={ref}
@@ -108,8 +106,8 @@ const Modal: TModal = (props) => {
             className={classNames(className, styles.modal)}
             role="dialog"
             aria-modal
-            aria-labelledby={ids.title}
-            aria-describedby={ids.body}
+            aria-labelledby={_ids.title}
+            aria-describedby={_ids.body}
           >
             {
               backdrop && (

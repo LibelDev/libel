@@ -1,14 +1,13 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import joi from 'joi';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useId, useState } from 'react';
 import { namespace } from '../../../package.json';
 import { EventAction, EventCategory } from '../../constants/ga';
 import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
-import useElementID from '../../hooks/useElementID';
 import type { IDataSet } from '../../models/DataSet';
 import type { IRemoteSubscription } from '../../models/Subscription';
 import { selectConfig } from '../../store/selectors';
@@ -80,9 +79,9 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
   const [inputErrors, setInputErrors] = useState<IInputErrors | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const _id = id || useElementID(SubscriptionMaker.displayName!);
+  const _id = id || useId();
+  const _errorId = `${_id}-error`;
   const name = `${namespace}-${SubscriptionMaker.displayName!}`;
-  const errorID = `${_id}-error`;
 
   const handleSubscriptionTemplateChange: React.ChangeEventHandler<HTMLSelectElement> = useCallback((event) => {
     const { value } = event.target;
@@ -162,7 +161,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       name={name}
       className={classNames(className, styles.subscriptionMaker)}
       onSubmit={handleSubmit}
-      aria-describedby={errorID}
+      aria-describedby={_errorId}
     >
       <div className={classNames(styles.inputField, styles.template)}>
         <Select
@@ -253,7 +252,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       </div>
       {
         !!formError && (
-          <ErrorMessage id={errorID} className={styles.error}>
+          <ErrorMessage id={_errorId} className={styles.error}>
             {formError}
           </ErrorMessage>
         )

@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
-import useElementID from '../../hooks/useElementID';
+import React, { useId } from 'react';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './BaseInput.module.scss';
 
@@ -16,8 +15,8 @@ export type TProps = IProps & TComponentProps;
 const BaseInput: React.FunctionComponent<TProps> = (props) => {
   const { id, className, disabled, label, error, ...otherProps } = props;
 
-  const _id = id || useElementID(BaseInput.displayName!);
-  const errorID = `${_id}-error`;
+  const _id = id || useId();
+  const _errorId = `${_id}-error`;
 
   return (
     <React.Fragment>
@@ -34,12 +33,12 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
         <input
           id={_id}
           disabled={disabled}
-          aria-describedby={errorID}
+          aria-describedby={_errorId}
           {...otherProps}
         />
         {
           !!error && (
-            <ErrorMessage id={errorID} className={styles.error}>
+            <ErrorMessage id={_errorId} className={styles.error}>
               {error}
             </ErrorMessage>
           )

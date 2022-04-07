@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import joi from 'joi';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
 import { EventAction, EventCategory } from '../../constants/ga';
@@ -8,7 +8,6 @@ import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
-import useElementID from '../../hooks/useElementID';
 import useScreenshot, { TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import ColorPicker from '../ColorPicker/ColorPicker';
@@ -101,9 +100,9 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   }), []);
   const screenshot = useScreenshot(toggleButtonState.useScreenshot, targetReply, options);
 
-  const _id = id || useElementID(LabelForm.displayName!);
+  const _id = id || useId();
+  const _errorId = `${_id}-error`;
   const name = `${namespace}-${LabelForm.displayName!}`;
-  const errorID = `${_id}-error`;
 
   const _user = cache.getUser(user);
 
@@ -154,7 +153,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       name={name}
       className={classNames(className, styles.labelForm)}
       onSubmit={handleSubmit}
-      aria-describedby={errorID}
+      aria-describedby={_errorId}
     >
       {
         _user && (
@@ -275,7 +274,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       {
         !!formError && (
-          <ErrorMessage id={errorID} className={styles.error}>
+          <ErrorMessage id={_errorId} className={styles.error}>
             {formError}
           </ErrorMessage>
         )
