@@ -9,6 +9,12 @@ import Header from './Header';
 import IDsContext from './IDsContext';
 import styles from './Modal.module.scss';
 
+interface IModal {
+  Header: typeof Header;
+  Body: typeof Body;
+  Footer: typeof Body;
+}
+
 interface IProps {
   /**
    * indicate the open state, default: false
@@ -32,17 +38,11 @@ interface IProps {
   onClose: () => void;
 }
 
-interface IComponent {
-  Header: typeof Header;
-  Body: typeof Body;
-  Footer: typeof Body;
-}
-
 type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 
 export type TProps = IProps & TComponentProps;
 
-type TModal = IComponent & React.FunctionComponent<TProps>;
+type TModal = IModal & React.FunctionComponent<TProps>;
 
 const Modal: TModal = (props) => {
   const {
