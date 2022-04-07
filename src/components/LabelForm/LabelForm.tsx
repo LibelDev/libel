@@ -246,7 +246,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               {TEXTS.LABEL_FORM_FIELD_LABEL_CAPTURE}
             </ToggleButton>
             {
-              !screenshot.loading && (screenshot.error || screenshot.url) && (
+              !screenshot.loading && !!(screenshot.error || screenshot.url) && (
                 <div className={styles.preview}>
                   {
                     !!screenshot.error ? (
