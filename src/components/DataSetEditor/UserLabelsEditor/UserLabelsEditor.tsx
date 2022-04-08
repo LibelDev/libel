@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
-import useLazyRender, { IOptions as ILazyRenderOptions } from '../../../hooks/useLazyRender';
+import useLazyRender, { IOptions as IUseLazyRenderOptions } from '../../../hooks/useLazyRender';
 import type { ILabel } from '../../../models/Label';
 import ColorPicker from '../../ColorPicker/ColorPicker';
 import Icon from '../../Icon/Icon';
@@ -52,7 +52,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   /** lazy rendering */
-  const lazyRenderOptions: ILazyRenderOptions<HTMLDivElement> = useMemo(() => ({
+  const useLazyRenderOptions: IUseLazyRenderOptions<HTMLDivElement> = useMemo(() => ({
     onVisibilityChange: (element, visible) => {
       if (visible) {
         setStyle({});
@@ -63,7 +63,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
       }
     }
   }), []);
-  const [ref, visible] = useLazyRender(lazyRenderOptions);
+  const [ref, visible] = useLazyRender(useLazyRenderOptions);
 
   /** validation error for each item */
   const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
