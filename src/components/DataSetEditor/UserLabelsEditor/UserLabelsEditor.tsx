@@ -82,7 +82,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
     const { value } = event.currentTarget;
     const index = parseInt(value); // the index of the item in the filtered array
     onRemove(user, index);
-  }, [user, items, onRemove]);
+  }, [user, onRemove]);
 
   const userProfileURL = `/profile/${user}`;
 
