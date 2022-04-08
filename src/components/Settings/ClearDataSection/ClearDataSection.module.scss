@@ -1,4 +1,8 @@
+@import '../../../stylesheets/base';
+
 .clear-data-button {
+  color: $color-red02;
+
   &:hover {
     @apply no-underline;
   }
