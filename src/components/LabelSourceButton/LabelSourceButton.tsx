@@ -1,7 +1,7 @@
 import React from 'react';
 import * as TEXTS from '../../constants/texts';
-import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
+import IconLink from '../IconLink/IconLink';
 
 interface IProps {
   url?: string;
@@ -14,16 +14,15 @@ type TProps = IProps & TComponentProps;
 const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
   const { url, ...otherProps } = props;
   return url ? (
-    <a
+    <IconLink
       {...otherProps}
+      icon={IconName.Link}
       href={url}
       target="_blank"
       aria-label={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
       data-tip={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
       title={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
-    >
-      <Icon icon={IconName.Link} />
-    </a>
+    />
   ) : null;
 };
 
