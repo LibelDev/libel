@@ -100,6 +100,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   }), []);
   const screenshot = useScreenshot(toggleButtonState.useScreenshot, targetReply, options);
 
+  const previewImageStyle = useMemo(() => ({
+    backgroundImage: `url(${screenshot.url})`
+  }), [screenshot.url]);
+
   const _id = id || useId();
   const _errorId = `${_id}-error`;
   const name = `${namespace}-${LabelForm.displayName!}`;
@@ -258,7 +262,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                           className={styles.image}
                           href={screenshot.url}
                           target="_blank"
-                          style={{ backgroundImage: `url(${screenshot.url})` }}
+                          style={previewImageStyle}
                           aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
                         >
                           <Icon className={styles.icon} icon={IconName.Expand} />
