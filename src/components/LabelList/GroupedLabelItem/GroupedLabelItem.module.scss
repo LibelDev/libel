@@ -25,7 +25,7 @@
 .label-info-list {
   @include hide-scrollbar();
   @include invisible();
-  @apply rounded;
+  // @apply rounded;
   @apply -my-2;
   @apply py-2;
   @apply transform;

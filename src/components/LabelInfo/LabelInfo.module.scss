@@ -18,7 +18,12 @@
 
   .name {
     @apply flex items-center justify-center;
-    @include text-ellipsis();
+
+    a {
+      @include text-ellipsis();
+      @apply text-current;
+      @apply ml-2;
+    }
 
     & + .reason {
       @apply mt-2;

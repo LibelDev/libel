@@ -5,6 +5,8 @@ import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
 import Subscription, { IRemoteSubscription } from '../../models/Subscription';
 import EditLabelButton from '../EditLabelButton/EditLabelButton';
+import Icon from '../Icon/Icon';
+import { IconName } from '../Icon/types';
 import LabelImageButton from '../LabelImageButton/LabelImageButton';
 import LabelSourceButton from '../LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from '../RemoveLabelButton/RemoveLabelButton';
@@ -41,14 +43,12 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
     <div className={classnames(className, styles.labelInfo)} style={style}>
       {
         isSubscriptionImplemented && (
-          <a
-            className={styles.name}
-            href={dataSet.url}
-            target="_blank"
-            style={nameStyle}
-          >
-            {dataSet.name}
-          </a>
+          <div className={styles.name}>
+            <Icon icon={IconName.InfoFill} />
+            <a href={dataSet.url} target="_blank" style={nameStyle}>
+              {dataSet.name}
+            </a>
+          </div>
         )
       }
       {
