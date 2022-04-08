@@ -10,6 +10,7 @@ import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import useScreenshot, { TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
+import { color, image, reason, text } from '../../schemas/label';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
@@ -65,13 +66,13 @@ type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
 export type TProps = IProps & TComponentProps;
 
 const schema = joi.object({
-  text: joi.string().trim().required().messages({
+  text: text.required().messages({
     'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED,
     'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED
   }),
-  reason: joi.string().trim().allow(''),
-  color: joi.string().trim().pattern(HEX_COLOR).allow(''),
-  image: joi.string().trim().allow(''),
+  reason,
+  color,
+  image,
   meta: joi.object({
     screenshot: joi.any()
   })
