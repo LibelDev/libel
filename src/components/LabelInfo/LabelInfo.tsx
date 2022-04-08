@@ -3,10 +3,9 @@ import React, { useMemo } from 'react';
 import { getShareURL } from '../../helpers/label';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
-import Subscription from '../../models/Subscription';
+import Subscription, { IRemoteSubscription } from '../../models/Subscription';
 import EditLabelButton from '../EditLabelButton/EditLabelButton';
 import LabelImageButton from '../LabelImageButton/LabelImageButton';
-import LabelProviderIcon from '../LabelProviderButton/LabelProviderButton';
 import LabelSourceButton from '../LabelSourceButton/LabelSourceButton';
 import RemoveLabelButton from '../RemoveLabelButton/RemoveLabelButton';
 import styles from './LabelInfo.module.scss';
@@ -15,8 +14,7 @@ interface IProps {
   user: string;
   index: number;
   label: ILabel;
-  color?: string;
-  dataSet?: IDataSet;
+  dataSet: IDataSet;
 }
 
 type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
@@ -24,21 +22,35 @@ type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 type TProps = IProps & TComponentProps;
 
 const LabelInfo: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, index, label, color, dataSet } = props;
-
-  const _color = label.color || color;
-
-  const style: Partial<React.CSSProperties> | undefined = useMemo(() => (_color ? {
-    borderColor: _color
-  } : undefined), [_color]);
+  const { className, user, index, label, dataSet } = props;
 
   const isSubscriptionImplemented = Subscription.implements(dataSet);
 
+  const color = label.color || (dataSet as IRemoteSubscription).color;
+
+  const style: React.CSSProperties = useMemo(() => ({
+    borderColor: color,
+    boxShadow: color && `${color} 0 0 0.5rem inset`
+  }), [dataSet]);
+
+  const nameStyle: React.CSSProperties = useMemo(() => ({
+    color: (dataSet as IRemoteSubscription).color
+  }), [dataSet]);
+
   return (
-    <div
-      className={classnames(className, styles.labelInfo)}
-      style={style}
-    >
+    <div className={classnames(className, styles.labelInfo)} style={style}>
+      {
+        isSubscriptionImplemented && (
+          <a
+            className={styles.name}
+            href={dataSet.url}
+            target="_blank"
+            style={nameStyle}
+          >
+            {dataSet.name}
+          </a>
+        )
+      }
       {
         label.reason && (
           <div className={styles.reason}>
@@ -66,12 +78,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
           label={label}
         />
         {
-          isSubscriptionImplemented ? (
-            <LabelProviderIcon
-              className={styles.button}
-              subscription={dataSet}
-            />
-          ) : (
+          !isSubscriptionImplemented && (
             <RemoveLabelButton
               className={styles.button}
               user={user}
