@@ -4,13 +4,14 @@ import React, { useCallback, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
 import { EventAction, EventCategory } from '../../constants/ga';
-import { HEX_COLOR } from '../../constants/regexes';
+import { imageScreenshotWidth } from '../../constants/label';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
-import useScreenshot, { TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
+import useScreenshot, { IResult as IUseScreenshotResult, TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
+import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
@@ -23,7 +24,7 @@ type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
 type TFormData = TLabelData & {
   meta: {
-    screenshot?: Blob | null;
+    screenshot?: IUseScreenshotResult;
   };
 };
 
@@ -52,7 +53,7 @@ interface IProps {
   /**
    * the target reply element for screenshot
    */
-  targetReply?: HTMLElement | null;
+  target?: HTMLElement;
   /**
    * custom onSubmit event handler
    * @async
@@ -61,7 +62,7 @@ interface IProps {
   onSubmit: (data: TFormData) => Promise<void>;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit' | 'target'>;
 
 export type TProps = IProps & TComponentProps;
 
@@ -84,7 +85,7 @@ const initialFormData: TFormData = {
 };
 
 const LabelForm: React.FunctionComponent<TProps> = (props) => {
-  const { id, className, user, label, loading, targetReply, onSubmit, ...otherProps } = props;
+  const { id, className, user, label, loading, target, onSubmit, ...otherProps } = props;
 
   const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
@@ -94,12 +95,12 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [formError, setFormError] = useState('');
 
-  const options: TUseScreenshotOptions = useMemo(() => ({
+  const useScreenshotOptions: TUseScreenshotOptions = useMemo(() => ({
     onclone: (document, element) => {
-      element.style.width = '600px';
+      element.style.width = imageScreenshotWidth;
     }
   }), []);
-  const screenshot = useScreenshot(toggleButtonState.useScreenshot, targetReply, options);
+  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, useScreenshotOptions);
 
   const previewImageStyle = useMemo(() => ({
     backgroundImage: `url(${screenshot.url})`
@@ -127,10 +128,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     const _formData: TFormData = {
       ...formData,
       color: toggleButtonState.useCustomColor ? formData.color : undefined, // unset if it is disabled
-      meta: {
-        ...formData.meta,
-        screenshot: screenshot.blob
-      }
+      meta: { ...formData.meta, screenshot }
     };
     const { value, error } = schema.validate(_formData);
     if (error) {

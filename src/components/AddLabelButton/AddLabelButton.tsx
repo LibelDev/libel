@@ -27,14 +27,14 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [targetReply, setTargetReply] = useState<HTMLElement | null>(null);
+  const [target, setTarget] = useState<HTMLElement | null>(null);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     if (!loading) {
       const targetReplySelector = `[${ATTRIBUTES.dataPostId}="${post.post_id}"]`;
       const targetReply = document.querySelector<HTMLDivElement>(targetReplySelector);
-      setTargetReply(targetReply);
+      setTarget(targetReply);
       setOpen(true);
       // analytics
       gtag.event(EventAction.Open, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
@@ -53,9 +53,9 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
     const payload: IAddLabelPayload = { user, text, reason, color, image, source };
     setLoading(true);
     const { screenshot } = meta;
-    if (screenshot) {
+    if (screenshot && screenshot.blob) {
       try {
-        const { status, url } = await uploadImage(screenshot);
+        const { status, url } = await uploadImage(screenshot.blob);
         switch (status) {
           case 200: {
             payload.image = url;
@@ -94,16 +94,20 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
         disabled={loading}
         onClick={handleClick}
       />
-      <LabelFormModal
-        open={open}
-        user={user}
-        escape={false}
-        fragile={false}
-        loading={loading}
-        targetReply={targetReply}
-        onClose={handleLabelFormModalClose}
-        onSubmit={handleLabelFormSubmit}
-      />
+      {
+        target && (
+          <LabelFormModal
+            open={open}
+            user={user}
+            escape={false}
+            fragile={false}
+            loading={loading}
+            target={target}
+            onClose={handleLabelFormModalClose}
+            onSubmit={handleLabelFormSubmit}
+          />
+        )
+      }
     </React.Fragment>
   );
 };

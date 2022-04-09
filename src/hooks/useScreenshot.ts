@@ -1,10 +1,7 @@
-import type { Options } from 'html2canvas';
 import { useEffect, useState } from 'react';
-import { toImageURL } from '../helpers/canvas';
+import { toCanvas, toImageURL, TToCanvasOptions } from '../helpers/canvas';
 
-export type TOptions = Partial<Options>;
-
-interface IState {
+export interface IResult {
   loading: boolean;
   error: unknown | null;
   url: string | null;
@@ -12,7 +9,7 @@ interface IState {
   canvas: HTMLCanvasElement | null;
 }
 
-const initialState: IState = {
+const initialResult: IResult = {
   loading: false,
   error: null,
   url: null,
@@ -20,24 +17,27 @@ const initialState: IState = {
   canvas: null
 };
 
-const useScreenshot = (enabled: boolean, element?: HTMLElement | null, options?: TOptions): IState => {
-  const [state, setState] = useState(initialState);
+const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: TToCanvasOptions): IResult => {
+  const [result, setResult] = useState(initialResult);
   useEffect(() => {
     (async () => {
       if (enabled && element) {
-        setState({ ...state, loading: true });
+        setResult({ ...result, loading: true });
         try {
-          const [url, blob, canvas] = await toImageURL(element, options);
-          setState({ loading: false, error: null, url, blob, canvas });
+          const canvas = await toCanvas(element, options);
+          const [url, blob] = await toImageURL(canvas);
+          setResult({ loading: false, error: null, url, blob, canvas });
         } catch (err) {
-          setState({ ...initialState, error: err });
+          setResult({ ...initialResult, error: err });
         }
       } else {
-        setState(initialState);
+        setResult(initialResult);
       }
     })();
   }, [enabled, element, options]);
-  return state;
+  return result;
 };
 
 export default useScreenshot;
+
+export type { TToCanvasOptions as TOptions };
