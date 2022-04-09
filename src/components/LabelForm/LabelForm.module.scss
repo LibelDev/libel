@@ -3,8 +3,12 @@
 .label-form {
   @apply w-60;
 
-  .user-icon {
-    @apply mr-2;
+  .user {
+    @apply flex items-center;
+
+    .icon {
+      @apply mr-2;
+    }
   }
 
   .input-field {

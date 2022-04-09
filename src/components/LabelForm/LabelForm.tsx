@@ -162,8 +162,8 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     >
       {
         _user && (
-          <div>
-            <Icon className={styles.userIcon} icon={IconName.Account} />
+          <div className={styles.user}>
+            <Icon className={styles.icon} icon={IconName.Account} />
             {_user.nickname}
           </div>
         )
