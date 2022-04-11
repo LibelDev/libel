@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
@@ -84,6 +85,13 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
     onRemove(user, index);
   }, [user, onRemove]);
 
+  const handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
+    const { key } = event;
+    if (key === Key.Enter) {
+      event.preventDefault();
+    }
+  }, []);
+
   const userProfileURL = `/profile/${user}`;
 
   /** auto scroll to the item  */
@@ -134,6 +142,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       invalid={errors[index].text}
                       placeholder={TEXTS.LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_TEXT}
                       onChange={handleInputChange}
+                      onKeyDown={handleInputKeyDown}
                     />
                     <TextInput
                       className={classNames(styles.inputField, styles.reason)}
@@ -144,6 +153,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       invalid={errors[index].reason}
                       placeholder={TEXTS.LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_REASON}
                       onChange={handleInputChange}
+                      onKeyDown={handleInputKeyDown}
                     />
                     <ColorPicker
                       border
