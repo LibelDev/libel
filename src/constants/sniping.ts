@@ -1,6 +1,8 @@
 import { displayName } from '../../package.json';
 import { promotion, snipingItems, snipingItemsImageOnly, subscriptionItems, userID, userNickname, userRegistrationDate } from '../templates/sniping/external';
 
+export const USER_REGISTRATION_DATE_FORMAT = 'yyyy年MM月dd日';
+
 export const SNIPING_TEMPLATE_DRAFT_TITLE = `${displayName}狙擊範本`;
 
 export const SNIPING_TEMPLATE_VARIABLES_MAPPING = {

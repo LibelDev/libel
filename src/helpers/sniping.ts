@@ -1,3 +1,4 @@
+import format from 'date-fns/format';
 import { render } from 'mustache';
 import cache from '../cache';
 import { getUserRegistrationDate } from '../helpers/lihkg';
@@ -7,10 +8,9 @@ import Subscription from '../models/Subscription';
 import defaultTemplate from '../templates/sniping/default.txt';
 import { promotion, snipingItem, snipingItemImage, subscriptionItem } from '../templates/sniping/internal';
 import type { IDraft } from '../types/lihkg';
-import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING } from './../constants/sniping';
+import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING, USER_REGISTRATION_DATE_FORMAT } from './../constants/sniping';
 import { DRAFTS_KEY } from './../constants/storage';
 import { createDataSetUserFilter } from './../store/selectors';
-import { format, Format } from './date';
 import { getShareURL } from './label';
 import { localStorage } from './storage';
 
@@ -56,7 +56,7 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const view = {
       user: {
         ...user,
-        registrationDate: format(getUserRegistrationDate(user), Format.Display)
+        registrationDate: format(getUserRegistrationDate(user), USER_REGISTRATION_DATE_FORMAT)
       },
       snipingItems,
       subscriptions: _subscriptions
