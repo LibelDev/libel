@@ -11,7 +11,7 @@ type TProps = IProps & Omit<TModalProps, 'onSubmit'> & TSubscriptionMakerProps;
 const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
   const { id, onClose, dataSet, onSubmit, ...otherProps } = props;
 
-  const _id = id || useId();
+  const _formId = id || useId();
 
   return (
     <Modal {...otherProps} onClose={onClose}>
@@ -20,13 +20,13 @@ const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Header>
       <Modal.Body>
         <SubscriptionMaker
-          id={_id}
+          id={_formId}
           dataSet={dataSet}
           onSubmit={onSubmit}
         />
       </Modal.Body>
       <Modal.Footer>
-        <Button form={_id} type="submit">
+        <Button form={_formId} type="submit">
           {TEXTS.SUBSCRIPTION_MAKER_BUTTON_TEXT_SUBMIT}
         </Button>
       </Modal.Footer>
