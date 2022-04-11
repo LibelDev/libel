@@ -15,7 +15,7 @@ type TProps = IProps & Omit<TModalProps, 'onChange' | 'onSubmit'> & TDataSetEdit
 const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
   const { id, dataSet, onChange, onSubmit, onClose, ...otherProps } = props;
 
-  const _formId = useId();
+  const _formId = id || useId();
 
   const users = Object.keys(dataSet.data);
   const empty = users.length === 0;
