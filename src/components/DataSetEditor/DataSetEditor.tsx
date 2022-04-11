@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import debugFactory from 'debug';
 import produce from 'immer';
 import React, { useCallback, useMemo, useState } from 'react';
+import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
 import type { IDataSet } from '../../models/DataSet';
@@ -40,6 +41,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const [error, setError] = useState<string | null>(null);
 
   const empty = labelsGroups.length === 0;
+  const name = `${namespace}-${DataSetEditor.displayName!}`;
 
   const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
     setKeyword(keyword);
@@ -115,6 +117,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   return (
     <form
       {...otherProps}
+      name={name}
       className={
         classNames(
           className,
