@@ -28,8 +28,16 @@
       }
     }
 
-    .info-icon {
+    .status {
       @apply ml-auto;
+
+      &.error {
+        color: $color-red02;
+      }
+
+      &.loading {
+        @apply flex-shrink-0;
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import type { ISubscription } from '../../../../models/Subscription';
@@ -29,7 +29,7 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   }, [subscription]);
 
   return (
-    <div className={classnames(className, styles.subscription)}>
+    <div className={classNames(className, styles.subscription)}>
       <i
         className={styles.bar}
         style={style}
@@ -42,7 +42,7 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
         {
           subscription.error ? (
             <Icon
-              className={styles.infoIcon}
+              className={classNames(styles.status, styles.error)}
               icon={IconName.CommentAlert}
               aria-hidden={false}
               aria-label={subscription.error}
@@ -51,11 +51,11 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
             />
           ) : (
             subscription.loading ? (
-              <LoadingSpinner className={styles.infoIcon} />
+              <LoadingSpinner className={classNames(styles.status, styles.loading)} />
             ) : (
               subscription.loaded && (
                 <Icon
-                  className={styles.infoIcon}
+                  className={styles.status}
                   icon={IconName.Verified}
                   aria-hidden={false}
                   aria-label={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
