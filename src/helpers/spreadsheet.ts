@@ -1,12 +1,6 @@
 import * as TEXTS from '../constants/texts';
 import type { IDataSet } from '../models/DataSet';
-import Label from '../models/Label';
 import { getDisplayDate, getShareURL } from './label';
-
-interface ISpreadsheetEntry {
-  user: string;
-  label: Label;
-}
 
 type TSpreadsheetEntry = [
   string,
