@@ -9,7 +9,7 @@ import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import type { IDataSet } from '../../models/DataSet';
-import type { IRemoteSubscription } from '../../models/Subscription';
+import type { IBaseRemoteSubscription, IBaseSubscription } from '../../models/Subscription';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
@@ -22,7 +22,7 @@ import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './SubscriptionMaker.module.scss';
 
-type TFormData = Omit<IRemoteSubscription, 'data'>;
+type TFormData = IBaseSubscription;
 
 interface IToggleButtonState {
   isCustomColor: boolean;
@@ -42,7 +42,7 @@ export interface IProps {
    * @async
    * @throws {string} error message
    */
-  onSubmit: (subscription: IRemoteSubscription) => void;
+  onSubmit: (subscription: IBaseRemoteSubscription) => void;
 }
 
 type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
@@ -131,7 +131,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       setInputErrors(_inputErrors);
     } else {
       try {
-        const subscription: IRemoteSubscription = { ...value, ...dataSet };
+        const subscription: IBaseRemoteSubscription = { ...value as IBaseSubscription, ...dataSet };
         if (subscriptionTemplateIndex === -1) {
           dispatch(configActions.addSubscriptionTemplate(value));
           setSubscriptionTemplateIndex(subscriptionTemplates.length);

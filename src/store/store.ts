@@ -64,9 +64,9 @@ initMessageListener(store);
  * load the subscriptions data from remote
  * NOTE: this function is not really async (i.e. it resolves immediately)
  * @async
- * @param {(ISubscription | ISerializedSubscription)[]} subscriptions
+ * @param {(ISerializedSubscription | ISubscription)[]} subscriptions
  */
-const loadRemoteSubscriptions = async (subscriptions: (ISubscription | ISerializedSubscription)[]) => {
+const loadRemoteSubscriptions = async (subscriptions: (ISerializedSubscription | ISubscription)[]) => {
   const { dispatch } = store;
   for (let i = 0; i < subscriptions.length; i++) {
     dispatch(subscriptionsActions.load(i));

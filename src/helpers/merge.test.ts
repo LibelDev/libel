@@ -306,10 +306,10 @@ describe('mergeDataSet', () => {
 describe('mergeSubscriptions', () => {
   it('should have 1 subscription', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_1', enabled: false }
+      { name: 'B', version: '1.0', url: 'URL_1', enabled: false }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(1);
@@ -318,10 +318,10 @@ describe('mergeSubscriptions', () => {
 
   it('should have 2 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(2);
@@ -331,11 +331,11 @@ describe('mergeSubscriptions', () => {
 
   it('should have 2 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_1', enabled: false },
-      { name: 'C', url: 'URL_2', enabled: true }
+      { name: 'B', version: '1.0', url: 'URL_1', enabled: false },
+      { name: 'C', version: '1.0', url: 'URL_2', enabled: true }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(2);
@@ -345,11 +345,11 @@ describe('mergeSubscriptions', () => {
 
   it('should have 3 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false },
-      { name: 'C', url: 'URL_3', enabled: true }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false },
+      { name: 'C', version: '1.0', url: 'URL_3', enabled: true }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(3);
@@ -360,10 +360,10 @@ describe('mergeSubscriptions', () => {
 
   it('should have 1 subscription', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, true);
     expect(merged.length).toBe(1);
@@ -372,11 +372,11 @@ describe('mergeSubscriptions', () => {
 
   it('should have 2 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false },
-      { name: 'C', url: 'URL_3', enabled: true }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false },
+      { name: 'C', version: '1.0', url: 'URL_3', enabled: true }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, true);
     expect(merged.length).toBe(2);

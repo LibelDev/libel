@@ -1,32 +1,27 @@
 import joi from 'joi';
 import { HEX_COLOR } from '../constants/regexes';
-import type { IBasicSubscription, IRemoteSubscription, ISerializedSubscription } from './../models/Subscription';
-import data from './data';
+import type { IBaseRemoteSubscription, IBaseSubscription, ISerializedSubscription } from './../models/Subscription';
+import { uri } from './common';
+import dataSet from './dataSet';
 
 export const serialized = joi.object<ISerializedSubscription>({
-  url: joi.string().required(),
-  enabled: joi.boolean().required(),
-  name: joi.string().allow('')
+  /**
+   * allow empty string because the remote
+   * file may not be loaded yet before
+   * the subscription being serialized
+   */
+  name: joi.string().allow(''),
+  version: joi.string().trim(),
+  url: uri.required(),
+  enabled: joi.boolean().required()
 });
 
-export const basic = joi.object<IBasicSubscription>({
+export const basic = joi.object<IBaseSubscription>({
   name: joi.string().required(),
-  version: joi.string().required(),
-  homepage: joi.string(),
+  version: joi.string().trim().required(),
+  homepage: uri.allow(''),
   color: joi.string().pattern(HEX_COLOR)
 });
 
-export const remote = joi.object<IRemoteSubscription>({
-  data: data.required(),
-  name: joi.string().required(),
-  version: joi.string().required(),
-  homepage: joi.string(),
-  color: joi.string().pattern(HEX_COLOR)
-});
-
-// const schema = joi.object({
-//   ...serialized,
-//   ...remote
-// });
-
-// export default schema;
+export const baseRemote = (basic as joi.ObjectSchema<IBaseRemoteSubscription>)
+  .concat(dataSet);

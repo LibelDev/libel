@@ -117,6 +117,7 @@ export const mergeSubscriptions = (subscriptionsA: ISerializedSubscription[], su
       const subscriptionB = subscriptionsB.find((subscriptionB) => isSubscriptionEqual(subscriptionA, subscriptionB));
       if (subscriptionB) {
         subscriptionA.name = subscriptionB.name;
+        subscriptionA.version = subscriptionB.version;
         subscriptionA.enabled = subscriptionB.enabled;
       }
     }

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import type { TLabelsGroupItem } from '../../../helpers/labelList';
-import { IRemoteSubscription } from '../../../models/Subscription';
 import LabelInfo from '../../LabelInfo/LabelInfo';
 import styles from './LabelInfoList.module.scss';
 

@@ -21,7 +21,7 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
     if (url) {
       const subscription = subscriptions.find((subscription) => subscription.url === url);
       if (!subscription) {
-        const subscription = new Subscription('', url, true);
+        const subscription = new Subscription('', '', url, true);
         dispatch(subscriptionsActions.add(subscription));
         dispatch(subscriptionsActions.load(subscriptions.length));
         // analytics

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
-import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
+import Subscription, { IBaseRemoteSubscription, IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
 import { selectSubscriptions } from '../selectors';
 import type { TRootState } from '../store';
 
@@ -20,16 +20,16 @@ const initialState: Subscription[] = [];
 /**
  * load the remote subscription data
  */
-export const load = createAsyncThunk<IRemoteSubscription, number, TAsyncThunkConfig>(
+export const load = createAsyncThunk<IBaseRemoteSubscription, number, TAsyncThunkConfig>(
   'subscriptions/load',
   async (index, thunk) => {
     try {
       const state = thunk.getState();
       const subscriptions = selectSubscriptions(state);
       const subscription = subscriptions[index];
-      const remoteSubscription = await subscription.fetch();
-      if (remoteSubscription) {
-        return remoteSubscription;
+      const baseRemoteSubscription = await subscription.fetch();
+      if (baseRemoteSubscription) {
+        return baseRemoteSubscription;
       }
       return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT);
     } catch (err) {

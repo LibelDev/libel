@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { getShareURL } from '../../helpers/label';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
-import Subscription, { IRemoteSubscription } from '../../models/Subscription';
+import Subscription, { ISubscription } from '../../models/Subscription';
 import EditLabelButton from '../EditLabelButton/EditLabelButton';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
@@ -28,7 +28,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
 
   const isSubscriptionImplemented = Subscription.implements(dataSet);
 
-  const color = label.color || (dataSet as IRemoteSubscription).color;
+  const color = label.color || (dataSet as ISubscription).color;
 
   const style: React.CSSProperties = useMemo(() => ({
     borderColor: color,
@@ -36,7 +36,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   }), [dataSet]);
 
   const nameStyle: React.CSSProperties = useMemo(() => ({
-    color: (dataSet as IRemoteSubscription).color
+    color: (dataSet as ISubscription).color
   }), [dataSet]);
 
   return (
