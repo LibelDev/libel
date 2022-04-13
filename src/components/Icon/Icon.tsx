@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React from 'react';
 import type { IconName } from './types';
 
@@ -14,7 +14,7 @@ const Icon: React.FunctionComponent<TProps> = (props) => {
   const { className, icon, ...otherProps } = props;
   return (
     <i
-      className={classnames(className, icon)}
+      className={classNames(className, icon)}
       aria-hidden
       {...otherProps}
     />

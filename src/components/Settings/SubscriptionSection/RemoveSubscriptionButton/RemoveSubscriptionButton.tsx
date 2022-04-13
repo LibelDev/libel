@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import { EventAction, EventCategory } from '../../../../constants/ga';
@@ -39,7 +39,7 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <IconButton
-      className={classnames(className, lihkgCssClasses.settingOptionButton)}
+      className={classNames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Close}
       aria-label={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}

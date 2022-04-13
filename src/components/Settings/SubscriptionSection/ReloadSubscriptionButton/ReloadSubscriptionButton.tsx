@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { EventAction, EventCategory } from '../../../../constants/ga';
 import * as TEXTS from '../../../../constants/texts';
@@ -33,7 +33,7 @@ const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <IconButton
-      className={classnames(className, lihkgCssClasses.settingOptionButton)}
+      className={classNames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Refresh}
       aria-label={TEXTS.BUTTON_TEXT_RELOAD_SUBSCRIPTION}

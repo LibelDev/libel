@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { EventAction } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
@@ -52,7 +52,7 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <IconButton
-      className={classnames(className, styles.snipeButton)}
+      className={classNames(className, styles.snipeButton)}
       icon={IconName.Hot}
       onClick={handleClick}
       aria-label={TEXTS.BUTTON_TEXT_SNIPE}

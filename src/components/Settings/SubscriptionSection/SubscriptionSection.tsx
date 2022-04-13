@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React from 'react';
 import * as TEXTS from '../../../constants/texts';
 import { selectSubscriptions } from '../../../store/selectors';
@@ -12,7 +12,7 @@ const SubscriptionSection: React.FunctionComponent = () => {
   const subscriptions = useTypedSelector(selectSubscriptions);
   return (
     <React.Fragment>
-      <small className={classnames(lihkgCssClasses.settingSectionTitle, styles.sectionTitle)}>
+      <small className={classNames(lihkgCssClasses.settingSectionTitle, styles.sectionTitle)}>
         {TEXTS.SETTINGS_SECTION_TITLE_SUBSCRIPTION}
         <AddSubscriptionButton />
       </small>

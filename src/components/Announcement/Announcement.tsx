@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import max from 'lodash/max';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-use';
@@ -92,7 +92,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
   return (
     <div
       ref={announcementRef}
-      className={classnames(className, styles.announcement)}
+      className={classNames(className, styles.announcement)}
     >
       <img className={styles.logo} src={logo} alt={displayName} />
       {icon && <Icon icon={icon} />}

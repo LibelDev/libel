@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React from 'react';
 import styles from './LoadingSpinner.module.scss';
 
@@ -12,7 +12,7 @@ const LoadingSpinner: React.FunctionComponent<TProps> = (props) => {
   const { className, ...otherProps } = props;
   return (
     <i
-      className={classnames(className, styles.loadingSpinner)}
+      className={classNames(className, styles.loadingSpinner)}
       aria-hidden
       {...otherProps}
     />

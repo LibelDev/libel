@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import type { ISubscription } from '../../../../models/Subscription';
@@ -22,7 +22,7 @@ const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
   return (
     <IconLink
       className={
-        classnames(
+        classNames(
           className,
           lihkgCssClasses.settingOptionButton,
           styles.subscriptionHomepageButton

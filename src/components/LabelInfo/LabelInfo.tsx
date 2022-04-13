@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React, { useMemo } from 'react';
 import { getShareURL } from '../../helpers/label';
 import type { IDataSet } from '../../models/DataSet';
@@ -40,7 +40,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
   }), [dataSet]);
 
   return (
-    <div className={classnames(className, styles.labelInfo)} style={style}>
+    <div className={classNames(className, styles.labelInfo)} style={style}>
       {
         isSubscriptionImplemented && (
           <div className={styles.name}>
