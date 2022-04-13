@@ -10,6 +10,7 @@ import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import type { IDataSet } from '../../models/DataSet';
 import type { IBaseRemoteSubscription, IBaseSubscription } from '../../models/Subscription';
+import { uri } from '../../schemas/common';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
@@ -60,8 +61,11 @@ const schema = joi.object({
     'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_REQUIRED,
     'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_REQUIRED
   }),
-  homepage: joi.string().trim().allow(''),
-  color: joi.string().trim().pattern(HEX_COLOR).allow('')
+  homepage: uri.allow('').messages({
+    'string.uri': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_HOMEPAGE_INVALID,
+    'string.uriCustomScheme': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_HOMEPAGE_INVALID
+  }),
+  color: joi.string().trim().allow('').pattern(HEX_COLOR)
 });
 
 const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
@@ -121,7 +125,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       homepage: formData.homepage ? formData.homepage : undefined, // unset if it is empty
       color: toggleButtonState.isCustomColor ? formData.color : undefined // unset if it is disabled
     };
-    const { value, error } = schema.validate(_formData);
+    const { value, error } = schema.validate(_formData, { abortEarly: false });
     if (error) {
       const _inputErrors = mapValidationError<IInputErrors>(error, (inputErrors, key, label, value, message) => {
         // analytics

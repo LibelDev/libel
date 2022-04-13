@@ -10,18 +10,24 @@ export const serialized = joi.object<ISerializedSubscription>({
    * file may not be loaded yet before
    * the subscription being serialized
    */
-  name: joi.string().allow(''),
+  name: joi.string().trim().allow(''),
   version: joi.string().trim(),
   url: uri.required(),
   enabled: joi.boolean().required()
 });
 
-export const basic = joi.object<IBaseSubscription>({
-  name: joi.string().required(),
+export const base = joi.object<IBaseSubscription>({
+  name: joi.string().trim().required(),
   version: joi.string().trim().required(),
-  homepage: uri.allow(''),
-  color: joi.string().pattern(HEX_COLOR)
+  /**
+   * use normal string for backward compatibility, because
+   * `subscriptionTemplates` with non-URI `homepage` may
+   * have already been stored, using `uri` will lead to
+   * validation error in the next app session
+   */
+  homepage: joi.string().trim().allow(''),
+  color: joi.string().trim().pattern(HEX_COLOR)
 });
 
-export const baseRemote = (basic as joi.ObjectSchema<IBaseRemoteSubscription>)
+export const baseRemote = (base as joi.ObjectSchema<IBaseRemoteSubscription>)
   .concat(dataSet);
