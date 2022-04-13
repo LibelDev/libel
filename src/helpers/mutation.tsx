@@ -348,10 +348,10 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
       /* add label button */
       const { container: addLabelButtonContainer } = _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
         const replyItemInner = node.parentElement?.parentElement;
-        const postID = replyItemInner?.getAttribute(ATTRIBUTES.dataPostId);
+        const postId = replyItemInner?.getAttribute(ATTRIBUTES.dataPostId);
         const container = document.createElement('div');
         insertAfter(container, reference);
-        const root = renderAddLabelButton(user, postID, store, persistor, container);
+        const root = renderAddLabelButton(user, postId, store, persistor, container);
         return { container, root };
       });
       /* snipe button */
