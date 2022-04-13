@@ -16,21 +16,33 @@ const SubscriptionSection: React.FunctionComponent = () => {
         {TEXTS.SETTINGS_SECTION_TITLE_SUBSCRIPTION}
         <AddSubscriptionButton />
       </small>
-      <ul className={lihkgCssClasses.settingOptionsList}>
-        {
-          subscriptions.map((subscription, index) => {
-            return (
-              <li key={subscription.url} className={lihkgCssClasses.settingOptionsItem}>
-                <SubscriptionItem
-                  className={styles.subscription}
-                  subscription={subscription}
-                  index={index}
-                />
-              </li>
-            );
-          })
-        }
-      </ul>
+      {
+        subscriptions.length > 0 ? (
+          <ul className={lihkgCssClasses.settingOptionsList}>
+            {
+              subscriptions.map((subscription, index) => {
+                return (
+                  <li key={subscription.url} className={lihkgCssClasses.settingOptionsItem}>
+                    <SubscriptionItem
+                      className={styles.subscription}
+                      subscription={subscription}
+                      index={index}
+                    />
+                  </li>
+                );
+              })
+            }
+          </ul>
+        ) : (
+          <div className={lihkgCssClasses.settingOptionsList}>
+            <div className={lihkgCssClasses.settingOptionsItem}>
+              <span className={styles.empty}>
+                {TEXTS.SUBSCRIPTION_LIST_MESSAGE_EMPTY}
+              </span>
+            </div>
+          </div>
+        )
+      }
     </React.Fragment>
   );
 };

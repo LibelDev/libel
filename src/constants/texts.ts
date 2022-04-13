@@ -112,6 +112,7 @@ export const BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE = '標籤名單主頁';
 export const SUBSCRIPTION_MESSAGE_LOAD_SUCCESS = '成功載入名單';
 export const SUBSCRIPTION_ERROR_FAILED_TO_FETCH = '無法取得標籤名單，請檢查連結是否正確。';
 export const SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT = '標籤名單格式錯誤，無法載入，請聯絡名單作者。';
+export const SUBSCRIPTION_LIST_MESSAGE_EMPTY = '未有任何訂閱名單';
 
 // cloud sync
 export const CLOUD_SYNC_LABEL_GOOGLE_DRIVE = 'Google 雲端硬碟';
