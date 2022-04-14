@@ -32,7 +32,7 @@ type TCreateNotification = (
 
 /**
  * notification ID counter
- * @description start from `10000`, because it is hard to get the actual count,
+ * @description it is hard to get the actual count,
  * `10000` should be high enough to not collide with LIHKG
  */
 const notificationIdCount = counter(10000);
