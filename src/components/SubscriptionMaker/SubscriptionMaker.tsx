@@ -4,13 +4,12 @@ import joi from 'joi';
 import React, { useCallback, useEffect, useId, useState } from 'react';
 import { namespace } from '../../../package.json';
 import { EventAction, EventCategory } from '../../constants/ga';
-import { HEX_COLOR } from '../../constants/regexes';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import type { IDataSet } from '../../models/DataSet';
 import type { IBaseRemoteSubscription, IBaseSubscription } from '../../models/Subscription';
-import { uri } from '../../schemas/common';
+import { color, homepage, name, version } from '../../schemas/subscription';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
@@ -53,19 +52,19 @@ export type TProps = IProps & TComponentProps;
 const debug = debugFactory('libel:component:SubscriptionMaker');
 
 const schema = joi.object({
-  name: joi.string().trim().required().messages({
+  name: name.required().messages({
     'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_REQUIRED,
     'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_NAME_REQUIRED
   }),
-  version: joi.string().trim().required().messages({
+  version: version.required().messages({
     'any.required': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_REQUIRED,
     'string.empty': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_VERSION_REQUIRED
   }),
-  homepage: uri.allow('').messages({
+  homepage: homepage.messages({
     'string.uri': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_HOMEPAGE_INVALID,
     'string.uriCustomScheme': TEXTS.SUBSCRIPTION_MAKER_FIELD_ERROR_HOMEPAGE_INVALID
   }),
-  color: joi.string().trim().allow('').pattern(HEX_COLOR)
+  color
 });
 
 const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {

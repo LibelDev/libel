@@ -4,21 +4,25 @@ import type { IBaseRemoteSubscription, IBaseSubscription, ISerializedSubscriptio
 import { uri } from './common';
 import dataSet from './dataSet';
 
+export const name = joi.string().trim();
+export const version = joi.string().trim();
+export const homepage = uri.allow('');
+export const color = joi.string().trim().allow('').pattern(HEX_COLOR);
+
 export const serialized = joi.object<ISerializedSubscription>({
   /**
-   * allow empty string because the remote
-   * file may not be loaded yet before
-   * the subscription being serialized
+   * allow empty string because the remote file may not be
+   * loaded yet before the subscription being serialized
    */
-  name: joi.string().trim().allow(''),
-  version: joi.string().trim(),
+  name: name.allow(''),
+  version,
   url: uri.required(),
   enabled: joi.boolean().required()
 });
 
 export const base = joi.object<IBaseSubscription>({
-  name: joi.string().trim().required(),
-  version: joi.string().trim().required(),
+  name: name.required(),
+  version: version.required(),
   /**
    * use normal string for backward compatibility, because
    * `subscriptionTemplates` with non-URI `homepage` may
@@ -26,11 +30,9 @@ export const base = joi.object<IBaseSubscription>({
    * validation error in the next app session
    */
   homepage: joi.string().trim().allow(''),
-  color: joi.string().trim().pattern(HEX_COLOR)
+  color
 });
 
-export const baseRemote = (base as joi.ObjectSchema<IBaseRemoteSubscription>)
-  .keys({
-    homepage: uri.allow('')
-  })
-  .concat(dataSet);
+export const baseRemote = ((base as joi.ObjectSchema<IBaseRemoteSubscription>)
+  .keys({ homepage })
+  .concat(dataSet));
