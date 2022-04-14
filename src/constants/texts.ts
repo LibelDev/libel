@@ -124,6 +124,10 @@ export const BUTTON_TEXT_SYNC_NOW = '立即同步';
 export const CLOUD_SYNC_LABEL_PREFIX_CONNECTED_ACCOUNT = '已連接';
 export const CLOUD_SYNC_LABEL_SYNC_IN_PROGRESS = '正在同步資料';
 export const CLOUD_SYNC_ERROR_GENERIC_ERROR = '資料同步失敗，請嘗試重新連接。';
+export const CLOUD_SYNC_NOTIFICATION_SYNC_IN_PROGESS = '正在進行雲端資料同步';
+export const CLOUD_SYNC_NOTIFICATION_SYNC_SUCCESS = '雲端資料同步成功';
+export const CLOUD_SYNC_NOTIFICATION_SYNC_FAILED = '雲端資料同步發生錯誤，請查看設定了解詳情。';
+
 
 // announcement
 export const ANNOUCEMENT_LABEL_CHANGE_LOG = '更新內容';

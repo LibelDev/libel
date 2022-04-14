@@ -1,8 +1,12 @@
 // import debugFactory from 'debug';
 import produce from 'immer';
+import { dev } from '../../config/config';
+import { displayName } from '../../package.json';
+import * as lihkgActions from '../actions/lihkg';
 import { ISource } from '../models/Label';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import type { IIconMap, IUser } from '../types/lihkg';
+import type { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IUser, NotificationType, TNotification } from '../types/lihkg';
+import { counter } from './counter';
 import { waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
 
@@ -11,7 +15,27 @@ enum ShareType {
   Reply = 2
 }
 
+/**
+ * create a notification object
+ */
+type TCreateNotification = (
+  /**
+   * create a local notification
+   * @param {NotificationType.Local} type the notification type
+   * @param {ILocalNotifcationPayload | string} body the notification payload, or just the body
+   * @param {number} [duration=3000] the delay (ms) to dismiss the notification automatically
+   */
+  (type: NotificationType.Local, body: ILocalNotifcationPayload | string, duration?: number) => ILocalNotifcation
+);
+
 // const debug = debugFactory('libel:helper:lihkg');
+
+/**
+ * notification ID counter
+ * @description start from `10000`, because it is hard to get the actual count,
+ * `10000` should be high enough to not collide with LIHKG
+ */
+const notificationIdCount = counter(10000);
 
 export const getUserRegistrationDate = (user: IUser) => {
   return new Date(user.create_time * 1000);
@@ -83,3 +107,45 @@ export const getShareID = (source: ISource) => {
   // this will neven happen, but just keep this for consistency
   return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };
+
+export const createNotification: TCreateNotification = (type, body, duration = 3000) => {
+  const { value: id } = notificationIdCount.next();
+  const defaultPayload: Partial<ILocalNotifcationPayload> = { title: displayName };
+  const payload = typeof body === 'string' ? { ...defaultPayload, body } : { ...defaultPayload, ...body };
+  const notification: ILocalNotifcation = { id, type, payload, duration };
+  return notification;
+};
+
+/**
+ * show the notification
+ * @param {TNotification} notification the notification object
+ */
+export const showNotification = (notification: TNotification) => {
+  const store = getStore();
+  const { dispatch } = store!;
+  dispatch(lihkgActions.showNotification(notification));
+  const { id, duration } = notification;
+  if (duration > 0) {
+    setTimeout(() => {
+      dispatch(lihkgActions.removeNotification(id));
+    }, duration);
+  }
+  return notification;
+};
+
+/**
+ * dismiss the notification
+ * @param {number} id the notification ID
+ */
+export const removeNotification = (id: number) => {
+  const store = getStore();
+  const { dispatch } = store!;
+  dispatch(lihkgActions.removeNotification(id));
+};
+
+/* debug */
+if (dev) {
+  (window as any).__LIBEL_DEBUG_LIHKG_GET_STORE__ = getStore;
+  (window as any).__LIBEL_DEBUG_LIHKG_SHOW_NOTIFICATION__ = showNotification;
+  (window as any).__LIBEL_DEBUG_LIHKG_REMOVE_NOTIFICATION__ = removeNotification;
+}

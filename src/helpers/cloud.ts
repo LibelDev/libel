@@ -59,11 +59,11 @@ export const sync = async () => {
         /**
          * NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
          *
-         * `lastSyncedTime === modifiedTime` => the file was updated from this instance in the previous sync
+         * `lastSyncedTime === modifiedTime` => the file was updated from this session in the previous sync
          * => if `lastModifiedTime > modifiedTime` (i.e. local is newer than remote), merge local into remote
          * => otherwise, merge remote into local
          *
-         * `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
+         * `lastSyncedTime < modifiedTime` => the file has been updated from another session since the previous sync
          * => then always merge remote into local
          */
         // merge with local data
@@ -94,6 +94,8 @@ export const sync = async () => {
     dispatch(syncActions.setError(null));
   } catch (err) {
     dispatch(syncActions.setError(err));
+    throw err;
+  } finally {
+    dispatch(syncActions.setLoading(false));
   }
-  dispatch(syncActions.setLoading(false));
 };
