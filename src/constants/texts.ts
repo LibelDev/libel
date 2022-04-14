@@ -10,7 +10,7 @@ export const SETTINGS_SECTION_TITLE_CLOUD_SYNC = '雲端同步資料';
 export const SETTINGS_SECTION_TITLE_MANAGE_DATA = '管理資料';
 export const SETTINGS_SECTION_TITLE_CLEAR_DATA = '清除資料';
 
-// form
+// label form
 export const LABEL_FORM_MODAL_TITLE_ADD_LABEL = '新增標籤';
 export const LABEL_FORM_MODAL_TITLE_EDIT_LABEL = '修改標籤';
 export const LABEL_FORM_FIELD_LABEL_TEXT = '標籤';
@@ -23,6 +23,7 @@ export const LABEL_FORM_FIELD_LABEL_IMAGE = '相關圖片網址';
 export const LABEL_FORM_FIELD_PLACEHOLDER_REASON = '如無需要可留空';
 export const LABEL_FORM_FIELD_PLACEHOLDER_IMAGE = '如無需要可留空';
 export const LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED = '必須填寫標籤名稱';
+export const LABEL_FORM_FIELD_ERROR_IMAGE_INVALID = '只可以填寫網址';
 export const LABEL_FORM_FIELD_ERROR_FAILED_TO_UPLOAD = '圖片上截失敗，請稍後再試。';
 export const LABEL_FORM_BUTTON_TEXT_SUBMIT = '確定';
 

@@ -11,7 +11,6 @@ import { mapValidationError } from '../../helpers/validation';
 import useScreenshot, { IResult as IUseScreenshotResult, TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
-import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
@@ -73,7 +72,10 @@ const schema = joi.object({
   }),
   reason,
   color,
-  image,
+  image: image.messages({
+    'string.uri': TEXTS.LABEL_FORM_FIELD_ERROR_IMAGE_INVALID,
+    'string.uriCustomScheme': TEXTS.LABEL_FORM_FIELD_ERROR_IMAGE_INVALID
+  }),
   meta: joi.object({
     screenshot: joi.any()
   })
