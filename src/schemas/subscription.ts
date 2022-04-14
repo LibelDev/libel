@@ -30,4 +30,7 @@ export const base = joi.object<IBaseSubscription>({
 });
 
 export const baseRemote = (base as joi.ObjectSchema<IBaseRemoteSubscription>)
+  .keys({
+    homepage: uri.allow('')
+  })
   .concat(dataSet);
