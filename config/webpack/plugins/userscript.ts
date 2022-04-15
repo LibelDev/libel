@@ -12,6 +12,16 @@ const plugin = new WebpackUserscript({
     namespace: repository.url,
     // noframes: true,
     include: 'https://lihkg.com/*',
+    exclude: [
+      // 'https://lihkg.com/me/2fa/totp/create',
+      // 'https://lihkg.com/me/auto-logout/setting',
+      // 'https://lihkg.com/me/deactivate',
+      // 'https://lihkg.com/me/login-email/edit',
+      // 'https://lihkg.com/me/password/edit',
+      // 'https://lihkg.com/me/profile/edit',
+      'https://lihkg.com/me/*',
+      'https://lihkg.com/stickers'
+    ],
     grant: 'none',
     'run-at': 'document-start'
   },
