@@ -23,13 +23,13 @@ export const sync = async (auth: gapi.auth2.GoogleAuth) => {
       LIHKG.showNotification(notificationSyncInProgress);
       try {
         await cloud.sync();
+        const notificationSyncSuccess = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_SUCCESS);
+        LIHKG.showNotification(notificationSyncSuccess);
       } catch (err) {
         const notificationSyncFailed = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_FAILED);
         LIHKG.showNotification(notificationSyncFailed);
       } finally {
         LIHKG.removeNotification(notificationSyncInProgress.id);
-        const notificationSyncSuccess = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_SUCCESS);
-        LIHKG.showNotification(notificationSyncSuccess);
       }
       unregister = register(auth); // register next sync
       // analytics
