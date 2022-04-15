@@ -1,6 +1,6 @@
 import joi from 'joi';
 import { HEX_COLOR } from '../constants/regexes';
-import type { IBaseRemoteSubscription, IBaseSubscription, ISerializedSubscription } from './../models/Subscription';
+import type { IBaseRemoteSubscription, IBaseSubscription, ISerializedSubscription } from '../models/Subscription';
 import { uri } from './common';
 import dataSet from './dataSet';
 

@@ -12,7 +12,7 @@ import image11 from '../../../../assets/images/831/11.jpg';
 import image12 from '../../../../assets/images/831/12.jpg';
 import image13 from '../../../../assets/images/831/13.png';
 import image14 from '../../../../assets/images/831/14.jpg';
-import { isNoticePage } from './../../../helpers/app';
+import { isNoticePage } from '../../../helpers/app';
 
 const now = new Date();
 const month = now.getMonth() + 1;

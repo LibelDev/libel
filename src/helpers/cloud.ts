@@ -1,12 +1,11 @@
 import debugFactory from 'debug';
 import * as files from '../constants/files';
+import Storage, { ISerializedStorage } from '../models/Storage';
 import storage from '../storage';
+import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from '../store/selectors';
 import { actions as metaActions } from '../store/slices/meta';
 import { actions as syncActions } from '../store/slices/sync';
-import store from '../store/store';
-import Storage, { ISerializedStorage } from './../models/Storage';
-import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
-import { loadDataIntoStore } from './../store/store';
+import store, { loadDataIntoStore } from '../store/store';
 import { compress, decompress } from './file';
 import * as gapi from './gapi';
 import { mergeConfig, mergeDataSet, MergeDirection, mergeSubscriptions } from './merge';

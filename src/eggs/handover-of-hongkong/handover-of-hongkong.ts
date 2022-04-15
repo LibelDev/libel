@@ -1,6 +1,6 @@
+import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
-import { waitForElement } from './../../helpers/dom';
 import { enabled } from './config/config';
 import styles from './handover-of-hongkong.scss';
 

@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 import type { ISerializedConfig } from '../models/Config';
 import type { ISerializedDataSet } from '../models/DataSet';
-import type { ISerializedSubscription } from './../models/Subscription';
+import type { ISerializedSubscription } from '../models/Subscription';
 import { isEqual as isLabelEqual } from './label';
 import { isEqual as isSubscriptionEqual } from './subscription';
 

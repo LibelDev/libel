@@ -1,16 +1,16 @@
 import format from 'date-fns/format';
 import { render } from 'mustache';
 import cache from '../cache';
+import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING, USER_REGISTRATION_DATE_FORMAT } from '../constants/sniping';
+import { DRAFTS_KEY } from '../constants/storage';
 import { getUserRegistrationDate } from '../helpers/lihkg';
 import type { ILabel } from '../models/Label';
 import type Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
+import { createDataSetUserFilter } from '../store/selectors';
 import defaultTemplate from '../templates/sniping/default.txt';
 import { promotion, snipingItem, snipingItemImage, subscriptionItem } from '../templates/sniping/internal';
 import type { IDraft } from '../types/lihkg';
-import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING, USER_REGISTRATION_DATE_FORMAT } from './../constants/sniping';
-import { DRAFTS_KEY } from './../constants/storage';
-import { createDataSetUserFilter } from './../store/selectors';
 import { getShareURL } from './label';
 import { localStorage } from './storage';
 

@@ -1,7 +1,7 @@
 import { immerable } from 'immer';
+import { getNextLabelID } from '../helpers/label';
 import dataSchema from '../schemas/data';
 import dataSetSchema from '../schemas/dataSet';
-import { getNextLabelID } from './../helpers/label';
 import Data, { IData } from './Data';
 import Label, { ILabel, ILabelDatum } from './Label';
 

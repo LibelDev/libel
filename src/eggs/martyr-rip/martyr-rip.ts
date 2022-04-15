@@ -1,7 +1,7 @@
 import random from 'lodash/random';
+import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
-import { waitForElement } from './../../helpers/dom';
 import { enabled, images } from './config/config';
 import styles from './martyr-rip.scss';
 

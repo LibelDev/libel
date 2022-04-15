@@ -1,4 +1,4 @@
-import { isMainApp } from './../../../helpers/app';
+import { isMainApp } from '../../../helpers/app';
 
 const now = new Date();
 const month = now.getMonth() + 1;

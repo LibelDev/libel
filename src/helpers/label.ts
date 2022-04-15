@@ -1,8 +1,8 @@
 import format from 'date-fns/format';
 import { DISPLAY_DATE_FORMAT } from '../constants/label';
 import { SHORTENED_HOST } from '../constants/lihkg';
+import type { ILabel, ISource } from '../models/Label';
 import type { IPost } from '../types/lihkg';
-import type { ILabel, ISource } from './../models/Label';
 import { counter } from './counter';
 import { getShareID } from './lihkg';
 

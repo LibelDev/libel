@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import * as TEXTS from '../constants/texts';
 import { ready } from '../helpers/gapi';
+import * as gtag from '../helpers/gtag';
 import * as LIHKG from '../helpers/lihkg';
 import { EventAction, EventCategory } from '../types/ga';
-import * as gtag from './../helpers/gtag';
 
 type TState = [
   gapi.auth2.GoogleAuth | undefined,

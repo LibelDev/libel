@@ -1,11 +1,11 @@
 import format from 'date-fns/format';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { render } from 'mustache';
+import { EXPORT_FILENAME_TIMESTAMP_FORMAT } from '../constants/files';
 import * as TEXTS from '../constants/texts';
 import Storage, { ISerializedStorage } from '../models/Storage';
 import storage from '../storage';
 import * as filenames from '../templates/filenames';
-import { EXPORT_FILENAME_TIMESTAMP_FORMAT } from './../constants/files';
 
 export const download = (filename: string, body: string, type: string) => {
   const blob = new Blob([body], { type });

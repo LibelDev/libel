@@ -1,4 +1,4 @@
-import * as config from './../../config/config';
+import * as config from '../../config/config';
 
 type THatch = () => void;
 

@@ -5,9 +5,9 @@ import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
+import type { ISerializedStorage, IStorage } from '../models/Storage';
 import type { ISerializedSubscription, ISubscription } from '../models/Subscription';
 import storage from '../storage';
-import type { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
 import reducer, { persistedReducer } from './reducer';
 import { actions as configActions } from './slices/config';

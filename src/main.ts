@@ -1,10 +1,10 @@
-import * as egg from './constants/egg';
+import * as EGG from './constants/egg';
 import { isMainApp, isOffline } from './helpers/app';
 import { appendScript } from './helpers/dom';
 
 if (!isOffline()) {
   (async () => {
-    appendScript(egg.SCRIPT_URL);
+    appendScript(EGG.SCRIPT_URL);
     if (isMainApp()) {
       require('./stylesheets/lihkg.scss');
       require('./stylesheets/main.scss');
