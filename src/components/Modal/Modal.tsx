@@ -1,6 +1,6 @@
 import classNames from 'classNames';
 import FocusTrap from 'focus-trap-react';
-import React, { useCallback, useEffect, useId, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
 import Body from './Body';
@@ -33,6 +33,10 @@ interface IProps {
    */
   fragile?: boolean;
   /**
+   * indicate the focus trap paused state
+   */
+  paused?: boolean;
+  /**
    * close the modal
    */
   onClose: () => void;
@@ -53,8 +57,11 @@ const Modal: TModal = (props) => {
     backdrop = true,
     escape = true,
     fragile = true,
+    paused,
     onClose
   } = props;
+
+  const [initialFocus, setInitialFocus] = useState<HTMLElement>();
 
   const ref = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -66,9 +73,10 @@ const Modal: TModal = (props) => {
     body: `${_id}-body`
   };
 
-  const focusTrapOptions = useMemo(() => ({
-    escapeDeactivates: escape
-  }), [escape]);
+  const focusTrapOptions: FocusTrap.Props['focusTrapOptions'] = useMemo(() => ({
+    escapeDeactivates: escape,
+    initialFocus
+  }), [escape, initialFocus]);
 
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     if (open && fragile && event.target === backdropRef.current) {
@@ -76,21 +84,34 @@ const Modal: TModal = (props) => {
     }
   }, [open, fragile, onClose]);
 
-  const handleEscapeKeydown = useCallback((event: KeyboardEvent) => {
-    if (open) {
-      event.stopPropagation(); // prevent from dismissing the modals underneath
-    }
-    if (escape && event.key === Key.Escape && ref.current?.contains(document.activeElement)) {
-      onClose();
-    }
-  }, [open, escape, onClose]);
-
+  /**
+   * handle escape key to close the modal
+   */
   useEffect(() => {
+    const handleEscapeKeydown = (event: KeyboardEvent) => {
+      if (open) {
+        event.stopPropagation(); // prevent from dismissing the modals underneath
+        if (escape && event.key === Key.Escape && ref.current?.contains(document.activeElement)) {
+          onClose();
+        }
+      }
+    };
     document.addEventListener('keydown', handleEscapeKeydown);
     return () => {
       document.removeEventListener('keydown', handleEscapeKeydown);
     };
-  }, [handleEscapeKeydown]);
+  }, [open, escape, onClose]);
+
+  /**
+   * handle the return focus after unpausing the focus trap
+   */
+  useEffect(() => {
+    if (paused) {
+      setInitialFocus(document.activeElement as HTMLElement || undefined);
+    } else {
+      setInitialFocus(undefined);
+    }
+  }, [paused]);
 
   if (!open) {
     return null;
@@ -99,7 +120,7 @@ const Modal: TModal = (props) => {
   return (
     ReactDOM.createPortal(
       <IDsContext.Provider value={_ids}>
-        <FocusTrap focusTrapOptions={focusTrapOptions}>
+        <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
           <div
             ref={ref}
             id={_id}

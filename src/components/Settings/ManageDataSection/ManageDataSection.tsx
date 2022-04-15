@@ -7,6 +7,7 @@ import { download, _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
 import * as LIHKG from '../../../helpers/lihkg';
 import { mergeConfig, mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
+import useSettingsModalFocusTrap from '../../../hooks/useSettingsModalFocusTrap';
 import Personal from '../../../models/Personal';
 import type { ISerializedStorage } from '../../../models/Storage';
 import { selectConfig, selectPersonal, selectSubscriptions } from '../../../store/selectors';
@@ -39,6 +40,7 @@ const ManageDataSection: React.FunctionComponent = () => {
   const [isDataSetEditorModalOpened, setIsDataSetEditorModalOpened] = useState(false);
   const [isSubscriptionMakerModalOpened, setIsSubscriptionMakerModalOpened] = useState(false);
   const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
+  const settingsModalFocusTrap = useSettingsModalFocusTrap();
 
   const personalDataUsers = useMemo(() => Object.keys(personal.data), [personal]);
 
@@ -46,13 +48,16 @@ const ManageDataSection: React.FunctionComponent = () => {
   const handleEditDataSetButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
     if (personalDataUsers.length > 0) {
-      setIsDataSetEditorModalOpened(true);
-      setIsDataSetEditorDirty(false);
+      settingsModalFocusTrap?.pause();
+      window.requestAnimationFrame(() => {
+        setIsDataSetEditorModalOpened(true);
+        setIsDataSetEditorDirty(false);
+      });
     } else {
       const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET);
       LIHKG.showNotification(notification);
     }
-  }, [personalDataUsers]);
+  }, [settingsModalFocusTrap, personalDataUsers]);
 
   const handleDataSetEditorModalClose = useCallback(() => {
     if (isDataSetEditorDirty) {
@@ -64,8 +69,11 @@ const ManageDataSection: React.FunctionComponent = () => {
         }
       }
     }
-    setIsDataSetEditorModalOpened(false);
-  }, [personal, isDataSetEditorDirty]);
+    settingsModalFocusTrap?.unpause();
+    window.requestAnimationFrame(() => {
+      setIsDataSetEditorModalOpened(false);
+    });
+  }, [personal, isDataSetEditorDirty, settingsModalFocusTrap]);
 
   const handleDataSetEditorChange: IDataSetEditorProps['onChange'] = useCallback(() => {
     setIsDataSetEditorDirty(true);
@@ -76,21 +84,30 @@ const ManageDataSection: React.FunctionComponent = () => {
     if (confirmed) {
       debug('handleDataSetEditorSubmit', dataSet);
       dispatch(personalActions.update(dataSet));
-      setIsDataSetEditorModalOpened(false);
+      settingsModalFocusTrap?.unpause();
+      window.requestAnimationFrame(() => {
+        setIsDataSetEditorModalOpened(false);
+      });
       const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_SUCCESS);
       LIHKG.showNotification(notification);
     }
-  }, []);
+  }, [settingsModalFocusTrap]);
 
   /* subscription maker */
   const handleMakeSubscriptionButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
-    setIsSubscriptionMakerModalOpened(true);
-  }, []);
+    settingsModalFocusTrap?.pause();
+    window.requestAnimationFrame(() => {
+      setIsSubscriptionMakerModalOpened(true);
+    });
+  }, [settingsModalFocusTrap]);
 
   const handleSubscriptionMakerModalClose = useCallback(() => {
-    setIsSubscriptionMakerModalOpened(false);
-  }, []);
+    settingsModalFocusTrap?.unpause();
+    window.requestAnimationFrame(() => {
+      setIsSubscriptionMakerModalOpened(false);
+    });
+  }, [settingsModalFocusTrap]);
 
   const handleSubscriptionMakerSubmit: ISubscriptionMakerProps['onSubmit'] = useCallback((subscription) => {
     const filename = `${subscription.name}.json`;
