@@ -1,0 +1,19 @@
+@mixin logo($size: 2rem, $margin: 0.5rem) {
+  @apply top-0 right-0;
+  @apply bg-no-repeat;
+  @apply p-2;
+  height: $size * 2;
+  width: $size * 2;
+  background-image: (
+    $image-logo,
+    linear-gradient(225deg, #000, transparent 50%)
+  );
+  background-position: (
+    calc(100% - #{$margin}) $margin,
+    0 0
+  );
+  background-size: (
+    $size,
+    100%
+  );
+}

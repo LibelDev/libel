@@ -3,8 +3,6 @@
 
 .egg :global(#{$lihkg-selector-notice}) {
   $image-ratio: percentage(math.div(500, 1024));
-  $logo-margin: 0.5rem;
-  $logo-size: 2rem;
 
   @apply relative;
 
@@ -15,29 +13,15 @@
     @apply overflow-hidden;
     padding-top: $image-ratio;
 
-    &:before, &:after {
+    &:before,
+    &:after {
       @apply absolute;
     }
 
     // logo
     &:before {
       content: '';
-      @apply top-0 right-0;
-      @apply h-16 w-16;
-      @apply p-2;
-      @apply bg-no-repeat;
-      background-image: (
-        $image-logo,
-        linear-gradient(225deg, #000, transparent 50%)
-      );
-      background-position: (
-        calc(100% - #{$logo-margin}) $logo-margin,
-        top right
-      );
-      background-size: (
-        $logo-size,
-        100%
-      );
+      @include logo();
       z-index: 1;
     }
 
@@ -74,7 +58,7 @@
       }
     }
   }
-  
+
   img {
     &.hidden {
       @apply absolute left-0;
