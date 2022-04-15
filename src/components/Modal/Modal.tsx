@@ -71,7 +71,7 @@ const Modal: TModal = (props) => {
   }), [escape]);
 
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
-    if (fragile && event.target === backdropRef.current) {
+    if (open && fragile && event.target === backdropRef.current) {
       onClose();
     }
   }, [open, fragile, onClose]);
