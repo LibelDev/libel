@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { displayName } from '../../../../package.json';
 import * as TEXTS from '../../../constants/texts';
 import * as cloud from '../../../helpers/cloud';
+import * as LIHKG from '../../../helpers/lihkg';
 import useGoogleAuthorization from '../../../hooks/useGoogleAuthorization';
 import Storage from '../../../models/Storage';
 import { selectSync } from '../../../store/selectors';
@@ -38,9 +39,11 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
     if (sure) {
       const storage = Storage.factory();
       await loadDataIntoStore(storage);
-      window.alert(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS);
+      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS, 5000);
+      LIHKG.showNotification(notification);
     } else {
-      // window.alert(TEXTS.CLEAR_LOCAL_DATA_CANCEL);
+      const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED, 5000);
+      LIHKG.showNotification(notificationClearCanceled);
     }
   }, []);
 
@@ -51,10 +54,12 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       setClearCloudDataLoading(true);
       await cloud.clear();
       dispatch(metaActions.setLastSyncedTime(null));
-      window.alert(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS);
       setClearCloudDataLoading(false);
+      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS, 5000);
+      LIHKG.showNotification(notification);
     } else {
-      // window.alert(TEXTS.CLEAR_CLOUD_DATA_CANCEL);
+      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED, 5000);
+      LIHKG.showNotification(notification);
     }
   }, []);
 

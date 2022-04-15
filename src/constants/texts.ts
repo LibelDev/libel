@@ -96,12 +96,12 @@ export const BUTTON_TEXT_CLEAR_LOCAL_DATA = '從本裝置清除資料及重置�
 export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CONFIRMATION = '請問你已匯出資料作備份用途並確定要清除個人標籤記錄、訂閱名單及重置設定嗎？';
 export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_DOUBLE_CONFIRMATION = `請輸入 "${displayName}" 確認清除個人標籤記錄、訂閱名單及重置設定`;
 export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS = '成功清除個人標籤記錄、訂閱名單及重置設定';
-export const CLEAR_LOCAL_DATA_MESSAGE_CANCEL_ACTION = '已取消清除資料';
+export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED = '已取消清除本裝置資料';
 export const BUTTON_TEXT_CLEAR_CLOUD_DATA = '從雲端清除資料及重置設定';
 export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CONFIRMATION = '請問你已匯出資料作備份用途並確定要清除個人標籤記錄、訂閱名單及重置設定嗎？';
 export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_DOUBLE_CONFIRMATION = `請輸入 "${displayName}" 確認清除個人標籤記錄、訂閱名單及重置設定`;
 export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS = '成功清除個人標籤記錄、訂閱名單及重置設定';
-export const CLEAR_CLOUD_DATA_MESSAGE_CANCEL_ACTION = '已取消清除資料';
+export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED = '已取消清除雲端資料';
 
 // subscription
 export const BUTTON_TEXT_ADD_SUBSCRIPTION = '新增訂閱';
@@ -127,7 +127,6 @@ export const CLOUD_SYNC_ERROR_GENERIC_ERROR = '資料同步失敗，請嘗試重
 export const CLOUD_SYNC_NOTIFICATION_SYNC_IN_PROGESS = '正在進行雲端資料同步';
 export const CLOUD_SYNC_NOTIFICATION_SYNC_SUCCESS = '雲端資料同步成功';
 export const CLOUD_SYNC_NOTIFICATION_SYNC_FAILED = '雲端資料同步發生錯誤，請查看設定了解詳情。';
-
 
 // announcement
 export const ANNOUCEMENT_LABEL_CHANGE_LOG = '更新內容';
