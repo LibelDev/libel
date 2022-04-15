@@ -6,8 +6,7 @@ dotenv.config();
 const {
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_API_KEY,
-  GOOGLE_CLIENT_ID,
-  HANDSONTABLE_LICENSE_KEY
+  GOOGLE_CLIENT_ID
 } = process.env;
 
 const plugin = new EnvironmentPlugin({
@@ -15,8 +14,7 @@ const plugin = new EnvironmentPlugin({
   DEBUG_EGG: 'false',
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_API_KEY,
-  GOOGLE_CLIENT_ID,
-  HANDSONTABLE_LICENSE_KEY
+  GOOGLE_CLIENT_ID
 });
 
 export default plugin;
