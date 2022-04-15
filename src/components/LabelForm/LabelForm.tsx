@@ -3,14 +3,14 @@ import joi from 'joi';
 import React, { useCallback, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
-import { EventAction, EventCategory } from '../../constants/ga';
-import { imageScreenshotWidth } from '../../constants/label';
+import { SCREENSHOT_WIDTH } from '../../constants/label';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import useScreenshot, { IResult as IUseScreenshotResult, TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
+import { EventAction, EventCategory } from '../../types/ga';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
@@ -99,7 +99,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
 
   const useScreenshotOptions: TUseScreenshotOptions = useMemo(() => ({
     onclone: (document, element) => {
-      element.style.width = imageScreenshotWidth;
+      element.style.width = SCREENSHOT_WIDTH;
     }
   }), []);
   const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, useScreenshotOptions);

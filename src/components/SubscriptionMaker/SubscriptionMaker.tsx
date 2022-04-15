@@ -3,7 +3,6 @@ import debugFactory from 'debug';
 import joi from 'joi';
 import React, { useCallback, useEffect, useId, useState } from 'react';
 import { namespace } from '../../../package.json';
-import { EventAction, EventCategory } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
@@ -13,6 +12,7 @@ import { color, homepage, name, version } from '../../schemas/subscription';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
+import { EventAction, EventCategory } from '../../types/ga';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import { IconName } from '../Icon/types';
@@ -190,7 +190,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
             <IconButton
               className={styles.remove}
               icon={IconName.DeleteForever}
-              aria-label={TEXTS.SUBSCRIPTION_MAKER_BUTTON_TEXT_REMOVE}
+              aria-label={TEXTS.BUTTON_TEXT_SUBSCRIPTION_MAKER_REMOVE_TEMPLATE}
               onClick={handleSubscriptionTemplateRemoveButtonClick}
             />
           )

@@ -130,7 +130,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       className={styles.remove}
                       value={index}
                       icon={removed ? IconName.DeleteForever : IconName.Delete}
-                      aria-label={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
+                      aria-label={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
                       onClick={handleRemoveButtonClick}
                     />
                     <TextInput

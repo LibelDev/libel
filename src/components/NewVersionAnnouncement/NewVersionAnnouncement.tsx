@@ -31,7 +31,7 @@ const NewVersionAnnouncement: React.FunctionComponent<TProps> = (props) => {
       <strong>
         <a href={userScriptURL} target="_blank">{newVersionMessage}</a>
       </strong>
-      （<a href={release.html_url} target="_blank">{TEXTS.ANNOUCEMENT_LABEL_CHANGE_LOG}</a>）
+      （<a href={release.html_url} target="_blank">{TEXTS.ANNOUNCEMENT_LABEL_CHANGE_LOG}</a>）
       <small>（{oldVersionMessage}）</small>
     </Announcement>
   );

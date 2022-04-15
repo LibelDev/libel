@@ -6,7 +6,7 @@ import { render } from 'mustache';
 import React, { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
 import * as cloud from '../../../../cloud';
-import { interval } from '../../../../constants/sync';
+import { SYNC_INTERVAL } from '../../../../constants/sync';
 import * as TEXTS from '../../../../constants/texts';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
 import { selectMeta, selectSync } from '../../../../store/selectors';
@@ -30,7 +30,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
     if (meta.lastSyncedTime) {
       const now = new Date();
       const lastSyncedTime = formatRelative(meta.lastSyncedTime, now, { locale: zhHK });
-      const nextSyncTime = formatRelative(add(meta.lastSyncedTime, { seconds: interval / 1000 }), now, { locale: zhHK });
+      const nextSyncTime = formatRelative(add(meta.lastSyncedTime, { seconds: SYNC_INTERVAL / 1000 }), now, { locale: zhHK });
       return [
         render(messages.sync.lastSyncedTime, { lastSyncedTime }),
         render(messages.sync.nextSyncTime, { nextSyncTime })
@@ -114,7 +114,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                             }
                             onClick={handleSyncNowButtonClick}
                           >
-                            {TEXTS.BUTTON_TEXT_SYNC_NOW}
+                            {TEXTS.BUTTON_TEXT_CLOUD_SYNC_SYNC_NOW}
                           </Button>
                         )
                       }

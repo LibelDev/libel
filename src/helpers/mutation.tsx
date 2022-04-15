@@ -73,7 +73,7 @@ const isThreadItem = (node: Element) => {
 };
 
 const isUserCardModal = (node: Element) => {
-  return isModalTitleMatched(node, TEXTS.LIHKG_USER_CARD_MODAL_TITLE);
+  return isModalTitleMatched(node, TEXTS.LIHKG_MODAL_TITLE_USER_CARD);
 };
 
 // const isSettingsModal = (node: Element) => {
@@ -348,7 +348,7 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
       /* add label button */
       const { container: addLabelButtonContainer } = _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
         const replyItemInner = node.parentElement?.parentElement;
-        const postId = replyItemInner?.getAttribute(ATTRIBUTES.dataPostId);
+        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID);
         const container = document.createElement('div');
         insertAfter(container, reference);
         const root = renderAddLabelButton(user, postId, store, persistor, container);

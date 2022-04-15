@@ -1,6 +1,6 @@
 import format from 'date-fns/format';
-import { displayDateFormat } from '../constants/label';
-import { shortenedHost } from '../constants/lihkg';
+import { DISPLAY_DATE_FORMAT } from '../constants/label';
+import { SHORTENED_HOST } from '../constants/lihkg';
 import type { IPost } from '../types/lihkg';
 import type { ILabel, ISource } from './../models/Label';
 import { counter } from './counter';
@@ -39,13 +39,13 @@ export const getShareURL = (label: ILabel) => {
   const { source } = label;
   if (source) {
     const shareID = getShareID(source);
-    return `${shortenedHost}/${shareID}`;
+    return `${SHORTENED_HOST}/${shareID}`;
   }
   // fallback to the deprecated url
   return label.url;
 };
 
-export const getDisplayDate = (label: ILabel, dateFormat = displayDateFormat) => {
+export const getDisplayDate = (label: ILabel, dateFormat = DISPLAY_DATE_FORMAT) => {
   const { date } = label;
   if (date) {
     return format(date, dateFormat);

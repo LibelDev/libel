@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
 import * as ATTRIBUTES from '../../constants/attributes';
-import { EventAction, EventCategory, EventLabel } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
+import { EventAction, EventCategory, EventLabel } from '../../types/ga';
 import type { IPost } from '../../types/lihkg';
 import IconButton from '../IconButton/IconButton';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
@@ -32,7 +32,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     if (!loading) {
-      const targetReplySelector = `[${ATTRIBUTES.dataPostId}="${post.post_id}"]`;
+      const targetReplySelector = `[${ATTRIBUTES.DATA_POST_ID}="${post.post_id}"]`;
       const targetReply = document.querySelector<HTMLDivElement>(targetReplySelector);
       setTarget(targetReply);
       setOpen(true);
@@ -88,9 +88,9 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         className={styles.addLabelButton}
         icon={<FontAwesomeIcon icon={faTag} />}
-        aria-label={TEXTS.BUTTON_TEXT_ADD_LABEL}
-        data-tip={TEXTS.BUTTON_TEXT_ADD_LABEL}
-        title={TEXTS.BUTTON_TEXT_ADD_LABEL}
+        aria-label={TEXTS.BUTTON_TEXT_LABEL_ADD}
+        data-tip={TEXTS.BUTTON_TEXT_LABEL_ADD}
+        title={TEXTS.BUTTON_TEXT_LABEL_ADD}
         disabled={loading}
         onClick={handleClick}
       />

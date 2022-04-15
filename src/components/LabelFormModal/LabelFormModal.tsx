@@ -40,7 +40,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
           type="submit"
           loading={loading}
         >
-          {TEXTS.LABEL_FORM_BUTTON_TEXT_SUBMIT}
+          {TEXTS.BUTTON_TEXT_LABEL_FORM_SUBMIT}
         </Button>
       </Modal.Footer>
     </Modal>

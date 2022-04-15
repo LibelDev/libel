@@ -4,7 +4,7 @@ import { appendScript } from './helpers/dom';
 
 if (!isOffline()) {
   (async () => {
-    appendScript(egg.src);
+    appendScript(egg.SCRIPT_URL);
     if (isMainApp()) {
       require('./stylesheets/lihkg.scss');
       require('./stylesheets/main.scss');

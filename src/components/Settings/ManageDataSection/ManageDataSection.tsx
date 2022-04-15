@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import debugFactory from 'debug';
 import { render } from 'mustache';
 import React, { useCallback, useMemo, useState } from 'react';
-import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
 import { download, _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
@@ -15,6 +14,7 @@ import { actions as personalActions } from '../../../store/slices/personal';
 import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../store/store';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
+import { EventAction } from '../../../types/ga';
 import BaseInput from '../../BaseInput/BaseInput';
 import type { IProps as IDataSetEditorProps } from '../../DataSetEditor/DataSetEditor';
 import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
@@ -156,7 +156,7 @@ const ManageDataSection: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
-        {TEXTS.SETTINGS_SECTION_TITLE_MANAGE_DATA}
+        {TEXTS.SETTINGS_TITLE_MANAGE_DATA}
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>

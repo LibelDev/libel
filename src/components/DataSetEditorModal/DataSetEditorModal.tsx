@@ -33,7 +33,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
       </Modal.Body>
       <Modal.Footer>
         <Button form={_formId} type="submit">
-          {TEXTS.DATA_SET_EDITOR_BUTTON_TEXT_SAVE}
+          {TEXTS.BUTTON_TEXT_DATA_SET_EDITOR_SAVE}
         </Button>
       </Modal.Footer>
     </Modal>

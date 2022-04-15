@@ -32,14 +32,14 @@ const upload = (fileId: string, json: string) => {
 };
 
 export const clear = () => {
-  return gapi.drive.deleteByName(files.appData);
+  return gapi.drive.deleteByName(files.APP_DATA);
 };
 
 export const sync = async () => {
   const { dispatch } = store;
   dispatch(syncActions.setLoading(true));
   try {
-    const [file, fresh] = await gapi.drive.ensure(files.appData);
+    const [file, fresh] = await gapi.drive.ensure(files.APP_DATA);
     if (fresh) {
       // never been synced with the cloud before
       // nothing to do here

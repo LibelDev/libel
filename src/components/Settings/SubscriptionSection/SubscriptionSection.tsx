@@ -13,7 +13,7 @@ const SubscriptionSection: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <small className={classNames(lihkgCssClasses.settingSectionTitle, styles.sectionTitle)}>
-        {TEXTS.SETTINGS_SECTION_TITLE_SUBSCRIPTION}
+        {TEXTS.SETTINGS_TITLE_SUBSCRIPTION}
         <AddSubscriptionButton />
       </small>
       {

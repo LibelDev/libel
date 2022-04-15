@@ -11,7 +11,7 @@ const CloudSyncSection: React.FunctionComponent<TProps> = () => {
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
-        {TEXTS.SETTINGS_SECTION_TITLE_CLOUD_SYNC}
+        {TEXTS.SETTINGS_TITLE_CLOUD_SYNC}
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>

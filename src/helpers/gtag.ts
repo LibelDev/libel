@@ -1,5 +1,5 @@
-import { id } from '../constants/ga';
 import Singleton from '../models/Singleton';
+import { id } from '../types/ga';
 import { appendScript } from './dom';
 
 type TWindow = typeof window & {

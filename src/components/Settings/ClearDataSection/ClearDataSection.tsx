@@ -66,7 +66,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
   return (
     <React.Fragment>
       <small className={lihkgCssClasses.settingSectionTitle}>
-        {TEXTS.SETTINGS_SECTION_TITLE_CLEAR_DATA}
+        {TEXTS.SETTINGS_TITLE_CLEAR_DATA}
       </small>
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>

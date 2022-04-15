@@ -1,13 +1,13 @@
 import { render } from 'mustache';
 import React, { useCallback } from 'react';
 import cache from '../../cache';
-import { EventAction, EventCategory } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import type { ILabel } from '../../models/Label';
 import { actions as personalActions } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
 import * as questions from '../../templates/questions';
+import { EventAction, EventCategory } from '../../types/ga';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 
@@ -42,9 +42,9 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
     <IconButton
       className={className}
       icon={IconName.DeleteForever}
-      aria-label={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
-      data-tip={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
-      title={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
+      aria-label={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
+      data-tip={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
+      title={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
       onClick={handleClick}
     />
   );

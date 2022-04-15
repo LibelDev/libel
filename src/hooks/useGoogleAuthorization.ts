@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { EventAction, EventCategory } from '../constants/ga';
 import * as TEXTS from '../constants/texts';
 import { ready } from '../helpers/gapi';
 import * as LIHKG from '../helpers/lihkg';
+import { EventAction, EventCategory } from '../types/ga';
 import * as gtag from './../helpers/gtag';
 
 type TState = [

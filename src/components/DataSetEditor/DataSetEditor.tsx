@@ -99,7 +99,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
     debug('handleSubmit:dataSet', dataSet);
     const { error } = schema.validate(dataSet);
     if (error) {
-      setError(TEXTS.DATA_SET_EDITOR_ERROR_INVALID_LABEL);
+      setError(TEXTS.DATA_SET_EDITOR_ERROR_INVALID);
       debug('handleSubmit:error', error);
       const { details } = error;
       const { path } = details[0];
