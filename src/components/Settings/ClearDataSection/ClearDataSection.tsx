@@ -31,7 +31,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
   const dispatch = useTypedDispatch();
   const { loading: syncLoading } = useTypedSelector(selectSync);
   const [clearCloudDataLoading, setClearCloudDataLoading] = useState(false);
-  const [, , signedIn] = useGoogleAuthorization();
+  const [, , , , signedIn] = useGoogleAuthorization();
 
   const handleClearLocalData: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();

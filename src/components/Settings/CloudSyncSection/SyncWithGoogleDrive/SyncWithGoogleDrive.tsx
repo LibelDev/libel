@@ -22,7 +22,7 @@ import SettingOptionButton from '../../SettingOptionButton/SettingOptionButton';
 import styles from './SyncWithGoogleDrive.module.scss';
 
 const SyncWithGoogleDrive: React.FunctionComponent = () => {
-  const [auth, user, signedIn] = useGoogleAuthorization();
+  const [auth, user, signIn, signOut, signedIn] = useGoogleAuthorization();
   const meta = useTypedSelector(selectMeta);
   const sync = useTypedSelector(selectSync);
 
@@ -47,17 +47,13 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
 
   const handleSignIn: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    if (auth) {
-      auth.signIn();
-    }
-  }, [auth]);
+    signIn();
+  }, [signIn]);
 
   const handleSignout: React.MouseEventHandler<HTMLAnchorElement> = useCallback(async (event) => {
     event.preventDefault();
-    if (auth) {
-      auth.signOut();
-    }
-  }, [auth]);
+    signOut();
+  }, [signOut]);
 
   return (
     <React.Fragment>
