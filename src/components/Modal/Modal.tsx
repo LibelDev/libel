@@ -1,6 +1,6 @@
 import classNames from 'classNames';
 import FocusTrap from 'focus-trap-react';
-import React, { useCallback, useEffect, useId, useMemo } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
 import Body from './Body';
@@ -56,9 +56,9 @@ const Modal: TModal = (props) => {
     onClose
   } = props;
 
-  const ref = React.createRef<HTMLDivElement>();
-  const backdropRef = React.createRef<HTMLDivElement>();
-  const innerRef = React.createRef<HTMLDivElement>();
+  const ref = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
   const _id = id || useId();
   const _ids = {
