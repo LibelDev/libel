@@ -12,7 +12,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'input'>;
 
 export type TProps = IProps & TComponentProps;
 
-const BaseInput: React.FunctionComponent<TProps> = (props) => {
+const BaseInput = React.forwardRef<HTMLInputElement, TProps>((props, ref) => {
   const { id, className, disabled, label, error, ...otherProps } = props;
 
   const _id = id || useId();
@@ -31,6 +31,7 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
       }
       <div className={classNames(className, styles.input)}>
         <input
+          ref={ref}
           id={_id}
           disabled={disabled}
           aria-describedby={_errorId}
@@ -46,7 +47,7 @@ const BaseInput: React.FunctionComponent<TProps> = (props) => {
       </div>
     </React.Fragment>
   );
-};
+});
 
 BaseInput.displayName = 'BaseInput';
 

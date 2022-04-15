@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Key } from 'ts-key-enum';
+import useFocus from '../../../hooks/useFocus';
 import { IconName } from '../../Icon/types';
 import TextInput, { TProps as TTextInputProps } from '../../TextInput/TextInput';
 
@@ -12,10 +13,18 @@ type TProps = IProps & Omit<TTextInputProps, 'onChange'>;
 const Filter: React.FunctionComponent<TProps> = (props) => {
   const { onChange, ...otherProps } = props;
 
+  const [ref, focus] = useFocus<HTMLInputElement>();
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { value } = event.currentTarget;
     onChange(value);
   }, [onChange]);
+
+  const handleClear: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
+    event.preventDefault();
+    onChange('');
+    focus();
+  }, [onChange, focus]);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
     const { key } = event;
@@ -26,9 +35,11 @@ const Filter: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <TextInput
+      ref={ref}
       {...otherProps}
       icon={IconName.Filter}
       onChange={handleChange}
+      onClear={handleClear}
       onKeyDown={handleKeyDown}
     />
   );
