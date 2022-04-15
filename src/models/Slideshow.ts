@@ -45,7 +45,8 @@ class Slideshow extends EventEmitter {
   private triggerChange (prevIndex: number, index: number) {
     const prevImage = this[_imageElements][prevIndex];
     const image = this[_imageElements][index];
-    this.emit(SlideshowEvent.Change, { prevImage, image });
+    const event: IChangeEvent = { prevImage, image };
+    this.emit(SlideshowEvent.Change, event);
   }
 
   private updateRandomIndex (): [number, number] {
