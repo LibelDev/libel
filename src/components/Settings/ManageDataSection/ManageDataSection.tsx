@@ -76,8 +76,9 @@ const ManageDataSection: React.FunctionComponent = () => {
     if (confirmed) {
       debug('handleDataSetEditorSubmit', dataSet);
       dispatch(personalActions.update(dataSet));
-      window.alert(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_SUCCESS);
       setIsDataSetEditorModalOpened(false);
+      const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_SUCCESS);
+      LIHKG.showNotification(notification);
     }
   }, []);
 
@@ -107,7 +108,8 @@ const ManageDataSection: React.FunctionComponent = () => {
       const { personal, subscriptions } = data;
       const { users, labels } = personal.aggregate();
       const message = render(messages.success.export, { users, labels, subscriptions });
-      window.alert(message);
+      const notification = LIHKG.createLocalNotification(message, 5000);
+      LIHKG.showNotification(notification);
     } catch (err) {
       // analytics
       gtag.event(EventAction.Error, { event_category: EventAction.Export });
@@ -133,13 +135,16 @@ const ManageDataSection: React.FunctionComponent = () => {
         gtag.event(EventAction.Import);
         const { users, labels } = Personal.aggregate(incoming.personal);
         const _message = render(messages.success.import, { users, labels, subscriptions: incoming.subscriptions });
-        window.alert(_message);
+        const notification = LIHKG.createLocalNotification(_message, 5000);
+        LIHKG.showNotification(notification);
       } catch (err) {
         if (typeof err === 'string') {
-          window.alert(err);
+          const notification = LIHKG.createLocalNotification(err, 5000);
+          LIHKG.showNotification(notification);
         } else {
           console.error(err);
-          window.alert(TEXTS.IMPORT_FILE_ERROR_GENERIC_ERROR);
+          const notification = LIHKG.createLocalNotification(TEXTS.IMPORT_FILE_ERROR_GENERIC_ERROR, 5000);
+          LIHKG.showNotification(notification);
         }
         // analytics
         gtag.event(EventAction.Error, { event_category: EventAction.Import });
