@@ -13,6 +13,7 @@ const hatch = async () => {
   const leftPanel = splitView.querySelector(lihkgSelectors.leftPanel);
   const underlay = document.createElement('div');
   underlay.classList.add(styles.underlay);
+  underlay.setAttribute('aria-hidden', 'true');
   leftPanel?.insertBefore(underlay, leftPanel.firstChild);
   const app = document.querySelector(lihkgSelectors.app);
   app?.classList.add(styles.egg);
