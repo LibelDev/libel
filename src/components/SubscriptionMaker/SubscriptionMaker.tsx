@@ -79,7 +79,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
     isCustomColor: !!formData.color
   });
-  const [inputErrors, setInputErrors] = useState<IInputErrors | null>(null);
+  const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
 
   const _id = id || useId();
@@ -92,7 +92,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
     const subscriptionTemplate = subscriptionTemplates[index];
     setSubscriptionTemplateIndex(index);
     setFormData(subscriptionTemplate || initialFormData);
-    setInputErrors(null);
+    setInputErrors({});
   }, [subscriptionTemplates]);
 
   const handleSubscriptionTemplateRemoveButtonClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
@@ -102,7 +102,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       dispatch(configActions.removeSubscriptionTemplate(subscriptionTemplateIndex));
       setSubscriptionTemplateIndex(-1);
       setFormData(initialFormData);
-      setInputErrors(null);
+      setInputErrors({});
     }
   }, [subscriptionTemplateIndex]);
 
@@ -202,7 +202,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_NAME}
           name="name"
           value={formData.name || ''}
-          error={inputErrors?.name}
+          error={inputErrors.name}
           onChange={handleInputChange}
           autoFocus
           autoComplete="on"
@@ -214,7 +214,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           label={TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_VERSION}
           name="version"
           value={formData.version || ''}
-          error={inputErrors?.version}
+          error={inputErrors.version}
           onChange={handleInputChange}
         />
       </div>
@@ -225,7 +225,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           placeholder={TEXTS.SUBSCRIPTION_MAKER_FIELD_PLACEHOLDER_HOMEPAGE}
           name="homepage"
           value={formData.homepage || ''}
-          error={inputErrors?.homepage}
+          error={inputErrors.homepage}
           onChange={handleInputChange}
         />
       </div>
