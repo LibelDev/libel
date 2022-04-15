@@ -1,4 +1,5 @@
 module.exports = {
+  content: [],
   theme: {
     screens: {
       /** @media (min-width: 640px) */
@@ -11,7 +12,5 @@ module.exports = {
       'xl': '1280px'
     }
   },
-  purge: [],
-  variants: {},
   plugins: []
 };

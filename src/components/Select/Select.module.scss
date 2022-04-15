@@ -13,15 +13,13 @@
   .select {
     @apply relative;
     @apply flex items-center;
-    @apply border border-solid;
     background-color: $color-grey01;
     border-color: $color-grey03;
     border-radius: 4px;
     height: $height;
 
-    @include dark-mode() {
-      background-color: $color-black03;
-      border-color: $color-grey08;
+    &.border {
+      border: solid 1px $color-grey03;
     }
 
     &,
@@ -44,8 +42,9 @@
       @apply ml-auto;
     }
 
-    &:not(.border) {
-      @apply border-0;
+    @include dark-mode() {
+      background-color: $color-black03;
+      border-color: $color-grey08;
     }
   }
 
