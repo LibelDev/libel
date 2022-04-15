@@ -7,7 +7,7 @@ import styles from './martyr-rip.module.scss';
 
 /**
  * Martyr RIP
- * @see https://zh.wikipedia.org/wiki/銅鑼灣刺警案
+ * @see https://zh.wikipedia.org/zh-hk/銅鑼灣刺警案
  */
 const hatch = async () => {
   const index = random(0, images.length - 1);
@@ -18,7 +18,7 @@ const hatch = async () => {
   icon.setAttribute('src', imageSrc);
   const link = document.createElement('a');
   link.classList.add(styles.link);
-  link.setAttribute('href', 'https://zh.wikipedia.org/wiki/銅鑼灣刺警案');
+  link.setAttribute('href', 'https://zh.wikipedia.org/zh-hk/銅鑼灣刺警案');
   link.setAttribute('target', '_blank');
   link.appendChild(icon);
   navCategory.appendChild(link);
