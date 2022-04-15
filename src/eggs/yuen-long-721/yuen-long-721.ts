@@ -2,7 +2,7 @@ import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { enabled } from './config/config';
-import styles from './yuen-long-721.scss';
+import styles from './yuen-long-721.module.scss';
 
 /**
  * Yuen Long 721
@@ -11,7 +11,7 @@ import styles from './yuen-long-721.scss';
  * @see https://www.youtube.com/watch?v=5RWsXqjaads
  * @see https://www.youtube.com/watch?v=9e8OCzU_lAI
  */
- const hatch = async () => {
+const hatch = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);
   const leftPanel = splitView.querySelector(lihkgSelectors.leftPanel);
   const underlay = document.createElement('div');
