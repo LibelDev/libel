@@ -86,14 +86,14 @@ export const IMPORT_FILE_ERROR_INVALID_DATA_FORMAT = '檔案內容格式錯誤';
 export const BUTTON_TEXT_CLEAR_LOCAL_DATA = '從本裝置清除資料及重置設定';
 export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CONFIRMATION = '請問你已匯出資料作備份用途並確定要清除個人標籤記錄、訂閱名單及重置設定嗎？';
 export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_DOUBLE_CONFIRMATION = `請輸入 "${displayName}" 確認清除個人標籤記錄、訂閱名單及重置設定`;
-export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS = '成功清除個人標籤記錄、訂閱名單及重置設定';
+export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS = '已成功從本裝置清除個人標籤記錄、訂閱名單及重置設定';
 export const CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED = '已取消清除本裝置資料';
 
 /* clear cloud data */
 export const BUTTON_TEXT_CLEAR_CLOUD_DATA = '從雲端清除資料及重置設定';
 export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CONFIRMATION = '請問你已匯出資料作備份用途並確定要清除個人標籤記錄、訂閱名單及重置設定嗎？';
 export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_DOUBLE_CONFIRMATION = `請輸入 "${displayName}" 確認清除個人標籤記錄、訂閱名單及重置設定`;
-export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS = '成功清除個人標籤記錄、訂閱名單及重置設定';
+export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS = '已成功從雲端清除個人標籤記錄、訂閱名單及重置設定';
 export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED = '已取消清除雲端資料';
 
 /* subscription */
