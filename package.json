@@ -26,8 +26,7 @@
     "build": "pnpm prebuild && pnpm type:scss && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
     "prerelease": "cz bump && cz ch && pnpm build && git add . && git commit --amend --no-edit",
     "type:scss": "tsm src --implementation sass --exportType default",
-    "type:scss:watch": "pnpm type:scss -- --watch",
-    "data": "superstatic ./data --port 20630 --debug"
+    "type:scss:watch": "pnpm type:scss -- --watch"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^0.6.0",
@@ -92,7 +91,6 @@
     "sass": "^1.32.10",
     "sass-loader": "^11.0.1",
     "style-loader": "^2.0.0",
-    "superstatic": "^7.1.0",
     "tailwindcss": "^3.0.24",
     "ts-jest": "^27.1.3",
     "ts-key-enum": "^2.0.8",
