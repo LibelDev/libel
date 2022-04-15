@@ -1,5 +1,6 @@
 import { render } from 'mustache';
 import React from 'react';
+import { outputDirectory } from '../../../config/config';
 import { name, repository } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { versionUpdate } from '../../templates/announcements';
@@ -18,7 +19,7 @@ type TProps = IProps;
 
 const getUserScriptURL = (release: IRelease) => {
   const { tag_name } = release;
-  return `${repository.url}/raw/${tag_name}/dist/${name}.user.js`;
+  return `${repository.url}/raw/${tag_name}/${outputDirectory}/${name}.user.js`;
 };
 
 const NewVersionAnnouncement: React.FunctionComponent<TProps> = (props) => {

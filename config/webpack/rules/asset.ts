@@ -1,9 +1,11 @@
 import webpack from 'webpack';
+import { dev } from '../../config';
 import svgLoader from '../loaders/svg-loader';
 
 export const resource: webpack.RuleSetRule = {
   test: /\.(gif|jpg|png|svg|webp)$/i,
   type: 'asset/resource',
+  generator: { emit: dev }
 };
 
 export const source: webpack.RuleSetRule = {
