@@ -1,8 +1,11 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Slideshow, { IImage as ISlideshowImage } from '../../components/Slideshow/Slideshow';
 import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
-import Slideshow, { IChangeEvent, SlideshowEvent } from '../../models/Slideshow';
+// import Slideshow, { IChangeEvent, SlideshowEvent } from '../../models/Slideshow';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
-import { enabled, images, timeout, videoURL } from './config/config';
+import { caption, enabled, images, interval, videoURL } from './config/config';
 import styles from './prince-edward-831.module.scss';
 
 /**
@@ -20,36 +23,33 @@ import styles from './prince-edward-831.module.scss';
  */
 const hatch = async () => {
   const notice = await waitForElement(lihkgSelectors.notice);
-  const image = notice.querySelector('img')!;
-  image.classList.add(styles.hidden);
+  const noticeImage = notice.querySelector('img')!;
+  const { height, width } = noticeImage.getBoundingClientRect();
+  noticeImage.classList.add(styles.hidden);
 
   const html = document.querySelector('html')!;
   html.classList.add(styles.egg);
 
+  const imageRatio = height / width * 100;
   const container = document.createElement('a');
-  container.setAttribute('aria-label', '點擊以勾起更多記憶');
+  container.setAttribute('aria-label', caption);
   container.setAttribute('href', videoURL);
   container.setAttribute('target', '_blank');
-  container.classList.add(styles.slideshow);
+  container.classList.add(styles.container);
+  container.style.paddingTop = `${imageRatio}%`;
 
-  const slideshow = new Slideshow(images, (src) => {
-    const image = document.createElement('div');
-    image.setAttribute('aria-hidden', 'true');
-    image.classList.add(styles.image);
-    image.style.backgroundImage = `url(${src})`;
-    return image;
-  });
-  slideshow.on(SlideshowEvent.Change, (event: IChangeEvent) => {
-    const { prevImage, image } = event;
-    if (prevImage) {
-      prevImage.classList.remove(styles.active);
-    }
-    image.classList.add(styles.active);
-  });
-  slideshow.render(container);
-  slideshow.start(timeout);
+  notice.insertBefore(container, noticeImage);
 
-  notice.insertBefore(container, image);
+  const _images: ISlideshowImage[] = images.map((src) => ({ src }));
+  const root = createRoot(container);
+  root.render(
+    <Slideshow
+      className={styles.slideshow}
+      images={_images}
+      interval={interval}
+      aria-hidden
+    />
+  );
 };
 
 const egg = new EasterEgg(hatch, enabled);

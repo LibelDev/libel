@@ -1,17 +1,13 @@
-@use 'sass:math';
 @import '../../stylesheets/base';
 
 .egg :global(#{$lihkg-selector-notice}) {
-  $image-ratio: percentage(math.div(500, 1024));
-
   @apply relative;
 
-  .slideshow {
+  .container {
     @apply relative;
     @apply inline-block;
-    @apply w-full;
     @apply overflow-hidden;
-    padding-top: $image-ratio;
+    @apply w-full;
 
     &:before,
     &:after {
@@ -28,8 +24,7 @@
     // caption
     &:after {
       content: attr(aria-label);
-      @apply bottom-0 left-0;
-      @apply w-full;
+      @apply right-0 bottom-0 left-0;
       @apply p-4;
       @apply box-border;
       @apply text-center text-white text-xl;
@@ -46,26 +41,17 @@
       }
     }
 
-    .image {
+    .slideshow {
       @apply absolute top-0 left-0;
       @apply h-full w-full;
-      @apply bg-center bg-cover;
-      @apply transition-opacity;
-      @apply duration-500;
-
-      &:not(.active) {
-        @apply opacity-0;
-      }
     }
   }
 
-  img {
-    &.hidden {
-      @apply absolute left-0;
-      @apply transition-opacity;
-      @apply duration-500;
-      @apply opacity-0 #{!important};
-      @apply pointer-events-none;
-    }
+  .hidden {
+    @apply absolute left-0;
+    @apply transition-opacity;
+    @apply duration-500;
+    @apply opacity-0;
+    @apply pointer-events-none;
   }
 }
