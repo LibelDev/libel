@@ -20,16 +20,16 @@ export const sync = async (auth: gapi.auth2.GoogleAuth) => {
       if (unregister) {
         unregister();
       }
-      const notificationSyncInProgress = LIHKG.createNotification(NotificationType.Local, TEXTS.CLOUD_SYNC_NOTIFICATION_SYNC_IN_PROGESS, 0);
+      const notificationSyncInProgress = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_NOTIFICATION_SYNC_IN_PROGESS, 0);
       LIHKG.showNotification(notificationSyncInProgress);
       try {
         await cloud.sync();
       } catch (err) {
-        const notificationSyncFailed = LIHKG.createNotification(NotificationType.Local, TEXTS.CLOUD_SYNC_NOTIFICATION_SYNC_FAILED);
+        const notificationSyncFailed = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_NOTIFICATION_SYNC_FAILED);
         LIHKG.showNotification(notificationSyncFailed);
       } finally {
         LIHKG.removeNotification(notificationSyncInProgress.id);
-        const notificationSyncSuccess = LIHKG.createNotification(NotificationType.Local, TEXTS.CLOUD_SYNC_NOTIFICATION_SYNC_SUCCESS);
+        const notificationSyncSuccess = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_NOTIFICATION_SYNC_SUCCESS);
         LIHKG.showNotification(notificationSyncSuccess);
       }
       unregister = register(auth); // register next sync

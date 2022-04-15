@@ -5,7 +5,7 @@ import { displayName } from '../../package.json';
 import * as lihkgActions from '../actions/lihkg';
 import { ISource } from '../models/Label';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import type { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IUser, NotificationType, TNotification } from '../types/lihkg';
+import { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IUser, NotificationType, TNotification } from '../types/lihkg';
 import { counter } from './counter';
 import { waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
@@ -17,16 +17,17 @@ enum ShareType {
 
 /**
  * create a notification object
+ * @private
  */
-type TCreateNotification = (
+type TCreateNotification = {
   /**
-   * create a local notification
+   * create a local notification object
    * @param {NotificationType.Local} type the notification type
    * @param {ILocalNotifcationPayload | string} body the notification payload, or just the body
    * @param {number} [duration=3000] the delay (ms) to dismiss the notification automatically
    */
-  (type: NotificationType.Local, body: ILocalNotifcationPayload | string, duration?: number) => ILocalNotifcation
-);
+  (type: NotificationType.Local, body: ILocalNotifcationPayload | string, duration?: number): ILocalNotifcation;
+};
 
 // const debug = debugFactory('libel:helper:lihkg');
 
@@ -108,12 +109,20 @@ export const getShareID = (source: ISource) => {
   return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };
 
-export const createNotification: TCreateNotification = (type, body, duration = 3000) => {
+const createNotification: TCreateNotification = (type, body, duration = 3000) => {
   const { value: id } = notificationIdCount.next();
   const defaultPayload: Partial<ILocalNotifcationPayload> = { title: displayName };
   const payload = typeof body === 'string' ? { ...defaultPayload, body } : { ...defaultPayload, ...body };
   const notification: ILocalNotifcation = { id, type, payload, duration };
   return notification;
+};
+
+/**
+ * create a local notification object
+ * @see {createNotification}
+ */
+export const createLocalNotification = (body: ILocalNotifcationPayload | string, duration?: number) => {
+  return createNotification(NotificationType.Local, body, duration);
 };
 
 /**
