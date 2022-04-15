@@ -2,6 +2,7 @@
 
 .data-set-editor {
   @apply flex flex-col;
+  min-width: 28rem;
 }
 
 .filter-result {
