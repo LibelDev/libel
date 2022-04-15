@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import { render } from 'mustache';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { EventAction } from '../../../constants/ga';
 import * as TEXTS from '../../../constants/texts';
 import { download, _export, _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';
+import * as LIHKG from '../../../helpers/lihkg';
 import { mergeConfig, mergeDataSet, mergeSubscriptions } from '../../../helpers/merge';
 import Personal from '../../../models/Personal';
 import type { ISerializedStorage } from '../../../models/Storage';
@@ -39,12 +40,19 @@ const ManageDataSection: React.FunctionComponent = () => {
   const [isSubscriptionMakerModalOpened, setIsSubscriptionMakerModalOpened] = useState(false);
   const [isDataSetEditorDirty, setIsDataSetEditorDirty] = useState(false);
 
+  const personalDataUsers = useMemo(() => Object.keys(personal.data), [personal]);
+
   /* data set editor */
   const handleEditDataSetButtonClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
-    setIsDataSetEditorModalOpened(true);
-    setIsDataSetEditorDirty(false);
-  }, []);
+    if (personalDataUsers.length > 0) {
+      setIsDataSetEditorModalOpened(true);
+      setIsDataSetEditorDirty(false);
+    } else {
+      const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET);
+      LIHKG.showNotification(notification);
+    }
+  }, [personalDataUsers]);
 
   const handleDataSetEditorModalClose = useCallback(() => {
     if (isDataSetEditorDirty) {

@@ -2,10 +2,6 @@
 
 .data-set-editor {
   @apply flex flex-col;
-
-  &:not(.empty) {
-    min-width: 28rem;
-  }
 }
 
 .filter-result {

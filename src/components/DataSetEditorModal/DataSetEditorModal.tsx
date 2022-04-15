@@ -13,12 +13,9 @@ type TProps = IProps & Omit<TModalProps, 'onChange' | 'onSubmit'> & TDataSetEdit
 // const debug = debugFactory('libel:component:DataSetEditorModal');
 
 const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
-  const { id, dataSet, onChange, onSubmit, onClose, ...otherProps } = props;
+  const { id, onClose, dataSet, onChange, onSubmit, ...otherProps } = props;
 
   const _formId = id || useId();
-
-  const users = Object.keys(dataSet.data);
-  const empty = users.length === 0;
 
   return (
     <Modal {...otherProps} onClose={onClose}>
@@ -34,15 +31,11 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
           onSubmit={onSubmit}
         />
       </Modal.Body>
-      {
-        !empty && (
-          <Modal.Footer>
-            <Button form={_formId} type="submit">
-              {TEXTS.DATA_SET_EDITOR_BUTTON_TEXT_SAVE}
-            </Button>
-          </Modal.Footer>
-        )
-      }
+      <Modal.Footer>
+        <Button form={_formId} type="submit">
+          {TEXTS.DATA_SET_EDITOR_BUTTON_TEXT_SAVE}
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 };
