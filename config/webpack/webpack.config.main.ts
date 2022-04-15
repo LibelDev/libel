@@ -1,10 +1,11 @@
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import merge from 'webpack-merge';
 import { namespace } from '../../package.json';
 import userscript from './plugins/userscript';
 import base from './webpack.config.base';
 
 const main: webpack.Configuration = {
+  name: 'main',
   entry: {
     [namespace]: './src/main.ts'
   },

@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import { publicURL } from '../config';
 import environment from './plugins/environment';
 import { resource, source, svg } from './rules/asset';

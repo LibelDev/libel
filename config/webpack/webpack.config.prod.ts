@@ -1,5 +1,5 @@
 import path from 'path';
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import merge from 'webpack-merge';
 import { outputDirectory } from './../config';
 import egg from './webpack.config.egg';
