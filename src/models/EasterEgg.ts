@@ -1,4 +1,4 @@
-import * as config from '../../config/config';
+import { debugEgg } from '../../config/config';
 
 type THatch = () => void;
 
@@ -15,7 +15,7 @@ class EasterEgg {
 
   hatch () {
     const { enabled } = this;
-    if (config.debugEgg || enabled) {
+    if (debugEgg || enabled) {
       this[_hatch]();
     }
   }
