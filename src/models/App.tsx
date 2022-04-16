@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Persistor } from 'redux-persist';
 import { fetchAnnouncements } from '../apis/announcement';
 import Announcement from '../components/Announcement/Announcement';

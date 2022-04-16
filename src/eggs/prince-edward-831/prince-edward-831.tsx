@@ -1,9 +1,7 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Slideshow, { IImage as ISlideshowImage } from '../../components/Slideshow/Slideshow';
 import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
-// import Slideshow, { IChangeEvent, SlideshowEvent } from '../../models/Slideshow';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { caption, enabled, images, interval, videoURL } from './config/config';
 import styles from './prince-edward-831.module.scss';

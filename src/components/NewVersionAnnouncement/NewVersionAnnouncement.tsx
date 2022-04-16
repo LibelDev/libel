@@ -1,5 +1,5 @@
 import { render } from 'mustache';
-import React from 'react';
+import type React from 'react';
 import { Directory } from '../../../config/config';
 import { name, repository } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';

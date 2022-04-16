@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import Icon from '../Icon/Icon';
 import type { IconName } from '../Icon/types';
 import styles from './IconMessage.module.scss';

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import * as TEXTS from '../../constants/texts';
 import { IconName } from '../Icon/types';
 import IconLink from '../IconLink/IconLink';

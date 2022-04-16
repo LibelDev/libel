@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 export const findReactComponent = <T extends React.Component> (element: any, traverseUp = 0): T | null => {
   const key = Object.keys(element).find((key) => key.startsWith('__reactInternalInstance$'))!;

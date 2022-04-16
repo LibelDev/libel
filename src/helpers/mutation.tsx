@@ -1,6 +1,6 @@
 import { useFloating } from '@floating-ui/react-dom';
 import debugFactory from 'debug';
-import React from 'react';
+import type React from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import type { Persistor } from 'redux-persist';

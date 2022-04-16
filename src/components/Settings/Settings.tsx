@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import ClearDataSection from './ClearDataSection/ClearDataSection';
 import CloudSyncSection from './CloudSyncSection/CloudSyncSection';
 import Footer from './Footer/Footer';

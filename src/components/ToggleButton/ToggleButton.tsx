@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './ToggleButton.module.scss';

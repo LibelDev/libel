@@ -1,5 +1,5 @@
 import { render } from 'mustache';
-import React from 'react';
+import type React from 'react';
 import { displayName, repository, version } from '../../../../package.json';
 import { BUTTON_TEXT_LICENSE, BUTTON_TEXT_SOURCE_CODE } from '../../../constants/texts';
 import { selectPersonal, selectSubscriptions } from '../../../store/selectors';

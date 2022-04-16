@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import useRollingNumber from '../../hooks/useRollingNumber';
 import styles from './Slideshow.module.scss';
 

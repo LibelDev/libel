@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import type { ISubscription } from '../../../../models/Subscription';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';

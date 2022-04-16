@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import styles from './SettingOptionButton.module.scss';
 
