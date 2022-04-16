@@ -1,5 +1,8 @@
 module.exports = {
   content: [],
+  corePlugins: {
+    preflight: false
+  },
   theme: {
     screens: {
       /** @media (min-width: 640px) */

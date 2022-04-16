@@ -1,3 +1,4 @@
+import '../stylesheets/main.scss';
 import handoverOfHongKong from './handover-of-hongkong/handover-of-hongkong';
 import martyrRIP from './martyr-rip/martyr-rip';
 import princeEdward831 from './prince-edward-831/prince-edward-831';
