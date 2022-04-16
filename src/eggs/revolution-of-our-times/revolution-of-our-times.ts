@@ -2,11 +2,11 @@ import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { enabled } from './config/config';
-import styles from './handover-of-hongkong.module.scss';
+import styles from './revolution-of-our-times.module.scss';
 
 /**
- * Handover of Hong Kong
- * @see https://en.wikipedia.org/wiki/Handover_of_Hong_Kong
+ * The Anti-Extradition Law Amendment Bill Movement
+ * @see https://en.wikipedia.org/wiki/2019%E2%80%932020_Hong_Kong_protests
  */
 const hatch = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);
