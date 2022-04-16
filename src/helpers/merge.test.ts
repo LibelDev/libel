@@ -34,7 +34,7 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, false)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(0);
+    expect(merged.subscriptionTemplates!.length).toBe(0);
   });
 
   it('should unlock icon map and have 2 subscription templates (merged)', () => {
@@ -62,9 +62,9 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, false)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(2);
-    expect(merged.subscriptionTemplates[0]).toEqual(configB.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[1]).toEqual(configA.subscriptionTemplates[1]);
+    expect(merged.subscriptionTemplates!.length).toBe(2);
+    expect(merged.subscriptionTemplates![0]).toEqual(configB.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![1]).toEqual(configA.subscriptionTemplates![1]);
   });
 
   it('should unlock icon map and have 3 subscription templates (merged)', () => {
@@ -96,10 +96,10 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, false)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(3);
-    expect(merged.subscriptionTemplates[0]).toEqual(configA.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[1]).toEqual(configB.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[2]).toEqual(configB.subscriptionTemplates[1]);
+    expect(merged.subscriptionTemplates!.length).toBe(3);
+    expect(merged.subscriptionTemplates![0]).toEqual(configA.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![1]).toEqual(configB.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![2]).toEqual(configB.subscriptionTemplates![1]);
   });
 
   it('should unlock icon map and have 2 subscription templates (merged, prune)', () => {
@@ -131,9 +131,9 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, true)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(2);
-    expect(merged.subscriptionTemplates[0]).toEqual(configB.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[1]).toEqual(configB.subscriptionTemplates[1]);
+    expect(merged.subscriptionTemplates!.length).toBe(2);
+    expect(merged.subscriptionTemplates![0]).toEqual(configB.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![1]).toEqual(configB.subscriptionTemplates![1]);
   });
 });
 

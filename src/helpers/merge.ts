@@ -17,24 +17,26 @@ export const mergeConfig = <T extends ISerializedConfig> (configA: T | undefined
     const { subscriptionTemplates: subscriptionTemplatesB } = configB;
     if (prune) {
       /** prune the missing B in A */
-      configA.subscriptionTemplates = configA.subscriptionTemplates.filter((subscriptionTemplateA) => {
-        const subscriptionTemplateB = subscriptionTemplatesB.find((subscriptionTemplateB) => subscriptionTemplateA.name === subscriptionTemplateB.name);
+      configA.subscriptionTemplates = configA.subscriptionTemplates?.filter((subscriptionTemplateA) => {
+        const subscriptionTemplateB = subscriptionTemplatesB?.find((subscriptionTemplateB) => subscriptionTemplateA.name === subscriptionTemplateB.name);
         return !!subscriptionTemplateB;
       });
     }
     /** merge B into A */
     configA.isIconMapUnlocked = configB.isIconMapUnlocked;
-    for (const subscriptionTemplateB of subscriptionTemplatesB) {
-      const subscriptionTemplateA = configA.subscriptionTemplates.find((subscriptionTemplateA) => subscriptionTemplateA.name === subscriptionTemplateB.name);
-      if (subscriptionTemplateA) {
-        /** existing subscription template */
-        subscriptionTemplateA.name = subscriptionTemplateB.name;
-        subscriptionTemplateA.version = subscriptionTemplateB.version;
-        subscriptionTemplateA.homepage = subscriptionTemplateB.homepage;
-        subscriptionTemplateA.color = subscriptionTemplateB.color;
-      } else {
-        /* new subscription template */
-        configA.subscriptionTemplates.push(subscriptionTemplateB);
+    if (subscriptionTemplatesB) {
+      for (const subscriptionTemplateB of subscriptionTemplatesB) {
+        const subscriptionTemplateA = configA.subscriptionTemplates?.find((subscriptionTemplateA) => subscriptionTemplateA.name === subscriptionTemplateB.name);
+        if (subscriptionTemplateA) {
+          /** existing subscription template */
+          subscriptionTemplateA.name = subscriptionTemplateB.name;
+          subscriptionTemplateA.version = subscriptionTemplateB.version;
+          subscriptionTemplateA.homepage = subscriptionTemplateB.homepage;
+          subscriptionTemplateA.color = subscriptionTemplateB.color;
+        } else {
+          /* new subscription template */
+          configA.subscriptionTemplates?.push(subscriptionTemplateB);
+        }
       }
     }
   });

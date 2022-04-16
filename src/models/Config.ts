@@ -2,16 +2,20 @@ import { immerable } from 'immer';
 import type { IBaseSubscription } from './Subscription';
 
 export interface ISerializedConfig {
+  /** @since 2.1.0 */
   isIconMapUnlocked: boolean;
-  subscriptionTemplates: IBaseSubscription[];
+  /** @since 3.1.0 */
+  subscriptionTemplates?: IBaseSubscription[];
 }
 
 export interface IConfig extends ISerializedConfig { }
 
 class Config implements IConfig {
   [immerable] = true;
+  /** @since 2.1.0 */
   isIconMapUnlocked: boolean;
-  subscriptionTemplates: IBaseSubscription[] = [];
+  /** @since 3.1.0 */
+  subscriptionTemplates: IBaseSubscription[];
 
   constructor (isIconMapUnlocked?: boolean, subscriptionTemplates?: IBaseSubscription[]) {
     this.isIconMapUnlocked = isIconMapUnlocked || false;
