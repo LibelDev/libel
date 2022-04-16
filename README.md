@@ -32,7 +32,7 @@ For a smooth development experience, you may want to execute the following comma
 ### Start development
 
 ```bash
-pnpm dev
+pnpm dev:main
 ```
 
 ### SCSS module typings

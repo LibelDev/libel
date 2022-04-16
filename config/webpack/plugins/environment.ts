@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
 import { EnvironmentPlugin } from 'webpack';
 
-dotenv.config();
-
 const {
+  PORT,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_API_KEY,
   GOOGLE_CLIENT_ID
@@ -11,7 +9,8 @@ const {
 
 const plugin = new EnvironmentPlugin({
   NODE_ENV: 'development',
-  DEBUG_EGG: 'false',
+  EGG: 'false',
+  PORT,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_API_KEY,
   GOOGLE_CLIENT_ID

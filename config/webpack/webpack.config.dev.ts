@@ -1,22 +1,33 @@
-import type { Configuration as WebpackConfiguration } from 'webpack';
-import type { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import '../env'; // load the environment variables at the beginning
+import path from 'path';
+import type webpack from 'webpack';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
 import merge from 'webpack-merge';
-import { dataDirectory } from '../config';
+import { Directory, port } from '../config';
 import egg from './webpack.config.egg';
 import main from './webpack.config.main';
 
-interface IConfiguration extends WebpackConfiguration {
-  devServer?: WebpackDevServerConfiguration;
-}
+const devServer: DevServerConfiguration = {
+  port,
+  headers: {
+    'Access-Control-Allow-Origin': '*'
+  },
+  static: [
+    {
+      directory: path.join(process.cwd(), Directory.Data),
+      publicPath: `/${Directory.Data}`
+    },
+    {
+      directory: path.join(process.cwd(), Directory.Assets),
+      publicPath: `/${Directory.Assets}`
+    }
+  ]
+};
 
-const dev: IConfiguration = {
+const dev: webpack.Configuration = {
   mode: 'development',
   devtool: 'eval-cheap-source-map',
-  devServer: {
-    contentBase: dataDirectory,
-    contentBasePublicPath: `/${dataDirectory}`,
-    headers: { 'Access-Control-Allow-Origin': '*' }
-  }
+  devServer
 };
 
 const config = [

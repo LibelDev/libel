@@ -1,10 +1,15 @@
 import { homepage } from '../package.json';
 
-export const dataDirectory = 'data';
-export const outputDirectory = 'dist';
+export enum Directory {
+  Assets = 'assets',
+  Data = 'data',
+  Dist = 'dist'
+};
+
+export const port = parseInt(process.env.PORT || '8080');
 
 export const dev = process.env.NODE_ENV === 'development';
-export const debugEgg = process.env.DEBUG_EGG === 'true';
+export const debugEgg = process.env.EGG === 'true';
 
-export const publicURL = dev ? 'http://localhost:8080' : homepage;
-export const publicDataURL = `${publicURL}/${dataDirectory}`;
+export const publicURL = dev ? `http://localhost:${port}` : homepage;
+export const publicDataURL = `${publicURL}/${Directory.Data}`;

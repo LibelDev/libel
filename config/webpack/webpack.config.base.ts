@@ -10,7 +10,9 @@ const config: webpack.Configuration = {
     extensions: ['.ts', '.tsx', '.js']
   },
   output: {
-    publicPath: `${publicURL}/`
+    filename: '[name].js',
+    publicPath: `${publicURL}/`,
+    assetModuleFilename: '[file]'
   },
   module: {
     rules: [

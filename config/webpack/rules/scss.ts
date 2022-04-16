@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import cssLoader from '../loaders/css-loader';
 import postcssLoader from '../loaders/postcss-loader';
 import sassLoader from '../loaders/sass-loader';
