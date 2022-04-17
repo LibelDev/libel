@@ -9,7 +9,12 @@ import main from './webpack.config.main';
 
 const devServer: DevServerConfiguration = {
   hot: false,
+  host: 'localhost',
   port,
+  liveReload: false,
+  allowedHosts: [
+    'lihkg.com'
+  ],
   headers: {
     'Access-Control-Allow-Origin': '*'
   },
