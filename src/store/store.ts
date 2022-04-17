@@ -95,8 +95,6 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
 export const persistor = persistStore(store, null, async () => {
   await storage.ready();
   await loadDataIntoStore(storage);
-  const { subscriptions } = storage;
-  await loadRemoteSubscriptions(subscriptions);
 });
 
 export type TStore = typeof store;
