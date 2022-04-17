@@ -125,7 +125,7 @@ const ManageDataSection: React.FunctionComponent = () => {
       const { personal, subscriptions } = data;
       const { users, labels } = personal.aggregate();
       const message = render(messages.success.export, { users, labels, subscriptions });
-      const notification = LIHKG.createLocalNotification(message, 5000);
+      const notification = LIHKG.createLocalNotification(message);
       LIHKG.showNotification(notification);
     } catch (err) {
       // analytics
@@ -152,15 +152,15 @@ const ManageDataSection: React.FunctionComponent = () => {
         gtag.event(EventAction.Import);
         const { users, labels } = Personal.aggregate(incoming.personal);
         const _message = render(messages.success.import, { users, labels, subscriptions: incoming.subscriptions });
-        const notification = LIHKG.createLocalNotification(_message, 5000);
+        const notification = LIHKG.createLocalNotification(_message);
         LIHKG.showNotification(notification);
       } catch (err) {
         if (typeof err === 'string') {
-          const notification = LIHKG.createLocalNotification(err, 5000);
+          const notification = LIHKG.createLocalNotification(err);
           LIHKG.showNotification(notification);
         } else {
           console.error(err);
-          const notification = LIHKG.createLocalNotification(TEXTS.IMPORT_FILE_ERROR_GENERIC_ERROR, 5000);
+          const notification = LIHKG.createLocalNotification(TEXTS.IMPORT_FILE_ERROR_GENERIC_ERROR);
           LIHKG.showNotification(notification);
         }
         // analytics

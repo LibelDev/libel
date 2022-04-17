@@ -39,10 +39,10 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
     if (sure) {
       const storage = Storage.factory();
       await loadDataIntoStore(storage);
-      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS, 5000);
+      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS);
       LIHKG.showNotification(notification);
     } else {
-      const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED, 5000);
+      const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED);
       LIHKG.showNotification(notificationClearCanceled);
     }
   }, []);
@@ -55,10 +55,10 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       await cloud.clear();
       dispatch(metaActions.setLastSyncedTime(null));
       setClearCloudDataLoading(false);
-      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS, 5000);
+      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS);
       LIHKG.showNotification(notification);
     } else {
-      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED, 5000);
+      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED);
       LIHKG.showNotification(notification);
     }
   }, []);

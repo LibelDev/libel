@@ -40,7 +40,7 @@ export const createLoadSubscriptionRejectedNotifier = (): Middleware<{}, TRootSt
     const message = payload || error.message;
     const { subscription } = meta;
     const body = render(notification.body, { subscription, message });
-    const _notification = LIHKG.createLocalNotification(body, 5000);
+    const _notification = LIHKG.createLocalNotification(body);
     LIHKG.showNotification(_notification);
   }
   return result;
