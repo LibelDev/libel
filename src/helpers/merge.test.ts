@@ -383,4 +383,21 @@ describe('mergeSubscriptions', () => {
     expect(merged[0]).toBe(subscriptionsB[0]);
     expect(merged[1]).toBe(subscriptionsB[1]);
   });
+
+  it('should have 3 subscriptions and preserve the sorting', () => {
+    const subscriptionsA: ISerializedSubscription[] = [
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true },
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false }
+    ];
+    const subscriptionsB: ISerializedSubscription[] = [
+      { name: 'B', version: '1.1', url: 'URL_2', enabled: true },
+      { name: 'A', version: '1.1', url: 'URL_1', enabled: false },
+      { name: 'C', version: '1.2', url: 'URL_3', enabled: true }
+    ];
+    const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
+    expect(merged.length).toBe(3);
+    expect(merged[0]).toEqual(subscriptionsB[0]);
+    expect(merged[1]).toEqual(subscriptionsB[1]);
+    expect(merged[2]).toBe(subscriptionsB[2]);
+  });
 });
