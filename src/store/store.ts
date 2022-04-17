@@ -6,10 +6,11 @@ import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
 import type { ISerializedStorage, IStorage } from '../models/Storage';
-import type { ISerializedSubscription, ISubscription } from '../models/Subscription';
 import storage from '../storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
+import { createLoadSubscriptionRejectedNotifier } from './middleware/subscription';
 import reducer, { persistedReducer } from './reducer';
+import { selectSubscriptions } from './selectors';
 import { actions as configActions } from './slices/config';
 import { actions as metaActions } from './slices/meta';
 import { actions as personalActions } from './slices/personal';
@@ -27,6 +28,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
   }).concat(
+    createLoadSubscriptionRejectedNotifier(),
     createLastModifiedTimeUpdater({
       whitelist: [
         configActions.setIsIconMapUnlocked.type,
