@@ -8,7 +8,7 @@ import { namespace } from '../../package.json';
 import type { ISerializedStorage, IStorage } from '../models/Storage';
 import storage from '../storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
-import { createLoadSubscriptionRejectedNotifier } from './middleware/subscription';
+import { createLoadSubscriptionOnEnableListener, createLoadSubscriptionRejectedNotifier } from './middleware/subscription';
 import reducer, { persistedReducer } from './reducer';
 import { selectSubscriptions } from './selectors';
 import { actions as configActions } from './slices/config';
@@ -28,6 +28,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
   }).concat(
+    createLoadSubscriptionOnEnableListener(),
     createLoadSubscriptionRejectedNotifier(),
     createLastModifiedTimeUpdater({
       whitelist: [
@@ -71,7 +72,10 @@ const loadSubscriptions = async () => {
   const state = getState();
   const subscriptions = selectSubscriptions(state);
   for (let i = 0; i < subscriptions.length; i++) {
-    dispatch(subscriptionsActions.load(i));
+    const subscription = subscriptions[i];
+    if (subscription.enabled) {
+      dispatch(subscriptionsActions.load(i));
+    }
   }
 };
 

@@ -87,7 +87,7 @@ const slice = createSlice({
       const { arg: index } = action.meta;
       const { payload } = action;
       const subscription = state[index];
-      subscription.loaded = false;
+      subscription.loaded = true;
       subscription.loading = false;
       subscription.error = payload;
     });
