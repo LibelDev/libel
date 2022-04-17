@@ -1,3 +1,3 @@
 export const notification = {
-  body: '{{ message }}{{ #subscription }}《{{ subscription.name }}》{{ /subscription }}'
+  body: '{{ message }}{{ #subscription.name }}《{{ subscription.name }}》{{ /subscription.name }}'
 };
