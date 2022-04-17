@@ -45,9 +45,9 @@ pnpm type:scss[:watch]
 
 When `webpack-dev-server` completed the first compilation, follow these steps to test on [LIHKG](https://lihkg.com/):
 
-1. Install [Tampermonkey](https://www.tampermonkey.net/)
+1. Install [Tampermonkey](https://www.tampermonkey.net/) (or your favourite userscript manager)
 2. Visit [http://localhost:8080/libel.proxy.user.js](http://localhost:8080/libel.proxy.user.js)
-3. Click **Install** / **Reinstall**
+3. Click **Install** / **Reinstall** / **Update**
 4. Go back to [LIHKG](https://lihkg.com/) and reload the page
 
 Whenever you made changes and `webpack-dev-server` recompiled the files, repeat step 2 to 4.
