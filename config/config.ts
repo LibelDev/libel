@@ -2,6 +2,7 @@ import { homepage } from '../package.json';
 
 export enum Directory {
   Assets = 'assets',
+  Build = 'build',
   Data = 'data',
   Dist = 'dist'
 };

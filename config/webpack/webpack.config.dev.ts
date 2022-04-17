@@ -15,6 +15,9 @@ const devServer: DevServerConfiguration = {
   allowedHosts: [
     'lihkg.com'
   ],
+  devMiddleware: {
+    writeToDisk: true
+  },
   headers: {
     'Access-Control-Allow-Origin': '*'
   },
@@ -33,7 +36,10 @@ const devServer: DevServerConfiguration = {
 const dev: webpack.Configuration = {
   mode: 'development',
   devtool: 'eval-cheap-source-map',
-  devServer
+  devServer,
+  output: {
+    path: path.join(process.cwd(), Directory.Build),
+  }
 };
 
 const config = [
