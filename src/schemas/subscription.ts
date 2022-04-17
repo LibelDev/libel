@@ -4,18 +4,20 @@ import type { IBaseRemoteSubscription, IBaseSubscription, ISerializedSubscriptio
 import { uri } from './common';
 import dataSet from './dataSet';
 
+/**
+ * allow empty string because the remote file may not be
+ * loaded yet before the subscription being serialized
+ */
+type TEmptyableStringSchema = joi.StringSchema;
+
 export const name = joi.string().trim();
 export const version = joi.string().trim();
 export const homepage = uri.allow('');
 export const color = joi.string().trim().allow('').pattern(HEX_COLOR);
 
 export const serialized = joi.object<ISerializedSubscription>({
-  /**
-   * allow empty string because the remote file may not be
-   * loaded yet before the subscription being serialized
-   */
-  name: name.allow(''),
-  version,
+  name: name.allow('') as TEmptyableStringSchema,
+  version: version.allow('') as TEmptyableStringSchema,
   url: uri.required(),
   enabled: joi.boolean().required()
 });
