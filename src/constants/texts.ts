@@ -98,15 +98,15 @@ export const CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED = '已取消清除雲端資
 
 /* subscription */
 export const BUTTON_TEXT_ADD_SUBSCRIPTION = '新增訂閱';
-export const SUBSCRIPTION_MESSAGE_QUESTION_ADD = '請輸入標籤名單訂閱連結';
+export const SUBSCRIPTION_MESSAGE_QUESTION_ADD = '請輸入標籤訂閱名單連結';
 export const BUTTON_TEXT_ENABLE_SUBSCRIPTION = '啟用訂閱';
 export const BUTTON_TEXT_REMOVE_SUBSCRIPTION = '取消訂閱';
 export const BUTTON_TEXT_DISABLE_SUBSCRIPTION = '停用訂閱';
 export const BUTTON_TEXT_RELOAD_SUBSCRIPTION = '重新載入';
-export const BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE = '標籤名單主頁';
+export const BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE = '標籤訂閱名單主頁';
 export const SUBSCRIPTION_MESSAGE_LOAD_SUCCESS = '成功載入名單';
-export const SUBSCRIPTION_ERROR_FAILED_TO_FETCH = '無法取得標籤名單，請檢查連結是否正確。';
-export const SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT = '標籤名單格式錯誤，無法載入，請聯絡名單作者。';
+export const SUBSCRIPTION_ERROR_FAILED_TO_FETCH = '無法取得訂閱名單，請檢查連結是否正確。';
+export const SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT = '訂閱名單格式錯誤，請聯絡作者。';
 export const SUBSCRIPTION_LIST_MESSAGE_EMPTY = '未有任何訂閱名單';
 
 /* cloud sync */
