@@ -62,12 +62,12 @@ initMessageListener(store);
 
 /**
  * load the subscriptions data from remote
- * NOTE: this function is not really async (i.e. it resolves immediately)
  * @async
- * @param {(ISerializedSubscription | ISubscription)[]} subscriptions
  */
-const loadRemoteSubscriptions = async (subscriptions: (ISerializedSubscription | ISubscription)[]) => {
-  const { dispatch } = store;
+const loadSubscriptions = async () => {
+  const { dispatch, getState } = store;
+  const state = getState();
+  const subscriptions = selectSubscriptions(state);
   for (let i = 0; i < subscriptions.length; i++) {
     dispatch(subscriptionsActions.load(i));
   }
@@ -84,7 +84,7 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
   }
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
-  await loadRemoteSubscriptions(subscriptions);
+  await loadSubscriptions();
   // update the storage instance
   storage.update(data);
 };
