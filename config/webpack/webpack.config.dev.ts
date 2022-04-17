@@ -8,6 +8,7 @@ import egg from './webpack.config.egg';
 import main from './webpack.config.main';
 
 const devServer: DevServerConfiguration = {
+  hot: false,
   port,
   headers: {
     'Access-Control-Allow-Origin': '*'
