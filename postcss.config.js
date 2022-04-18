@@ -1,11 +1,9 @@
-const tailwindcss = require('tailwindcss');
-const preset = require('postcss-preset-env');
-const cssnano = require('cssnano');
+const dev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   plugins: [
-    tailwindcss(),
-    preset(),
-    cssnano()
+    'tailwindcss',
+    'postcss-preset-env',
+    !dev ? 'cssnano' : undefined
   ]
 };
