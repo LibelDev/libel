@@ -1,10 +1,6 @@
 @import '../../stylesheets/base';
 
-.label {
-  @apply mr-4;
-}
-
-.input {
+.base-input {
   input {
     @apply w-full;
     @apply outline-none;

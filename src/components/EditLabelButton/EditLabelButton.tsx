@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { EventAction, EventCategory, EventLabel } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import type { ILabel } from '../../models/Label';
 import { actions as personalActions } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
+import { EventAction, EventCategory, EventLabel } from '../../types/ga';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
@@ -51,9 +51,9 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         className={className}
         icon={IconName.Pencil}
-        aria-label={TEXTS.BUTTON_TEXT_EDIT_LABEL}
-        data-tip={TEXTS.BUTTON_TEXT_EDIT_LABEL}
-        title={TEXTS.BUTTON_TEXT_EDIT_LABEL}
+        aria-label={TEXTS.BUTTON_TEXT_LABEL_EDIT}
+        data-tip={TEXTS.BUTTON_TEXT_LABEL_EDIT}
+        title={TEXTS.BUTTON_TEXT_LABEL_EDIT}
         onClick={handleClick}
       />
       <LabelFormModal
@@ -68,5 +68,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
     </React.Fragment>
   );
 };
+
+EditLabelButton.displayName = 'EditLabelButton';
 
 export default EditLabelButton;

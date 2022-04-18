@@ -1,5 +1,5 @@
 import { publicURL } from '../../config/config';
 
-export const name = 'egg';
+export const NAME = 'egg';
 
-export const src = `${publicURL}/${name}.js`;
+export const SCRIPT_URL = `${publicURL}/${NAME}.js`;

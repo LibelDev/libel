@@ -1,0 +1,53 @@
+@import '../../../../stylesheets/base';
+
+.subscription {
+  @apply flex flex-wrap items-center justify-start;
+
+  .bar {
+    @apply w-1;
+    @apply self-stretch;
+    @apply rounded-sm;
+  }
+
+  .name {
+    @apply flex items-center;
+    @apply flex-1;
+
+    @screen md {
+      max-width: 250px;
+    }
+
+    > a {
+      @apply inline-block;
+      @apply mr-4;
+      @include text-ellipsis();
+      color: $color-grey09;
+
+      @include dark-mode() {
+        color: $color-white;
+      }
+    }
+
+    .status {
+      @apply ml-auto;
+
+      &.error {
+        color: $color-red02;
+      }
+
+      &.loading {
+        @apply flex-shrink-0;
+      }
+    }
+  }
+
+  .icon-button {
+    @apply inline-flex items-center justify-center;
+    @apply h-4 w-4;
+    font-size: 1em;
+  }
+
+  > * + * {
+    @apply ml-2;
+  }
+}

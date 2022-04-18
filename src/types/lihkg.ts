@@ -225,3 +225,37 @@ interface IIconSetShowOn {
 interface IIconSetSpecial {
   [path: string]: string;
 }
+
+export enum NotificationType {
+  Local = 'local'
+  /** unnecessary to support push notification yet */
+  // Push = 'push'
+}
+
+export interface ILocalNotifcationPayload {
+  title?: string;
+  body: string;
+  actions?: ILocalNotifcationAction[];
+  /** allow to close only when the close button is clicked */
+  buttonCloseOnly?: boolean;
+  onClick?: () => void;
+}
+
+interface ILocalNotifcationAction {
+  label: string;
+  /**
+   * indicate whether to NOT trigger `onClick`,
+   * but the notification will be dismissed anyway
+   */
+  isCancel?: boolean;
+  onClick?: () => void;
+}
+
+export interface ILocalNotifcation {
+  id: number;
+  type: string;
+  payload: ILocalNotifcationPayload;
+  duration: number;
+}
+
+export type TNotification = ILocalNotifcation;

@@ -37,13 +37,12 @@
     }
 
     &.color {
-      .color-picker {
-        @apply flex items-center;
-        @apply ml-4;
+      .toggle-button {
+        @apply w-full;
+      }
 
-        .input {
-          @apply ml-auto;
-        }
+      .color-picker {
+        @apply ml-4;
       }
     }
   }

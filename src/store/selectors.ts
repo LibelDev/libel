@@ -24,7 +24,7 @@ export const createUserSubscriptionsSelector = (user: string) => createSelector(
   selectSubscriptions,
   (subscriptions) => (
     subscriptions
-      .filter((subscription) => subscription.enabled && subscription.loaded)
+      .filter((subscription) => subscription.enabled && subscription.loaded && !subscription.error)
       .map(createDataSetUserFilter(user))
   )
 );

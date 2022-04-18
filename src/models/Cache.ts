@@ -41,8 +41,8 @@ class Cache {
     const items = data.response.items || data.response.item_data;
     for (const item of items) {
       const { user } = item;
-      const { user_id: userID } = user;
-      this.users[userID] = user;
+      const { user_id: userId } = user;
+      this.users[userId] = user;
     }
   }
 }

@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import joi from 'joi';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
-import { EventAction, EventCategory } from '../../constants/ga';
-import { HEX_COLOR } from '../../constants/regexes';
+import { SCREENSHOT_WIDTH } from '../../constants/label';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
-import useElementID from '../../hooks/useElementID';
-import useScreenshot, { TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
+import useScreenshot, { IResult as IUseScreenshotResult, TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
+import { color, image, reason, text } from '../../schemas/label';
+import { EventAction, EventCategory } from '../../types/ga';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
@@ -23,7 +23,7 @@ type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
 type TFormData = TLabelData & {
   meta: {
-    screenshot?: Blob | null;
+    screenshot?: IUseScreenshotResult;
   };
 };
 
@@ -52,7 +52,7 @@ interface IProps {
   /**
    * the target reply element for screenshot
    */
-  targetReply?: HTMLElement | null;
+  target?: HTMLElement;
   /**
    * custom onSubmit event handler
    * @async
@@ -61,18 +61,21 @@ interface IProps {
   onSubmit: (data: TFormData) => Promise<void>;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit' | 'target'>;
 
 export type TProps = IProps & TComponentProps;
 
 const schema = joi.object({
-  text: joi.string().trim().required().messages({
+  text: text.required().messages({
     'any.required': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED,
     'string.empty': TEXTS.LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED
   }),
-  reason: joi.string().trim().allow(''),
-  color: joi.string().trim().pattern(HEX_COLOR).allow(''),
-  image: joi.string().trim().allow(''),
+  reason,
+  color,
+  image: image.messages({
+    'string.uri': TEXTS.LABEL_FORM_FIELD_ERROR_IMAGE_INVALID,
+    'string.uriCustomScheme': TEXTS.LABEL_FORM_FIELD_ERROR_IMAGE_INVALID
+  }),
   meta: joi.object({
     screenshot: joi.any()
   })
@@ -84,7 +87,7 @@ const initialFormData: TFormData = {
 };
 
 const LabelForm: React.FunctionComponent<TProps> = (props) => {
-  const { id, className, user, label, loading, targetReply, onSubmit, ...otherProps } = props;
+  const { id, className, user, label, loading, target, onSubmit, ...otherProps } = props;
 
   const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
   const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
@@ -94,16 +97,20 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [formError, setFormError] = useState('');
 
-  const options: TUseScreenshotOptions = useMemo(() => ({
+  const useScreenshotOptions: TUseScreenshotOptions = useMemo(() => ({
     onclone: (document, element) => {
-      element.style.width = '600px';
+      element.style.width = SCREENSHOT_WIDTH;
     }
   }), []);
-  const screenshot = useScreenshot(toggleButtonState.useScreenshot, targetReply, options);
+  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, useScreenshotOptions);
 
-  const _id = id || useElementID(LabelForm.displayName!);
+  const previewImageStyle = useMemo(() => ({
+    backgroundImage: `url(${screenshot.url})`
+  }), [screenshot.url]);
+
+  const _id = id || useId();
+  const _errorId = `${_id}-error`;
   const name = `${namespace}-${LabelForm.displayName!}`;
-  const errorID = `${_id}-error`;
 
   const _user = cache.getUser(user);
 
@@ -123,10 +130,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     const _formData: TFormData = {
       ...formData,
       color: toggleButtonState.useCustomColor ? formData.color : undefined, // unset if it is disabled
-      meta: {
-        ...formData.meta,
-        screenshot: screenshot.blob
-      }
+      meta: { ...formData.meta, screenshot }
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
@@ -154,12 +158,12 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       name={name}
       className={classNames(className, styles.labelForm)}
       onSubmit={handleSubmit}
-      aria-describedby={errorID}
+      aria-describedby={_errorId}
     >
       {
         _user && (
-          <div>
-            <Icon className={styles.userIcon} icon={IconName.Account} />
+          <div className={styles.user}>
+            <Icon className={styles.icon} icon={IconName.Account} />
             {_user.nickname}
           </div>
         )
@@ -192,7 +196,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
-          fullWidth
+          className={styles.toggleButton}
           checked={toggleButtonState.useCustomColor}
           name="useCustomColor"
           disabled={loading}
@@ -201,18 +205,16 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
           {
             toggleButtonState.useCustomColor && (
-              <div className={styles.colorPicker}>
-                <ColorPicker
-                  border
-                  rounded
-                  className={styles.textInput}
-                  disabled={loading}
-                  name="color"
-                  value={formData.color || ''}
-                  error={inputErrors.color}
-                  onChange={handleInputChange}
-                />
-              </div>
+              <ColorPicker
+                className={styles.colorPicker}
+                border
+                rounded
+                disabled={loading}
+                name="color"
+                value={formData.color || ''}
+                error={inputErrors.color}
+                onChange={handleInputChange}
+              />
             )
           }
         </ToggleButton>
@@ -236,7 +238,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** add label */
           <div className={classNames(styles.inputField, styles.screenshot)}>
             <ToggleButton
-              fullWidth
+              className={styles.toggleButton}
               checked={toggleButtonState.useScreenshot}
               disabled={loading}
               name="useScreenshot"
@@ -246,7 +248,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               {TEXTS.LABEL_FORM_FIELD_LABEL_CAPTURE}
             </ToggleButton>
             {
-              !screenshot.loading && (screenshot.error || screenshot.url) && (
+              !screenshot.loading && !!(screenshot.error || screenshot.url) && (
                 <div className={styles.preview}>
                   {
                     !!screenshot.error ? (
@@ -259,7 +261,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                           className={styles.image}
                           href={screenshot.url}
                           target="_blank"
-                          style={{ backgroundImage: `url(${screenshot.url})` }}
+                          style={previewImageStyle}
                           aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
                         >
                           <Icon className={styles.icon} icon={IconName.Expand} />
@@ -275,7 +277,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       }
       {
         !!formError && (
-          <ErrorMessage id={errorID} className={styles.error}>
+          <ErrorMessage id={_errorId} className={styles.error}>
             {formError}
           </ErrorMessage>
         )

@@ -1,5 +1,5 @@
 import { namespace } from '../../package.json';
-import { ANNOUNCEMENT_MESSAGE_DONT_SHOW_AGAIN_CONFIRMATION } from './../constants/texts';
+import { ANNOUNCEMENT_MESSAGE_DONT_SHOW_AGAIN_CONFIRMATION } from '../constants/texts';
 import * as cookies from './cookies';
 
 const prefix = `${namespace}-announcement-read-receipt`;

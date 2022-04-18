@@ -1,0 +1,22 @@
+@import '../../stylesheets/base';
+
+.slideshow {
+  @apply relative;
+  @apply inline-block;
+  @apply m-0 p-0;
+  @apply list-none;
+  @apply overflow-hidden;
+
+  .slide {
+    @apply absolute top-0 left-0;
+    @apply h-full w-full;
+    @apply bg-center bg-cover;
+    @apply transition-opacity;
+    @apply duration-500;
+    will-change: opacity;
+
+    &:not(.active) {
+      @apply opacity-0;
+    }
+  }
+}

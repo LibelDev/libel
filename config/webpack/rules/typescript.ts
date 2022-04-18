@@ -1,4 +1,4 @@
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import tsLoader from '../loaders/ts-loader';
 
 const rule: webpack.RuleSetRule = {

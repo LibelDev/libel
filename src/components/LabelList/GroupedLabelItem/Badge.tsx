@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import styles from './Badge.module.scss';
 
 interface IProps {
@@ -16,5 +16,7 @@ const Badge: React.FunctionComponent<TProps> = (props) => {
     </span>
   ) : null;
 };
+
+Badge.displayName = 'Badge';
 
 export default Badge;

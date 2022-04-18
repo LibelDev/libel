@@ -1,31 +1,43 @@
 @import '../../stylesheets/base';
 
 .label-info {
+  @apply relative;
   @apply border border-solid rounded;
   @apply text-base;
   @apply text-center;
-  @apply p-2;
-  @apply w-max;
+  @apply px-4 py-2;
+  @apply w-full;
+  max-width: 12rem;
   background-color: $color-white;
   border-color: $color-grey05;
   color: $color-grey05;
-  max-width: 12rem;
 
   @include dark-mode() {
     background-color: $color-black02;
   }
 
-  .reason + .buttons {
-    @apply mt-2;
+  .name {
+    @apply flex items-center justify-center;
+
+    a {
+      @include text-ellipsis();
+      @apply text-current;
+      @apply ml-2;
+    }
+
+    & + .reason {
+      @apply mt-2;
+    }
+  }
+
+  .reason {
+    & + .buttons {
+      @apply mt-2;
+    }
   }
 
   .buttons {
-    @apply w-full;
-
-    &,
-    .button {
-      @apply flex items-center justify-center;
-    }
+    @apply flex items-center justify-center;
 
     .button {
       color: $color-grey05;

@@ -1,71 +1,79 @@
 @import '../../stylesheets/base';
 
 $height: 2.25rem;
+$padding: 0.4em;
 
 .text-input {
   @apply flex items-start;
   @apply relative;
 
-  $padding: 0.4em;
-
   label {
+    @apply mr-4;
     line-height: $height;
   }
 
-  .icon {
+  .icon,
+  .clear {
     @apply absolute;
     @apply top-1/2;
-    left: $padding;
     @apply transform;
     @apply -translate-y-1/2;
+  }
 
-    & + div {
+  .icon {
+    left: $padding;
+
+    & ~ .input {
       input[type='text'] {
         padding-left: $padding * 2 + 1em;
       }
     }
   }
 
-  .input {
-    @apply flex-1;
+  .clear {
+    right: $padding;
 
-    input[type='text'] {
-      @apply rounded;
-      @apply border border-solid;
-      @apply text-base;
-      @apply text-current;
-      background-color: $color-white;
-      border: solid 1px $color-grey03;
-      height: $height;
-      padding: $padding;
+    & ~ .input {
+      input[type='text'] {
+        padding-right: $padding * 2 + 1em;
+      }
+    }
+  }
+}
+
+.input {
+  @apply flex-1;
+
+  input[type='text'] {
+    @apply rounded;
+    @apply border border-solid;
+    @apply text-base;
+    @apply text-current;
+    background-color: $color-white;
+    border: solid 1px $color-grey03;
+    height: $height;
+    padding: $padding;
+
+    @include dark-mode() {
+      background-color: $color-black03;
+      border-color: $color-grey08;
+    }
+
+    &:focus {
+      border-color: $color-yellow01;
 
       @include dark-mode() {
-        background-color: $color-black03;
-        border-color: $color-grey08;
-      }
-
-      &:focus {
-        border-color: $color-yellow01;
-
-        @include dark-mode() {
-          border-color: rgba($color-yellow01, 0.6);
-        }
+        border-color: rgba($color-yellow01, 0.6);
       }
     }
+  }
 
-    &.invalid {
-      input[type='text'] {
+  &.invalid {
+    input[type='text'] {
+      border-color: $color-red01;
+
+      @include dark-mode() {
         border-color: $color-red01;
-
-        @include dark-mode() {
-          border-color: $color-red01;
-        }
-      }
-    }
-
-    &.has-icon {
-      input[type='text'] {
-        padding-left: $padding * 2 + 1em;
       }
     }
   }

@@ -1,20 +1,20 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import styles from './ColorPicker.module.scss';
 
 interface IProps {
-  value?: string;
   border?: boolean;
   rounded?: boolean;
 }
 
-export type TProps = IProps & Omit<TBaseInputProps, 'value'>;
+export type TProps = IProps & TBaseInputProps;
 
 const ColorPicker: React.FunctionComponent<TProps> = (props) => {
-  const { border, rounded, className, value, ...otherProps } = props;
+  const { border, rounded, className, ...otherProps } = props;
   return (
-    <div
+    <BaseInput
+      {...otherProps}
       className={
         classNames(
           className,
@@ -25,15 +25,11 @@ const ColorPicker: React.FunctionComponent<TProps> = (props) => {
           }
         )
       }
-    >
-      <BaseInput
-        {...otherProps}
-        className={styles.input}
-        type="color"
-        value={value}
-      />
-    </div>
+      type="color"
+    />
   );
 };
+
+ColorPicker.displayName = 'ColorPicker';
 
 export default ColorPicker;

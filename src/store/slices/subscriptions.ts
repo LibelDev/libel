@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
-import Subscription, { IRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
+import Subscription, { IBaseRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
 import { selectSubscriptions } from '../selectors';
 import type { TRootState } from '../store';
 
@@ -13,6 +13,10 @@ interface ITogglePayload {
 
 type TAsyncThunkConfig = {
   state: TRootState;
+  rejectValue: string;
+  rejectedMeta: {
+    subscription: Subscription;
+  };
 };
 
 const initialState: Subscription[] = [];
@@ -20,21 +24,21 @@ const initialState: Subscription[] = [];
 /**
  * load the remote subscription data
  */
-export const load = createAsyncThunk<IRemoteSubscription, number, TAsyncThunkConfig>(
+export const load = createAsyncThunk<IBaseRemoteSubscription, number, TAsyncThunkConfig>(
   'subscriptions/load',
   async (index, thunk) => {
+    const state = thunk.getState();
+    const subscriptions = selectSubscriptions(state);
+    const subscription = subscriptions[index];
     try {
-      const state = thunk.getState();
-      const subscriptions = selectSubscriptions(state);
-      const subscription = subscriptions[index];
-      const remoteSubscription = await subscription.fetch();
-      if (remoteSubscription) {
-        return remoteSubscription;
+      const baseRemoteSubscription = await subscription.fetch();
+      if (baseRemoteSubscription) {
+        return baseRemoteSubscription;
       }
-      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT);
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_INVALID_DATA_FORMAT, { subscription });
     } catch (err) {
       console.error(err);
-      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_FAILED_TO_FETCH);
+      return thunk.rejectWithValue(TEXTS.SUBSCRIPTION_ERROR_FAILED_TO_FETCH, { subscription });
     }
   }
 );
@@ -66,6 +70,7 @@ const slice = createSlice({
     builder.addCase(load.pending, (state, action) => {
       const { arg: index } = action.meta;
       const subscription = state[index];
+      subscription.loaded = false;
       subscription.loading = true;
       subscription.error = undefined;
     });
@@ -80,10 +85,11 @@ const slice = createSlice({
     });
     builder.addCase(load.rejected, (state, action) => {
       const { arg: index } = action.meta;
-      const { payload, error } = action;
+      const { payload } = action;
       const subscription = state[index];
+      subscription.loaded = true;
       subscription.loading = false;
-      subscription.error = (payload as any) || error.message;
+      subscription.error = payload;
     });
   }
 });

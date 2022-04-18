@@ -1,0 +1,10 @@
+.subscription-list-item {
+  &.dragging {
+    @apply cursor-move;
+    @apply opacity-20;
+  }
+}
+
+.subscription {
+  @apply flex-1;
+}

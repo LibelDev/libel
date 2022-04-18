@@ -1,14 +1,19 @@
 import classNames from 'classNames';
 import FocusTrap from 'focus-trap-react';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
-import useElementID from '../../hooks/useElementID';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
 import IDsContext from './IDsContext';
 import styles from './Modal.module.scss';
+
+interface IModal {
+  Header: typeof Header;
+  Body: typeof Body;
+  Footer: typeof Body;
+}
 
 interface IProps {
   /**
@@ -28,22 +33,20 @@ interface IProps {
    */
   fragile?: boolean;
   /**
+   * indicate the focus trap paused state
+   */
+  paused?: boolean;
+  /**
    * close the modal
    */
   onClose: () => void;
-}
-
-interface IComponent {
-  Header: typeof Header;
-  Body: typeof Body;
-  Footer: typeof Body;
 }
 
 type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 
 export type TProps = IProps & TComponentProps;
 
-type TModal = IComponent & React.FunctionComponent<TProps>;
+type TModal = IModal & React.FunctionComponent<TProps>;
 
 const Modal: TModal = (props) => {
   const {
@@ -54,41 +57,61 @@ const Modal: TModal = (props) => {
     backdrop = true,
     escape = true,
     fragile = true,
+    paused,
     onClose
   } = props;
 
-  const ref = React.createRef<HTMLDivElement>();
-  const backdropRef = React.createRef<HTMLDivElement>();
-  const innerRef = React.createRef<HTMLDivElement>();
+  const [initialFocus, setInitialFocus] = useState<HTMLElement>();
 
-  const _id = id || useElementID(Modal.displayName!);
+  const ref = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  const ids = useMemo(() => ({
+  const _id = id || useId();
+  const _ids = {
     title: `${_id}-title`,
     body: `${_id}-body`
-  }), [_id]);
+  };
+
+  const focusTrapOptions: FocusTrap.Props['focusTrapOptions'] = useMemo(() => ({
+    escapeDeactivates: escape,
+    initialFocus
+  }), [escape, initialFocus]);
 
   const handleBackdropClick: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
-    if (fragile && event.target === backdropRef.current) {
+    if (open && fragile && event.target === backdropRef.current) {
       onClose();
     }
   }, [open, fragile, onClose]);
 
-  const handleEscapeKeydown = useCallback((event: KeyboardEvent) => {
-    if (open) {
-      event.stopPropagation(); // prevent from dismissing the modals underneath
-    }
-    if (escape && event.key === Key.Escape && ref.current?.contains(document.activeElement)) {
-      onClose();
-    }
-  }, [open, escape, onClose]);
-
+  /**
+   * handle escape key to close the modal
+   */
   useEffect(() => {
+    const handleEscapeKeydown = (event: KeyboardEvent) => {
+      if (open) {
+        event.stopPropagation(); // prevent from dismissing the modals underneath
+        if (escape && event.key === Key.Escape && ref.current?.contains(document.activeElement)) {
+          onClose();
+        }
+      }
+    };
     document.addEventListener('keydown', handleEscapeKeydown);
     return () => {
       document.removeEventListener('keydown', handleEscapeKeydown);
     };
-  }, [handleEscapeKeydown]);
+  }, [open, escape, onClose]);
+
+  /**
+   * handle the return focus after unpausing the focus trap
+   */
+  useEffect(() => {
+    if (paused) {
+      setInitialFocus(document.activeElement as HTMLElement || undefined);
+    } else {
+      setInitialFocus(undefined);
+    }
+  }, [paused]);
 
   if (!open) {
     return null;
@@ -96,16 +119,16 @@ const Modal: TModal = (props) => {
 
   return (
     ReactDOM.createPortal(
-      <IDsContext.Provider value={ids}>
-        <FocusTrap>
+      <IDsContext.Provider value={_ids}>
+        <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
           <div
             ref={ref}
             id={_id}
             className={classNames(className, styles.modal)}
             role="dialog"
             aria-modal
-            aria-labelledby={ids.title}
-            aria-describedby={ids.body}
+            aria-labelledby={_ids.title}
+            aria-describedby={_ids.body}
           >
             {
               backdrop && (

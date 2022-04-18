@@ -1,6 +1,6 @@
 import { dev } from '../config/config';
-import { id } from './constants/ga';
 import { ready } from './helpers/gtag';
+import { id } from './types/ga';
 
 export const bootstrap = async () => {
   const gtag = await ready();

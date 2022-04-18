@@ -1,16 +1,16 @@
+import format from 'date-fns/format';
 import { render } from 'mustache';
 import cache from '../cache';
+import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING, USER_REGISTRATION_DATE_FORMAT } from '../constants/sniping';
+import { DRAFTS_KEY } from '../constants/storage';
 import { getUserRegistrationDate } from '../helpers/lihkg';
 import type { ILabel } from '../models/Label';
 import type Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
+import { createDataSetUserFilter } from '../store/selectors';
 import defaultTemplate from '../templates/sniping/default.txt';
 import { promotion, snipingItem, snipingItemImage, subscriptionItem } from '../templates/sniping/internal';
 import type { IDraft } from '../types/lihkg';
-import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING } from './../constants/sniping';
-import { DRAFTS_KEY } from './../constants/storage';
-import { createDataSetUserFilter } from './../store/selectors';
-import { format, Format } from './date';
 import { getShareURL } from './label';
 import { localStorage } from './storage';
 
@@ -38,15 +38,15 @@ const getTemplate = () => {
   );
 };
 
-export const renderSnipingBody = (userID: string, personal: Personal, subscriptions: Subscription[]) => {
-  const user = cache.getUser(userID);
+export const renderSnipingBody = (userId: string, personal: Personal, subscriptions: Subscription[]) => {
+  const user = cache.getUser(userId);
   if (user) {
-    const _subscriptions = subscriptions.filter((subscription) => !!subscription.data[userID]);
+    const _subscriptions = subscriptions.filter((subscription) => !!subscription.data[userId]);
     const dataSets = ([] as (Personal | Subscription)[])
       .concat(personal, _subscriptions)
-      .map(createDataSetUserFilter(userID));
+      .map(createDataSetUserFilter(userId));
     const snipingItems = dataSets.reduce<ISnipingItem[]>((snipingItems, dataSet) => {
-      const _snipingItems = (dataSet.data[userID] || []).map<ISnipingItem>((label) => ({
+      const _snipingItems = (dataSet.data[userId] || []).map<ISnipingItem>((label) => ({
         label,
         shareURL: getShareURL(label),
         subscription: Subscription.implements(dataSet) ? dataSet : null
@@ -56,7 +56,7 @@ export const renderSnipingBody = (userID: string, personal: Personal, subscripti
     const view = {
       user: {
         ...user,
-        registrationDate: format(getUserRegistrationDate(user), Format.Display)
+        registrationDate: format(getUserRegistrationDate(user), USER_REGISTRATION_DATE_FORMAT)
       },
       snipingItems,
       subscriptions: _subscriptions

@@ -1,7 +1,8 @@
 import { produce } from 'immer';
 import type { ISerializedConfig } from '../models/Config';
 import type { ISerializedDataSet } from '../models/DataSet';
-import type { ISerializedSubscription } from './../models/Subscription';
+import type { ISerializedSubscription } from '../models/Subscription';
+import Subscription from '../models/Subscription';
 import { isEqual as isLabelEqual } from './label';
 import { isEqual as isSubscriptionEqual } from './subscription';
 
@@ -17,24 +18,26 @@ export const mergeConfig = <T extends ISerializedConfig> (configA: T | undefined
     const { subscriptionTemplates: subscriptionTemplatesB } = configB;
     if (prune) {
       /** prune the missing B in A */
-      configA.subscriptionTemplates = configA.subscriptionTemplates.filter((subscriptionTemplateA) => {
-        const subscriptionTemplateB = subscriptionTemplatesB.find((subscriptionTemplateB) => subscriptionTemplateA.name === subscriptionTemplateB.name);
+      configA.subscriptionTemplates = configA.subscriptionTemplates?.filter((subscriptionTemplateA) => {
+        const subscriptionTemplateB = subscriptionTemplatesB?.find((subscriptionTemplateB) => subscriptionTemplateA.name === subscriptionTemplateB.name);
         return !!subscriptionTemplateB;
       });
     }
     /** merge B into A */
     configA.isIconMapUnlocked = configB.isIconMapUnlocked;
-    for (const subscriptionTemplateB of subscriptionTemplatesB) {
-      const subscriptionTemplateA = configA.subscriptionTemplates.find((subscriptionTemplateA) => subscriptionTemplateA.name === subscriptionTemplateB.name);
-      if (subscriptionTemplateA) {
-        /** existing subscription template */
-        subscriptionTemplateA.name = subscriptionTemplateB.name;
-        subscriptionTemplateA.version = subscriptionTemplateB.version;
-        subscriptionTemplateA.homepage = subscriptionTemplateB.homepage;
-        subscriptionTemplateA.color = subscriptionTemplateB.color;
-      } else {
-        /* new subscription template */
-        configA.subscriptionTemplates.push(subscriptionTemplateB);
+    if (subscriptionTemplatesB) {
+      for (const subscriptionTemplateB of subscriptionTemplatesB) {
+        const subscriptionTemplateA = configA.subscriptionTemplates?.find((subscriptionTemplateA) => subscriptionTemplateA.name === subscriptionTemplateB.name);
+        if (subscriptionTemplateA) {
+          /** existing subscription template */
+          subscriptionTemplateA.name = subscriptionTemplateB.name;
+          subscriptionTemplateA.version = subscriptionTemplateB.version;
+          subscriptionTemplateA.homepage = subscriptionTemplateB.homepage;
+          subscriptionTemplateA.color = subscriptionTemplateB.color;
+        } else {
+          /* new subscription template */
+          configA.subscriptionTemplates?.push(subscriptionTemplateB);
+        }
       }
     }
   });
@@ -111,12 +114,13 @@ export const mergeSubscriptions = (subscriptionsA: ISerializedSubscription[], su
     const subscriptionB = subscriptionsB.find((subscriptionB) => isSubscriptionEqual(subscriptionA, subscriptionB));
     return !!subscriptionB;
   });
-  return produce(_subscriptionsA, (subscriptionsA) => {
+  const subscriptions = produce(_subscriptionsA, (subscriptionsA) => {
     /** existing subscriptions */
     for (const subscriptionA of subscriptionsA) {
       const subscriptionB = subscriptionsB.find((subscriptionB) => isSubscriptionEqual(subscriptionA, subscriptionB));
       if (subscriptionB) {
         subscriptionA.name = subscriptionB.name;
+        subscriptionA.version = subscriptionB.version;
         subscriptionA.enabled = subscriptionB.enabled;
       }
     }
@@ -128,4 +132,15 @@ export const mergeSubscriptions = (subscriptionsA: ISerializedSubscription[], su
       }
     }
   });
+  return preserveSubscriptionsSorting(subscriptions, subscriptionsB);
+};
+
+const preserveSubscriptionsSorting = <T extends ISerializedSubscription> (targetSubscriptions: T[], referenceSubscriptions: ISerializedSubscription[]) => {
+  const subscriptions = [...targetSubscriptions];
+  subscriptions.sort((a, b) => {
+    const referenceIndexA = referenceSubscriptions.findIndex((subscription) => isSubscriptionEqual(subscription, a));
+    const referenceIndexB = referenceSubscriptions.findIndex((subscription) => isSubscriptionEqual(subscription, b));
+    return referenceIndexA - referenceIndexB;
+  });
+  return subscriptions;
 };

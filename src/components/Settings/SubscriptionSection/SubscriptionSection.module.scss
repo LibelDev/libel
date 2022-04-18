@@ -1,0 +1,10 @@
+@import '../../../stylesheets/base';
+
+.section-title {
+  @apply flex justify-between;
+}
+
+.empty {
+  @apply w-full;
+  @apply text-center;
+}

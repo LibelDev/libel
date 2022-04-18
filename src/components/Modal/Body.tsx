@@ -33,4 +33,6 @@ const Body: React.FunctionComponent<TProps> = (props) => {
   );
 };
 
+Body.displayName = 'Body';
+
 export default Body;

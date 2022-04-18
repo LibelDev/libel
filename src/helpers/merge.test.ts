@@ -34,7 +34,7 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, false)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(0);
+    expect(merged.subscriptionTemplates!.length).toBe(0);
   });
 
   it('should unlock icon map and have 2 subscription templates (merged)', () => {
@@ -62,9 +62,9 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, false)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(2);
-    expect(merged.subscriptionTemplates[0]).toEqual(configB.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[1]).toEqual(configA.subscriptionTemplates[1]);
+    expect(merged.subscriptionTemplates!.length).toBe(2);
+    expect(merged.subscriptionTemplates![0]).toEqual(configB.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![1]).toEqual(configA.subscriptionTemplates![1]);
   });
 
   it('should unlock icon map and have 3 subscription templates (merged)', () => {
@@ -96,10 +96,10 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, false)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(3);
-    expect(merged.subscriptionTemplates[0]).toEqual(configA.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[1]).toEqual(configB.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[2]).toEqual(configB.subscriptionTemplates[1]);
+    expect(merged.subscriptionTemplates!.length).toBe(3);
+    expect(merged.subscriptionTemplates![0]).toEqual(configA.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![1]).toEqual(configB.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![2]).toEqual(configB.subscriptionTemplates![1]);
   });
 
   it('should unlock icon map and have 2 subscription templates (merged, prune)', () => {
@@ -131,9 +131,9 @@ describe('mergeConfig', () => {
     };
     const merged = mergeConfig(configA, configB, true)!;
     expect(merged.isIconMapUnlocked).toBe(configB.isIconMapUnlocked);
-    expect(merged.subscriptionTemplates.length).toBe(2);
-    expect(merged.subscriptionTemplates[0]).toEqual(configB.subscriptionTemplates[0]);
-    expect(merged.subscriptionTemplates[1]).toEqual(configB.subscriptionTemplates[1]);
+    expect(merged.subscriptionTemplates!.length).toBe(2);
+    expect(merged.subscriptionTemplates![0]).toEqual(configB.subscriptionTemplates![0]);
+    expect(merged.subscriptionTemplates![1]).toEqual(configB.subscriptionTemplates![1]);
   });
 });
 
@@ -306,10 +306,10 @@ describe('mergeDataSet', () => {
 describe('mergeSubscriptions', () => {
   it('should have 1 subscription', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_1', enabled: false }
+      { name: 'B', version: '1.0', url: 'URL_1', enabled: false }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(1);
@@ -318,10 +318,10 @@ describe('mergeSubscriptions', () => {
 
   it('should have 2 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(2);
@@ -331,11 +331,11 @@ describe('mergeSubscriptions', () => {
 
   it('should have 2 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_1', enabled: false },
-      { name: 'C', url: 'URL_2', enabled: true }
+      { name: 'B', version: '1.0', url: 'URL_1', enabled: false },
+      { name: 'C', version: '1.0', url: 'URL_2', enabled: true }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(2);
@@ -345,11 +345,11 @@ describe('mergeSubscriptions', () => {
 
   it('should have 3 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false },
-      { name: 'C', url: 'URL_3', enabled: true }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false },
+      { name: 'C', version: '1.0', url: 'URL_3', enabled: true }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
     expect(merged.length).toBe(3);
@@ -360,10 +360,10 @@ describe('mergeSubscriptions', () => {
 
   it('should have 1 subscription', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, true);
     expect(merged.length).toBe(1);
@@ -372,15 +372,32 @@ describe('mergeSubscriptions', () => {
 
   it('should have 2 subscriptions', () => {
     const subscriptionsA: ISerializedSubscription[] = [
-      { name: 'A', url: 'URL_1', enabled: true }
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true }
     ];
     const subscriptionsB: ISerializedSubscription[] = [
-      { name: 'B', url: 'URL_2', enabled: false },
-      { name: 'C', url: 'URL_3', enabled: true }
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false },
+      { name: 'C', version: '1.0', url: 'URL_3', enabled: true }
     ];
     const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, true);
     expect(merged.length).toBe(2);
     expect(merged[0]).toBe(subscriptionsB[0]);
     expect(merged[1]).toBe(subscriptionsB[1]);
+  });
+
+  it('should have 3 subscriptions and preserve the sorting', () => {
+    const subscriptionsA: ISerializedSubscription[] = [
+      { name: 'A', version: '1.0', url: 'URL_1', enabled: true },
+      { name: 'B', version: '1.0', url: 'URL_2', enabled: false }
+    ];
+    const subscriptionsB: ISerializedSubscription[] = [
+      { name: 'B', version: '1.1', url: 'URL_2', enabled: true },
+      { name: 'A', version: '1.1', url: 'URL_1', enabled: false },
+      { name: 'C', version: '1.2', url: 'URL_3', enabled: true }
+    ];
+    const merged = mergeSubscriptions(subscriptionsA, subscriptionsB, false);
+    expect(merged.length).toBe(3);
+    expect(merged[0]).toEqual(subscriptionsB[0]);
+    expect(merged[1]).toEqual(subscriptionsB[1]);
+    expect(merged[2]).toBe(subscriptionsB[2]);
   });
 });

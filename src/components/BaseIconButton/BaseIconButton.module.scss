@@ -1,4 +1,6 @@
 .base-icon-button {
+  @apply text-base;
+
   &,
   .icon {
     @apply inline-flex items-center justify-center;

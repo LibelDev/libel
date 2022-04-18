@@ -19,8 +19,8 @@
   scrollbar-width: none;
 }
 
-@mixin glow-box($blur-radius: 0.5rem, $spread-radius: 0.125rem, $color: $color-black) {
-  box-shadow: 0 0 $blur-radius $spread-radius rgba($color, 0.5);
+@mixin glow-box($blur-radius: 0.5rem, $spread-radius: 0.125rem, $color: rgba($color-black, 0.5)) {
+  box-shadow: 0 0 $blur-radius $spread-radius $color;
 }
 
 @mixin glow-text($blur-radius: 0.5rem, $color: rgba($color-black, 0.5)) {

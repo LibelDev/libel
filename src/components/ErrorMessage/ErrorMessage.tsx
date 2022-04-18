@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { IconName } from '../Icon/types';
 import IconMessage, { TProps as TIconMessageProps } from '../IconMessage/IconMessage';
 

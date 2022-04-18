@@ -1,4 +1,8 @@
 module.exports = {
+  content: [],
+  corePlugins: {
+    preflight: false
+  },
   theme: {
     screens: {
       /** @media (min-width: 640px) */
@@ -11,7 +15,5 @@ module.exports = {
       'xl': '1280px'
     }
   },
-  purge: [],
-  variants: {},
   plugins: []
 };

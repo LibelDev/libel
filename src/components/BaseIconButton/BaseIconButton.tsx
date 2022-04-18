@@ -1,4 +1,4 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React from 'react';
 import Button, { TProps as TButtonProps } from '../Button/Button';
 import Icon from '../Icon/Icon';
@@ -16,7 +16,7 @@ const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
   return (
     <Button
       {...otherProps}
-      className={classnames(className, styles.baseIconButton)}
+      className={classNames(className, styles.baseIconButton)}
     >
       <React.Fragment>
         {
@@ -35,5 +35,7 @@ const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
     </Button>
   );
 };
+
+BaseIconButton.displayName = 'BaseIconButton';
 
 export default BaseIconButton;

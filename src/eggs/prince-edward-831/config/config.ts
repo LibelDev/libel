@@ -12,7 +12,7 @@ import image11 from '../../../../assets/images/831/11.jpg';
 import image12 from '../../../../assets/images/831/12.jpg';
 import image13 from '../../../../assets/images/831/13.png';
 import image14 from '../../../../assets/images/831/14.jpg';
-import { isNoticePage } from './../../../helpers/app';
+import { isNoticePage } from '../../../helpers/app';
 
 const now = new Date();
 const month = now.getMonth() + 1;
@@ -40,6 +40,8 @@ export const images = [
   image14
 ];
 
-export const timeout = 1500;
+export const interval = 2000;
+
+export const caption = '點擊以勾起更多記憶';
 
 export const videoURL = 'https://www.youtube.com/watch?v=vIau2kwxzZA&has_verified=1';

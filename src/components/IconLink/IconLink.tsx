@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import IconButton, { TProps as TIconButtonProps } from '../IconButton/IconButton';
 
 interface IProps { }
@@ -15,5 +15,7 @@ const IconLink: React.FunctionComponent<TProps> = (props) => {
     />
   );
 };
+
+IconLink.displayName = 'IconLink';
 
 export default IconLink;

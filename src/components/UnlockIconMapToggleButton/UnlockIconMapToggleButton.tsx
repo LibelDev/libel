@@ -48,4 +48,6 @@ const UnlockIconMapToggleButton = () => {
   );
 };
 
+UnlockIconMapToggleButton.displayName = 'UnlockIconMapToggleButton';
+
 export default UnlockIconMapToggleButton;

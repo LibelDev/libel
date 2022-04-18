@@ -1,0 +1,14 @@
+.file-input {
+  @apply inline-flex items-center;
+
+  label {
+    &:hover {
+      @apply cursor-pointer;
+      @apply underline;
+    }
+  }
+
+  .input {
+    @apply sr-only;
+  }
+}

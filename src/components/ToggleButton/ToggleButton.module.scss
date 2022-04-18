@@ -4,49 +4,42 @@
   @apply relative;
   @apply inline-flex items-center;
 
-  > span {
-    @apply flex-1;
-    line-height: initial;
-  }
-
-  .label {
+  label {
     @apply inline-flex items-center;
+    @apply mr-4;
 
     .loading-spinner {
       @apply ml-2;
     }
   }
 
-  .input input[type='checkbox'],
+  .input {
+    @apply ml-auto;
+  }
+
+  input[type='checkbox'],
   .button {
     @apply h-6 w-12;
     @apply m-0 p-0;
   }
 
-  .input {
-    input[type='checkbox'] {
-      @apply absolute;
-      @apply transform;
-      @apply -translate-y-1/2;
-      @apply opacity-0;
-      z-index: 1;
+  input[type='checkbox'] {
+    @apply absolute;
+    @apply -translate-y-1/2;
+    @apply opacity-0;
+    z-index: 1;
 
-      &:not(:disabled) {
-        @apply cursor-pointer;
-      }
+    &:not(:disabled) {
+      @apply cursor-pointer;
     }
   }
 
   .button {
-    @apply inline-block;
     @apply relative;
+    @apply inline-block;
     @apply cursor-pointer;
     @apply rounded-2xl;
     background-color: rgba($color-grey10, 0.2);
-
-    > span {
-      @apply sr-only;
-    }
 
     &,
     &:after {
@@ -59,7 +52,6 @@
       @apply rounded-2xl;
       @apply absolute top-1/2;
       left: 5%;
-      @apply transform;
       @apply -translate-y-1/2;
       box-shadow: 1px 2px 6px -1px rgba($color-black, 0.3);
       content: '';
@@ -86,18 +78,14 @@
     }
   }
 
-  &.full-width {
-    @apply w-full;
-  }
-
   &.simple {
-    > span {
+    label {
       @apply sr-only;
     }
   }
 
   &.small {
-    .input input[type='checkbox'],
+    input[type='checkbox'],
     .button {
       height: 0.6rem;
       width: 1.2rem;
@@ -114,11 +102,11 @@
   &.flip {
     @apply flex-row-reverse;
 
-    > span {
+    label {
       @apply mr-0 ml-4;
     }
 
-    .input input[type='checkbox'] {
+    input[type='checkbox'] {
       @apply -translate-x-full;
     }
   }

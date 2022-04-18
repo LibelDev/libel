@@ -1,12 +1,11 @@
 import debugFactory from 'debug';
 import * as files from '../constants/files';
+import Storage, { ISerializedStorage } from '../models/Storage';
 import storage from '../storage';
+import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from '../store/selectors';
 import { actions as metaActions } from '../store/slices/meta';
 import { actions as syncActions } from '../store/slices/sync';
-import store from '../store/store';
-import Storage, { ISerializedStorage } from './../models/Storage';
-import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from './../store/selectors';
-import { loadDataIntoStore } from './../store/store';
+import store, { loadDataIntoStore } from '../store/store';
 import { compress, decompress } from './file';
 import * as gapi from './gapi';
 import { mergeConfig, mergeDataSet, MergeDirection, mergeSubscriptions } from './merge';
@@ -32,14 +31,14 @@ const upload = (fileId: string, json: string) => {
 };
 
 export const clear = () => {
-  return gapi.drive.deleteByName(files.appData);
+  return gapi.drive.deleteByName(files.APP_DATA);
 };
 
 export const sync = async () => {
   const { dispatch } = store;
   dispatch(syncActions.setLoading(true));
   try {
-    const [file, fresh] = await gapi.drive.ensure(files.appData);
+    const [file, fresh] = await gapi.drive.ensure(files.APP_DATA);
     if (fresh) {
       // never been synced with the cloud before
       // nothing to do here
@@ -59,11 +58,11 @@ export const sync = async () => {
         /**
          * NOTE: `lastSyncedTime` will never be greater than `modifiedTime`
          *
-         * `lastSyncedTime === modifiedTime` => the file was updated from this instance in the previous sync
+         * `lastSyncedTime === modifiedTime` => the file was updated from this session in the previous sync
          * => if `lastModifiedTime > modifiedTime` (i.e. local is newer than remote), merge local into remote
          * => otherwise, merge remote into local
          *
-         * `lastSyncedTime < modifiedTime` => the file has been updated from another instance since the previous sync
+         * `lastSyncedTime < modifiedTime` => the file has been updated from another session since the previous sync
          * => then always merge remote into local
          */
         // merge with local data
@@ -94,6 +93,8 @@ export const sync = async () => {
     dispatch(syncActions.setError(null));
   } catch (err) {
     dispatch(syncActions.setError(err));
+    throw err;
+  } finally {
+    dispatch(syncActions.setLoading(false));
   }
-  dispatch(syncActions.setLoading(false));
 };

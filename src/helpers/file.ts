@@ -1,11 +1,11 @@
 import format from 'date-fns/format';
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { render } from 'mustache';
+import { EXPORT_FILENAME_TIMESTAMP_FORMAT } from '../constants/files';
 import * as TEXTS from '../constants/texts';
 import Storage, { ISerializedStorage } from '../models/Storage';
 import storage from '../storage';
 import * as filenames from '../templates/filenames';
-import { exportFilenameTimestampFormat } from './../constants/files';
 
 export const download = (filename: string, body: string, type: string) => {
   const blob = new Blob([body], { type });
@@ -42,7 +42,7 @@ export const _export = async () => {
   await storage.load();
   const json = storage.json();
   const now = new Date();
-  const timestamp = format(now, exportFilenameTimestampFormat);
+  const timestamp = format(now, EXPORT_FILENAME_TIMESTAMP_FORMAT);
   const filename = render(filenames.data.export, { timestamp });
   // TODO so sad, there is no way to detect whether the user has downloaded the file or not
   download(filename, json, 'text/plain');

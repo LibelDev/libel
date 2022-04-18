@@ -1,11 +1,9 @@
 import classNames from 'classnames';
-import React from 'react';
-import useElementID from '../../hooks/useElementID';
+import React, { useId } from 'react';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './BaseInput.module.scss';
 
 interface IProps {
-  label?: React.ReactNode;
   error?: React.ReactNode;
 }
 
@@ -13,42 +11,31 @@ type TComponentProps = React.ComponentPropsWithoutRef<'input'>;
 
 export type TProps = IProps & TComponentProps;
 
-const BaseInput: React.FunctionComponent<TProps> = (props) => {
-  const { id, className, disabled, label, error, ...otherProps } = props;
+const BaseInput = React.forwardRef<HTMLInputElement, TProps>((props, ref) => {
+  const { id, className, error, ...otherProps } = props;
 
-  const _id = id || useElementID(BaseInput.displayName!);
-  const errorID = `${_id}-error`;
+  const _id = id || useId();
+  const _errorId = `${_id}-error`;
 
   return (
-    <React.Fragment>
+    <div className={classNames(className, styles.baseInput)}>
+      <input
+        {...otherProps}
+        ref={ref}
+        id={_id}
+        aria-describedby={_errorId}
+      />
       {
-        label && (
-          <span className={styles.label}>
-            <label htmlFor={_id}>
-              {label}
-            </label>
-          </span>
+        !!error && (
+          <ErrorMessage id={_errorId} className={styles.error}>
+            {error}
+          </ErrorMessage>
         )
       }
-      <div className={classNames(className, styles.input)}>
-        <input
-          id={_id}
-          disabled={disabled}
-          aria-describedby={errorID}
-          {...otherProps}
-        />
-        {
-          !!error && (
-            <ErrorMessage id={errorID} className={styles.error}>
-              {error}
-            </ErrorMessage>
-          )
-        }
-      </div>
-    </React.Fragment>
+    </div>
   );
-};
+});
 
-BaseInput.displayName = 'Input';
+BaseInput.displayName = 'BaseInput';
 
 export default BaseInput;

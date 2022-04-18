@@ -1,6 +1,5 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import React, { useCallback } from 'react';
-import { EventAction } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
@@ -8,6 +7,7 @@ import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
+import { EventAction } from '../../types/ga';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import SubmissionForm from '../SubmissionForm/SubmissionForm';
@@ -52,7 +52,7 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <IconButton
-      className={classnames(className, styles.snipeButton)}
+      className={classNames(className, styles.snipeButton)}
       icon={IconName.Hot}
       onClick={handleClick}
       aria-label={TEXTS.BUTTON_TEXT_SNIPE}
@@ -61,5 +61,7 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
     />
   );
 };
+
+SnipeButton.displayName = 'SnipeButton';
 
 export default SnipeButton;

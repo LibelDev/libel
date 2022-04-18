@@ -1,0 +1,25 @@
+@import '../../stylesheets/base';
+
+.egg :global(#{$lihkg-selector-left-panel}) {
+  @apply relative;
+
+  .underlay {
+    @apply fixed top-0 left-0;
+    @apply h-full w-full;
+    @apply filter;
+    --tw-drop-shadow: drop-shadow(0 0 1rem black);
+    @apply opacity-10;
+    @apply bg-center bg-cover bg-no-repeat;
+    background-image: $image-721-yuen-long-mtr;
+
+    @screen md {
+      width: 30%;
+      min-width: 300px;
+      max-width: 480px;
+    }
+
+    @include dark-mode() {
+      @apply opacity-5;
+    }
+  }
+}

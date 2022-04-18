@@ -1,1 +1,1 @@
-export const shortenedHost = 'https://lih.kg';
+export const SHORTENED_HOST = 'https://lih.kg';

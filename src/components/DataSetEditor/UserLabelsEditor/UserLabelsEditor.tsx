@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
-import useLazyRender, { IOptions as ILazyRenderOptions } from '../../../hooks/useLazyRender';
+import useLazyRender, { IOptions as IUseLazyRenderOptions } from '../../../hooks/useLazyRender';
 import type { ILabel } from '../../../models/Label';
 import ColorPicker from '../../ColorPicker/ColorPicker';
 import Icon from '../../Icon/Icon';
@@ -52,7 +53,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   /** lazy rendering */
-  const lazyRenderOptions: ILazyRenderOptions<HTMLDivElement> = useMemo(() => ({
+  const useLazyRenderOptions: IUseLazyRenderOptions<HTMLDivElement> = useMemo(() => ({
     onVisibilityChange: (element, visible) => {
       if (visible) {
         setStyle({});
@@ -63,7 +64,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
       }
     }
   }), []);
-  const [ref, visible] = useLazyRender(lazyRenderOptions);
+  const [ref, visible] = useLazyRender(useLazyRenderOptions);
 
   /** validation error for each item */
   const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
@@ -82,7 +83,14 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
     const { value } = event.currentTarget;
     const index = parseInt(value); // the index of the item in the filtered array
     onRemove(user, index);
-  }, [user, items, onRemove]);
+  }, [user, onRemove]);
+
+  const handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = useCallback((event) => {
+    const { key } = event;
+    if (key === Key.Enter) {
+      event.preventDefault();
+    }
+  }, []);
 
   const userProfileURL = `/profile/${user}`;
 
@@ -116,13 +124,13 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
             </div>
             <ol className={styles.labelList}>
               {
-                items.map(([, draft, removed], index) => (
-                  <li key={index}>
+                items.map(([original, draft, removed], index) => (
+                  <li key={original.id}>
                     <IconButton
                       className={styles.remove}
                       value={index}
                       icon={removed ? IconName.DeleteForever : IconName.Delete}
-                      aria-label={TEXTS.BUTTON_TEXT_REMOVE_LABEL}
+                      aria-label={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
                       onClick={handleRemoveButtonClick}
                     />
                     <TextInput
@@ -134,6 +142,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       invalid={errors[index].text}
                       placeholder={TEXTS.LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_TEXT}
                       onChange={handleInputChange}
+                      onKeyDown={handleInputKeyDown}
                     />
                     <TextInput
                       className={classNames(styles.inputField, styles.reason)}
@@ -144,6 +153,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                       invalid={errors[index].reason}
                       placeholder={TEXTS.LABEL_EDITOR_FIELD_PLACEHOLDER_LABEL_REASON}
                       onChange={handleInputChange}
+                      onKeyDown={handleInputKeyDown}
                     />
                     <ColorPicker
                       border

@@ -2,6 +2,7 @@ commitizen:
   changelog_start_rev: v2.0.0
   name: cz_conventional_commits
   tag_format: v$version
-  version: 3.4.1
+  update_changelog_on_bump: true
+  version: 3.5.0
   version_files:
   - package.json

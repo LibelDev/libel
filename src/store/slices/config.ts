@@ -3,11 +3,11 @@ import { persistReducer } from 'redux-persist';
 import { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Config, { IConfig } from '../../models/Config';
-import type { IBasicSubscription } from './../../models/Subscription';
+import type { IBaseSubscription } from '../../models/Subscription';
 
 interface IUpdateSubscriptionTemplatePayload {
   index: number;
-  subscriptionTemplate: IBasicSubscription;
+  subscriptionTemplate: IBaseSubscription;
 }
 
 const initialState = Config.factory();
@@ -20,7 +20,7 @@ const slice = createSlice({
       const { payload } = action;
       state.isIconMapUnlocked = payload;
     },
-    addSubscriptionTemplate: (state, action: PayloadAction<IBasicSubscription>) => {
+    addSubscriptionTemplate: (state, action: PayloadAction<IBaseSubscription>) => {
       const { payload } = action;
       state.subscriptionTemplates.push(payload);
     },
@@ -30,7 +30,7 @@ const slice = createSlice({
         const { index, subscriptionTemplate } = payload;
         state.subscriptionTemplates[index] = subscriptionTemplate;
       },
-      prepare: (index: number, subscriptionTemplate: IBasicSubscription) => {
+      prepare: (index: number, subscriptionTemplate: IBaseSubscription) => {
         return {
           payload: { index, subscriptionTemplate }
         };

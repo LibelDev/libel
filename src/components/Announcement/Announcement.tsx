@@ -1,15 +1,15 @@
-import classnames from 'classnames';
+import classNames from 'classnames';
 import max from 'lodash/max';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
-import { EventAction, EventCategory } from '../../constants/ga';
 import * as TEXTS from '../../constants/texts';
 import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
 import * as gtag from '../../helpers/gtag';
 import { isViewport, Viewport } from '../../helpers/responsive';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
+import { EventAction, EventCategory } from '../../types/ga';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
@@ -92,7 +92,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
   return (
     <div
       ref={announcementRef}
-      className={classnames(className, styles.announcement)}
+      className={classNames(className, styles.announcement)}
     >
       <img className={styles.logo} src={logo} alt={displayName} />
       {icon && <Icon icon={icon} />}
@@ -107,5 +107,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
     </div>
   );
 };
+
+Announcement.displayName = 'Announcement';
 
 export default Announcement;

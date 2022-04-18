@@ -1,10 +1,12 @@
-import { EventAction, EventCategory } from './constants/ga';
-import { interval } from './constants/sync';
+import { SYNC_INTERVAL } from './constants/sync';
+import * as TEXTS from './constants/texts';
 import * as cloud from './helpers/cloud';
 import { ready } from './helpers/gapi';
 import * as gtag from './helpers/gtag';
+import * as LIHKG from './helpers/lihkg';
 import { selectSync } from './store/selectors';
 import store from './store/store';
+import { EventAction, EventCategory } from './types/ga';
 
 let unregister: (() => void) | null = null;
 
@@ -17,7 +19,18 @@ export const sync = async (auth: gapi.auth2.GoogleAuth) => {
       if (unregister) {
         unregister();
       }
-      await cloud.sync();
+      const notificationSyncInProgress = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_IN_PROGESS, 0);
+      LIHKG.showNotification(notificationSyncInProgress);
+      try {
+        await cloud.sync();
+        const notificationSyncSuccess = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_SUCCESS);
+        LIHKG.showNotification(notificationSyncSuccess);
+      } catch (err) {
+        const notificationSyncFailed = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_FAILED);
+        LIHKG.showNotification(notificationSyncFailed);
+      } finally {
+        LIHKG.removeNotification(notificationSyncInProgress.id);
+      }
       unregister = register(auth); // register next sync
       // analytics
       gtag.event(EventAction.CloudSync, { event_category: EventCategory.Google });
@@ -26,7 +39,7 @@ export const sync = async (auth: gapi.auth2.GoogleAuth) => {
 };
 
 const register = (auth: gapi.auth2.GoogleAuth) => {
-  const id = setTimeout(() => sync(auth), interval);
+  const id = setTimeout(() => sync(auth), SYNC_INTERVAL);
   return () => {
     clearTimeout(id);
     unregister = null;

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import debugFactory from 'debug';
 import produce from 'immer';
 import React, { useCallback, useMemo, useState } from 'react';
+import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
 import type { IDataSet } from '../../models/DataSet';
@@ -39,7 +40,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
 
-  const empty = labelsGroups.length === 0;
+  const name = `${namespace}-${DataSetEditor.displayName!}`;
 
   const handleFilterChange: IFilterProps['onChange'] = useCallback((keyword) => {
     setKeyword(keyword);
@@ -98,7 +99,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
     debug('handleSubmit:dataSet', dataSet);
     const { error } = schema.validate(dataSet);
     if (error) {
-      setError(TEXTS.DATA_SET_EDITOR_ERROR_INVALID_LABEL);
+      setError(TEXTS.DATA_SET_EDITOR_ERROR_INVALID);
       debug('handleSubmit:error', error);
       const { details } = error;
       const { path } = details[0];
@@ -115,63 +116,55 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   return (
     <form
       {...otherProps}
+      name={name}
       className={
         classNames(
           className,
-          styles.dataSetEditor,
-          {
-            [styles.empty]: empty
-          }
+          styles.dataSetEditor
         )
       }
       onSubmit={handleSubmit}
     >
-      {
-        !empty ? (
-          <React.Fragment>
-            <Filter
-              autoFocus
-              value={keyword}
-              placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
-              onChange={handleFilterChange}
-            />
-            <div className={styles.filterResult}>
-              {
-                filteredLabelsGroups.length > 0 ? (
-                  <ol className={styles.labelsGroupList}>
-                    {
-                      filteredLabelsGroups.map(({ user, items }, index) => (
-                        <li key={user}>
-                          <UserLabelsEditor
-                            className={styles.userLabelsEditor}
-                            user={user}
-                            items={items}
-                            autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
-                            onChange={handleUserLabelsChange}
-                            onRemove={handleUserLabelsRemove}
-                            onScroll={handleUserLabelsScroll}
-                          />
-                        </li>
-                      ))
-                    }
-                  </ol>
-                ) : (
-                  TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
-                )
-              }
-            </div>
-            {
-              !!error && (
-                <ErrorMessage className={styles.error}>
-                  {error}
-                </ErrorMessage>
-              )
-            }
-          </React.Fragment>
-        ) : (
-          TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET
-        )
-      }
+      <React.Fragment>
+        <Filter
+          autoFocus
+          value={keyword}
+          placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
+          onChange={handleFilterChange}
+        />
+        <div className={styles.filterResult}>
+          {
+            filteredLabelsGroups.length > 0 ? (
+              <ol className={styles.labelsGroupList}>
+                {
+                  filteredLabelsGroups.map(({ user, items }, index) => (
+                    <li key={user}>
+                      <UserLabelsEditor
+                        className={styles.userLabelsEditor}
+                        user={user}
+                        items={items}
+                        autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
+                        onChange={handleUserLabelsChange}
+                        onRemove={handleUserLabelsRemove}
+                        onScroll={handleUserLabelsScroll}
+                      />
+                    </li>
+                  ))
+                }
+              </ol>
+            ) : (
+              TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
+            )
+          }
+        </div>
+        {
+          !!error && (
+            <ErrorMessage className={styles.error}>
+              {error}
+            </ErrorMessage>
+          )
+        }
+      </React.Fragment>
     </form>
   );
 };

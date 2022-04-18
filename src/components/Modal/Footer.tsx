@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import styles from './Footer.module.scss';
 
 interface IProps { }
@@ -22,5 +22,7 @@ const Footer: React.FunctionComponent<TProps> = (props) => {
     />
   );
 };
+
+Footer.displayName = 'Footer';
 
 export default Footer;

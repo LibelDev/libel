@@ -1,8 +1,12 @@
 import { createAction } from '@reduxjs/toolkit';
-import type { IIconMap } from '../types/lihkg';
+import type { IIconMap, TNotification } from '../types/lihkg';
 
 enum Action {
-  SetIconMap = '$SET_ICON_MAP'
+  SetIconMap = '$SET_ICON_MAP',
+  ShowNotification = 'SHOW_NOTIFICATION',
+  RemoveNotification = 'REMOVE_NOTIFICATION'
 }
 
 export const setIconMap = createAction<IIconMap, Action.SetIconMap>(Action.SetIconMap);
+export const showNotification = createAction<TNotification, Action.ShowNotification>(Action.ShowNotification);
+export const removeNotification = createAction<number, Action.RemoveNotification>(Action.RemoveNotification);

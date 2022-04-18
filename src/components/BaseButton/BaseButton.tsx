@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './BaseButton.module.scss';
 
@@ -29,7 +29,7 @@ const BaseButton: React.FunctionComponent<TProps> = (props) => {
     children,
     disabled,
     loading,
-    as = 'button',
+    as: Component = 'button',
     ...otherProps
   } = props;
   const _props = {
@@ -44,7 +44,13 @@ const BaseButton: React.FunctionComponent<TProps> = (props) => {
       children
     )
   );
-  return React.createElement(as, _props as TAnchorComponentProps & TButtonComponentProps, _children);
+  return (
+    <Component {..._props as TAnchorComponentProps & TButtonComponentProps}>
+      {_children}
+    </Component>
+  );
 };
+
+BaseButton.displayName = 'BaseButton';
 
 export default BaseButton;

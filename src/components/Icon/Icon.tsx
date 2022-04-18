@@ -1,5 +1,5 @@
-import classnames from 'classnames';
-import React from 'react';
+import classNames from 'classnames';
+import type React from 'react';
 import type { IconName } from './types';
 
 interface IProps {
@@ -14,11 +14,13 @@ const Icon: React.FunctionComponent<TProps> = (props) => {
   const { className, icon, ...otherProps } = props;
   return (
     <i
-      className={classnames(className, icon)}
-      aria-hidden={true}
+      className={classNames(className, icon)}
+      aria-hidden
       {...otherProps}
     />
   );
 };
+
+Icon.displayName = 'Icon';
 
 export default Icon;

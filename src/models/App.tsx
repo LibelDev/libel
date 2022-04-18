@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Persistor } from 'redux-persist';
 import { fetchAnnouncements } from '../apis/announcement';
 import Announcement from '../components/Announcement/Announcement';
@@ -63,7 +62,7 @@ class App {
           }
           case 'attributes': {
             /** when navigate between the quotes */
-            if (mutation.attributeName === ATTRIBUTES.dataPostId) {
+            if (mutation.attributeName === ATTRIBUTES.DATA_POST_ID) {
               const { target } = mutation;
               window.requestAnimationFrame(() => {
                 handleDataPostIdAttributeMutation(target as Element, store, persistor);
@@ -79,7 +78,7 @@ class App {
       subtree: true,
       childList: true,
       attributes: true,
-      attributeFilter: [ATTRIBUTES.dataPostId]
+      attributeFilter: [ATTRIBUTES.DATA_POST_ID]
     });
   }
 

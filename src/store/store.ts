@@ -5,11 +5,12 @@ import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
-import type { ISerializedSubscription, ISubscription } from '../models/Subscription';
+import type { ISerializedStorage, IStorage } from '../models/Storage';
 import storage from '../storage';
-import type { ISerializedStorage, IStorage } from './../models/Storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
+import { createLoadSubscriptionOnEnableListener, createLoadSubscriptionRejectedNotifier } from './middleware/subscription';
 import reducer, { persistedReducer } from './reducer';
+import { selectSubscriptions } from './selectors';
 import { actions as configActions } from './slices/config';
 import { actions as metaActions } from './slices/meta';
 import { actions as personalActions } from './slices/personal';
@@ -27,6 +28,8 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
   }).concat(
+    createLoadSubscriptionOnEnableListener(),
+    createLoadSubscriptionRejectedNotifier(),
     createLastModifiedTimeUpdater({
       whitelist: [
         configActions.setIsIconMapUnlocked.type,
@@ -62,14 +65,17 @@ initMessageListener(store);
 
 /**
  * load the subscriptions data from remote
- * NOTE: this function is not really async (i.e. it resolves immediately)
  * @async
- * @param {(ISubscription | ISerializedSubscription)[]} subscriptions
  */
-const loadRemoteSubscriptions = async (subscriptions: (ISubscription | ISerializedSubscription)[]) => {
-  const { dispatch } = store;
+const loadSubscriptions = async () => {
+  const { dispatch, getState } = store;
+  const state = getState();
+  const subscriptions = selectSubscriptions(state);
   for (let i = 0; i < subscriptions.length; i++) {
-    dispatch(subscriptionsActions.load(i));
+    const subscription = subscriptions[i];
+    if (subscription.enabled) {
+      dispatch(subscriptionsActions.load(i));
+    }
   }
 };
 
@@ -84,7 +90,7 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
   }
   store.dispatch(personalActions.update(personal));
   store.dispatch(subscriptionsActions.update(subscriptions));
-  await loadRemoteSubscriptions(subscriptions);
+  await loadSubscriptions();
   // update the storage instance
   storage.update(data);
 };
@@ -95,8 +101,6 @@ export const loadDataIntoStore = async (data: IStorage | ISerializedStorage) => 
 export const persistor = persistStore(store, null, async () => {
   await storage.ready();
   await loadDataIntoStore(storage);
-  const { subscriptions } = storage;
-  await loadRemoteSubscriptions(subscriptions);
 });
 
 export type TStore = typeof store;

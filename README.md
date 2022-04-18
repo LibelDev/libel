@@ -11,14 +11,14 @@
 
 ## Installation / Usage
 
-For the installation steps, usage and more details, please visit [Wiki](https://github.com/kitce/libel/wiki).  
+For the installation steps, usage and more details, please visit [Wiki](https://github.com/kitce/libel/wiki).
 關於詳細介紹、安裝教學及使用教學，請閱讀 [Wiki](https://github.com/kitce/libel/wiki)。
 
 ***
 
 ## Development
 
-*This section is for developers only.  
+*This section is for developers only.
 此章節只供開發者瀏覽。*
 
 ### Install dependencies
@@ -32,7 +32,7 @@ For a smooth development experience, you may want to execute the following comma
 ### Start development
 
 ```bash
-pnpm dev
+pnpm dev:main
 ```
 
 ### SCSS module typings
@@ -41,22 +41,13 @@ pnpm dev
 pnpm type:scss[:watch]
 ```
 
-### Data hosting
-
-```bash
-pnpm data
-```
-
-*Why the data is hosted on port `20630`?*  
-*To memorize [**the death of Hong Kong**](https://en.wikipedia.org/wiki/Hong_Kong_national_security_law) on 30/6/2020*
-
 ### Install
 
 When `webpack-dev-server` completed the first compilation, follow these steps to test on [LIHKG](https://lihkg.com/):
 
-1. Install [Tampermonkey](https://www.tampermonkey.net/)
+1. Install [Tampermonkey](https://www.tampermonkey.net/) (or your favourite userscript manager)
 2. Visit [http://localhost:8080/libel.proxy.user.js](http://localhost:8080/libel.proxy.user.js)
-3. Click **Install** / **Reinstall**
+3. Click **Install** / **Reinstall** / **Update**
 4. Go back to [LIHKG](https://lihkg.com/) and reload the page
 
 Whenever you made changes and `webpack-dev-server` recompiled the files, repeat step 2 to 4.

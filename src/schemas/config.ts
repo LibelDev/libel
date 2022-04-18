@@ -1,10 +1,10 @@
 import joi from 'joi';
 import type { ISerializedConfig } from '../models/Config';
-import { basic } from './subscription';
+import { base } from './subscription';
 
 const schema = joi.object<ISerializedConfig>().keys({
   isIconMapUnlocked: joi.boolean(),
-  subscriptionTemplates: joi.array().items(basic)
+  subscriptionTemplates: joi.array().items(base)
 });
 
 export default schema;

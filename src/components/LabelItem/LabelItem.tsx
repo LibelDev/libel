@@ -28,4 +28,6 @@ const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
   );
 });
 
+LabelItem.displayName = 'LabelItem';
+
 export default LabelItem;

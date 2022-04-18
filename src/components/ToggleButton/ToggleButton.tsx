@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
+import { useId } from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './ToggleButton.module.scss';
@@ -9,10 +10,6 @@ interface IProps {
    * show loading spinner
    */
   loading?: boolean;
-  /**
-   * set the toggle button to full width
-   */
-  fullWidth?: boolean;
   /**
    * display the switch button only
    */
@@ -30,7 +27,9 @@ interface IProps {
 type TProps = IProps & TBaseInputProps;
 
 const ToggleButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, children, checked, disabled, loading, fullWidth, simple, small, flip, ...otherProps } = props;
+  const { id, className, children, checked, disabled, loading, simple, small, flip, ...otherProps } = props;
+
+  const _id = id || useId();
 
   return (
     <div
@@ -41,7 +40,6 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
           {
             [styles.checked]: checked,
             [styles.disabled]: disabled || loading,
-            [styles.fullWidth]: fullWidth,
             [styles.simple]: simple,
             [styles.small]: small,
             [styles.flip]: flip,
@@ -49,23 +47,22 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
         )
       }
     >
+      <label htmlFor={_id}>
+        {children}
+        {
+          loading && (
+            <LoadingSpinner className={styles.loadingSpinner} />
+          )
+        }
+      </label>
       <BaseInput
         {...otherProps}
+        id={_id}
+        className={styles.input}
         type="checkbox"
         role="switch"
-        className={styles.input}
         checked={checked}
         disabled={disabled || loading}
-        label={
-          <span className={styles.label}>
-            {children}
-            {
-              loading && (
-                <LoadingSpinner className={styles.loadingSpinner} />
-              )
-            }
-          </span>
-        }
       />
       <div
         className={styles.button}
@@ -74,5 +71,7 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
     </div>
   );
 };
+
+ToggleButton.displayName = 'ToggleButton';
 
 export default ToggleButton;

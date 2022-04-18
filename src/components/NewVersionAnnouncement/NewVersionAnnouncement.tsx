@@ -1,5 +1,6 @@
 import { render } from 'mustache';
-import React from 'react';
+import type React from 'react';
+import { Directory } from '../../../config/config';
 import { name, repository } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { versionUpdate } from '../../templates/announcements';
@@ -18,7 +19,7 @@ type TProps = IProps;
 
 const getUserScriptURL = (release: IRelease) => {
   const { tag_name } = release;
-  return `${repository.url}/raw/${tag_name}/dist/${name}.user.js`;
+  return `${repository.url}/raw/${tag_name}/${Directory.Dist}/${name}.user.js`;
 };
 
 const NewVersionAnnouncement: React.FunctionComponent<TProps> = (props) => {
@@ -31,10 +32,12 @@ const NewVersionAnnouncement: React.FunctionComponent<TProps> = (props) => {
       <strong>
         <a href={userScriptURL} target="_blank">{newVersionMessage}</a>
       </strong>
-      （<a href={release.html_url} target="_blank">{TEXTS.ANNOUCEMENT_LABEL_CHANGE_LOG}</a>）
+      （<a href={release.html_url} target="_blank">{TEXTS.ANNOUNCEMENT_LABEL_CHANGE_LOG}</a>）
       <small>（{oldVersionMessage}）</small>
     </Announcement>
   );
 };
+
+NewVersionAnnouncement.displayName = 'NewVersionAnnouncement';
 
 export default NewVersionAnnouncement;

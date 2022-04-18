@@ -1,4 +1,4 @@
-import { Middleware } from '@reduxjs/toolkit';
+import type { Middleware } from '@reduxjs/toolkit';
 import { actions as metaActions } from '../slices/meta';
 import type { TRootState } from '../store';
 

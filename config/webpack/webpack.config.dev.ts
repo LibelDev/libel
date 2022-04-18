@@ -1,16 +1,17 @@
-import { Configuration as WebpackConfiguration } from 'webpack';
-import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import '../env'; // load the environment variables at the beginning
+import path from 'path';
+import type webpack from 'webpack';
 import merge from 'webpack-merge';
-import egg from './webpack.config.egg';
-import main from './webpack.config.main';
+import { Directory } from '../config';
+import { dev as egg } from './webpack.config.egg';
+import { dev as main } from './webpack.config.main';
 
-interface IConfiguration extends WebpackConfiguration {
-  devServer?: WebpackDevServerConfiguration;
-}
-
-const dev: IConfiguration = {
+const dev: webpack.Configuration = {
   mode: 'development',
-  devtool: 'eval-cheap-source-map'
+  devtool: 'eval-cheap-source-map',
+  output: {
+    path: path.join(process.cwd(), Directory.Build),
+  }
 };
 
 const config = [
