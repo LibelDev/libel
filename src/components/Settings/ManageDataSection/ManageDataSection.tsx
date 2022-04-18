@@ -16,9 +16,9 @@ import { loadDataIntoStore, useTypedDispatch, useTypedSelector } from '../../../
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import * as messages from '../../../templates/messages';
 import { EventAction } from '../../../types/ga';
-import BaseInput from '../../BaseInput/BaseInput';
 import type { IProps as IDataSetEditorProps } from '../../DataSetEditor/DataSetEditor';
 import DataSetEditorModal from '../../DataSetEditorModal/DataSetEditorModal';
+import FileInput from '../../FileInput/FileInput';
 import type { IProps as ISubscriptionMakerProps } from '../../SubscriptionMaker/SubscriptionMaker';
 import SubscriptionMakerModal from '../../SubscriptionMakerModal/SubscriptionMakerModal';
 import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
@@ -191,18 +191,15 @@ const ManageDataSection: React.FunctionComponent = () => {
             {TEXTS.BUTTON_TEXT_EXPORT_FILE}
           </SettingOptionButton>
         </li>
-        <li className={classNames(styles.import, lihkgCssClasses.settingOptionsItem)}>
-          <BaseInput
-            type="file"
+        <li className={classNames(lihkgCssClasses.settingOptionsItem)}>
+          <FileInput
             accept={importInputAccepts.join(',')}
-            className={styles.input}
             onChange={handleImport}
-            label={
-              <span className={classNames(styles.label, lihkgCssClasses.settingOptionButton)}>
-                {TEXTS.BUTTON_TEXT_IMPORT_FILE}
-              </span>
-            }
-          />
+          >
+            <span className={classNames(styles.label, lihkgCssClasses.settingOptionButton)}>
+              {TEXTS.BUTTON_TEXT_IMPORT_FILE}
+            </span>
+          </FileInput>
         </li>
       </ul>
       <DataSetEditorModal
