@@ -1,3 +1,85 @@
+## v3.5.0 (2022-04-18)
+
+### Feat
+
+- **components**: add component `FileInput`
+- **store**: add middleware `createLoadSubscriptionOnEnableListener`
+- **subscription**: allow drag & drop to sort the subscriptions
+- **subscription**: update notification template
+- **subscription**: add middleware `createLoadSubscriptionRejectedNotifier`
+- **egg**: update style
+- **gapi**: add notifications for sign in / sign out
+- **clear-data**: replace alerts with notifications
+- **text-input**: add `onClear` to enable the clear button
+- **notification**: add cloud sync notifications
+- **label-form**: update form validation
+- **subscription-maker**: update form validation
+- **subscription**: add subscription list empty message
+- **subscription**: update subscription status icon style
+- **label-form**: update layout
+- **label-info**: update layout
+- **label-info**: update layout
+- **settings**: add standalone settings modal
+
+### Refactor
+
+- **components**: update style
+- **webpack**: update configs
+- **store**: remove unnecessary remote subscription loadings
+- **store**: update `loadRemoteSubscriptions()` to `loadSubscriptions()`
+- **store**: update subscription `load()`
+- **egg**: revise imports
+- **egg**: update styles
+- **modal**: handle backdrop click only when the modal is opened
+- **subscription-maker**: make `inputErrors` non-null
+- **slideshow**: change `Slideshow` from model to component
+- **slideshow**: type casting
+- **stylesheets**: add mixin `logo()`
+- revise imports
+- **constants**: update constants
+- **manage-data**: change alerts to notifications
+- **editor**: change empty message to notification
+- **notification**: add `createLocalNotification()` to trigger `createNotification()`
+- **subscription**: update `baseRemote` schema
+- **subscription**: update `Subscription` models and schemas
+- **editor**: use the given `id` first
+- **sniping**: update user registration formatting logic
+- **hooks**: update `useScreenshot`
+- **label-form**: reuse schemas
+- **editor**: remove unnecessary dependency
+- **components**: reuse `IconLink`
+- **stylesheets**: update mixin `glow-box`
+- **components**: reuse `IconLink`
+- **label-form**: memoize preview image style
+- **components**: add component `displayName`
+- **mutation**: update to `react-dom/client` API
+- **components**: update `key`
+- **components**: replace `useElementID` with `useId`
+- **settings**: update layout
+- **components**: pass through the props for extendibility
+- **components**: remove unnecessary `{true}`
+
+### Fix
+
+- **webpack**: webpack-dev-server WebSocket connection failure
+- **subscription**: update schema `serialized`
+- **merge**: `configB.subscriptionTemplates` is `undefined`
+- **stylesheets**: missing Tailwind variables `--tw-*`
+- **settings**: `autoFocus` not working in nested modal with focus trap
+- **hooks**: incorrect ref object
+- **modal**: incorrect ref objects
+- **editor**: missing min-width
+- **cloud-sync**: unexpected notification
+- **egg**: missing CSS modules
+- **subscription**: incorrect base remote subscription `homepage` schema
+- **editor**: unexpected `click` event on the remove button (#11)
+- **label-info**: incorrect clear data button text color in light mode
+- **components**: unexpected `displayName`
+- **label-info**: label info box being blocked by YouTube preview
+- **mutation**: incorrect `AddLabelButton` usage
+- **subscription**: missing `href` in homepage button
+- **modal**: unexpected focus trap deactivation
+
 ## v3.4.1 (2022-04-05)
 
 ### Fix
