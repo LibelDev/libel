@@ -1,48 +1,40 @@
 @import '../../stylesheets/base';
 
 .color-picker {
-  > div {
-    @apply flex items-center;
-    @apply w-12;
-  }
+  @apply inline-flex items-center;
 
-  .input {
-    input[type='color'] {
-      @apply appearance-none;
-      @apply bg-transparent;
-      @apply overflow-hidden;
+  input[type='color'] {
+    @apply appearance-none;
+    @apply bg-transparent;
+    @apply overflow-hidden;
+    @apply h-6 w-12;
+    @apply p-0;
+
+    &::-webkit-color-swatch-wrapper {
       @apply p-0;
+    }
 
-      &::-webkit-color-swatch-wrapper {
-        @apply p-0;
-      }
+    &::-webkit-color-swatch {
+      @apply border-0;
+    }
 
+    &[value=''] {
       &::-webkit-color-swatch {
-        @apply border-0;
-      }
-
-      &[value=''] {
-        &::-webkit-color-swatch {
-          // @apply bg-transparent #{!important};
-          background: repeating-conic-gradient($color-grey04 0% 25%, $color-white 0% 50%) 50% 50% / 10px 10px;
-        }
+        // @apply bg-transparent #{!important};
+        background: repeating-conic-gradient($color-grey04 0% 25%, $color-white 0% 50%) 50% 50% / 10px 10px;
       }
     }
   }
 
   &:not(.border) {
-    .input {
-      input[type='color'] {
-        @apply border-0;
-      }
+    input[type='color'] {
+      @apply border-0;
     }
   }
 
   &.rounded {
-    .input {
-      input[type='color'] {
-        border-radius: 0.25rem;
-      }
+    input[type='color'] {
+      border-radius: 0.25rem;
     }
   }
 }

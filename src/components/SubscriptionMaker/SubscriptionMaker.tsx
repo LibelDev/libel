@@ -231,7 +231,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
-          fullWidth
+          className={styles.toggleButton}
           checked={toggleButtonState.isCustomColor}
           name="isCustomColor"
           onChange={handleToggleButtonChange}
@@ -239,16 +239,14 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
           {TEXTS.SUBSCRIPTION_MAKER_FIELD_LABEL_COLOR}
           {
             toggleButtonState.isCustomColor && (
-              <div className={styles.colorPicker}>
-                <ColorPicker
-                  border
-                  rounded
-                  className={styles.input}
-                  name="color"
-                  value={formData.color || ''}
-                  onChange={handleInputChange}
-                />
-              </div>
+              <ColorPicker
+                className={styles.colorPicker}
+                border
+                rounded
+                name="color"
+                value={formData.color || ''}
+                onChange={handleInputChange}
+              />
             )
           }
         </ToggleButton>

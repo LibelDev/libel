@@ -20,17 +20,20 @@
   }
 
   &.color {
-    .color-picker {
-      @apply flex items-center;
-      @apply ml-4;
+    .toggle-button {
+      @apply w-full;
+    }
 
-      .input {
-        @apply ml-auto;
-      }
+    .color-picker {
+      @apply ml-4;
     }
   }
 
   &.screenshot {
+    .toggle-button {
+      @apply w-full;
+    }
+
     .preview {
       @apply mt-2;
       @apply p-2;

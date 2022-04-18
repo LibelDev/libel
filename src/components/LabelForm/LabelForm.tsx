@@ -196,7 +196,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       </div>
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
-          fullWidth
+          className={styles.toggleButton}
           checked={toggleButtonState.useCustomColor}
           name="useCustomColor"
           disabled={loading}
@@ -205,18 +205,16 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
           {
             toggleButtonState.useCustomColor && (
-              <div className={styles.colorPicker}>
-                <ColorPicker
-                  border
-                  rounded
-                  className={styles.textInput}
-                  disabled={loading}
-                  name="color"
-                  value={formData.color || ''}
-                  error={inputErrors.color}
-                  onChange={handleInputChange}
-                />
-              </div>
+              <ColorPicker
+                className={styles.colorPicker}
+                border
+                rounded
+                disabled={loading}
+                name="color"
+                value={formData.color || ''}
+                error={inputErrors.color}
+                onChange={handleInputChange}
+              />
             )
           }
         </ToggleButton>
@@ -240,7 +238,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           /** add label */
           <div className={classNames(styles.inputField, styles.screenshot)}>
             <ToggleButton
-              fullWidth
+              className={styles.toggleButton}
               checked={toggleButtonState.useScreenshot}
               disabled={loading}
               name="useScreenshot"
