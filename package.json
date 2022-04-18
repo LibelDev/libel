@@ -26,7 +26,7 @@
     "prebuild": "pnpm clean && pnpm type:scss",
     "build": "pnpm prebuild && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
     "prerelease": "cz bump && cz ch && pnpm build && git add . && git commit --amend --no-edit",
-    "type:scss": "tsm src --implementation sass --exportType default",
+    "type:scss": "tsm src/**/*.module.scss --implementation sass --exportType default",
     "type:scss:watch": "pnpm type:scss -- --watch"
   },
   "dependencies": {
