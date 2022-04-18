@@ -8,7 +8,9 @@ import { selectSync } from './store/selectors';
 import store from './store/store';
 import { EventAction, EventCategory } from './types/ga';
 
-let unregister: (() => void) | null = null;
+type TUnregister = (() => void) | null;
+
+let unregister: TUnregister = null;
 
 export const sync = async (auth: gapi.auth2.GoogleAuth) => {
   const signedIn = auth.isSignedIn.get();
