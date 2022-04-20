@@ -8,7 +8,7 @@ import { dev as main } from './webpack.config.main';
 
 const dev: webpack.Configuration = {
   mode: 'development',
-  devtool: 'eval-cheap-source-map',
+  devtool: 'eval-source-map',
   output: {
     path: path.join(process.cwd(), Directory.Build),
   }

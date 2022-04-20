@@ -8,6 +8,7 @@ import main from './webpack.config.main';
 
 const prod: webpack.Configuration = {
   mode: 'production',
+  devtool: 'source-map',
   output: {
     path: path.join(process.cwd(), Directory.Dist)
   }
