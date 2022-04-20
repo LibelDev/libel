@@ -2,10 +2,11 @@
 import produce from 'immer';
 import { dev } from '../../config/config';
 import { displayName } from '../../package.json';
+import type { TActions } from '../actions/lihkg';
 import * as lihkgActions from '../actions/lihkg';
 import { ISource } from '../models/Label';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IUser, NotificationType, TNotification } from '../types/lihkg';
+import { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IState, IUser, NotificationType, TNotification } from '../types/lihkg';
 import { counter } from './counter';
 import { waitForElement } from './dom';
 import { findReduxStore, IReactRootElement } from './redux';
@@ -15,10 +16,6 @@ enum ShareType {
   Reply = 2
 }
 
-/**
- * create a notification object
- * @private
- */
 type TCreateNotification = {
   /**
    * create a local notification object
@@ -56,7 +53,7 @@ export const waitForRightPanelContainer = async () => {
  */
 export const getStore = () => {
   const app = document.querySelector(lihkgSelectors.app);
-  const store = findReduxStore(app as IReactRootElement);
+  const store = findReduxStore<IState, TActions>(app as IReactRootElement);
   return store;
 };
 
@@ -109,6 +106,11 @@ export const getShareID = (source: ISource) => {
   return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };
 
+/**
+ * create a notification object
+ * @private
+ * @see TCreateNotification
+ */
 const createNotification: TCreateNotification = (type, body, duration = 3000) => {
   const { value: id } = notificationIdCount.next();
   const defaultPayload: Partial<ILocalNotifcationPayload> = { title: displayName };

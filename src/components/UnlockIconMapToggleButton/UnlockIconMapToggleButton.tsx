@@ -26,7 +26,7 @@ const UnlockIconMapToggleButton = () => {
     if (isIconMapUnlocked) {
       const state = getState();
       if (!originalIconMap) {
-        originalIconMap = state.app.iconMap as IIconMap;
+        originalIconMap = state.app.iconMap;
       }
       if (!unlockedIconMap) {
         unlockedIconMap = LIHKG.unlockIconMap(originalIconMap);
