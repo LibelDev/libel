@@ -2,7 +2,7 @@ import '../env'; // load the environment variables at the beginning
 import path from 'path';
 import type webpack from 'webpack';
 import merge from 'webpack-merge';
-import { Directory } from './../config';
+import { Directory } from '../config';
 import egg from './webpack.config.egg';
 import main from './webpack.config.main';
 
