@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-import { ActionType } from 'typesafe-actions';
+import type { ActionType } from 'typesafe-actions';
 import * as TEXTS from '../../constants/texts';
 import Subscription, { IBaseRemoteSubscription, ISerializedSubscription } from '../../models/Subscription';
 import { selectSubscriptions } from '../selectors';

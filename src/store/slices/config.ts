@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { persistReducer } from 'redux-persist';
-import { ActionType } from 'typesafe-actions';
+import type { ActionType } from 'typesafe-actions';
 import storage from '../../helpers/storage';
 import Config, { IConfig } from '../../models/Config';
 import type { IBaseSubscription } from '../../models/Subscription';
