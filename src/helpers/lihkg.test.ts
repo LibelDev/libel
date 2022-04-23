@@ -37,7 +37,7 @@ describe('mapBlockedUsersToDataSet', () => {
     expect(users.length).toEqual(blockedUsers.length);
     for (let i = 0; i < users.length; i++) {
       const user = users[i];
-      const blockedUser = blockedUsers[i]
+      const blockedUser = blockedUsers[i];
       const labels = dataSet.data[user]!;
       expect(labels.length).toEqual(1);
       const label = labels[0];
