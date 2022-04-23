@@ -3,7 +3,6 @@ import type { ISerializedDataSet } from '../models/DataSet';
 import type { ISerializedSubscription } from '../models/Subscription';
 import { mergeConfig, mergeDataSet, mergeSubscriptions } from './merge';
 
-
 describe('mergeConfig', () => {
   it('should unlock icon map (do nothing)', () => {
     const configA: ISerializedConfig = {
