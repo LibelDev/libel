@@ -1,14 +1,14 @@
 import type { Action, Store } from '@reduxjs/toolkit';
 // import retry from './retry';
 
-export interface IReactRootElement extends Element {
-  _reactRootContainer: any;
+interface IReactRootElement extends Element {
+  _reactRootContainer?: any;
 }
 
-export const findReduxStore = <S extends unknown, A extends Action> (root: IReactRootElement): Store<S, A> | null => {
+export const findReduxStore = <S extends unknown, A extends Action, E extends IReactRootElement = Element> (root: E): Store<S, A> | null => {
   let base;
   try {
-    base = root._reactRootContainer._internalRoot.current;
+    base = root._reactRootContainer?._internalRoot.current;
   } catch (err) {
     // do nothing
   }

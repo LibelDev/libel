@@ -9,7 +9,7 @@ import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss
 import { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IState, IUser, NotificationType, TNotification } from '../types/lihkg';
 import { counter } from './counter';
 import { waitForElement } from './dom';
-import { findReduxStore, IReactRootElement } from './redux';
+import { findReduxStore } from './redux';
 
 enum ShareType {
   Thread = 1,
@@ -52,8 +52,8 @@ export const waitForRightPanelContainer = async () => {
  * get the original LIHKG redux store
  */
 export const getStore = () => {
-  const app = document.querySelector(lihkgSelectors.app);
-  const store = findReduxStore<IState, TActions>(app as IReactRootElement);
+  const app = document.querySelector(lihkgSelectors.app)!;
+  const store = findReduxStore<IState, TActions>(app);
   return store;
 };
 
