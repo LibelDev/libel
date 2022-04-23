@@ -37,6 +37,17 @@ export module APIv2 {
     items: IThread[];
     me: IMeUser;
   }
+
+  export interface IBlockedUserResponseBody {
+    success: number;
+    server_time: number;
+    response: IBlockedUserResponse;
+  }
+
+  interface IBlockedUserResponse {
+    blocked_user_list: IBlockedUser[];
+    me: IMeUser;
+  }
 }
 
 export interface IPost {
@@ -137,6 +148,16 @@ interface IThreadRemark {
   cover_img?: string;
 }
 
+export interface IBlockedUser extends IUser {
+  blocked_time: number;
+  block_remark: IBlockUserRemark;
+}
+
+interface IBlockUserRemark {
+  nickname?: string;
+  reason: string;
+}
+
 /**
  * LIHKG state type
  * @todo add other properties
@@ -208,15 +229,15 @@ interface IModeSetting {
   imageProxy: boolean;
 }
 
-enum Gender {
+export enum Gender {
   F = 'F',
   M = 'M',
 }
 
-enum LevelName {
-  新手會員 = '新手會員',
-  普通會員 = '普通會員',
-  站長 = '站長',
+export enum LevelName {
+  Newbie = '新手會員',
+  Normal = '普通會員',
+  Admin = '站長',
 }
 
 export interface IUser {

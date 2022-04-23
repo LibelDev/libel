@@ -18,6 +18,9 @@ export const BUTTON_TEXT_LABEL_SOURCE = '來源';
 export const BUTTON_TEXT_LABEL_IMAGE = '相關圖片';
 export const BUTTON_TEXT_SNIPE = '一鍵狙擊';
 
+/* label */
+export const BLOCKED_USER_DEFAULT_LABEL_TEXT = '封鎖會員';
+
 /* label form */
 export const LABEL_FORM_MODAL_TITLE_ADD_LABEL = '新增標籤';
 export const LABEL_FORM_MODAL_TITLE_EDIT_LABEL = '修改標籤';

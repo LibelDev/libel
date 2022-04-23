@@ -9,6 +9,7 @@ specifiers:
   '@fortawesome/react-fontawesome': ^0.1.18
   '@reduxjs/toolkit': ^1.5.1
   '@svgr/webpack': ^6.2.1
+  '@types/chance': ^1.1.3
   '@types/debug': ^4.1.7
   '@types/gapi': ^0.0.41
   '@types/gapi.auth2': ^0.0.55
@@ -27,6 +28,7 @@ specifiers:
   '@types/semver': ^7.3.6
   '@types/tailwindcss': ^3.0.10
   '@types/webpack-env': ^1.16.0
+  chance: ^1.1.8
   classnames: ^2.3.1
   css-loader: ^5.2.0
   cssnano: ^5.1.4
@@ -110,6 +112,7 @@ dependencies:
 
 devDependencies:
   '@svgr/webpack': 6.2.1
+  '@types/chance': 1.1.3
   '@types/debug': 4.1.7
   '@types/gapi': 0.0.41
   '@types/gapi.auth2': 0.0.55
@@ -128,6 +131,7 @@ devDependencies:
   '@types/semver': 7.3.9
   '@types/tailwindcss': 3.0.10
   '@types/webpack-env': 1.16.3
+  chance: 1.1.8
   css-loader: 5.2.7_webpack@5.72.0
   cssnano: 5.1.4_postcss@8.3.11
   dotenv: 10.0.0
@@ -1776,8 +1780,8 @@ packages:
     resolution: {integrity: sha512-nkalE/f1RvRGChwBnEIoBfSEYOXnCRdleKuv6+lePbMDrMZXeDQnqak5XDOeBgrPPyPfAdcCu/B5z+v3VhplGg==}
     dev: true
 
-  /@maxim_mazurok/gapi.client.drive/3.0.20220410:
-    resolution: {integrity: sha512-rVIsk2MAkBxE+tYvQmd0BXJNb6Kq529OT7HWCY8icVv6Hc+vIouLyzhfdjtf91USNPAAFV1epCg5akQfjladBw==}
+  /@maxim_mazurok/gapi.client.drive/3.0.20220417:
+    resolution: {integrity: sha512-UDyqIGhUls+zSgMhSvpFavZxWEEPECXkEs+WExKTWkRKNaa2EMVRLfHs9SQ0rAe9LqwyEsdh3glAgpa/7KAfMQ==}
     dependencies:
       '@types/gapi.client': 1.0.5
     dev: true
@@ -2081,6 +2085,10 @@ packages:
       browserslist: 4.20.2
     dev: true
 
+  /@types/chance/1.1.3:
+    resolution: {integrity: sha512-X6c6ghhe4/sQh4XzcZWSFaTAUOda38GQHmq9BUanYkOE/EO7ZrkazwKmtsj3xzTjkLWmwULE++23g3d3CCWaWw==}
+    dev: true
+
   /@types/connect-history-api-fallback/1.3.5:
     resolution: {integrity: sha512-h8QJa8xSb1WD4fpKBDcATDNGXghFj6/3GRWG6dhmRcu0RX1Ubasur2Uvx5aeEwlf0MwblEC2bMzzMQntxnw/Cw==}
     dependencies:
@@ -2144,7 +2152,7 @@ packages:
   /@types/gapi.client.drive/3.0.13:
     resolution: {integrity: sha512-JFkHqQj9RA8MpvfvwdX8VU0Sbu7FMGqBR9dAmkocekWdD/y5Z/a/A6Y37EEqKW/dT8t7F3RpgUDUPlhp3snAlw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.drive': 3.0.20220410
+      '@maxim_mazurok/gapi.client.drive': 3.0.20220417
     dev: true
 
   /@types/gapi.client/1.0.5:
@@ -3097,6 +3105,10 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    dev: true
+
+  /chance/1.1.8:
+    resolution: {integrity: sha512-v7fi5Hj2VbR6dJEGRWLmJBA83LJMS47pkAbmROFxHWd9qmE1esHRZW8Clf1Fhzr3rjxnNZVCjOEv/ivFxeIMtg==}
     dev: true
 
   /char-regex/1.0.2:
