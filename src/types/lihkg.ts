@@ -1,27 +1,42 @@
-export interface IQuoteListResponseData {
-  success: number;
-  server_time: number;
-  response: IQuoteListResponse;
-}
+export module APIv2 {
+  export interface IQuoteListResponseBody {
+    success: number;
+    server_time: number;
+    response: IQuoteListResponse;
+  }
 
-interface IQuoteListResponse {
-  page: string;
-  item_data: IPost[];
-  thread: IThread;
-  parent_post: IPost;
-  me: IMeUser;
-}
+  interface IQuoteListResponse {
+    page: string;
+    item_data: IPost[];
+    thread: IThread;
+    parent_post: IPost;
+    me: IMeUser;
+  }
 
-export interface IReplyListResponseData {
-  success: number;
-  server_time: number;
-  response: IReplyListResponse;
-}
+  export interface IReplyListResponseBody {
+    success: number;
+    server_time: number;
+    response: IReplyListResponse;
+  }
 
-interface IReplyListResponse extends IThread {
-  page: string;
-  item_data: IPost[];
-  me: IMeUser;
+  interface IReplyListResponse extends IThread {
+    page: string;
+    item_data: IPost[];
+    me: IMeUser;
+  }
+
+  export interface IThreadListResponseBody {
+    success: number;
+    server_time: number;
+    response: IThreadListResponse;
+  }
+
+  interface IThreadListResponse {
+    category: ICategory;
+    is_pagination: boolean;
+    items: IThread[];
+    me: IMeUser;
+  }
 }
 
 export interface IPost {
@@ -51,19 +66,6 @@ export interface IPost {
 interface IPostRemark {
   is_newbie?: boolean;
   is_not_push_post?: boolean;
-}
-
-export interface IThreadListResponseData {
-  success: number;
-  server_time: number;
-  response: IThreadListResponse;
-}
-
-interface IThreadListResponse {
-  category: ICategory;
-  is_pagination: boolean;
-  items: IThread[];
-  me: IMeUser;
 }
 
 export interface IThread {
