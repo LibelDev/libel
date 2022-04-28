@@ -15,7 +15,7 @@ const SettingsModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal {...otherProps} onClose={onClose}>
-      <Modal.Header onClose={onClose}>
+      <Modal.Header>
         {displayName}
       </Modal.Header>
       <Modal.Body compact>

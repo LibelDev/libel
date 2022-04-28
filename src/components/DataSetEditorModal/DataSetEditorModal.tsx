@@ -20,7 +20,7 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal {...otherProps} onClose={onClose}>
-      <Modal.Header onClose={onClose}>
+      <Modal.Header>
         {TEXTS.DATA_SET_EDITOR_MODAL_TITLE}
       </Modal.Header>
       <Modal.Body className={styles.body}>

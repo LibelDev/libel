@@ -8,7 +8,7 @@ import { Context as FocusTrapContext, IContextValue as IFocusTrapContextValue } 
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
-import IDsContext from './IDsContext';
+import { Context as ModalContext } from './hooks/useModal';
 import styles from './Modal.module.scss';
 
 interface IModal {
@@ -27,13 +27,13 @@ interface IProps {
    */
   backdrop?: boolean;
   /**
-   * allow to press escape key to dismiss the modal, default: true
-   */
-  escape?: boolean;
-  /**
    * allow to click on backdrop to dismiss the modal, default: true
    */
   fragile?: boolean;
+  /**
+  * allow to press escape key to dismiss the modal, default: true
+  */
+  escape?: boolean;
   /**
    * close the modal
    */
@@ -53,8 +53,8 @@ const Modal: TModal = (props) => {
     children,
     open = false,
     backdrop = true,
-    escape = true,
     fragile = true,
+    escape = true,
     onClose
   } = props;
 
@@ -66,10 +66,14 @@ const Modal: TModal = (props) => {
   const innerRef = useRef<HTMLDivElement>(null);
 
   const _id = id || useId();
-  const _ids = {
-    title: `${_id}-title`,
-    body: `${_id}-body`
-  };
+
+  const modalContextValue = useMemo(() => ({
+    ids: {
+      title: `${_id}-title`,
+      body: `${_id}-body`
+    },
+    onClose
+  }), [_id, onClose]);
 
   const focusTrapContextValue: IFocusTrapContextValue = useMemo(() => ({
     unpause: () => { setPaused(false); },
@@ -122,7 +126,7 @@ const Modal: TModal = (props) => {
 
   return (
     ReactDOM.createPortal(
-      <IDsContext.Provider value={_ids}>
+      <ModalContext.Provider value={modalContextValue}>
         <FocusTrapContext.Provider value={focusTrapContextValue}>
           <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
             <div
@@ -131,8 +135,8 @@ const Modal: TModal = (props) => {
               className={classNames(className, styles.modal)}
               role="dialog"
               aria-modal
-              aria-labelledby={_ids.title}
-              aria-describedby={_ids.body}
+              aria-labelledby={modalContextValue.ids.title}
+              aria-describedby={modalContextValue.ids.body}
             >
               {
                 backdrop && (
@@ -150,7 +154,7 @@ const Modal: TModal = (props) => {
             </div>
           </FocusTrap>
         </FocusTrapContext.Provider>
-      </IDsContext.Provider>,
+      </ModalContext.Provider>,
       document.body
     )
   );

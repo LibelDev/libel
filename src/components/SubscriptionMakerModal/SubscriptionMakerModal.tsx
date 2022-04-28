@@ -16,7 +16,7 @@ const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal {...otherProps} onClose={onClose}>
-      <Modal.Header onClose={onClose}>
+      <Modal.Header>
         {TEXTS.SUBSCRIPTION_MAKER_MODAL_TITLE}
       </Modal.Header>
       <Modal.Body>

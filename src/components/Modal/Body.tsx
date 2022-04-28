@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import type React from 'react';
-import { useContext } from 'react';
 import styles from './Body.module.scss';
-import IDsContext from './IDsContext';
+import useModal from './hooks/useModal';
 
 interface IProps {
   compact?: boolean;
@@ -14,11 +13,11 @@ type TProps = IProps & TComponentProps;
 
 const Body: React.FunctionComponent<TProps> = (props) => {
   const { className, compact = false, children, ...otherProps } = props;
-  const { body: id } = useContext(IDsContext);
+  const { ids } = useModal();
   return (
     <div
       {...otherProps}
-      id={id}
+      id={ids.body}
       className={
         classNames(
           className,

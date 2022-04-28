@@ -18,7 +18,7 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal {...otherProps} onClose={onClose}>
-      <Modal.Header onClose={onClose}>
+      <Modal.Header>
         {
           label ?
             TEXTS.LABEL_FORM_MODAL_TITLE_EDIT_LABEL :
