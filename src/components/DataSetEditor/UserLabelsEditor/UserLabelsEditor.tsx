@@ -1,12 +1,12 @@
 import classNames from 'classnames';
-import debugFactory from 'debug';
+// import debugFactory from 'debug';
 import type React from 'react';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
-import useLazyRender, { IOptions as IUseLazyRenderOptions } from '../../../hooks/useLazyRender';
+import useLazyRender, { UseLazyRender } from '../../../hooks/useLazyRender';
 import type { ILabel } from '../../../models/Label';
 import ColorPicker from '../../ColorPicker/ColorPicker';
 import Icon from '../../Icon/Icon';
@@ -46,29 +46,29 @@ type TComponentProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 
 
 type TProps = IProps & TComponentProps;
 
-const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
+// const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
 
 const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
   const { className, user, items, autoScrollItemIndex = -1, onChange, onRemove, onScroll } = props;
 
+  /** validation error for each item */
+  const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
+
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   /** lazy rendering */
-  const useLazyRenderOptions: IUseLazyRenderOptions<HTMLDivElement> = useMemo(() => ({
-    onVisibilityChange: (element, visible) => {
-      if (visible) {
-        setStyle({});
-      } else {
-        // occupy the space when invisible
-        const { height } = element.getBoundingClientRect();
-        setStyle({ height });
-      }
+  const handleVisibilityChange: UseLazyRender.VisibilityChangeEventHandler<HTMLDivElement> = useCallback((element, visible) => {
+    if (visible) {
+      setStyle({});
+    } else {
+      // occupy the space when invisible
+      const { height } = element.getBoundingClientRect();
+      setStyle({ height });
     }
-  }), []);
-  const [ref, visible] = useLazyRender(useLazyRenderOptions);
-
-  /** validation error for each item */
-  const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
+  }, []);
+  const [ref, visible] = useLazyRender({
+    onVisibilityChange: handleVisibilityChange
+  });
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.currentTarget;

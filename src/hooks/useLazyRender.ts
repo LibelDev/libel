@@ -1,20 +1,23 @@
-import { RefObject, useLayoutEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-/**
- * `useLazyRender` hook options
- * @extends IntersectionObserverInit
- */
-export interface IOptions<T> extends IntersectionObserverInit {
-  onVisibilityChange?: (element: T, visible: boolean) => void;
+export namespace UseLazyRender {
+  /**
+   * `useLazyRender` hook options
+   * @extends IntersectionObserverInit
+   */
+  export interface Options<T> extends IntersectionObserverInit {
+    onVisibilityChange?: VisibilityChangeEventHandler<T>;
+  }
+  export type VisibilityChangeEventHandler<T> = (element: T, visible: boolean) => void;
+  export type Result<T> = [React.RefObject<T>, boolean];
 }
 
-type TUseLazyRenderResult<T> = [RefObject<T>, boolean];
+const useLazyRender = <T extends HTMLElement> (options: UseLazyRender.Options<T> = {}): UseLazyRender.Result<T> => {
+  const { root, rootMargin, threshold, onVisibilityChange } = options;
 
-const useLazyRender = <T extends HTMLElement> (options: IOptions<T> = {}): TUseLazyRenderResult<T> => {
   const ref = useRef<T>(null);
   const [visible, setVisible] = useState(false);
-
-  const { root, rootMargin, threshold, onVisibilityChange } = options;
 
   useLayoutEffect(() => {
     if (ref.current) {
@@ -35,7 +38,7 @@ const useLazyRender = <T extends HTMLElement> (options: IOptions<T> = {}): TUseL
         observer.disconnect();
       };
     }
-  }, [root, rootMargin, threshold, ref]);
+  }, [root, rootMargin, threshold, onVisibilityChange]);
 
   return [ref, visible];
 };
