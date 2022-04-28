@@ -3,7 +3,7 @@ import type React from 'react';
 import { useCallback, useState } from 'react';
 import * as TEXTS from '../../../constants/texts';
 import { download } from '../../../helpers/file';
-import useSettingsModalFocusTrap from '../../../hooks/useSettingsModalFocusTrap';
+import useFocusTrap from '../../../hooks/useFocusTrap';
 import { selectPersonal } from '../../../store/selectors';
 import { useTypedSelector } from '../../../store/store';
 import type { IProps as ISubscriptionMakerProps } from '../../SubscriptionMaker/SubscriptionMaker';
@@ -15,22 +15,22 @@ import SettingOptionButton from '../SettingOptionButton/SettingOptionButton';
 const MakeSubscriptionButton: React.FunctionComponent = () => {
   const personal = useTypedSelector(selectPersonal);
   const [open, setOpen] = useState(false);
-  const settingsModalFocusTrap = useSettingsModalFocusTrap();
+  const focusTrap = useFocusTrap();
 
   const handleClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
     event.preventDefault();
-    settingsModalFocusTrap?.pause();
+    focusTrap?.pause();
     window.requestAnimationFrame(() => {
       setOpen(true);
     });
-  }, [settingsModalFocusTrap]);
+  }, [focusTrap]);
 
   const handleClose = useCallback(() => {
-    settingsModalFocusTrap?.unpause();
+    focusTrap?.unpause();
     window.requestAnimationFrame(() => {
       setOpen(false);
     });
-  }, [settingsModalFocusTrap]);
+  }, [focusTrap]);
 
   const handleSubmit: ISubscriptionMakerProps['onSubmit'] = useCallback((subscription) => {
     const filename = `${subscription.name}.json`;

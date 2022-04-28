@@ -4,6 +4,7 @@ import type React from 'react';
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
+import { Context as FocusTrapContext, IContextValue as IFocusTrapContextValue } from '../../hooks/useFocusTrap';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
@@ -34,10 +35,6 @@ interface IProps {
    */
   fragile?: boolean;
   /**
-   * indicate the focus trap paused state
-   */
-  paused?: boolean;
-  /**
    * close the modal
    */
   onClose: () => void;
@@ -58,11 +55,11 @@ const Modal: TModal = (props) => {
     backdrop = true,
     escape = true,
     fragile = true,
-    paused,
     onClose
   } = props;
 
   const [initialFocus, setInitialFocus] = useState<HTMLElement>();
+  const [paused, setPaused] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -73,6 +70,11 @@ const Modal: TModal = (props) => {
     title: `${_id}-title`,
     body: `${_id}-body`
   };
+
+  const focusTrapContextValue: IFocusTrapContextValue = useMemo(() => ({
+    unpause: () => { setPaused(false); },
+    pause: () => { setPaused(true); }
+  }), []);
 
   const focusTrapOptions: FocusTrap.Props['focusTrapOptions'] = useMemo(() => ({
     escapeDeactivates: escape,
@@ -121,31 +123,33 @@ const Modal: TModal = (props) => {
   return (
     ReactDOM.createPortal(
       <IDsContext.Provider value={_ids}>
-        <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
-          <div
-            ref={ref}
-            id={_id}
-            className={classNames(className, styles.modal)}
-            role="dialog"
-            aria-modal
-            aria-labelledby={_ids.title}
-            aria-describedby={_ids.body}
-          >
-            {
-              backdrop && (
-                <div
-                  ref={backdropRef}
-                  className={styles.backdrop}
-                  onClick={handleBackdropClick}
-                  aria-hidden
-                />
-              )
-            }
-            <div ref={innerRef} className={styles.inner}>
-              {children}
+        <FocusTrapContext.Provider value={focusTrapContextValue}>
+          <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
+            <div
+              ref={ref}
+              id={_id}
+              className={classNames(className, styles.modal)}
+              role="dialog"
+              aria-modal
+              aria-labelledby={_ids.title}
+              aria-describedby={_ids.body}
+            >
+              {
+                backdrop && (
+                  <div
+                    ref={backdropRef}
+                    className={styles.backdrop}
+                    onClick={handleBackdropClick}
+                    aria-hidden
+                  />
+                )
+              }
+              <div ref={innerRef} className={styles.inner}>
+                {children}
+              </div>
             </div>
-          </div>
-        </FocusTrap>
+          </FocusTrap>
+        </FocusTrapContext.Provider>
       </IDsContext.Provider>,
       document.body
     )
