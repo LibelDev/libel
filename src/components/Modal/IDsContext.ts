@@ -1,11 +1,11 @@
-import React from 'react';
+import { createContext } from 'react';
 
 interface IContext {
   title: string;
   body: string;
 }
 
-const Context = React.createContext<IContext>({
+const Context = createContext<IContext>({
   title: '',
   body: ''
 });

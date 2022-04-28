@@ -1,5 +1,6 @@
 import debugFactory from 'debug';
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import * as TEXTS from '../../../constants/texts';
 import * as LIHKG from '../../../helpers/lihkg';
 import useSettingsModalFocusTrap from '../../../hooks/useSettingsModalFocusTrap';
@@ -69,7 +70,7 @@ const EditDataSetButton: React.FunctionComponent = () => {
   }, [settingsModalFocusTrap]);
 
   return (
-    <React.Fragment>
+    <>
       <SettingOptionButton onClick={handleClick}>
         {TEXTS.BUTTON_TEXT_EDIT_DATA_SET}
       </SettingOptionButton>
@@ -82,7 +83,7 @@ const EditDataSetButton: React.FunctionComponent = () => {
         fragile={false}
         onClose={handleClose}
       />
-    </React.Fragment>
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import joi from 'joi';
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
 import { SCREENSHOT_WIDTH } from '../../constants/label';

@@ -1,6 +1,7 @@
 import { faTag } from '@fortawesome/free-solid-svg-icons/faTag';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import { uploadImage } from '../../apis/nacx';
 import * as ATTRIBUTES from '../../constants/attributes';
 import * as TEXTS from '../../constants/texts';
@@ -84,7 +85,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   }, [user, post, handleLabelFormModalClose]);
 
   return (
-    <React.Fragment>
+    <>
       <IconButton
         className={styles.addLabelButton}
         icon={<FontAwesomeIcon icon={faTag} />}
@@ -108,7 +109,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
           />
         )
       }
-    </React.Fragment>
+    </>
   );
 };
 

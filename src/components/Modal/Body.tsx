@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useContext } from 'react';
+import type React from 'react';
+import { useContext } from 'react';
 import styles from './Body.module.scss';
 import IDsContext from './IDsContext';
 

@@ -1,6 +1,7 @@
 import classNames from 'classNames';
 import FocusTrap from 'focus-trap-react';
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
 import Body from './Body';

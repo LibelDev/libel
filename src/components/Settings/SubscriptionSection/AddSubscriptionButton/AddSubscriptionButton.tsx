@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import * as gtag from '../../../../helpers/gtag';
 import { prompt } from '../../../../helpers/subscription';

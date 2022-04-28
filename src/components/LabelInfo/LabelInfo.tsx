@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { useMemo } from 'react';
 import { getShareURL } from '../../helpers/label';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';

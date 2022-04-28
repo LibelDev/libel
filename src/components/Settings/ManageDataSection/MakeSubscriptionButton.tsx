@@ -1,5 +1,6 @@
 // import debugFactory from 'debug';
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import * as TEXTS from '../../../constants/texts';
 import { download } from '../../../helpers/file';
 import useSettingsModalFocusTrap from '../../../hooks/useSettingsModalFocusTrap';
@@ -39,7 +40,7 @@ const MakeSubscriptionButton: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <SettingOptionButton onClick={handleClick}>
         {TEXTS.BUTTON_TEXT_MAKE_SUBSCRIPTION}
       </SettingOptionButton>
@@ -51,7 +52,7 @@ const MakeSubscriptionButton: React.FunctionComponent = () => {
         fragile={false}
         onClose={handleClose}
       />
-    </React.Fragment>
+    </>
   );
 };
 

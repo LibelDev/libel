@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import { displayName } from '../../../../package.json';
 import * as TEXTS from '../../../constants/texts';
 import * as cloud from '../../../helpers/cloud';
@@ -64,7 +65,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <small className={lihkgCssClasses.settingSectionTitle}>
         {TEXTS.SETTINGS_TITLE_CLEAR_DATA}
       </small>
@@ -95,7 +96,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
           )
         }
       </ul>
-    </React.Fragment>
+    </>
   );
 };
 

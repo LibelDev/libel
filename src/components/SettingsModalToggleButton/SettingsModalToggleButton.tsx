@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import IconButton from '../IconButton/IconButton';
@@ -21,7 +22,7 @@ const SettingsModalToggleButton: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <IconButton
         icon={icon}
         onClick={handleClick}
@@ -33,7 +34,7 @@ const SettingsModalToggleButton: React.FunctionComponent = () => {
         open={open}
         onClose={handleClose}
       />
-    </React.Fragment>
+    </>
   );
 };
 

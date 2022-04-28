@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
@@ -47,7 +48,7 @@ type TProps = IProps & TComponentProps;
 
 const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
 
-const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => {
+const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
   const { className, user, items, autoScrollItemIndex = -1, onChange, onRemove, onScroll } = props;
 
   const [style, setStyle] = useState<React.CSSProperties>({});
@@ -115,7 +116,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
     <div ref={ref} className={classNames(className, styles.userLabelsEditor)} style={style}>
       {
         visible ? (
-          <React.Fragment>
+          <>
             <div className={styles.user}>
               <Icon icon={IconName.Account} />
               <a className={styles.link} href={userProfileURL} target="_blank">
@@ -181,7 +182,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                 ))
               }
             </ol>
-          </React.Fragment>
+          </>
         ) : (
           <Loading />
         )

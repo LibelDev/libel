@@ -1,5 +1,6 @@
 // import debugFactory from 'debug';
-import React, { useId } from 'react';
+import type React from 'react';
+import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
 import DataSetEditor, { TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';

@@ -1,6 +1,7 @@
 // import debugFactory from 'debug';
 import { render } from 'mustache';
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import * as TEXTS from '../../../constants/texts';
 import { _import } from '../../../helpers/file';
 import * as gtag from '../../../helpers/gtag';

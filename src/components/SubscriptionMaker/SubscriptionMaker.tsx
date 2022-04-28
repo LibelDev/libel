@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import joi from 'joi';
-import React, { useCallback, useEffect, useId, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';

@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import { Key } from 'ts-key-enum';
 import useFocus from '../../../hooks/useFocus';
 import { IconName } from '../../Icon/types';

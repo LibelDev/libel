@@ -1,4 +1,5 @@
-import React, { useId } from 'react';
+import type React from 'react';
+import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';

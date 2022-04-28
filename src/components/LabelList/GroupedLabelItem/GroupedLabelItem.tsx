@@ -1,5 +1,6 @@
 import { autoUpdate, flip, useFloating } from '@floating-ui/react-dom';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import type { TLabelsGroupItem } from '../../../helpers/labelList';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
 import LabelItem from '../../LabelItem/LabelItem';
@@ -61,7 +62,7 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
   }, [refs.reference, refs.floating, update]);
 
   return (
-    <React.Fragment>
+    <>
       <LabelItem ref={reference} className={styles.labelItem} onMouseEnter={update}>
         {text}
         <Badge className={styles.badge} quantity={items.length} />
@@ -72,7 +73,7 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
         style={labelInfoListStyle}
         items={items}
       />
-    </React.Fragment>
+    </>
   );
 };
 

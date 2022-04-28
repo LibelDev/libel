@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { useMemo } from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import type { ISubscription } from '../../../../models/Subscription';
 import Icon from '../../../Icon/Icon';

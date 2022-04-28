@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import produce from 'immer';
-import React, { useCallback, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
@@ -125,46 +126,44 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       }
       onSubmit={handleSubmit}
     >
-      <React.Fragment>
-        <Filter
-          autoFocus
-          value={keyword}
-          placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
-          onChange={handleFilterChange}
-        />
-        <div className={styles.filterResult}>
-          {
-            filteredLabelsGroups.length > 0 ? (
-              <ol className={styles.labelsGroupList}>
-                {
-                  filteredLabelsGroups.map(({ user, items }, index) => (
-                    <li key={user}>
-                      <UserLabelsEditor
-                        className={styles.userLabelsEditor}
-                        user={user}
-                        items={items}
-                        autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
-                        onChange={handleUserLabelsChange}
-                        onRemove={handleUserLabelsRemove}
-                        onScroll={handleUserLabelsScroll}
-                      />
-                    </li>
-                  ))
-                }
-              </ol>
-            ) : (
-              TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
-            )
-          }
-        </div>
+      <Filter
+        autoFocus
+        value={keyword}
+        placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
+        onChange={handleFilterChange}
+      />
+      <div className={styles.filterResult}>
         {
-          !!error && (
-            <ErrorMessage className={styles.error}>
-              {error}
-            </ErrorMessage>
+          filteredLabelsGroups.length > 0 ? (
+            <ol className={styles.labelsGroupList}>
+              {
+                filteredLabelsGroups.map(({ user, items }, index) => (
+                  <li key={user}>
+                    <UserLabelsEditor
+                      className={styles.userLabelsEditor}
+                      user={user}
+                      items={items}
+                      autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
+                      onChange={handleUserLabelsChange}
+                      onRemove={handleUserLabelsRemove}
+                      onScroll={handleUserLabelsScroll}
+                    />
+                  </li>
+                ))
+              }
+            </ol>
+          ) : (
+            TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
           )
         }
-      </React.Fragment>
+      </div>
+      {
+        !!error && (
+          <ErrorMessage className={styles.error}>
+            {error}
+          </ErrorMessage>
+        )
+      }
     </form>
   );
 };
