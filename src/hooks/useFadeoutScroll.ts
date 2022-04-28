@@ -2,14 +2,19 @@
 import { MutableRefObject, useMemo, useRef } from 'react';
 import { useScroll } from 'react-use';
 
-type TUseScrollFadeResult<T> = [
-  MutableRefObject<T | null>,
-  React.CSSProperties
-];
+module UseFadeoutScroll {
+  /**
+   * `useFadeoutScroll` hook result
+   */
+  export type TResult<T> = [
+    MutableRefObject<T | null>,
+    React.CSSProperties
+  ];
+}
 
 // const debug = debugFactory('libel:hook:useFadeoutScroll');
 
-const useFadeoutScroll = <T extends HTMLElement> (fadingRate = 1): TUseScrollFadeResult<T> => {
+const useFadeoutScroll = <T extends HTMLElement> (fadingRate = 1): UseFadeoutScroll.TResult<T> => {
   const ref = useRef<T | null>(null);
   const { y } = useScroll(ref);
   const style = useMemo<React.CSSProperties>(() => {

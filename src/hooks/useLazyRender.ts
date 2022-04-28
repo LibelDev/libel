@@ -1,19 +1,23 @@
 import type React from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
 
-export namespace UseLazyRender {
+export module UseLazyRender {
   /**
    * `useLazyRender` hook options
    * @extends IntersectionObserverInit
    */
-  export interface Options<T> extends IntersectionObserverInit {
-    onVisibilityChange?: VisibilityChangeEventHandler<T>;
+  export interface IOptions<T> extends IntersectionObserverInit {
+    onVisibilityChange?: TVisibilityChangeEventHandler<T>;
   }
-  export type VisibilityChangeEventHandler<T> = (element: T, visible: boolean) => void;
-  export type Result<T> = [React.RefObject<T>, boolean];
+  /**
+   * `useLazyRender` hook result
+   */
+  export type TResult<T> = [React.RefObject<T>, boolean];
+  /* event handlers */
+  export type TVisibilityChangeEventHandler<T> = (element: T, visible: boolean) => void;
 }
 
-const useLazyRender = <T extends HTMLElement> (options: UseLazyRender.Options<T> = {}): UseLazyRender.Result<T> => {
+const useLazyRender = <T extends HTMLElement> (options: UseLazyRender.IOptions<T> = {}): UseLazyRender.TResult<T> => {
   const { root, rootMargin, threshold, onVisibilityChange } = options;
 
   const ref = useRef<T>(null);

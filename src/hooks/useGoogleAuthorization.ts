@@ -5,15 +5,20 @@ import * as gtag from '../helpers/gtag';
 import * as LIHKG from '../helpers/lihkg';
 import { EventAction, EventCategory } from '../types/ga';
 
-type TState = [
-  gapi.auth2.GoogleAuth | undefined,
-  gapi.auth2.GoogleUser | undefined,
-  (options?: gapi.auth2.SigninOptions | gapi.auth2.SigninOptionsBuilder) => Promise<gapi.auth2.GoogleUser | undefined>,
-  () => void,
-  boolean
-];
+module UseGoogleAuthorization {
+  /**
+   * `useGoogleAuthorization` hook result
+   */
+  export type TResult = [
+    gapi.auth2.GoogleAuth | undefined,
+    gapi.auth2.GoogleUser | undefined,
+    (options?: gapi.auth2.SigninOptions | gapi.auth2.SigninOptionsBuilder) => Promise<gapi.auth2.GoogleUser | undefined>,
+    () => void,
+    boolean
+  ];
+}
 
-const useGoogleAuthorization = (): TState => {
+const useGoogleAuthorization = (): UseGoogleAuthorization.TResult => {
   const [auth, setAuth] = useState<gapi.auth2.GoogleAuth>();
   const [user, setUser] = useState<gapi.auth2.GoogleUser>();
   const [signedIn, setSignedIn] = useState(false);

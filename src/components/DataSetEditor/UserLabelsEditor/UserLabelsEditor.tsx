@@ -57,7 +57,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   /** lazy rendering */
-  const handleVisibilityChange: UseLazyRender.VisibilityChangeEventHandler<HTMLDivElement> = useCallback((element, visible) => {
+  const handleVisibilityChange: UseLazyRender.TVisibilityChangeEventHandler<HTMLDivElement> = useCallback((element, visible) => {
     if (visible) {
       setStyle({});
     } else {
