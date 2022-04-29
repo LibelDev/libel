@@ -1,10 +1,10 @@
-import Custom, { ICustom, ISerializedCustom } from './Custom';
+import DataSet, { IDataSet, ISerializedDataSet } from './DataSet';
 
-export interface ISerializedPersonal extends ISerializedCustom { }
+export interface ISerializedPersonal extends ISerializedDataSet { }
 
-export interface IPersonal extends ICustom { }
+export interface IPersonal extends IDataSet { }
 
-class Personal extends Custom implements IPersonal {
+class Personal extends DataSet implements IPersonal {
   static factory<T extends Personal> () {
     return super.factory<T>();
   }
