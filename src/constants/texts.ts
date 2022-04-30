@@ -127,6 +127,11 @@ export const CLOUD_SYNC_MESSAGE_SYNC_IN_PROGESS = '正在進行雲端資料同�
 export const CLOUD_SYNC_MESSAGE_SYNC_SUCCESS = '雲端資料同步成功';
 export const CLOUD_SYNC_MESSAGE_SYNC_FAILED = '雲端資料同步發生錯誤，請查看設定了解詳情。';
 
+/* convert blocked users */
+export const BUTTON_TEXT_CONVERT_BLOCKED_USERS = '將封鎖用戶轉換成個人標籤記錄';
+export const CONVERT_BLOCKED_USERS_ERROR_FAILED_TO_FETCH_BLOCKED_USERS = '無法取得封鎖用戶資料，請重新嘗試。';
+export const CONVERT_BLOCKED_USERS_ERROR_GENERIC_ERROR = '轉換失敗，請重新嘗試。';
+
 /* announcement */
 export const BUTTON_TEXT_CLOSE_ANNOUNCEMENT = '關閉公告';
 export const ANNOUNCEMENT_LABEL_CHANGE_LOG = '更新內容';
