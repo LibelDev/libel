@@ -36,7 +36,7 @@
   @apply box-content;
   @apply overflow-y-auto;
   /** just above the YouTube preview */
-  z-index: 3;
+  z-index: $lihkg-youtube-preview-z-index + 1;
 
   &:hover {
     @include visible();
