@@ -1,6 +1,6 @@
 import { autoUpdate, flip, useFloating } from '@floating-ui/react-dom';
 import type React from 'react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import type { TLabelsGroupItem } from '../../../helpers/labelList';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
 import LabelItem from '../../LabelItem/LabelItem';
@@ -34,12 +34,13 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
     );
   }
 
-  const [labelListInfoRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>(0.3);
-  const _floatingConfig = useMemo(() => ({
+  const { x, y, reference, floating, strategy, update, refs } = useFloating({
     middleware: [flip()],
-    ...floatingConfig,
-  }), [floatingConfig]);
-  const { x, y, reference, floating, strategy, update, refs } = useFloating(_floatingConfig);
+    placement: 'bottom-start',
+    ...floatingConfig
+  });
+
+  const [labelInfoListRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>(0.3);
 
   const labelInfoListStyle: React.CSSProperties = useMemo(() => ({
     ...fadeoutScrollStyle,
@@ -48,9 +49,8 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
     left: x ?? ''
   }), [strategy, x, y, fadeoutScrollStyle]);
 
-  const updateLabelInfoListRef: React.RefCallback<HTMLUListElement> = useCallback((element: HTMLUListElement) => {
-    labelListInfoRef.current = element;
-    floating(element);
+  useEffect(() => {
+    floating(labelInfoListRef.current);
   }, [floating]);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
       <LabelInfoList
-        ref={updateLabelInfoListRef}
+        ref={labelInfoListRef}
         className={styles.labelInfoList}
         style={labelInfoListStyle}
         items={items}

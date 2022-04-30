@@ -1,4 +1,4 @@
-import { useFloating } from '@floating-ui/react-dom';
+import type { useFloating } from '@floating-ui/react-dom';
 import debugFactory from 'debug';
 import type React from 'react';
 import { createRoot, Root } from 'react-dom/client';
@@ -278,7 +278,7 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
     if (modelContentInner) {
       const container = document.createElement('div');
       modelContentInner.appendChild(container);
-      const floatingConfig: TFloatingConfig = { strategy: 'fixed', placement: 'bottom-start' };
+      const floatingConfig: TFloatingConfig = { strategy: 'fixed' };
       renderLabelList(user, floatingConfig, store, persistor, container);
     }
   }
@@ -338,7 +338,7 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
       _handleUnmountableMutation(replyItemInnerBody, labelListMutationCacheSymbol, (reference) => {
         const container = document.createElement('div');
         reference.insertAdjacentElement('afterbegin', container);
-        const floatingConfig: TFloatingConfig = { strategy: 'absolute', placement: 'bottom-start' };
+        const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
         const root = renderLabelList(user, floatingConfig, store, persistor, container);
         return { container, root };
       });
