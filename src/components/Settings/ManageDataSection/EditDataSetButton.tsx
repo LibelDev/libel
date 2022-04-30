@@ -24,10 +24,10 @@ const EditDataSetButton: React.FunctionComponent = () => {
     event.preventDefault();
     const users = Object.keys(personal.data);
     if (users.length > 0) {
+      setDirty(false);
       focusTrap?.pause();
       window.requestAnimationFrame(() => {
         setOpen(true);
-        setDirty(false);
       });
     } else {
       const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET);
