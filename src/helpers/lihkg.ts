@@ -5,8 +5,8 @@ import { displayName } from '../../package.json';
 import type { TActions } from '../actions/lihkg';
 import * as lihkgActions from '../actions/lihkg';
 import * as TEXTS from '../constants/texts';
+import DataSet from '../models/DataSet';
 import Label, { ISource } from '../models/Label';
-import Personal from '../models/Personal';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
 import { IBlockedUser, IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IState, IUser, NotificationType, TNotification } from '../types/lihkg';
 import { counter } from './counter';
@@ -161,7 +161,7 @@ export const removeNotification = (id: number) => {
  * @param {IBlockedUser[]} blockedUsers the blocked user list from LIHKG
  */
 export const mapBlockedUsersToDataSet = (blockedUsers: IBlockedUser[]) => {
-  const dataSet = Personal.factory();
+  const dataSet = DataSet.factory();
   const { data } = dataSet;
   for (const blockedUser of blockedUsers) {
     const { user_id, blocked_time, block_remark } = blockedUser;
