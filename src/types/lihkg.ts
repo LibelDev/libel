@@ -1,7 +1,10 @@
 export module APIv2 {
-  export interface IQuoteListResponseBody {
+  interface IBaseResponseBody {
     success: number;
     server_time: number;
+  }
+
+  export interface IQuoteListResponseBody extends IBaseResponseBody {
     response: IQuoteListResponse;
   }
 
@@ -13,9 +16,7 @@ export module APIv2 {
     me: IMeUser;
   }
 
-  export interface IReplyListResponseBody {
-    success: number;
-    server_time: number;
+  export interface IReplyListResponseBody extends IBaseResponseBody {
     response: IReplyListResponse;
   }
 
@@ -25,9 +26,7 @@ export module APIv2 {
     me: IMeUser;
   }
 
-  export interface IThreadListResponseBody {
-    success: number;
-    server_time: number;
+  export interface IThreadListResponseBody extends IBaseResponseBody {
     response: IThreadListResponse;
   }
 
@@ -38,15 +37,18 @@ export module APIv2 {
     me: IMeUser;
   }
 
-  export interface IBlockedUserResponseBody {
-    success: number;
-    server_time: number;
+  export interface IBlockedUserResponseBody extends IBaseResponseBody {
     response: IBlockedUserResponse;
   }
 
   interface IBlockedUserResponse {
     blocked_user_list: IBlockedUser[];
     me: IMeUser;
+  }
+
+  export interface IErrorResponseBody extends IBaseResponseBody {
+    error_code: number;
+    error_message: string;
   }
 }
 
