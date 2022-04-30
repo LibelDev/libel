@@ -1,4 +1,5 @@
 .base-button {
+  @apply flex items-center justify-center;
   @apply cursor-pointer;
   transition: opacity 0.2s ease-out;
   will-change: opacity;
@@ -6,5 +7,10 @@
   &:disabled,
   &[disabled] {
     @apply cursor-not-allowed;
+    @apply opacity-20;
+  }
+
+  .loading-spinner {
+    @apply ml-2;
   }
 }

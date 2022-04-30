@@ -25,28 +25,28 @@ export type TProps = IProps & (
 
 const BaseButton: React.FunctionComponent<TProps> = (props) => {
   const {
+    as: Component = 'button',
     className,
-    children,
     disabled,
     loading,
-    as: Component = 'button',
+    children,
     ...otherProps
   } = props;
+
   const _props = {
     ...otherProps,
     className: classNames(className, styles.baseButton),
     disabled: disabled || loading
   };
-  const _children = (
-    loading ? (
-      <LoadingSpinner />
-    ) : (
-      children
-    )
-  );
+
   return (
     <Component {..._props as TAnchorComponentProps & TButtonComponentProps}>
-      {_children}
+      {children}
+      {
+        loading && (
+          <LoadingSpinner className={styles.loadingSpinner} />
+        )
+      }
     </Component>
   );
 };

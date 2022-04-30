@@ -1,40 +1,38 @@
 import classNames from 'classnames';
 import type React from 'react';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
-import styles from './SettingOptionButton.module.scss';
+import Button, { TProps as TButtonProps } from '../../Button/Button';
 
 export enum Variant {
   Warning = 'settingOptionButtonWarn'
 }
 
 interface IProps {
-  disabled?: boolean;
   variant?: Variant;
 }
 
 type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
 
-type TProps = IProps & TComponentProps;
+type TProps = IProps & TButtonProps & TComponentProps;
 
 const SettingOptionButton: React.FunctionComponent<TProps> = (props) => {
-  const { disabled, variant, className, onClick, ...otherProps } = props;
+  const { disabled, loading, variant, className, onClick, ...otherProps } = props;
   return (
-    <a
+    <Button
       {...otherProps}
+      as="a"
       href="#"
       role="button"
       className={
         classNames(
           className,
           lihkgCssClasses.settingOptionButton,
-          variant && lihkgCssClasses[variant],
-          styles.settingOptionButton,
-          {
-            [styles.disabled]: disabled
-          }
+          variant && lihkgCssClasses[variant]
         )
       }
-      onClick={!disabled ? onClick : undefined}
+      disabled={disabled}
+      loading={loading}
+      onClick={(!disabled && !loading) ? onClick : undefined}
     />
   );
 };
