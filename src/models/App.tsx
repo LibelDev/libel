@@ -23,8 +23,8 @@ class App {
     this.persistor = persistor;
   }
 
-  async start () {
-    this.bootstrap();
+  async bootstrap () {
+    this.observe();
     this.bindEvents();
     await this.checkUpdate();
     await this.checkAnnouncements();
@@ -36,10 +36,10 @@ class App {
   }
 
   /**
-   * bootstrap the app
+   * observer mutations
    * @private
    */
-  private bootstrap () {
+  private observe () {
     const { store, persistor } = this;
 
     const observer = new MutationObserver((mutations) => {
