@@ -9,9 +9,14 @@ interface IProps {
   icon: IconName | JSX.Element;
 }
 
-export type TProps = IProps & TButtonProps;
+type TComponentProps<T extends React.ElementType> = TComponentPropsWithoutRef<T, IProps>;
 
-const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
+export type TProps<T extends React.ElementType> = IProps & TComponentProps<T> & TButtonProps<T>;
+
+/**
+ * @extends Button
+ */
+function BaseIconButton<T extends React.ElementType> (props: TProps<T>) {
   const { className, children, icon, ...otherProps } = props;
   return (
     <Button
@@ -32,7 +37,7 @@ const BaseIconButton: React.FunctionComponent<TProps> = (props) => {
       }
     </Button>
   );
-};
+}
 
 BaseIconButton.displayName = 'BaseIconButton';
 

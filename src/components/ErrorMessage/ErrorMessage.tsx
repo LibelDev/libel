@@ -4,19 +4,21 @@ import IconMessage, { TProps as TIconMessageProps } from '../IconMessage/IconMes
 
 interface IProps { }
 
-type TProps = IProps & Omit<TIconMessageProps, 'icon'>;
+type TComponentProps<T extends React.ElementType> = TComponentPropsWithoutRefWithAs<T, IProps>;
+
+type TProps<T extends React.ElementType> = IProps & TComponentProps<T> & Omit<TIconMessageProps<T>, 'icon'>;
 
 /**
  * @extends IconMessage
  */
-const ErrorMessage: React.FunctionComponent<TProps> = (props) => {
+function ErrorMessage<T extends React.ElementType> (props: TProps<T>) {
   return (
     <IconMessage
       {...props}
       icon={IconName.CommentAlert}
     />
   );
-};
+}
 
 ErrorMessage.displayName = 'ErrorMessage';
 

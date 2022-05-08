@@ -11,10 +11,13 @@ interface IProps {
   variant?: Variant;
 }
 
-type TComponentProps = React.ComponentPropsWithoutRef<'a'>;
+type TComponentProps = TComponentPropsWithoutRef<'a', IProps>;
 
-type TProps = IProps & TButtonProps & TComponentProps;
+type TProps = IProps & TComponentProps & Omit<TButtonProps<'a'>, 'as'>;
 
+/**
+ * @extends Button
+ */
 const SettingOptionButton: React.FunctionComponent<TProps> = (props) => {
   const { disabled, loading, variant, className, onClick, ...otherProps } = props;
   return (
