@@ -1,6 +1,6 @@
 import { autoUpdate, flip, useFloating } from '@floating-ui/react-dom';
 import type React from 'react';
-import { useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import type { TLabelsGroupItem } from '../../../helpers/labelList';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
 import LabelItem from '../../LabelItem/LabelItem';
@@ -17,7 +17,7 @@ export interface IProps {
 
 type TProps = IProps;
 
-const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
+const GroupedLabelItem: React.FunctionComponent<TProps> = memo((props) => {
   const { text, items, floatingConfig } = props;
 
   /**
@@ -75,7 +75,7 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
       />
     </>
   );
-};
+});
 
 GroupedLabelItem.displayName = 'GroupedLabelItem';
 
