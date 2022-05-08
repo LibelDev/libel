@@ -6,7 +6,7 @@ import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
-import useLazyRender, { UseLazyRender } from '../../../hooks/useLazyRender';
+import useVisibility, { UseVisibility } from '../../../hooks/useVisibility';
 import type { ILabel } from '../../../models/Label';
 import ColorPicker from '../../ColorPicker/ColorPicker';
 import Icon from '../../Icon/Icon';
@@ -51,13 +51,15 @@ type TProps = IProps & TComponentProps;
 const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
   const { className, user, items, autoScrollItemIndex = -1, onChange, onRemove, onScroll } = props;
 
+  const userProfileURL = `/profile/${user}`;
+
   /** validation error for each item */
   const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
 
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   /** lazy rendering */
-  const handleVisibilityChange: UseLazyRender.TVisibilityChangeEventHandler<HTMLDivElement> = useCallback((element, visible) => {
+  const handleBeforeVisibilityChange: UseVisibility.TBeforeChangeEventHandler<HTMLDivElement> = useCallback((element, visible) => {
     if (visible) {
       setStyle({});
     } else {
@@ -66,9 +68,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
       setStyle({ height });
     }
   }, []);
-  const [ref, visible] = useLazyRender({
-    onVisibilityChange: handleVisibilityChange
-  });
+  const [ref, visible] = useVisibility({ beforeChange: handleBeforeVisibilityChange });
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.currentTarget;
@@ -92,8 +92,6 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
       event.preventDefault();
     }
   }, []);
-
-  const userProfileURL = `/profile/${user}`;
 
   /** auto scroll to the item  */
   useEffect(() => {

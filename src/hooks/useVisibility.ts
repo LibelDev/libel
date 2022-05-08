@@ -1,24 +1,24 @@
 import type React from 'react';
 import { useLayoutEffect, useRef, useState } from 'react';
 
-export module UseLazyRender {
+export module UseVisibility {
   /**
-   * `useLazyRender` hook options
+   * `useVisibility` hook options
    * @extends IntersectionObserverInit
    */
   export interface IOptions<T> extends IntersectionObserverInit {
-    onVisibilityChange?: TVisibilityChangeEventHandler<T>;
+    beforeChange?: TBeforeChangeEventHandler<T>;
   }
   /**
-   * `useLazyRender` hook result
+   * `useVisibility` hook result
    */
   export type TResult<T> = [React.RefObject<T>, boolean];
   /* event handlers */
-  export type TVisibilityChangeEventHandler<T> = (element: T, visible: boolean) => void;
+  export type TBeforeChangeEventHandler<T> = (element: T, visible: boolean) => void;
 }
 
-const useLazyRender = <T extends HTMLElement> (options: UseLazyRender.IOptions<T> = {}): UseLazyRender.TResult<T> => {
-  const { root, rootMargin, threshold, onVisibilityChange } = options;
+const useVisibility = <T extends HTMLElement> (options: UseVisibility.IOptions<T> = {}): UseVisibility.TResult<T> => {
+  const { root, rootMargin, threshold, beforeChange } = options;
 
   const ref = useRef<T>(null);
   const [visible, setVisible] = useState(false);
@@ -29,8 +29,8 @@ const useLazyRender = <T extends HTMLElement> (options: UseLazyRender.IOptions<T
       const observer = new IntersectionObserver((entries, observer) => {
         for (const entry of entries) {
           const { isIntersecting } = entry;
-          if (onVisibilityChange) {
-            onVisibilityChange(ref.current!, isIntersecting);
+          if (beforeChange) {
+            beforeChange(ref.current!, isIntersecting);
           }
           setVisible(isIntersecting);
         }
@@ -42,9 +42,9 @@ const useLazyRender = <T extends HTMLElement> (options: UseLazyRender.IOptions<T
         observer.disconnect();
       };
     }
-  }, [root, rootMargin, threshold, onVisibilityChange]);
+  }, [root, rootMargin, threshold, beforeChange]);
 
   return [ref, visible];
 };
 
-export default useLazyRender;
+export default useVisibility;
