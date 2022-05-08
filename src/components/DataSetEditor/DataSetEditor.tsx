@@ -6,6 +6,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
+import useFadeoutScroll from '../../hooks/useFadeoutScroll';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
 import type Personal from '../../models/Personal';
@@ -40,6 +41,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
+  const [innerRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLDivElement>({ fadingRate: 0.3 });
 
   const name = `${namespace}-${DataSetEditor.displayName!}`;
 
@@ -132,7 +134,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
         placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
         onChange={handleFilterChange}
       />
-      <div className={styles.filterResult}>
+      <div ref={innerRef} className={styles.filterResult} style={fadeoutScrollStyle}>
         {
           filteredLabelsGroups.length > 0 ? (
             <ol className={styles.labelsGroupList}>
