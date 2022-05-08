@@ -40,7 +40,7 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = (props) => {
     ...floatingConfig
   });
 
-  const [labelInfoListRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>(0.3);
+  const [labelInfoListRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLUListElement>({ fadingRate: 0.3 });
 
   const labelInfoListStyle: React.CSSProperties = useMemo(() => ({
     ...fadeoutScrollStyle,
