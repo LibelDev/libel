@@ -134,7 +134,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
         placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
         onChange={handleFilterChange}
       />
-      <div ref={innerRef} className={styles.filterResult} style={fadeoutScrollStyle}>
+      <div ref={innerRef} className={styles.inner} style={fadeoutScrollStyle}>
         {
           filteredLabelsGroups.length > 0 ? (
             <ol className={styles.labelsGroupList}>
