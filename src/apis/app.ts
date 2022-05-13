@@ -2,7 +2,8 @@ import { publicDataURL as baseURL } from '../../config/config';
 import type { IconName } from '../components/Icon/types';
 
 interface IAnnouncement {
-  id?: string; // added in 1.0.18
+  /** @since 1.0.18 */
+  id?: string;
   icon?: IconName;
   body: string;
   endAt?: number;
