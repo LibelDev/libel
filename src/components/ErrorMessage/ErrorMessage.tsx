@@ -1,12 +1,12 @@
 import type React from 'react';
 import { IconName } from '../Icon/types';
-import IconMessage, { TProps as TIconMessageProps } from '../IconMessage/IconMessage';
+import IconMessage, { IProps as IIconMessageProps, TProps as TIconMessageProps } from '../IconMessage/IconMessage';
 
 interface IProps { }
 
 type TComponentProps<T extends React.ElementType> = TComponentPropsWithoutRefWithAs<T, IProps>;
 
-type TProps<T extends React.ElementType> = IProps & TComponentProps<T> & Omit<TIconMessageProps<T>, 'icon'>;
+type TProps<T extends React.ElementType> = IProps & TComponentProps<T> & Omit<TIconMessageProps<T>, keyof IIconMessageProps>;
 
 /**
  * @extends IconMessage

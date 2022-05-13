@@ -42,7 +42,7 @@ export interface IProps {
   onScroll: (target: HTMLLIElement) => void;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'onScroll'>;
+type TComponentProps = TComponentPropsWithoutRef<'div', IProps>;
 
 type TProps = IProps & TComponentProps;
 

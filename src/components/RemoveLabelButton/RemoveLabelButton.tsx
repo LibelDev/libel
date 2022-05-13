@@ -31,8 +31,8 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
     event.preventDefault();
     const _user = cache.getUser(user);
     const question = render(questions.remove.label, { user: _user, label });
-    const confirmed = window.confirm(question);
-    if (confirmed) {
+    const yes = window.confirm(question);
+    if (yes) {
       dispatch(personalActions.remove({ user, index }));
       // analytics
       gtag.event(EventAction.Remove, { event_category: EventCategory.Label, event_label: label.text });

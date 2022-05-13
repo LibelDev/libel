@@ -1,6 +1,6 @@
 import type { IDataSet } from '../models/DataSet';
+import DataSet from '../models/DataSet';
 import Label, { ILabel } from '../models/Label';
-import Personal from '../models/Personal';
 import schema from '../schemas/label';
 import { getSearchRegex } from './regex';
 import { mapValidationError } from './validation';
@@ -33,7 +33,7 @@ export const mapDataSetToLabelsGroupsGroupedByUser = (dataSet: IDataSet) => {
 };
 
 export const mapLabelsGroupsGroupedByUserToDataSet = (labelsGroups: ILabelsGroupGroupedByUser[]) => {
-  const dataSet = Personal.factory();
+  const dataSet = DataSet.factory();
   const { data } = dataSet;
   for (const labelsGroup of labelsGroups) {
     const { user, items } = labelsGroup;

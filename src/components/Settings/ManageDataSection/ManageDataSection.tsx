@@ -2,6 +2,7 @@
 import type React from 'react';
 import * as TEXTS from '../../../constants/texts';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
+import ConvertBlockedUsersButton from './ConvertBlockedUsersButton';
 import EditDataSetButton from './EditDataSetButton';
 import ExportFileButton from './ExportFileButton';
 import ImportFileButton from './ImportFileButton';
@@ -18,6 +19,9 @@ const ManageDataSection: React.FunctionComponent = () => {
       <ul className={lihkgCssClasses.settingOptionsList}>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <EditDataSetButton />
+        </li>
+        <li className={lihkgCssClasses.settingOptionsItem}>
+          <ConvertBlockedUsersButton />
         </li>
         <li className={lihkgCssClasses.settingOptionsItem}>
           <MakeSubscriptionButton />

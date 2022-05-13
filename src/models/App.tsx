@@ -1,5 +1,5 @@
 import type { Persistor } from 'redux-persist';
-import { fetchAnnouncements } from '../apis/announcement';
+import { fetchAnnouncements } from '../apis/app';
 import Announcement from '../components/Announcement/Announcement';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';

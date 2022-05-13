@@ -13,7 +13,7 @@ interface IProps {
 
 type TComponentProps = TComponentPropsWithoutRef<'a', IProps>;
 
-type TProps = IProps & TComponentProps & Omit<TButtonProps<'a'>, 'as'>;
+type TProps = IProps & TComponentProps & TButtonProps<'a'>;
 
 /**
  * @extends Button

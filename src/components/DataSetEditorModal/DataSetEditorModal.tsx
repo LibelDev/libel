@@ -3,18 +3,20 @@ import type React from 'react';
 import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
-import DataSetEditor, { TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
+import DataSetEditor, { IProps as IDataSetEditorProps, TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
 import styles from './DataSetEditorModal.module.scss';
 
 interface IProps { }
 
-type TProps = IProps & Omit<TModalProps, 'onChange' | 'onSubmit'> & TDataSetEditorProps;
+type TComponentProps = Omit<TModalProps, keyof IDataSetEditorProps>;
+
+type TProps = IProps & TComponentProps & TDataSetEditorProps;
 
 // const debug = debugFactory('libel:component:DataSetEditorModal');
 
 const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
-  const { id, onClose, dataSet, onChange, onSubmit, ...otherProps } = props;
+  const { id, onClose, dataSet, onChange, onSubmit, children, ...otherProps } = props;
 
   const _formId = id || useId();
 
@@ -32,6 +34,13 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
           onSubmit={onSubmit}
         />
       </Modal.Body>
+      {
+        children && (
+          <div className={styles.postBody}>
+            {children}
+          </div>
+        )
+      }
       <Modal.Footer>
         <Button form={_formId} type="submit">
           {TEXTS.BUTTON_TEXT_DATA_SET_EDITOR_SAVE}

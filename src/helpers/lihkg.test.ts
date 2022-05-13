@@ -41,7 +41,7 @@ describe('mapBlockedUsersToDataSet', () => {
       const labels = dataSet.data[user]!;
       expect(labels.length).toEqual(1);
       const label = labels[0];
-      expect(label.id).toEqual('1');
+      expect(label.id).toEqual('-1');
       expect(label.text).toEqual(TEXTS.BLOCKED_USER_DEFAULT_LABEL_TEXT);
       expect(blockedUser.blocked_time * 1000).toEqual(label.date);
       expect(blockedUser.block_remark.reason).toEqual(label.reason);

@@ -37,7 +37,7 @@ interface IInputErrors {
   [name: string]: string | undefined;
 }
 
-interface IProps {
+export interface IProps {
   /**
    * the target user ID
    */
@@ -62,7 +62,7 @@ interface IProps {
   onSubmit: (data: TFormData) => Promise<void>;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit' | 'target'>;
+type TComponentProps = TComponentPropsWithoutRef<'form', IProps>;
 
 export type TProps = IProps & TComponentProps;
 

@@ -20,23 +20,16 @@ const EditDataSetButton: React.FunctionComponent = () => {
   const [dirty, setDirty] = useState(false);
   const focusTrap = useFocusTrap();
 
-  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
-    event.preventDefault();
-    const users = Object.keys(personal.data);
-    if (users.length > 0) {
-      setDirty(false);
-      focusTrap?.pause();
-      window.requestAnimationFrame(() => {
-        setOpen(true);
-      });
-    } else {
-      const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET);
-      LIHKG.showNotification(notification);
-    }
-  }, [focusTrap, personal]);
+  const handleOpen = useCallback(() => {
+    setDirty(false);
+    focusTrap?.pause();
+    window.requestAnimationFrame(() => {
+      setOpen(true);
+    });
+  }, [focusTrap]);
 
-  const handleClose = useCallback(() => {
-    if (dirty) {
+  const handleClose = useCallback((prudent = true) => {
+    if (prudent && dirty) {
       const users = Object.keys(personal.data); // empty data set
       if (users.length > 0) {
         const yes = window.confirm(TEXTS.DATA_SET_EDITOR_MESSAGE_CLOSE_CONFIRMATION);
@@ -51,6 +44,17 @@ const EditDataSetButton: React.FunctionComponent = () => {
     });
   }, [personal, dirty, focusTrap]);
 
+  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = useCallback((event) => {
+    event.preventDefault();
+    const users = Object.keys(personal.data);
+    if (users.length > 0) {
+      handleOpen();
+    } else {
+      const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_EMPTY_DATA_SET);
+      LIHKG.showNotification(notification);
+    }
+  }, [personal, handleOpen]);
+
   const handleChange: IDataSetEditorProps['onChange'] = useCallback(() => {
     setDirty(true);
   }, []);
@@ -60,14 +64,11 @@ const EditDataSetButton: React.FunctionComponent = () => {
     if (confirmed) {
       debug('handleDataSetEditorSubmit', dataSet);
       dispatch(personalActions.update(dataSet));
-      focusTrap?.unpause();
-      window.requestAnimationFrame(() => {
-        setOpen(false);
-      });
+      handleClose(false);
       const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_MESSAGE_SAVE_SUCCESS);
       LIHKG.showNotification(notification);
     }
-  }, [focusTrap]);
+  }, [focusTrap, handleClose]);
 
   return (
     <>

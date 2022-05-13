@@ -5,7 +5,7 @@ interface IProps { }
 
 type TComponentProps = {};
 
-type TProps = IProps & TComponentProps & Omit<TIconButtonProps<'a'>, 'as'>;
+type TProps = IProps & TComponentProps & TIconButtonProps<'a'>;
 
 /**
  * @extends IconButton

@@ -40,7 +40,7 @@ interface IProps {
   onClose: () => void;
 }
 
-type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = TComponentPropsWithoutRef<'div', IProps>;
 
 export type TProps = IProps & TComponentProps;
 
@@ -50,12 +50,12 @@ const Modal: TModal = (props) => {
   const {
     id,
     className,
-    children,
     open = false,
     backdrop = true,
     fragile = true,
     escape = true,
-    onClose
+    onClose,
+    children
   } = props;
 
   const [initialFocus, setInitialFocus] = useState<HTMLElement>();

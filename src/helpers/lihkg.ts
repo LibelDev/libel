@@ -167,7 +167,7 @@ export const mapBlockedUsersToDataSet = (blockedUsers: IBlockedUser[]) => {
     const { user_id, blocked_time, block_remark } = blockedUser;
     const { reason } = block_remark;
     const date = blocked_time * 1000;
-    const label = new Label('1', TEXTS.BLOCKED_USER_DEFAULT_LABEL_TEXT, reason, undefined, date);
+    const label = new Label('-1', TEXTS.BLOCKED_USER_DEFAULT_LABEL_TEXT, reason, undefined, date);
     data[user_id] = [label];
   }
   return dataSet;
