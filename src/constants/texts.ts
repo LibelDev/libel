@@ -131,6 +131,8 @@ export const CLOUD_SYNC_MESSAGE_SYNC_FAILED = '雲端資料同步發生錯誤，
 export const BUTTON_TEXT_CONVERT_BLOCKED_USERS = '將封鎖用戶轉換成個人標籤記錄';
 export const CONVERT_BLOCKED_USERS_ERROR_FAILED_TO_FETCH_BLOCKED_USERS = '無法取得封鎖用戶資料，請重新嘗試。';
 export const CONVERT_BLOCKED_USERS_ERROR_GENERIC_ERROR = '轉換失敗，請重新嘗試。';
+export const CONVERT_BLOCKED_USERS_MESSAGE_NO_BLOCKED_USERS = '未有封鎖用戶記錄';
+export const CONVERT_BLOCKED_USERS_HINT_TEXT_UNBLOCK = '建議轉換後解除封鎖用戶';
 
 /* announcement */
 export const BUTTON_TEXT_CLOSE_ANNOUNCEMENT = '關閉公告';

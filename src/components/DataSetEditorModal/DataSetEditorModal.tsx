@@ -16,7 +16,7 @@ type TProps = IProps & TComponentProps & TDataSetEditorProps;
 // const debug = debugFactory('libel:component:DataSetEditorModal');
 
 const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
-  const { id, onClose, dataSet, onChange, onSubmit, ...otherProps } = props;
+  const { id, onClose, dataSet, onChange, onSubmit, children, ...otherProps } = props;
 
   const _formId = id || useId();
 
@@ -34,6 +34,13 @@ const DataSetEditorModal: React.FunctionComponent<TProps> = (props) => {
           onSubmit={onSubmit}
         />
       </Modal.Body>
+      {
+        children && (
+          <div className={styles.postBody}>
+            {children}
+          </div>
+        )
+      }
       <Modal.Footer>
         <Button form={_formId} type="submit">
           {TEXTS.BUTTON_TEXT_DATA_SET_EDITOR_SAVE}
