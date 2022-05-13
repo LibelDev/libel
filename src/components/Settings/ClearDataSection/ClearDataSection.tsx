@@ -43,8 +43,8 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS);
       LIHKG.showNotification(notification);
     } else {
-      const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED);
-      LIHKG.showNotification(notificationClearCanceled);
+      // const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED);
+      // LIHKG.showNotification(notificationClearCanceled);
     }
   }, []);
 
@@ -59,8 +59,8 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS);
       LIHKG.showNotification(notification);
     } else {
-      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED);
-      LIHKG.showNotification(notification);
+      // const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED);
+      // LIHKG.showNotification(notification);
     }
   }, []);
 
