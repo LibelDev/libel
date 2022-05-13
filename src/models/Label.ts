@@ -28,6 +28,11 @@ export interface ILabelDatum {
 
 class Label implements ILabel {
   [immerable] = true;
+  /**
+   * the label ID
+   * - `-1` converted from blocked user
+   * @since 3.0.0
+   */
   id?: string;
   text: string;
   reason?: string;
