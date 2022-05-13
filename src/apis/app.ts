@@ -1,4 +1,4 @@
-import { publicDataURL } from '../../config/config';
+import { publicDataURL as baseURL } from '../../config/config';
 import type { IconName } from '../components/Icon/types';
 
 interface IAnnouncement {
@@ -10,7 +10,7 @@ interface IAnnouncement {
 }
 
 export const fetchAnnouncements = async () => {
-  const url = `${publicDataURL}/announcements.json`;
+  const url = `${baseURL}/announcements.json`;
   const response = await fetch(url);
   const json = await response.json();
   return json as IAnnouncement[];
