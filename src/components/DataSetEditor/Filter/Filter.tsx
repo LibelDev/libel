@@ -9,7 +9,9 @@ export interface IProps {
   onChange: (keyword: string) => void;
 }
 
-type TProps = IProps & Omit<TTextInputProps, 'onChange'>;
+type TComponentProps = Omit<TTextInputProps, keyof IProps>;
+
+type TProps = IProps & TComponentProps;
 
 const Filter: React.FunctionComponent<TProps> = (props) => {
   const { onChange, ...otherProps } = props;

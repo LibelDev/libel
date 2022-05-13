@@ -46,7 +46,7 @@ export interface IProps {
   onSubmit: (subscription: IBaseRemoteSubscription) => void;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>;
+type TComponentProps = TComponentPropsWithoutRef<'form', IProps>;
 
 export type TProps = IProps & TComponentProps;
 

@@ -4,7 +4,7 @@ import Icon from '../Icon/Icon';
 import type { IconName } from '../Icon/types';
 import styles from './IconMessage.module.scss';
 
-interface IProps {
+export interface IProps {
   icon: IconName;
 }
 

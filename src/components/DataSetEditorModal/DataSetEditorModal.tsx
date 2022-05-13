@@ -3,13 +3,15 @@ import type React from 'react';
 import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
-import DataSetEditor, { TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
+import DataSetEditor, { IProps as IDataSetEditorProps, TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
 import styles from './DataSetEditorModal.module.scss';
 
 interface IProps { }
 
-type TProps = IProps & Omit<TModalProps, 'onChange' | 'onSubmit'> & TDataSetEditorProps;
+type TComponentProps = Omit<TModalProps, keyof IDataSetEditorProps>;
+
+type TProps = IProps & TComponentProps & TDataSetEditorProps;
 
 // const debug = debugFactory('libel:component:DataSetEditorModal');
 
