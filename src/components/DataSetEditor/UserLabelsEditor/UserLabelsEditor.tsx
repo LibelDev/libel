@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import debugFactory from 'debug';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+// import debugFactory from 'debug';
+import type React from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
-import useLazyRender, { IOptions as IUseLazyRenderOptions } from '../../../hooks/useLazyRender';
+import useVisibility, { UseVisibility } from '../../../hooks/useVisibility';
 import type { ILabel } from '../../../models/Label';
 import ColorPicker from '../../ColorPicker/ColorPicker';
 import Icon from '../../Icon/Icon';
@@ -41,33 +42,33 @@ export interface IProps {
   onScroll: (target: HTMLLIElement) => void;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'onScroll'>;
+type TComponentProps = TComponentPropsWithoutRef<'div', IProps>;
 
 type TProps = IProps & TComponentProps;
 
-const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
+// const debug = debugFactory('libel:component:DataSetEditor:UserLabelsEditor');
 
-const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => {
+const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
   const { className, user, items, autoScrollItemIndex = -1, onChange, onRemove, onScroll } = props;
+
+  const userProfileURL = `/profile/${user}`;
+
+  /** validation error for each item */
+  const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
 
   const [style, setStyle] = useState<React.CSSProperties>({});
 
   /** lazy rendering */
-  const useLazyRenderOptions: IUseLazyRenderOptions<HTMLDivElement> = useMemo(() => ({
-    onVisibilityChange: (element, visible) => {
-      if (visible) {
-        setStyle({});
-      } else {
-        // occupy the space when invisible
-        const { height } = element.getBoundingClientRect();
-        setStyle({ height });
-      }
+  const handleBeforeVisibilityChange: UseVisibility.TBeforeChangeEventHandler<HTMLDivElement> = useCallback((element, visible) => {
+    if (visible) {
+      setStyle({});
+    } else {
+      // occupy the space when invisible
+      const { height } = element.getBoundingClientRect();
+      setStyle({ height });
     }
-  }), []);
-  const [ref, visible] = useLazyRender(useLazyRenderOptions);
-
-  /** validation error for each item */
-  const errors = useMemo(() => mapLabelsGroupItemsToErrorStates(items), [items]);
+  }, []);
+  const [ref, visible] = useVisibility({ beforeChange: handleBeforeVisibilityChange });
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.currentTarget;
@@ -92,8 +93,6 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
     }
   }, []);
 
-  const userProfileURL = `/profile/${user}`;
-
   /** auto scroll to the item  */
   useEffect(() => {
     if (autoScrollItemIndex >= 0) {
@@ -115,7 +114,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
     <div ref={ref} className={classNames(className, styles.userLabelsEditor)} style={style}>
       {
         visible ? (
-          <React.Fragment>
+          <>
             <div className={styles.user}>
               <Icon icon={IconName.Account} />
               <a className={styles.link} href={userProfileURL} target="_blank">
@@ -181,7 +180,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = React.memo((props) => 
                 ))
               }
             </ol>
-          </React.Fragment>
+          </>
         ) : (
           <Loading />
         )

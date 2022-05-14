@@ -158,7 +158,7 @@ class Storage implements IStorage {
   /**
    * pure deserialization
    * @description this does not produce an `Storage` instance
-   * @param {IStorage | ISerializedStorage} storage 
+   * @param {IStorage | ISerializedStorage} storage
    * @returns {IStorage}
    */
   static deserialize (storage: IStorage | ISerializedStorage): IStorage {

@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import joi from 'joi';
-import React, { useCallback, useId, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
 import { SCREENSHOT_WIDTH } from '../../constants/label';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
-import useScreenshot, { IResult as IUseScreenshotResult, TOptions as TUseScreenshotOptions } from '../../hooks/useScreenshot';
+import useScreenshot, { UseScreenshot } from '../../hooks/useScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
 import { EventAction, EventCategory } from '../../types/ga';
@@ -23,7 +24,7 @@ type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
 type TFormData = TLabelData & {
   meta: {
-    screenshot?: IUseScreenshotResult;
+    screenshot?: UseScreenshot.IResult;
   };
 };
 
@@ -36,7 +37,7 @@ interface IInputErrors {
   [name: string]: string | undefined;
 }
 
-interface IProps {
+export interface IProps {
   /**
    * the target user ID
    */
@@ -61,7 +62,7 @@ interface IProps {
   onSubmit: (data: TFormData) => Promise<void>;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onSubmit' | 'target'>;
+type TComponentProps = TComponentPropsWithoutRef<'form', IProps>;
 
 export type TProps = IProps & TComponentProps;
 
@@ -97,12 +98,12 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [formError, setFormError] = useState('');
 
-  const useScreenshotOptions: TUseScreenshotOptions = useMemo(() => ({
-    onclone: (document, element) => {
-      element.style.width = SCREENSHOT_WIDTH;
-    }
-  }), []);
-  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, useScreenshotOptions);
+  const handleClone: UseScreenshot.TCloneEventHandler = useCallback((document, element) => {
+    element.style.width = SCREENSHOT_WIDTH;
+  }, []);
+  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, {
+    onclone: handleClone
+  });
 
   const previewImageStyle = useMemo(() => ({
     backgroundImage: `url(${screenshot.url})`

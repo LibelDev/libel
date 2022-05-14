@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { memo, useMemo } from 'react';
 import { mapDataSetsToLabelsGroupsGroupedByText } from '../../helpers/labelList';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
@@ -11,7 +12,7 @@ interface IProps extends Pick<IGroupedLabelItemProps, 'floatingConfig'> {
 
 type TProps = IProps;
 
-const LabelList: React.FunctionComponent<TProps> = (props) => {
+const LabelList: React.FunctionComponent<TProps> = memo((props) => {
   const { user, floatingConfig } = props;
   const personal = useTypedSelector(createUserPersonalSelector(user));
   const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
@@ -45,7 +46,7 @@ const LabelList: React.FunctionComponent<TProps> = (props) => {
       }
     </ul>
   );
-};
+});
 
 LabelList.displayName = 'LabelList';
 

@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import type { ISubscription } from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';

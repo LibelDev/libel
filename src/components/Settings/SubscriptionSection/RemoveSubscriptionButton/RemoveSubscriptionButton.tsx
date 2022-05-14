@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { render } from 'mustache';
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
 import * as gtag from '../../../../helpers/gtag';
 import type { ISubscription } from '../../../../models/Subscription';
@@ -29,8 +30,8 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     const question = render(questions.remove.subscription, { subscription });
-    const confirmed = window.confirm(question);
-    if (confirmed) {
+    const yes = window.confirm(question);
+    if (yes) {
       dispatch(subscriptionsActions.remove(index));
       // analytics
       gtag.event(EventAction.Remove, { event_category: EventCategory.Subscription, event_label: subscription.name });

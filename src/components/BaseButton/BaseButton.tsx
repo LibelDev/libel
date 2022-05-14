@@ -8,48 +8,42 @@ interface IProps {
   loading?: boolean;
 }
 
-type TAnchorComponentProps = React.ComponentPropsWithoutRef<'a'>;
-type TButtonComponentProps = React.ComponentPropsWithoutRef<'button'>;
+type TComponentProps<T extends React.ElementType> = TComponentPropsWithoutRefWithAs<T, IProps>;
 
-type TComponentPropsWithAs<K extends keyof JSX.IntrinsicElements> = {
-  as?: K;
-} & React.ComponentPropsWithoutRef<K>;
+export type TProps<T extends React.ElementType = 'button'> = IProps & TComponentProps<T>;
 
-type TAnchorComponentPropsWithAs = TComponentPropsWithAs<'a'>;
-type TButtonComponentPropsWithAs = TComponentPropsWithAs<'button'>;
-
-export type TProps = IProps & (
-  TAnchorComponentPropsWithAs |
-  TButtonComponentPropsWithAs
-);
-
-const BaseButton: React.FunctionComponent<TProps> = (props) => {
+function BaseButton<T extends React.ElementType> (props: TProps<T>) {
   const {
     className,
-    children,
+    as,
     disabled,
     loading,
-    as: Component = 'button',
+    children,
     ...otherProps
   } = props;
-  const _props = {
-    ...otherProps,
-    className: classNames(className, styles.baseButton),
-    disabled: disabled || loading
-  };
-  const _children = (
-    loading ? (
-      <LoadingSpinner />
-    ) : (
-      children
-    )
-  );
+
+  const Component = as || 'button';
+
   return (
-    <Component {..._props as TAnchorComponentProps & TButtonComponentProps}>
-      {_children}
+    <Component
+      {...otherProps}
+      className={
+        classNames(
+          className,
+          styles.baseButton
+        )
+      }
+      disabled={disabled || loading}
+    >
+      {children}
+      {
+        loading && (
+          <LoadingSpinner className={styles.loadingSpinner} />
+        )
+      }
     </Component>
   );
-};
+}
 
 BaseButton.displayName = 'BaseButton';
 

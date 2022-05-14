@@ -1,21 +1,19 @@
 import classNames from 'classnames';
-import React, { useContext } from 'react';
+import type React from 'react';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import styles from './Header.module.scss';
-import IDsContext from './IDsContext';
+import useModal from './hooks/useModal';
 
-interface IProps {
-  onClose: () => void;
-}
+interface IProps { }
 
 type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 
 type TProps = IProps & TComponentProps;
 
 const Header: React.FunctionComponent<TProps> = (props) => {
-  const { className, onClose, children, ...otherProps } = props;
-  const { title: id } = useContext(IDsContext);
+  const { className, children, ...otherProps } = props;
+  const { ids, onClose } = useModal();
   return (
     <div
       {...otherProps}
@@ -26,7 +24,7 @@ const Header: React.FunctionComponent<TProps> = (props) => {
         )
       }
     >
-      <h2 id={id} className={styles.title}>
+      <h2 id={ids.title} className={styles.title}>
         {children}
       </h2>
       <IconButton

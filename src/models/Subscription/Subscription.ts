@@ -44,15 +44,15 @@ class Subscription extends RemoteSubscription implements ISubscription {
     return { name, version, url, enabled };
   }
 
-  enable () {
-    this.enabled = true;
-    return this;
-  }
+  // enable () {
+  //   this.enabled = true;
+  //   return this;
+  // }
 
-  disable () {
-    this.enabled = false;
-    return this;
-  }
+  // disable () {
+  //   this.enabled = false;
+  //   return this;
+  // }
 }
 
 export default Subscription;

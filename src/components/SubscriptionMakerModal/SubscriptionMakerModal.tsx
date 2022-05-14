@@ -1,12 +1,15 @@
-import React, { useId } from 'react';
+import type React from 'react';
+import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
 import Modal, { TProps as TModalProps } from '../Modal/Modal';
-import SubscriptionMaker, { TProps as TSubscriptionMakerProps } from '../SubscriptionMaker/SubscriptionMaker';
+import SubscriptionMaker, { IProps as ISubscriptionMakerProps, TProps as TSubscriptionMakerProps } from '../SubscriptionMaker/SubscriptionMaker';
 
 interface IProps { }
 
-type TProps = IProps & Omit<TModalProps, 'onSubmit'> & TSubscriptionMakerProps;
+type TComponentProps = Omit<TModalProps, keyof ISubscriptionMakerProps>;
+
+type TProps = IProps & TComponentProps & TSubscriptionMakerProps;
 
 const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
   const { id, onClose, dataSet, onSubmit, ...otherProps } = props;
@@ -15,7 +18,7 @@ const SubscriptionMakerModal: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <Modal {...otherProps} onClose={onClose}>
-      <Modal.Header onClose={onClose}>
+      <Modal.Header>
         {TEXTS.SUBSCRIPTION_MAKER_MODAL_TITLE}
       </Modal.Header>
       <Modal.Body>

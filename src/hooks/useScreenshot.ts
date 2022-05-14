@@ -1,15 +1,26 @@
 import { useEffect, useState } from 'react';
 import { toCanvas, toImageURL, TToCanvasOptions } from '../helpers/canvas';
 
-export interface IResult {
-  loading: boolean;
-  error: unknown | null;
-  url: string | null;
-  blob: Blob | null;
-  canvas: HTMLCanvasElement | null;
+export namespace UseScreenshot {
+  /**
+   * `useScreenshot` hook result
+   */
+  export type TOptions = TToCanvasOptions;
+  /**
+   * `useScreenshot` hook result
+   */
+  export interface IResult {
+    loading: boolean;
+    error: unknown | null;
+    url: string | null;
+    blob: Blob | null;
+    canvas: HTMLCanvasElement | null;
+  }
+  /* event handlers */
+  export type TCloneEventHandler = Required<TToCanvasOptions>['onclone'];
 }
 
-const initialResult: IResult = {
+const initialResult: UseScreenshot.IResult = {
   loading: false,
   error: null,
   url: null,
@@ -17,7 +28,7 @@ const initialResult: IResult = {
   canvas: null
 };
 
-const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: TToCanvasOptions): IResult => {
+const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
   const [result, setResult] = useState(initialResult);
   useEffect(() => {
     (async () => {
@@ -39,5 +50,3 @@ const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, op
 };
 
 export default useScreenshot;
-
-export type { TToCanvasOptions as TOptions };

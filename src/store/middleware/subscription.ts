@@ -5,8 +5,7 @@ import * as LIHKG from '../../helpers/lihkg';
 import { notification } from '../../templates/subscription';
 import { selectSubscriptions } from '../selectors';
 import { actions as subscriptionsActions } from '../slices/subscriptions';
-import type { TRootState } from '../store';
-import { TStore } from './../store';
+import type { TRootState, TStore } from '../store';
 
 type TToggleAction = ReturnType<typeof subscriptionsActions.toggle>;
 

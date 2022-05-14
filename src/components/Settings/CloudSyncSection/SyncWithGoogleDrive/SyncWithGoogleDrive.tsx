@@ -3,9 +3,10 @@ import add from 'date-fns/add';
 import formatRelative from 'date-fns/formatRelative';
 import { zhHK } from 'date-fns/locale';
 import { render } from 'mustache';
-import React, { useCallback, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
-import * as cloud from '../../../../cloud';
+import cloud from '../../../../cloud';
 import { SYNC_INTERVAL } from '../../../../constants/sync';
 import * as TEXTS from '../../../../constants/texts';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';
@@ -56,14 +57,14 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
   }, [signOut]);
 
   return (
-    <React.Fragment>
+    <>
       <div className={styles.sync}>
         <img className={styles.logo} src={logo} alt='' />
         <div className={styles.info}>
           {TEXTS.CLOUD_SYNC_LABEL_GOOGLE_DRIVE}
           {
             user && signedIn && (
-              <React.Fragment>
+              <>
                 <small className={styles.hint}>
                   <Icon className={styles.icon} icon={IconName.Verified} />
                   <span>
@@ -80,7 +81,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                       </span>
                     </small>
                   ) : (
-                    <React.Fragment>
+                    <>
                       {
                         !!infoHints && (
                           <small className={classNames(styles.hint, styles.info)}>
@@ -118,10 +119,10 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
                           </Button>
                         )
                       }
-                    </React.Fragment>
+                    </>
                   )
                 }
-              </React.Fragment>
+              </>
             )
           }
         </div>
@@ -133,7 +134,7 @@ const SyncWithGoogleDrive: React.FunctionComponent = () => {
             TEXTS.BUTTON_TEXT_GOOGLE_AUTHORIZE
         }
       </SettingOptionButton>
-    </React.Fragment>
+    </>
   );
 };
 

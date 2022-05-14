@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import produce from 'immer';
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import { DndProvider as DragAndDropProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import * as TEXTS from '../../../constants/texts';
@@ -30,7 +31,7 @@ const SubscriptionSection: React.FunctionComponent = () => {
   }, [subscriptions]);
 
   return (
-    <React.Fragment>
+    <>
       <small className={classNames(lihkgCssClasses.settingSectionTitle, styles.sectionTitle)}>
         {TEXTS.SETTINGS_TITLE_SUBSCRIPTION}
         <AddSubscriptionButton />
@@ -62,7 +63,7 @@ const SubscriptionSection: React.FunctionComponent = () => {
           </div>
         )
       }
-    </React.Fragment>
+    </>
   );
 };
 

@@ -8,6 +8,6 @@ export const success = {
 };
 
 export const sync = {
-  lastSyncedTime: `最後同步於 {{ lastSyncedTime }}`,
-  nextSyncTime: `下次同步時間為 {{ nextSyncTime }}`
-}
+  lastSyncedTime: '最後同步於 {{ lastSyncedTime }}',
+  nextSyncTime: '下次同步時間為 {{ nextSyncTime }}'
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import * as TEXTS from '../../../constants/texts';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
 import SyncWithGoogleDrive from './SyncWithGoogleDrive/SyncWithGoogleDrive';
@@ -9,7 +9,7 @@ type TProps = IProps;
 
 const CloudSyncSection: React.FunctionComponent<TProps> = () => {
   return (
-    <React.Fragment>
+    <>
       <small className={lihkgCssClasses.settingSectionTitle}>
         {TEXTS.SETTINGS_TITLE_CLOUD_SYNC}
       </small>
@@ -18,7 +18,7 @@ const CloudSyncSection: React.FunctionComponent<TProps> = () => {
           <SyncWithGoogleDrive />
         </li>
       </ul>
-    </React.Fragment>
+    </>
   );
 };
 

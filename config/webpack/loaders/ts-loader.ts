@@ -1,4 +1,6 @@
-const loader = {
+import type webpack from 'webpack';
+
+const loader: webpack.RuleSetUseItem = {
   loader: 'ts-loader'
 };
 

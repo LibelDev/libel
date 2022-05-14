@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
+import { forwardRef, memo } from 'react';
 import type { TLabelsGroupItem } from '../../../helpers/labelList';
 import LabelInfo from '../../LabelInfo/LabelInfo';
 import styles from './LabelInfoList.module.scss';
@@ -12,7 +13,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'ul'>;
 
 type TProps = IProps & TComponentProps;
 
-const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) => {
+const LabelInfoList = memo(forwardRef<HTMLUListElement, TProps>((props, ref) => {
   const { className, items, ...otherProps } = props;
   return (
     <ul ref={ref} className={classNames(className, styles.labelInfoList)} {...otherProps}>
@@ -33,7 +34,7 @@ const LabelInfoList = React.forwardRef<HTMLUListElement, TProps>((props, ref) =>
       }
     </ul>
   );
-});
+}));
 
 LabelInfoList.displayName = 'LabelInfoList';
 

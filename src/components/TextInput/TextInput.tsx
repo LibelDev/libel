@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useId } from 'react';
+import type React from 'react';
+import { forwardRef, useId } from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
@@ -16,7 +17,7 @@ interface IProps {
 
 export type TProps = IProps & TBaseInputProps;
 
-const TextInput = React.forwardRef<HTMLInputElement, TProps>((props, ref) => {
+const TextInput = forwardRef<HTMLInputElement, TProps>((props, ref) => {
   const { id, className, label, icon, error, invalid, onClear, ...otherProps } = props;
 
   const _id = id || useId();

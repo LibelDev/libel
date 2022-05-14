@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import type { ILabel } from '../../models/Label';
@@ -47,7 +48,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   }, [user, index, handleModalClose]);
 
   return (
-    <React.Fragment>
+    <>
       <IconButton
         className={className}
         icon={IconName.Pencil}
@@ -65,7 +66,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
         onClose={handleModalClose}
         onSubmit={handleLabelFormSubmit}
       />
-    </React.Fragment>
+    </>
   );
 };
 

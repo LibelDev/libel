@@ -1,12 +1,14 @@
 import classNames from 'classNames';
 import FocusTrap from 'focus-trap-react';
-import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Key } from 'ts-key-enum';
+import { Context as FocusTrapContext, IContextValue as IFocusTrapContextValue } from '../../hooks/useFocusTrap';
 import Body from './Body';
 import Footer from './Footer';
 import Header from './Header';
-import IDsContext from './IDsContext';
+import { Context as ModalContext } from './hooks/useModal';
 import styles from './Modal.module.scss';
 
 interface IModal {
@@ -25,24 +27,20 @@ interface IProps {
    */
   backdrop?: boolean;
   /**
-   * allow to press escape key to dismiss the modal, default: true
-   */
-  escape?: boolean;
-  /**
    * allow to click on backdrop to dismiss the modal, default: true
    */
   fragile?: boolean;
   /**
-   * indicate the focus trap paused state
-   */
-  paused?: boolean;
+  * allow to press escape key to dismiss the modal, default: true
+  */
+  escape?: boolean;
   /**
    * close the modal
    */
   onClose: () => void;
 }
 
-type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps = TComponentPropsWithoutRef<'div', IProps>;
 
 export type TProps = IProps & TComponentProps;
 
@@ -52,26 +50,35 @@ const Modal: TModal = (props) => {
   const {
     id,
     className,
-    children,
     open = false,
     backdrop = true,
-    escape = true,
     fragile = true,
-    paused,
-    onClose
+    escape = true,
+    onClose,
+    children
   } = props;
 
   const [initialFocus, setInitialFocus] = useState<HTMLElement>();
+  const [paused, setPaused] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
   const _id = id || useId();
-  const _ids = {
-    title: `${_id}-title`,
-    body: `${_id}-body`
-  };
+
+  const modalContextValue = useMemo(() => ({
+    ids: {
+      title: `${_id}-title`,
+      body: `${_id}-body`
+    },
+    onClose
+  }), [_id, onClose]);
+
+  const focusTrapContextValue: IFocusTrapContextValue = useMemo(() => ({
+    unpause: () => { setPaused(false); },
+    pause: () => { setPaused(true); }
+  }), []);
 
   const focusTrapOptions: FocusTrap.Props['focusTrapOptions'] = useMemo(() => ({
     escapeDeactivates: escape,
@@ -119,33 +126,35 @@ const Modal: TModal = (props) => {
 
   return (
     ReactDOM.createPortal(
-      <IDsContext.Provider value={_ids}>
-        <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
-          <div
-            ref={ref}
-            id={_id}
-            className={classNames(className, styles.modal)}
-            role="dialog"
-            aria-modal
-            aria-labelledby={_ids.title}
-            aria-describedby={_ids.body}
-          >
-            {
-              backdrop && (
-                <div
-                  ref={backdropRef}
-                  className={styles.backdrop}
-                  onClick={handleBackdropClick}
-                  aria-hidden
-                />
-              )
-            }
-            <div ref={innerRef} className={styles.inner}>
-              {children}
+      <ModalContext.Provider value={modalContextValue}>
+        <FocusTrapContext.Provider value={focusTrapContextValue}>
+          <FocusTrap paused={paused} focusTrapOptions={focusTrapOptions}>
+            <div
+              ref={ref}
+              id={_id}
+              className={classNames(className, styles.modal)}
+              role="dialog"
+              aria-modal
+              aria-labelledby={modalContextValue.ids.title}
+              aria-describedby={modalContextValue.ids.body}
+            >
+              {
+                backdrop && (
+                  <div
+                    ref={backdropRef}
+                    className={styles.backdrop}
+                    onClick={handleBackdropClick}
+                    aria-hidden
+                  />
+                )
+              }
+              <div ref={innerRef} className={styles.inner}>
+                {children}
+              </div>
             </div>
-          </div>
-        </FocusTrap>
-      </IDsContext.Provider>,
+          </FocusTrap>
+        </FocusTrapContext.Provider>
+      </ModalContext.Provider>,
       document.body
     )
   );

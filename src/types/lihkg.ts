@@ -1,27 +1,55 @@
-export interface IQuoteListResponseData {
-  success: number;
-  server_time: number;
-  response: IQuoteListResponse;
-}
+export module APIv2 {
+  interface IBaseResponseBody {
+    success: number;
+    server_time: number;
+  }
 
-interface IQuoteListResponse {
-  page: string;
-  item_data: IPost[];
-  thread: IThread;
-  parent_post: IPost;
-  me: IMe;
-}
+  export interface IQuoteListResponseBody extends IBaseResponseBody {
+    response: IQuoteListResponse;
+  }
 
-export interface IReplyListResponseData {
-  success: number;
-  server_time: number;
-  response: IReplyListResponse;
-}
+  interface IQuoteListResponse {
+    page: string;
+    item_data: IPost[];
+    thread: IThread;
+    parent_post: IPost;
+    me: IMeUser;
+  }
 
-interface IReplyListResponse extends IThread {
-  page: string;
-  item_data: IPost[];
-  me: IMe;
+  export interface IReplyListResponseBody extends IBaseResponseBody {
+    response: IReplyListResponse;
+  }
+
+  interface IReplyListResponse extends IThread {
+    page: string;
+    item_data: IPost[];
+    me: IMeUser;
+  }
+
+  export interface IThreadListResponseBody extends IBaseResponseBody {
+    response: IThreadListResponse;
+  }
+
+  interface IThreadListResponse {
+    category: ICategory;
+    is_pagination: boolean;
+    items: IThread[];
+    me: IMeUser;
+  }
+
+  export interface IBlockedUserResponseBody extends IBaseResponseBody {
+    response: IBlockedUserResponse;
+  }
+
+  interface IBlockedUserResponse {
+    blocked_user_list: IBlockedUser[];
+    me: IMeUser;
+  }
+
+  export interface IErrorResponseBody extends IBaseResponseBody {
+    error_code: number;
+    error_message: string;
+  }
 }
 
 export interface IPost {
@@ -34,7 +62,7 @@ export interface IPost {
   dislike_count: string;
   vote_score: string;
   no_of_quote: string;
-  remark: unknown[] | IRemark;
+  remark: unknown[] | IPostRemark;
   status: string;
   reply_time: number;
   msg_num: string;
@@ -48,22 +76,9 @@ export interface IPost {
   quote?: IPost;
 }
 
-interface IRemark {
+interface IPostRemark {
   is_newbie?: boolean;
   is_not_push_post?: boolean;
-}
-
-export interface IThreadListResponseData {
-  success: number;
-  server_time: number;
-  response: IThreadListResponse;
-}
-
-interface IThreadListResponse {
-  category: ICategory;
-  is_pagination: boolean;
-  items: IThread[];
-  me: IMe;
 }
 
 export interface IThread {
@@ -86,7 +101,7 @@ export interface IThread {
   last_reply_time: number;
   status: string;
   is_adu: boolean;
-  remark: IRemark;
+  remark: IThreadRemark;
   last_reply_user_id: string;
   max_reply: string;
   total_page: number;
@@ -127,7 +142,7 @@ interface IQuery {
   sub_cat_id: string;
 }
 
-interface IRemark {
+interface IThreadRemark {
   last_reply_count: number;
   author_pin_post_id?: string;
   no_of_uni_not_push_post: number;
@@ -135,15 +150,96 @@ interface IRemark {
   cover_img?: string;
 }
 
-enum Gender {
+export interface IBlockedUser extends IUser {
+  blocked_time: number;
+  block_remark: IBlockUserRemark;
+}
+
+interface IBlockUserRemark {
+  nickname?: string;
+  reason: string;
+}
+
+/**
+ * LIHKG state type
+ * @todo add other properties
+ */
+export interface IState {
+  app: IApp;
+}
+
+type TVisitedThread = [threadId: number, lastMessageNumber: number, lastVisitedTime: number, page: number, messageNumber: number];
+
+type TOfficeMode = 0 | 1 | 2;
+
+interface IApp {
+  officeMode: 0 | 1 | 2;
+  modeSettings: {
+    [key in TOfficeMode]: IModeSetting
+  };
+  isMobile: boolean;
+  isHoverable: boolean;
+  visitedThreads: {
+    [threadId: string]: TVisitedThread;
+  };
+  drafts: IDraft[];
+  currentUser: ICurrentUser | null;
+  twoFaIsEnabled: boolean | null;
+  autoLogout: IAutoLogout | null;
+  keywordFilterList: any[];
+  keywordFilterRegexStr: string;
+  customCatIds: any[];
+  iconMap: IIconMap;
+  flatIconMap: IconSetData;
+  editorShowIcon: number;
+  editorRecentIcons: any[];
+  notifyCount: number;
+  pushSupported: boolean;
+  pushNotification: boolean;
+  featuredPushNotification: boolean;
+  pushSetting: IPushSetting | null;
+  preferredUploadProvider: string[];
+  plusRenewable: boolean;
+  alertNotice: any[];
+}
+
+interface ICurrentUser {
+  token: string;
+  user_id: string;
+  nickname: string;
+  level: string;
+}
+
+interface IModeSetting {
+  darkMode: boolean;
+  splitMode: boolean;
+  limitContainerSize: boolean;
+  showFullTimestamp: boolean;
+  fontSize: number;
+  autoLoadImage: boolean;
+  linkHoverPreview: boolean;
+  shrinkQuoteImages: boolean;
+  openImageInLightbox: boolean;
+  includeLinkImages: boolean;
+  filterSpoilerTitle: boolean;
+  showIcons: boolean;
+  staticIcons: boolean;
+  youtubePreview: boolean;
+  showNotification: boolean;
+  minimizeReply: boolean;
+  previewBeforeReply: boolean;
+  imageProxy: boolean;
+}
+
+export enum Gender {
   F = 'F',
   M = 'M',
 }
 
-enum LevelName {
-  新手會員 = '新手會員',
-  普通會員 = '普通會員',
-  站長 = '站長',
+export enum LevelName {
+  Newbie = '新手會員',
+  Normal = '普通會員',
+  Admin = '站長',
 }
 
 export interface IUser {
@@ -160,16 +256,16 @@ export interface IUser {
   is_newbie: boolean;
 }
 
-interface IMe extends IUser {
+interface IMeUser extends IUser {
   email: string;
   plus_expiry_time: number;
   last_login_time: number;
   is_disappear: boolean;
   is_plus_user: boolean;
-  meta_data: IMetaData;
+  meta_data: IUserMetaData;
 }
 
-interface IMetaData {
+interface IUserMetaData {
   custom_cat: unknown[];
   keyword_filter: string;
   login_count: number;
@@ -209,22 +305,22 @@ export interface IIconMap {
 }
 
 interface IIconSet {
-  icons: { [key: string]: string; };
-  special?: IIconSetSpecial;
-  showOn?: IIconSetShowOn;
+  icons: IconSetData;
+  special?: IconSetData;
+  showOn?: {
+    start_time?: number;
+    end_time?: number;
+    keywords?: string[];
+    user_id?: number[];
+    cat_id?: number[];
+  };
+  isPinTop?: boolean;
 }
 
-interface IIconSetShowOn {
-  start_time?: number;
-  end_time?: number;
-  keywords?: string[];
-  user_id?: number[];
-  cat_id?: number[];
+interface IconSetData {
+  [url: string]: string;
 }
 
-interface IIconSetSpecial {
-  [path: string]: string;
-}
 
 export enum NotificationType {
   Local = 'local'

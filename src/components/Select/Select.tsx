@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useId } from 'react';
+import type React from 'react';
+import { useId } from 'react';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';

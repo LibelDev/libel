@@ -2,23 +2,22 @@
 import produce from 'immer';
 import { dev } from '../../config/config';
 import { displayName } from '../../package.json';
+import type { TActions } from '../actions/lihkg';
 import * as lihkgActions from '../actions/lihkg';
-import { ISource } from '../models/Label';
+import * as TEXTS from '../constants/texts';
+import DataSet from '../models/DataSet';
+import Label, { ISource } from '../models/Label';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import { IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IUser, NotificationType, TNotification } from '../types/lihkg';
+import { IBlockedUser, IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IState, IUser, NotificationType, TNotification } from '../types/lihkg';
 import { counter } from './counter';
 import { waitForElement } from './dom';
-import { findReduxStore, IReactRootElement } from './redux';
+import { findReduxStore } from './redux';
 
 enum ShareType {
   Thread = 1,
   Reply = 2
 }
 
-/**
- * create a notification object
- * @private
- */
 type TCreateNotification = {
   /**
    * create a local notification object
@@ -55,8 +54,8 @@ export const waitForRightPanelContainer = async () => {
  * get the original LIHKG redux store
  */
 export const getStore = () => {
-  const app = document.querySelector(lihkgSelectors.app);
-  const store = findReduxStore(app as IReactRootElement);
+  const app = document.querySelector(lihkgSelectors.app)!;
+  const store = findReduxStore<IState, TActions>(app);
   return store;
 };
 
@@ -109,6 +108,11 @@ export const getShareID = (source: ISource) => {
   return C(parseInt(e, 10), 'abcdefghijkmnopqrstuvwxyz');
 };
 
+/**
+ * create a notification object
+ * @private
+ * @see TCreateNotification
+ */
 const createNotification: TCreateNotification = (type, body, duration = 3000) => {
   const { value: id } = notificationIdCount.next();
   const defaultPayload: Partial<ILocalNotifcationPayload> = { title: displayName };
@@ -150,6 +154,23 @@ export const removeNotification = (id: number) => {
   const store = getStore();
   const { dispatch } = store!;
   dispatch(lihkgActions.removeNotification(id));
+};
+
+/**
+ * convert blocked users to personal data set
+ * @param {IBlockedUser[]} blockedUsers the blocked user list from LIHKG
+ */
+export const mapBlockedUsersToDataSet = (blockedUsers: IBlockedUser[]) => {
+  const dataSet = DataSet.factory();
+  const { data } = dataSet;
+  for (const blockedUser of blockedUsers) {
+    const { user_id, blocked_time, block_remark } = blockedUser;
+    const { reason } = block_remark;
+    const date = blocked_time * 1000;
+    const label = new Label('-1', TEXTS.BLOCKED_USER_DEFAULT_LABEL_TEXT, reason, undefined, date);
+    data[user_id] = [label];
+  }
+  return dataSet;
 };
 
 /* debug */

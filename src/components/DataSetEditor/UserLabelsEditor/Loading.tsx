@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import Placeholder from '../../Placeholder/Placeholder';
 import styles from './Loading.module.scss';
 
@@ -8,10 +8,10 @@ type TProps = IProps;
 
 const Loading: React.FunctionComponent<TProps> = () => {
   return (
-    <React.Fragment>
+    <>
       <Placeholder className={styles.user} />
       <Placeholder className={styles.labelList} />
-    </React.Fragment>
+    </>
   );
 };
 

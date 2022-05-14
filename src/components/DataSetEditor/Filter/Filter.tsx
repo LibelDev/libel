@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import type React from 'react';
+import { useCallback } from 'react';
 import { Key } from 'ts-key-enum';
 import useFocus from '../../../hooks/useFocus';
 import { IconName } from '../../Icon/types';
@@ -8,7 +9,9 @@ export interface IProps {
   onChange: (keyword: string) => void;
 }
 
-type TProps = IProps & Omit<TTextInputProps, 'onChange'>;
+type TComponentProps = Omit<TTextInputProps, keyof IProps>;
+
+type TProps = IProps & TComponentProps;
 
 const Filter: React.FunctionComponent<TProps> = (props) => {
   const { onChange, ...otherProps } = props;

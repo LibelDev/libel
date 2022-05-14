@@ -24,14 +24,11 @@
       @apply text-current;
       @apply ml-2;
     }
-
-    & + .reason {
-      @apply mt-2;
-    }
   }
 
-  .reason {
-    & + .buttons {
+  .reason,
+  .buttons {
+    &:not(:first-child) {
       @apply mt-2;
     }
   }

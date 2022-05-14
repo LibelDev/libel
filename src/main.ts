@@ -9,8 +9,8 @@ if (!isOffline()) {
       require('./stylesheets/lihkg.scss');
       require('./stylesheets/main.scss');
       const { default: app } = await import('./app');
-      app.start();
-      const cloud = await import('./cloud');
+      app.bootstrap();
+      const { default: cloud } = await import('./cloud');
       cloud.bootstrap();
       const ga = await import('./ga');
       ga.bootstrap();

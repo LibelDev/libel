@@ -10,6 +10,8 @@ import base from './webpack.config.base';
 const devServer: DevServerConfiguration = {
   hot: false,
   port,
+  host: '127.0.0.1',
+  allowedHosts: 'all',
   client: false,
   liveReload: false,
   devMiddleware: {

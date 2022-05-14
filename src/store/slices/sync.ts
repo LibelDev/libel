@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ActionType } from 'typesafe-actions';
+import type { ActionType } from 'typesafe-actions';
 
 interface IState {
   loading: boolean;

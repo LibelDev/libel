@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
+import { forwardRef, memo } from 'react';
 import styles from './LabelItem.module.scss';
 
 interface IProps { }
@@ -8,7 +9,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 
 type TProps = IProps & TComponentProps;
 
-const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
+const LabelItem = memo(forwardRef<HTMLDivElement, TProps>((props, ref) => {
   const { className, children, ...otherProps } = props;
   return (
     <div
@@ -26,7 +27,7 @@ const LabelItem = React.forwardRef<HTMLDivElement, TProps>((props, ref) => {
       </div>
     </div>
   );
-});
+}));
 
 LabelItem.displayName = 'LabelItem';
 

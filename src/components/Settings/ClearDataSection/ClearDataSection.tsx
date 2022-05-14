@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
 import { displayName } from '../../../../package.json';
+import cloud from '../../../cloud';
 import * as TEXTS from '../../../constants/texts';
-import * as cloud from '../../../helpers/cloud';
 import * as LIHKG from '../../../helpers/lihkg';
 import useGoogleAuthorization from '../../../hooks/useGoogleAuthorization';
 import Storage from '../../../models/Storage';
@@ -42,8 +43,8 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_SUCCESS);
       LIHKG.showNotification(notification);
     } else {
-      const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED);
-      LIHKG.showNotification(notificationClearCanceled);
+      // const notificationClearCanceled = LIHKG.createLocalNotification(TEXTS.CLEAR_LOCAL_DATA_MESSAGE_CLEAR_CANCELED);
+      // LIHKG.showNotification(notificationClearCanceled);
     }
   }, []);
 
@@ -58,13 +59,13 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
       const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_SUCCESS);
       LIHKG.showNotification(notification);
     } else {
-      const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED);
-      LIHKG.showNotification(notification);
+      // const notification = LIHKG.createLocalNotification(TEXTS.CLEAR_CLOUD_DATA_MESSAGE_CLEAR_CANCELED);
+      // LIHKG.showNotification(notification);
     }
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <small className={lihkgCssClasses.settingSectionTitle}>
         {TEXTS.SETTINGS_TITLE_CLEAR_DATA}
       </small>
@@ -95,7 +96,7 @@ const ClearDataSection: React.FunctionComponent<TProps> = () => {
           )
         }
       </ul>
-    </React.Fragment>
+    </>
   );
 };
 

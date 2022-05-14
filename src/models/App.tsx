@@ -1,5 +1,5 @@
 import type { Persistor } from 'redux-persist';
-import { fetchAnnouncements } from '../apis/announcement';
+import { fetchAnnouncements } from '../apis/app';
 import Announcement from '../components/Announcement/Announcement';
 import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVersionAnnouncement';
 import * as ATTRIBUTES from '../constants/attributes';
@@ -9,7 +9,7 @@ import { addedNodeMutationHandlerFactory, handleDataPostIdAttributeMutation, ren
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
 import type { TStore } from '../store/store';
-import type { IQuoteListResponseData, IReplyListResponseData, IThreadListResponseData } from '../types/lihkg';
+import type { APIv2 } from '../types/lihkg';
 import type Cache from './Cache';
 
 class App {
@@ -23,8 +23,8 @@ class App {
     this.persistor = persistor;
   }
 
-  async start () {
-    this.bootstrap();
+  async bootstrap () {
+    this.observe();
     this.bindEvents();
     await this.checkUpdate();
     await this.checkAnnouncements();
@@ -36,10 +36,10 @@ class App {
   }
 
   /**
-   * bootstrap the app
+   * observer mutations
    * @private
    */
-  private bootstrap () {
+  private observe () {
     const { store, persistor } = this;
 
     const observer = new MutationObserver((mutations) => {
@@ -94,15 +94,15 @@ class App {
       const isQuoteList = REGEXES.QUOTE_LIST_API.test(responseURL);
       const isReplyList = REGEXES.REPLY_LIST_API.test(responseURL);
       if (isThreadList || isQuoteList || isReplyList) {
-        const data = JSON.parse(this.responseText) as IThreadListResponseData | IQuoteListResponseData | IReplyListResponseData;
+        const data = JSON.parse(this.responseText) as APIv2.IThreadListResponseBody | APIv2.IQuoteListResponseBody | APIv2.IReplyListResponseBody;
         if (data.success === 1) {
           if (isThreadList) {
-            cache.addThreads(data as IThreadListResponseData);
+            cache.addThreads(data as APIv2.IThreadListResponseBody);
           }
           if (isQuoteList || isReplyList) {
-            cache.addReplies(data as IQuoteListResponseData | IReplyListResponseData);
+            cache.addReplies(data as APIv2.IQuoteListResponseBody | APIv2.IReplyListResponseBody);
           }
-          cache.addUsers(data as IThreadListResponseData & IQuoteListResponseData & IReplyListResponseData);
+          cache.addUsers(data as APIv2.IThreadListResponseBody & APIv2.IQuoteListResponseBody & APIv2.IReplyListResponseBody);
         }
       }
     });

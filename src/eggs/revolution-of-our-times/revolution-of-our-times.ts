@@ -6,7 +6,7 @@ import styles from './revolution-of-our-times.module.scss';
 
 /**
  * The Anti-Extradition Law Amendment Bill Movement
- * @see https://en.wikipedia.org/wiki/2019%E2%80%932020_Hong_Kong_protests
+ * @see https://zh.wikipedia.org/wiki/反對逃犯條例修訂草案運動
  */
 const hatch = async () => {
   const splitView = await waitForElement(lihkgSelectors.splitView);

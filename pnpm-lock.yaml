@@ -9,6 +9,8 @@ specifiers:
   '@fortawesome/react-fontawesome': ^0.1.18
   '@reduxjs/toolkit': ^1.5.1
   '@svgr/webpack': ^6.2.1
+  '@types/chance': ^1.1.3
+  '@types/crypto-js': ^4.1.1
   '@types/debug': ^4.1.7
   '@types/gapi': ^0.0.41
   '@types/gapi.auth2': ^0.0.55
@@ -27,7 +29,9 @@ specifiers:
   '@types/semver': ^7.3.6
   '@types/tailwindcss': ^3.0.10
   '@types/webpack-env': ^1.16.0
+  chance: ^1.1.8
   classnames: ^2.3.1
+  crypto-js: ^4.1.1
   css-loader: ^5.2.0
   cssnano: ^5.1.4
   date-fns: ^2.27.0
@@ -62,6 +66,7 @@ specifiers:
   semver: ^7.3.5
   style-loader: ^2.0.0
   tailwindcss: ^3.0.24
+  tiny-typed-emitter: ^2.1.0
   ts-jest: ^27.1.3
   ts-key-enum: ^2.0.8
   ts-loader: ^8.1.0
@@ -85,6 +90,7 @@ dependencies:
   '@fortawesome/react-fontawesome': 0.1.18_02c9bb727bd1fb5f0c396f6c2f700a1d
   '@reduxjs/toolkit': 1.6.2_react-redux@7.2.6+react@18.0.0
   classnames: 2.3.1
+  crypto-js: 4.1.1
   date-fns: 2.27.0
   debug: 4.3.3
   events: 3.3.0
@@ -110,6 +116,8 @@ dependencies:
 
 devDependencies:
   '@svgr/webpack': 6.2.1
+  '@types/chance': 1.1.3
+  '@types/crypto-js': 4.1.1
   '@types/debug': 4.1.7
   '@types/gapi': 0.0.41
   '@types/gapi.auth2': 0.0.55
@@ -128,6 +136,7 @@ devDependencies:
   '@types/semver': 7.3.9
   '@types/tailwindcss': 3.0.10
   '@types/webpack-env': 1.16.3
+  chance: 1.1.8
   css-loader: 5.2.7_webpack@5.72.0
   cssnano: 5.1.4_postcss@8.3.11
   dotenv: 10.0.0
@@ -140,6 +149,7 @@ devDependencies:
   sass-loader: 11.1.1_sass@1.43.4+webpack@5.72.0
   style-loader: 2.0.0_webpack@5.72.0
   tailwindcss: 3.0.24_ts-node@9.1.1
+  tiny-typed-emitter: 2.1.0
   ts-jest: 27.1.3_9985e1834e803358b7be1e6ce5ca0eea
   ts-key-enum: 2.0.8
   ts-loader: 8.3.0_typescript@4.6.3+webpack@5.72.0
@@ -1776,8 +1786,8 @@ packages:
     resolution: {integrity: sha512-nkalE/f1RvRGChwBnEIoBfSEYOXnCRdleKuv6+lePbMDrMZXeDQnqak5XDOeBgrPPyPfAdcCu/B5z+v3VhplGg==}
     dev: true
 
-  /@maxim_mazurok/gapi.client.drive/3.0.20220410:
-    resolution: {integrity: sha512-rVIsk2MAkBxE+tYvQmd0BXJNb6Kq529OT7HWCY8icVv6Hc+vIouLyzhfdjtf91USNPAAFV1epCg5akQfjladBw==}
+  /@maxim_mazurok/gapi.client.drive/3.0.20220508:
+    resolution: {integrity: sha512-UmQ0146tGE9JZpJPD1RPECpsg0leL+zBXffnz/yfyOdCc5ztv3lLON3IpBzBZweW/SHMsREhjzKvZtGx70Vgvw==}
     dependencies:
       '@types/gapi.client': 1.0.5
     dev: true
@@ -2081,6 +2091,10 @@ packages:
       browserslist: 4.20.2
     dev: true
 
+  /@types/chance/1.1.3:
+    resolution: {integrity: sha512-X6c6ghhe4/sQh4XzcZWSFaTAUOda38GQHmq9BUanYkOE/EO7ZrkazwKmtsj3xzTjkLWmwULE++23g3d3CCWaWw==}
+    dev: true
+
   /@types/connect-history-api-fallback/1.3.5:
     resolution: {integrity: sha512-h8QJa8xSb1WD4fpKBDcATDNGXghFj6/3GRWG6dhmRcu0RX1Ubasur2Uvx5aeEwlf0MwblEC2bMzzMQntxnw/Cw==}
     dependencies:
@@ -2092,6 +2106,10 @@ packages:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
       '@types/node': 12.20.37
+    dev: true
+
+  /@types/crypto-js/4.1.1:
+    resolution: {integrity: sha512-BG7fQKZ689HIoc5h+6D2Dgq1fABRa0RbBWKBd9SP/MVRVXROflpm5fhwyATX5duFmbStzyzyycPB8qUYKDH3NA==}
     dev: true
 
   /@types/debug/4.1.7:
@@ -2144,7 +2162,7 @@ packages:
   /@types/gapi.client.drive/3.0.13:
     resolution: {integrity: sha512-JFkHqQj9RA8MpvfvwdX8VU0Sbu7FMGqBR9dAmkocekWdD/y5Z/a/A6Y37EEqKW/dT8t7F3RpgUDUPlhp3snAlw==}
     dependencies:
-      '@maxim_mazurok/gapi.client.drive': 3.0.20220410
+      '@maxim_mazurok/gapi.client.drive': 3.0.20220508
     dev: true
 
   /@types/gapi.client/1.0.5:
@@ -3099,6 +3117,10 @@ packages:
       supports-color: 7.2.0
     dev: true
 
+  /chance/1.1.8:
+    resolution: {integrity: sha512-v7fi5Hj2VbR6dJEGRWLmJBA83LJMS47pkAbmROFxHWd9qmE1esHRZW8Clf1Fhzr3rjxnNZVCjOEv/ivFxeIMtg==}
+    dev: true
+
   /char-regex/1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
     engines: {node: '>=10'}
@@ -3329,6 +3351,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js/4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+    dev: false
 
   /css-blank-pseudo/0.1.4:
     resolution: {integrity: sha512-LHz35Hr83dnFeipc7oqFDmsjHdljj3TQtxGGiNWSOsTLIAubSm4TEz8qCaKFpk7idaQ1GfWscF4E6mgpBysA1w==}
@@ -7722,6 +7748,10 @@ packages:
 
   /timsort/0.3.0:
     resolution: {integrity: sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=}
+    dev: true
+
+  /tiny-typed-emitter/2.1.0:
+    resolution: {integrity: sha512-qVtvMxeXbVej0cQWKqVSSAHmKZEHAvxdF8HEUBFWts8h+xEo5m/lEiPakuyZ3BnCBjOD8i24kzNOiOLLgsSxhA==}
     dev: true
 
   /tmpl/1.0.5:

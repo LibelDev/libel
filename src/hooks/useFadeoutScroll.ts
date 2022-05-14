@@ -1,17 +1,32 @@
 // import debugFactory from 'debug';
-import { MutableRefObject, useMemo, useRef } from 'react';
+import type React from 'react';
+import { useMemo, useRef } from 'react';
 import { useScroll } from 'react-use';
 
-type TUseScrollFadeResult<T> = [
-  MutableRefObject<T | null>,
-  React.CSSProperties
-];
+module UseFadeoutScroll {
+  /**
+   * `useFadeoutScroll` hook options
+   */
+  export interface IOptions {
+    fadingRate?: number;
+  }
+  /**
+   * `useFadeoutScroll` hook result
+   */
+  export type TResult<T> = [
+    React.RefObject<T>,
+    React.CSSProperties
+  ];
+}
 
 // const debug = debugFactory('libel:hook:useFadeoutScroll');
 
-const useFadeoutScroll = <T extends HTMLElement> (fadingRate = 1): TUseScrollFadeResult<T> => {
-  const ref = useRef<T | null>(null);
+const useFadeoutScroll = <T extends HTMLElement> (options: UseFadeoutScroll.IOptions): UseFadeoutScroll.TResult<T> => {
+  const { fadingRate = 1 } = options;
+
+  const ref = useRef<T>(null);
   const { y } = useScroll(ref);
+
   const style = useMemo<React.CSSProperties>(() => {
     if (ref.current) {
       const { clientHeight, scrollHeight } = ref.current;
@@ -30,7 +45,8 @@ const useFadeoutScroll = <T extends HTMLElement> (fadingRate = 1): TUseScrollFad
       }
     }
     return {};
-  }, [y, ref.current]);
+  }, [fadingRate, y]);
+
   return [ref, style];
 };
 

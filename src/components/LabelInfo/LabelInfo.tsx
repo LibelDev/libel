@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { memo, useMemo } from 'react';
 import { getShareURL } from '../../helpers/label';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
@@ -23,7 +24,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
 
 type TProps = IProps & TComponentProps;
 
-const LabelInfo: React.FunctionComponent<TProps> = (props) => {
+const LabelInfo: React.FunctionComponent<TProps> = memo((props) => {
   const { className, user, index, label, dataSet } = props;
 
   const isSubscriptionImplemented = Subscription.implements(dataSet);
@@ -90,7 +91,7 @@ const LabelInfo: React.FunctionComponent<TProps> = (props) => {
       </div>
     </div>
   );
-};
+});
 
 LabelInfo.displayName = 'LabelInfo';
 

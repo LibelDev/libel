@@ -21,3 +21,5 @@ export const images = [
   imageRipMouse,
   imageRipPig
 ];
+
+export const referenceURL = 'https://zh.wikipedia.org/zh-hk/銅鑼灣刺警案';

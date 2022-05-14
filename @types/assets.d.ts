@@ -14,14 +14,24 @@ declare module '*.png' {
 }
 
 declare module '*.svg' {
-  import type React from 'react';
-  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
-  export default ReactComponent;
+  const src: string;
+  export default src;
 }
 
 declare module '*.webp' {
   const src: string;
   export default src;
+}
+
+declare module '*.svg?svgr' {
+  import type React from 'react';
+  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+  export default ReactComponent;
+}
+
+declare module '*.html' {
+  const content: string;
+  export default content;
 }
 
 declare module '*.txt' {

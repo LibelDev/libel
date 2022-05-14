@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import max from 'lodash/max';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';

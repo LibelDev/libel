@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import debugFactory from 'debug';
 import produce from 'immer';
-import React, { useCallback, useMemo, useState } from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
+import useFadeoutScroll from '../../hooks/useFadeoutScroll';
+import type DataSet from '../../models/DataSet';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
-import type Personal from '../../models/Personal';
 import schema from '../../schemas/dataSet';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './DataSetEditor.module.scss';
@@ -22,10 +24,10 @@ interface IAutoScrollUserItemIndex {
 export interface IProps {
   dataSet: IDataSet;
   onChange?: (user: string, index: number, label?: ILabel) => void;
-  onSubmit: (dataSet: Personal) => void;
+  onSubmit: (dataSet: DataSet) => void;
 }
 
-type TComponentProps = Omit<React.ComponentPropsWithoutRef<'form'>, 'onChange' | 'onSubmit'>;
+type TComponentProps = TComponentPropsWithoutRef<'form', IProps>;
 
 export type TProps = IProps & TComponentProps;
 
@@ -39,6 +41,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
+  const [innerRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLDivElement>({ fadingRate: 0.3 });
 
   const name = `${namespace}-${DataSetEditor.displayName!}`;
 
@@ -125,46 +128,44 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       }
       onSubmit={handleSubmit}
     >
-      <React.Fragment>
-        <Filter
-          autoFocus
-          value={keyword}
-          placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
-          onChange={handleFilterChange}
-        />
-        <div className={styles.filterResult}>
-          {
-            filteredLabelsGroups.length > 0 ? (
-              <ol className={styles.labelsGroupList}>
-                {
-                  filteredLabelsGroups.map(({ user, items }, index) => (
-                    <li key={user}>
-                      <UserLabelsEditor
-                        className={styles.userLabelsEditor}
-                        user={user}
-                        items={items}
-                        autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
-                        onChange={handleUserLabelsChange}
-                        onRemove={handleUserLabelsRemove}
-                        onScroll={handleUserLabelsScroll}
-                      />
-                    </li>
-                  ))
-                }
-              </ol>
-            ) : (
-              TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
-            )
-          }
-        </div>
+      <Filter
+        autoFocus
+        value={keyword}
+        placeholder={TEXTS.DATA_SET_EDITOR_FILTER_PLACEHOLDER}
+        onChange={handleFilterChange}
+      />
+      <div ref={innerRef} className={styles.inner} style={fadeoutScrollStyle}>
         {
-          !!error && (
-            <ErrorMessage className={styles.error}>
-              {error}
-            </ErrorMessage>
+          filteredLabelsGroups.length > 0 ? (
+            <ol className={styles.labelsGroupList}>
+              {
+                filteredLabelsGroups.map(({ user, items }, index) => (
+                  <li key={user}>
+                    <UserLabelsEditor
+                      className={styles.userLabelsEditor}
+                      user={user}
+                      items={items}
+                      autoScrollItemIndex={autoScrollUserItemIndex && autoScrollUserItemIndex[user]}
+                      onChange={handleUserLabelsChange}
+                      onRemove={handleUserLabelsRemove}
+                      onScroll={handleUserLabelsScroll}
+                    />
+                  </li>
+                ))
+              }
+            </ol>
+          ) : (
+            TEXTS.DATA_SET_EDITOR_FILTER_MESSAGE_EMPTY_RESULT
           )
         }
-      </React.Fragment>
+      </div>
+      {
+        !!error && (
+          <ErrorMessage className={styles.error}>
+            {error}
+          </ErrorMessage>
+        )
+      }
     </form>
   );
 };

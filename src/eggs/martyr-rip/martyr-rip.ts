@@ -2,7 +2,7 @@ import random from 'lodash/random';
 import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
-import { enabled, images } from './config/config';
+import { enabled, images, referenceURL } from './config/config';
 import styles from './martyr-rip.module.scss';
 
 /**
@@ -18,7 +18,7 @@ const hatch = async () => {
   icon.setAttribute('src', imageSrc);
   const link = document.createElement('a');
   link.classList.add(styles.link);
-  link.setAttribute('href', 'https://zh.wikipedia.org/zh-hk/銅鑼灣刺警案');
+  link.setAttribute('href', referenceURL);
   link.setAttribute('target', '_blank');
   link.appendChild(icon);
   navCategory.appendChild(link);

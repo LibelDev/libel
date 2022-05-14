@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createTransform } from 'redux-persist';
-import { ActionType } from 'typesafe-actions';
+import type { ActionType } from 'typesafe-actions';
 import type { ISource } from '../../models/Label';
 import Personal, { IPersonal, ISerializedPersonal } from '../../models/Personal';
 

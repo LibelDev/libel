@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import React, { useId } from 'react';
+import type React from 'react';
+import { forwardRef, useId } from 'react';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './BaseInput.module.scss';
 
@@ -11,7 +12,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'input'>;
 
 export type TProps = IProps & TComponentProps;
 
-const BaseInput = React.forwardRef<HTMLInputElement, TProps>((props, ref) => {
+const BaseInput = forwardRef<HTMLInputElement, TProps>((props, ref) => {
   const { id, className, error, ...otherProps } = props;
 
   const _id = id || useId();

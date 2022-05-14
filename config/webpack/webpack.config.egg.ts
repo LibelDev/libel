@@ -9,8 +9,13 @@ import base from './webpack.config.base';
 const devServer: DevServerConfiguration = {
   hot: false,
   port,
-  client: false,
-  liveReload: false,
+  host: '127.0.0.1',
+  allowedHosts: 'all',
+  // client: false,
+  liveReload: true,
+  devMiddleware: {
+    writeToDisk: true
+  },
   headers: {
     'Access-Control-Allow-Origin': '*'
   },

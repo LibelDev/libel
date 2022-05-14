@@ -5,8 +5,8 @@ import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 
 import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync';
 import { dev } from '../../config/config';
 import { namespace } from '../../package.json';
+import storage from '../libs/storage';
 import type { ISerializedStorage, IStorage } from '../models/Storage';
-import storage from '../storage';
 import { createLastModifiedTimeUpdater } from './middleware/meta';
 import { createLoadSubscriptionOnEnableListener, createLoadSubscriptionRejectedNotifier } from './middleware/subscription';
 import reducer, { persistedReducer } from './reducer';

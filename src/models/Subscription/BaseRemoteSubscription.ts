@@ -1,10 +1,10 @@
 import { baseRemote } from '../../schemas/subscription';
-import DataSet, { IDataSet } from '../DataSet';
+import BaseDataSet, { IBaseDataSet } from '../BaseDataSet';
 import type { IBaseSubscription } from './BaseSubscription';
 
-export interface IBaseRemoteSubscription extends IBaseSubscription, IDataSet { }
+export interface IBaseRemoteSubscription extends IBaseSubscription, IBaseDataSet { }
 
-class BaseRemoteSubscription extends DataSet implements IBaseRemoteSubscription {
+class BaseRemoteSubscription extends BaseDataSet implements IBaseRemoteSubscription {
   name: string;
   version: string;
   homepage?: string;

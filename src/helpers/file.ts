@@ -3,8 +3,8 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
 import { render } from 'mustache';
 import { EXPORT_FILENAME_TIMESTAMP_FORMAT } from '../constants/files';
 import * as TEXTS from '../constants/texts';
+import storage from '../libs/storage';
 import Storage, { ISerializedStorage } from '../models/Storage';
-import storage from '../storage';
 import * as filenames from '../templates/filenames';
 
 export const download = (filename: string, body: string, type: string) => {

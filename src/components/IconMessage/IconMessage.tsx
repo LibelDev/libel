@@ -4,24 +4,32 @@ import Icon from '../Icon/Icon';
 import type { IconName } from '../Icon/types';
 import styles from './IconMessage.module.scss';
 
-interface IProps {
-  as?: React.ElementType;
+export interface IProps {
   icon: IconName;
 }
 
-type TComponentProps = React.ComponentPropsWithoutRef<'div'>;
+type TComponentProps<T extends React.ElementType> = TComponentPropsWithoutRefWithAs<T, IProps>;
 
-export type TProps = IProps & TComponentProps;
+export type TProps<T extends React.ElementType = 'div'> = IProps & TComponentProps<T>;
 
-const IconMessage: React.FunctionComponent<TProps> = (props) => {
-  const { className, as: Component = 'div', icon, children, ...otherProps } = props;
+function IconMessage<T extends React.ElementType> (props: TProps<T>) {
+  const {
+    className,
+    as,
+    icon,
+    children,
+    ...otherProps
+  } = props;
+
+  const Component = as || 'div';
+
   return (
     <Component {...otherProps} className={classNames(className, styles.iconMessage)}>
       <Icon className={styles.icon} icon={icon} />
       {children}
     </Component>
   );
-};
+}
 
 IconMessage.displayName = 'IconMessage';
 
