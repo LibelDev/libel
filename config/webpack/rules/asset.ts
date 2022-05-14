@@ -1,10 +1,10 @@
 import type webpack from 'webpack';
-import { dev } from '../../config';
 import svgLoader from '../loaders/svg-loader';
 
 export const resource: webpack.RuleSetRule = {
   test: /\.(gif|jpg|png|svg|webp)$/i,
   type: 'asset/resource',
+  resourceQuery: { not: /svgr/ },
   generator: { emit: false }
 };
 
@@ -13,8 +13,9 @@ export const source: webpack.RuleSetRule = {
   type: 'asset/source'
 };
 
-export const svg: webpack.RuleSetRule = {
+export const svgr: webpack.RuleSetRule = {
   test: /\.svg$/i,
   issuer: /\.[jt]sx?$/,
+  resourceQuery: /svgr/,
   use: [svgLoader]
 };

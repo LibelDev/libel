@@ -1,6 +1,7 @@
+import type webpack from 'webpack';
 import { dev } from '../../config';
 
-const loader = {
+const loader: webpack.RuleSetUseItem = {
   loader: 'css-loader',
   options: {
     modules: {
