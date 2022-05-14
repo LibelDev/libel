@@ -1,5 +1,4 @@
 import debugFactory from 'debug';
-import * as files from '../constants/files';
 import storage from '../libs/storage';
 import Storage, { ISerializedStorage } from '../models/Storage';
 import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from '../store/selectors';
@@ -30,15 +29,15 @@ const upload = (fileId: string, json: string) => {
   return gapi.drive.update(fileId, body);
 };
 
-export const clear = () => {
-  return gapi.drive.deleteByName(files.APP_DATA);
+export const clear = (filename: string) => {
+  return gapi.drive.deleteByName(filename);
 };
 
-export const sync = async () => {
+export const sync = async (filename: string) => {
   const { dispatch } = store;
   dispatch(syncActions.setLoading(true));
   try {
-    const [file, fresh] = await gapi.drive.ensure(files.APP_DATA);
+    const [file, fresh] = await gapi.drive.ensure(filename);
     if (fresh) {
       // never been synced with the cloud before
       // nothing to do here

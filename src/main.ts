@@ -10,7 +10,7 @@ if (!isOffline()) {
       require('./stylesheets/main.scss');
       const { default: app } = await import('./app');
       app.bootstrap();
-      const cloud = await import('./cloud');
+      const { default: cloud } = await import('./cloud');
       cloud.bootstrap();
       const ga = await import('./ga');
       ga.bootstrap();

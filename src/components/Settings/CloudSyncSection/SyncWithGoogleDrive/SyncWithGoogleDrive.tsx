@@ -6,7 +6,7 @@ import { render } from 'mustache';
 import type React from 'react';
 import { useCallback, useMemo } from 'react';
 import logo from '../../../../../assets/logos/google/google-drive.png';
-import * as cloud from '../../../../cloud';
+import cloud from '../../../../cloud';
 import { SYNC_INTERVAL } from '../../../../constants/sync';
 import * as TEXTS from '../../../../constants/texts';
 import useGoogleAuthorization from '../../../../hooks/useGoogleAuthorization';

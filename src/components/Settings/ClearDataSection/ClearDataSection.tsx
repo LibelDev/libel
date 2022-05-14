@@ -1,8 +1,8 @@
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import { displayName } from '../../../../package.json';
+import cloud from '../../../cloud';
 import * as TEXTS from '../../../constants/texts';
-import * as cloud from '../../../helpers/cloud';
 import * as LIHKG from '../../../helpers/lihkg';
 import useGoogleAuthorization from '../../../hooks/useGoogleAuthorization';
 import Storage from '../../../models/Storage';
