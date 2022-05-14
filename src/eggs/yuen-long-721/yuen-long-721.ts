@@ -6,8 +6,9 @@ import styles from './yuen-long-721.module.scss';
 
 /**
  * Yuen Long 721
- * @see https://en.wikipedia.org/wiki/2019_Yuen_Long_attack
- * @see https://www.thestandnews.com/media/video/images/721-尋源
+ * @see https://zh.wikipedia.org/wiki/元朗襲擊事件
+ * @see https://collection.news/thestandnews/articles/148161
+ * @see https://collection.news/thestandnews/articles/148362
  * @see https://www.youtube.com/watch?v=5RWsXqjaads
  * @see https://www.youtube.com/watch?v=9e8OCzU_lAI
  */
