@@ -1,7 +1,7 @@
 import debugFactory from 'debug';
 import * as files from '../constants/files';
+import storage from '../libs/storage';
 import Storage, { ISerializedStorage } from '../models/Storage';
-import storage from '../storage';
 import { selectConfig, selectMeta, selectPersonal, selectSubscriptions } from '../store/selectors';
 import { actions as metaActions } from '../store/slices/meta';
 import { actions as syncActions } from '../store/slices/sync';
