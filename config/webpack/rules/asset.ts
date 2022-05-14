@@ -9,7 +9,7 @@ export const resource: webpack.RuleSetRule = {
 };
 
 export const source: webpack.RuleSetRule = {
-  test: /\.txt$/i,
+  test: /\.(html|txt)$/i,
   type: 'asset/source'
 };
 
