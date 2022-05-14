@@ -1,3 +1,53 @@
+## v3.6.0 (2022-05-15)
+
+### Refactor
+
+- **egg**: add `referenceURL`
+- **cloud**: add `Cloud` model
+- **apis**: reuse `RequestMethod`
+- **editor**: reuse `handleClose`
+- **typings**: update component typings
+- **typings**: update component typings
+- **editor**: update class name
+- **hooks**: update `useFadeoutScroll`
+- **hooks**: rename `useLazyRender` to `useVisibility`
+- **stylesheets**: update variables
+- **label-item**: update floating logic
+- **helpers/lihkg**: use `DataSet` instead of `Personal`
+- **editor**: set dirty earlier
+- **components**: move loading spinner from `SettingOptionButton` to `BaseButton`
+- **models**: `DataSet` → `BaseDataSet`; `Custom` → `DataSet`
+- **modal**: add `useModal`
+- **hooks**: change `useSettingsModalFocusTrap` to `useFocusTrap`
+- **typings**: update hooks types
+- **hooks**: update typings and memoization
+- **settings**: separate the buttons in `ManageDataSection` into standalone components
+- **typings**: update `findReduxStore` typings
+- **typings**: update `lihkg` types
+- **lihkg**: enhance typings
+- **typings**: add type for `unregister()`
+
+### Feat
+
+- **egg**: ***
+- **webpack**: allow import HTML
+- **apis/lihkg**: update request headers
+- **settings**: add convert blocked users button
+- **editor**: apply fadeout scroll effect to data set editor
+- **apis/lihkg**: add `fetchBlockedUser()`
+- **helpers/lihkg**: add `mapBlockedUsersToDataSet()`
+
+### Fix
+
+- **webpack**: cannot import SVGR
+- **settings**: remove notifications of cancel clear actions
+- **converter**: id collision with existing label
+- **label-info**: missing margin-top for buttons
+
+### Perf
+
+- **components**: memoization
+
 ## v3.5.0 (2022-04-18)
 
 ### Feat
