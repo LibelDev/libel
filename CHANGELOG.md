@@ -1,3 +1,9 @@
+## v3.6.1 (2022-06-01)
+
+### Fix
+
+- **egg**: incorrect script URL
+
 ## v3.6.0 (2022-05-15)
 
 ### Refactor
