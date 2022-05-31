@@ -14,3 +14,4 @@ export const debugEgg = process.env.EGG === 'true';
 
 export const publicURL = dev ? `http://localhost:${port}` : homepage;
 export const publicDataURL = `${publicURL}/${Directory.Data}`;
+export const publicDistURL = `${publicURL}/${Directory.Dist}`;
