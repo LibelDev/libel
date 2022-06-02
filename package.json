@@ -13,21 +13,20 @@
   "license": "MIT",
   "engines": {
     "node": ">=14",
-    "pnpm": ">=6.17",
-    "yarn": ">=1.22"
+    "pnpm": ">=7.1.0"
   },
   "scripts": {
     "clean": "rm -rf dist",
     "dev": "NODE_ENV=development webpack serve --config ./config/webpack/webpack.config.dev.ts",
-    "dev:main": "pnpm dev -- --config-name main",
-    "dev:egg": "EGG=true pnpm dev -- --config-name egg",
+    "dev:main": "pnpm dev --config-name main",
+    "dev:egg": "EGG=true pnpm dev --config-name egg",
     "test": "jest",
-    "test:watch": "pnpm test -- --watch",
+    "test:watch": "pnpm test --watch",
     "prebuild": "pnpm clean && pnpm type:scss",
     "build": "pnpm prebuild && NODE_ENV=production webpack --config ./config/webpack/webpack.config.prod.ts",
     "prerelease": "cz bump && cz ch && pnpm build && git add . && git commit --amend --no-edit",
     "type:scss": "tsm src/**/*.module.scss --implementation sass --exportType default",
-    "type:scss:watch": "pnpm type:scss -- --watch"
+    "type:scss:watch": "pnpm type:scss --watch"
   },
   "dependencies": {
     "@floating-ui/react-dom": "^0.6.0",
