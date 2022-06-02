@@ -23,7 +23,6 @@ const hatch = async () => {
   const notice = await waitForElement(lihkgSelectors.notice);
   const noticeImage = notice.querySelector('img')!;
   const { height, width } = noticeImage.getBoundingClientRect();
-  noticeImage.classList.add(styles.hidden);
 
   const html = document.querySelector('html')!;
   html.classList.add(styles.egg);
@@ -37,6 +36,7 @@ const hatch = async () => {
   container.style.paddingTop = `${imageRatio}%`;
 
   notice.insertBefore(container, noticeImage);
+  noticeImage.remove();
 
   const _images: ISlideshowImage[] = images.map((src) => ({ src }));
   const root = createRoot(container);

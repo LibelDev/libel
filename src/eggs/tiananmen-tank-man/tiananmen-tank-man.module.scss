@@ -1,0 +1,25 @@
+@import '../../stylesheets/base';
+
+.egg :global(#{$lihkg-selector-notice}) {
+  @apply relative;
+
+  .image {
+    @apply relative;
+    @apply inline-block;
+    @apply w-full;
+    @apply bg-center bg-cover bg-no-repeat;
+    background-image: $image-tiananmen-tank-man;
+
+    &:before,
+    &:after {
+      @apply absolute;
+    }
+
+    // logo
+    &:before {
+      content: '';
+      @include logo();
+      z-index: 1;
+    }
+  }
+}
