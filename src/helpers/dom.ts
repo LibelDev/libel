@@ -10,8 +10,8 @@ export const appendScript = (src: string, async = false) => {
   return script;
 };
 
-export const waitForElement = (selector: string): Promise<Element> => {
-  const element = document.querySelector(selector);
+export const waitForElement = <T extends HTMLElement> (selector: string): Promise<T> => {
+  const element = document.querySelector<T>(selector);
   if (element) {
     return Promise.resolve(element);
   }
@@ -24,9 +24,9 @@ export const waitForElement = (selector: string): Promise<Element> => {
             for (const node of nodes) {
               if (node.nodeType === document.ELEMENT_NODE) {
                 window.requestAnimationFrame(() => {
-                  if ((node as Element).matches(selector)) {
+                  if ((node as T).matches(selector)) {
                     observer.disconnect();
-                    return resolve(node as Element);
+                    return resolve(node as T);
                   }
                 });
               }
