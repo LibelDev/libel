@@ -7,7 +7,7 @@ specifiers:
   '@fortawesome/free-regular-svg-icons': ^6.1.1
   '@fortawesome/free-solid-svg-icons': ^6.1.1
   '@fortawesome/react-fontawesome': ^0.1.18
-  '@kitce/react-use-fadeout-scroll': ^1.0.0
+  '@kitce/react-use-fadeout-scroll': ^2.0.0
   '@reduxjs/toolkit': ^1.5.1
   '@svgr/webpack': ^6.2.1
   '@types/chance': ^1.1.3
@@ -91,7 +91,7 @@ dependencies:
   '@fortawesome/free-regular-svg-icons': 6.1.1
   '@fortawesome/free-solid-svg-icons': 6.1.1
   '@fortawesome/react-fontawesome': 0.1.18_hjfkmtq3pe7bdfmd7inrupgslm
-  '@kitce/react-use-fadeout-scroll': 1.0.0_ef5jwxihqo6n7gxfmzogljlgcm
+  '@kitce/react-use-fadeout-scroll': 2.0.0_ef5jwxihqo6n7gxfmzogljlgcm
   '@reduxjs/toolkit': 1.6.2_ydj23m2apjohmawqetv7uxfa2i
   classnames: 2.3.1
   crypto-js: 4.1.1
@@ -1790,15 +1790,14 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.11
     dev: true
 
-  /@kitce/react-use-fadeout-scroll/1.0.0_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution: {integrity: sha512-KtYD8AvXsy6lBRlsFQ6MZucI//pSfXZhMrmoe0YUne4a86fEjnLo1eeUI84Wf+P7HowTA9+99+nKxKjY2McTlQ==}
+  /@kitce/react-use-fadeout-scroll/2.0.0_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-qYDSLkoCkGHZzVIoIPh80Cli4SB+wCJ+K38YnuF1OxTfetzlaxLlYaNetKE5gQWvnk9g8GamW1rcbK5VHvtWHQ==}
     peerDependencies:
       react: ^16.8.0  || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
-      react-use: 17.4.0_ef5jwxihqo6n7gxfmzogljlgcm
     dev: false
 
   /@leichtgewicht/ip-codec/2.0.3:
@@ -2271,7 +2270,6 @@ packages:
 
   /@types/node/12.20.37:
     resolution: {integrity: sha512-i1KGxqcvJaLQali+WuypQnXwcplhtNtjs66eNsZpp2P2FL/trJJxx/VWsM0YCL2iMoIJrbXje48lvIQAQ4p2ZA==}
-    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -6900,30 +6898,6 @@ packages:
     peerDependencies:
       react: ^16.8.0  || ^17.0.0
       react-dom: ^16.8.0  || ^17.0.0
-    dependencies:
-      '@types/js-cookie': 2.2.7
-      '@xobotyi/scrollbar-width': 1.9.5
-      copy-to-clipboard: 3.3.1
-      fast-deep-equal: 3.1.3
-      fast-shallow-equal: 1.0.0
-      js-cookie: 2.2.1
-      nano-css: 5.3.4_ef5jwxihqo6n7gxfmzogljlgcm
-      react: 18.1.0
-      react-dom: 18.1.0_react@18.1.0
-      react-universal-interface: 0.6.2_react@18.1.0+tslib@2.3.1
-      resize-observer-polyfill: 1.5.1
-      screenfull: 5.2.0
-      set-harmonic-interval: 1.0.1
-      throttle-debounce: 3.0.1
-      ts-easing: 0.2.0
-      tslib: 2.3.1
-    dev: false
-
-  /react-use/17.4.0_ef5jwxihqo6n7gxfmzogljlgcm:
-    resolution: {integrity: sha512-TgbNTCA33Wl7xzIJegn1HndB4qTS9u03QUwyNycUnXaweZkE4Kq2SB+Yoxx8qbshkZGYBDvUXbXWRUmQDcZZ/Q==}
-    peerDependencies:
-      react: ^16.8.0  || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
     dependencies:
       '@types/js-cookie': 2.2.7
       '@xobotyi/scrollbar-width': 1.9.5

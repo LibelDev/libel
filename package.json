@@ -35,7 +35,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
-    "@kitce/react-use-fadeout-scroll": "^1.0.0",
+    "@kitce/react-use-fadeout-scroll": "^2.0.0",
     "@reduxjs/toolkit": "^1.5.1",
     "classnames": "^2.3.1",
     "crypto-js": "^4.1.1",
