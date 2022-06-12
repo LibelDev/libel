@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { toCanvas, toImageURL, TToCanvasOptions } from '../helpers/canvas';
+import { toCanvas, toImageURL } from '../helpers/canvas';
 
 export namespace UseScreenshot {
   /**
-   * `useScreenshot` hook result
+   * `useScreenshot` hook options, it needs to be memoized
    */
-  export type TOptions = TToCanvasOptions;
+  export type TOptions = Parameters<typeof toCanvas>[1];
   /**
    * `useScreenshot` hook result
    */
@@ -16,8 +16,6 @@ export namespace UseScreenshot {
     blob: Blob | null;
     canvas: HTMLCanvasElement | null;
   }
-  /* event handlers */
-  export type TCloneEventHandler = Required<TToCanvasOptions>['onclone'];
 }
 
 const initialResult: UseScreenshot.IResult = {
