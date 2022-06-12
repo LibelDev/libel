@@ -1,3 +1,13 @@
+## v3.6.2 (2022-06-12)
+
+### Fix
+
+- **label-form**: unexpected screenshot behaviour
+
+### Refactor
+
+- **typings**: revise `waitForElement` types
+
 ## v3.6.1 (2022-06-01)
 
 ### Fix
