@@ -1,8 +1,6 @@
 import html2canvas, { Options } from 'html2canvas';
 
-export type TToCanvasOptions = Partial<Options>;
-
-export const toCanvas = (element: HTMLElement, options?: TToCanvasOptions) => {
+export const toCanvas = (element: HTMLElement, options?: Partial<Options>) => {
   const _options = {
     allowTaint: true,
     useCORS: true,

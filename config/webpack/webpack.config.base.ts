@@ -1,3 +1,4 @@
+import path from 'path';
 import type webpack from 'webpack';
 import { publicURL } from '../config';
 import environment from './plugins/environment';
@@ -7,7 +8,11 @@ import typescript from './rules/typescript';
 
 const config: webpack.Configuration = {
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      /* to fix invalid hook call warning when using `pnpm link` */
+      react: path.resolve('./node_modules/react')
+    }
   },
   output: {
     filename: '[name].js',

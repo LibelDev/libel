@@ -41,7 +41,7 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
   const [error, setError] = useState<string | null>(null);
-  const [innerRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLDivElement>({ fadingRate: 0.3 });
+  const [innerRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLDivElement>({ yFadingRate: 0.3 });
 
   const name = `${namespace}-${DataSetEditor.displayName!}`;
 
