@@ -29,7 +29,11 @@ const ReloadSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
     event.preventDefault();
     dispatch(subscriptionsActions.load(index));
     // analytics
-    gtag.event(EventAction.Reload, { event_category: EventCategory.Subscription, event_label: subscription.name });
+    gtag.event(EventAction.Reload, {
+      event_category: EventCategory.Subscription,
+      event_label: subscription.name,
+      value: subscription.url
+    });
   }, [subscription, index]);
 
   return (
