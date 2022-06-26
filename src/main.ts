@@ -1,10 +1,9 @@
 import * as EGG from './constants/egg';
 import { isMainApp, isOffline } from './helpers/app';
-import { appendScript } from './helpers/dom';
+import { appendScriptToBody } from './helpers/dom';
 
-if (!isOffline()) {
-  (async () => {
-    appendScript(EGG.SCRIPT_URL);
+(async () => {
+  if (!isOffline()) {
     if (isMainApp()) {
       require('./stylesheets/lihkg.scss');
       require('./stylesheets/main.scss');
@@ -15,5 +14,6 @@ if (!isOffline()) {
       const ga = await import('./ga');
       ga.bootstrap();
     }
-  })();
-}
+    appendScriptToBody(EGG.SCRIPT_URL);
+  }
+})();

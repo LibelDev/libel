@@ -1,5 +1,5 @@
 import Singleton from '../models/Singleton';
-import { appendScript } from './dom';
+import { appendScriptToBody } from './dom';
 
 type TClientDriveFilesGetRequestWithoutFileId = Omit<Parameters<typeof gapi.client.drive.files.get>[0], 'fileId'>;
 type TSpaces = ('drive' | 'appDataFolder')[];
@@ -23,8 +23,9 @@ const initClient = (apiKey: string, discoveryDocs: string[], clientId: string, s
 
 const init = () => {
   return new Promise<typeof gapi>((resolve) => {
+    const body = document.querySelector('body')!;
     const src = 'https://apis.google.com/js/api.js';
-    const script = appendScript(src);
+    const script = appendScriptToBody(src);
     script.addEventListener('load', async () => {
       await loadClient('client:auth2');
       const apiKey = process.env.GOOGLE_API_KEY!;
