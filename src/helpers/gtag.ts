@@ -1,21 +1,23 @@
 import Singleton from '../models/Singleton';
 import { id } from '../types/ga';
-import { appendScript } from './dom';
+import { appendScriptToHead } from './dom';
 
-type TWindow = typeof window & {
-  dataLayer: any[];
+const createScriptInnerHTML = (id: string) => {
+  return `
+    window.dataLayer = window.dataLayer || [];
+    function gtag () { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', '${id}');
+  `;
 };
 
 const init = () => {
   return new Promise<Gtag.Gtag>((resolve) => {
     const src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
-    const script = appendScript(src, true);
-    script.addEventListener('load', () => {
-      const _window = window as TWindow;
-      _window.dataLayer = _window.dataLayer || [];
-      _window.gtag = _window.gtag || ((...args: any[]) => { _window.dataLayer.push(args); });
-      resolve(_window.gtag);
-    });
+    appendScriptToHead(src, true);
+    const script = appendScriptToHead();
+    script.innerHTML = createScriptInnerHTML(id);
+    resolve(window.gtag);
   });
 };
 

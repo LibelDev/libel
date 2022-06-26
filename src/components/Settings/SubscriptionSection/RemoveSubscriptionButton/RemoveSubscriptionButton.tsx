@@ -34,7 +34,11 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
     if (yes) {
       dispatch(subscriptionsActions.remove(index));
       // analytics
-      gtag.event(EventAction.Remove, { event_category: EventCategory.Subscription, event_label: subscription.name });
+      gtag.event(EventAction.Remove, {
+        event_category: EventCategory.Subscription,
+        event_label: subscription.name,
+        value: subscription.url
+      });
     }
   }, [subscription, index]);
 
