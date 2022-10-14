@@ -12,14 +12,16 @@
 ## Installation / Usage
 
 For the installation steps, usage and more details, please visit [Wiki](https://github.com/kitce/libel/wiki).
+
 關於詳細介紹、安裝教學及使用教學，請閱讀 [Wiki](https://github.com/kitce/libel/wiki)。
 
 ***
 
 ## Development
 
-*This section is for developers only.
-此章節只供開發者瀏覽。*
+*This section is for developers only.*
+
+*此章節只供開發者瀏覽。*
 
 ### Install dependencies
 
