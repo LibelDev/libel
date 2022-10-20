@@ -37,9 +37,9 @@ type TCreateNotification = {
  */
 const notificationIdCount = counter(10000);
 
-export const getUserRegistrationDate = (user: IUser) => {
-  return new Date(user.create_time * 1000);
-};
+// export const getUserRegistrationDate = (user: IUser) => {
+//   return new Date(user.create_time * 1000);
+// };
 
 export const waitForSubmissionForm = () => {
   return waitForElement(lihkgSelectors.submissionForm);
