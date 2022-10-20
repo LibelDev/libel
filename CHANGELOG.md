@@ -1,3 +1,13 @@
+## v3.7.0 (2022-10-21)
+
+### Feat
+
+- **egg**: ***
+
+### Fix
+
+- **sniping**: remove user registration date from sniping template
+
 ## v3.6.3 (2022-06-27)
 
 ### Fix
@@ -5,6 +15,10 @@
 - **ga**: failed to load Google Analytics
 
 ## v3.6.2 (2022-06-12)
+
+### Feat
+
+- **egg**: ***
 
 ### Fix
 
@@ -14,10 +28,6 @@
 
 - **typings**: revise `waitForElement` types
 
-### Feat
-
-- **egg**: ***
-
 ## v3.6.1 (2022-06-01)
 
 ### Fix
@@ -25,6 +35,23 @@
 - **egg**: incorrect script URL
 
 ## v3.6.0 (2022-05-15)
+
+### Feat
+
+- **egg**: ***
+- **webpack**: allow import HTML
+- **apis/lihkg**: update request headers
+- **settings**: add convert blocked users button
+- **editor**: apply fadeout scroll effect to data set editor
+- **apis/lihkg**: add `fetchBlockedUser()`
+- **helpers/lihkg**: add `mapBlockedUsersToDataSet()`
+
+### Fix
+
+- **webpack**: cannot import SVGR
+- **settings**: remove notifications of cancel clear actions
+- **converter**: id collision with existing label
+- **label-info**: missing margin-top for buttons
 
 ### Refactor
 
@@ -53,23 +80,6 @@
 - **lihkg**: enhance typings
 - **typings**: add type for `unregister()`
 
-### Feat
-
-- **egg**: ***
-- **webpack**: allow import HTML
-- **apis/lihkg**: update request headers
-- **settings**: add convert blocked users button
-- **editor**: apply fadeout scroll effect to data set editor
-- **apis/lihkg**: add `fetchBlockedUser()`
-- **helpers/lihkg**: add `mapBlockedUsersToDataSet()`
-
-### Fix
-
-- **webpack**: cannot import SVGR
-- **settings**: remove notifications of cancel clear actions
-- **converter**: id collision with existing label
-- **label-info**: missing margin-top for buttons
-
 ### Perf
 
 - **components**: memoization
@@ -96,6 +106,27 @@
 - **label-info**: update layout
 - **label-info**: update layout
 - **settings**: add standalone settings modal
+
+### Fix
+
+- **webpack**: webpack-dev-server WebSocket connection failure
+- **subscription**: update schema `serialized`
+- **merge**: `configB.subscriptionTemplates` is `undefined`
+- **stylesheets**: missing Tailwind variables `--tw-*`
+- **settings**: `autoFocus` not working in nested modal with focus trap
+- **hooks**: incorrect ref object
+- **modal**: incorrect ref objects
+- **editor**: missing min-width
+- **cloud-sync**: unexpected notification
+- **egg**: missing CSS modules
+- **subscription**: incorrect base remote subscription `homepage` schema
+- **editor**: unexpected `click` event on the remove button (#11)
+- **label-info**: incorrect clear data button text color in light mode
+- **components**: unexpected `displayName`
+- **label-info**: label info box being blocked by YouTube preview
+- **mutation**: incorrect `AddLabelButton` usage
+- **subscription**: missing `href` in homepage button
+- **modal**: unexpected focus trap deactivation
 
 ### Refactor
 
@@ -135,27 +166,6 @@
 - **components**: pass through the props for extendibility
 - **components**: remove unnecessary `{true}`
 
-### Fix
-
-- **webpack**: webpack-dev-server WebSocket connection failure
-- **subscription**: update schema `serialized`
-- **merge**: `configB.subscriptionTemplates` is `undefined`
-- **stylesheets**: missing Tailwind variables `--tw-*`
-- **settings**: `autoFocus` not working in nested modal with focus trap
-- **hooks**: incorrect ref object
-- **modal**: incorrect ref objects
-- **editor**: missing min-width
-- **cloud-sync**: unexpected notification
-- **egg**: missing CSS modules
-- **subscription**: incorrect base remote subscription `homepage` schema
-- **editor**: unexpected `click` event on the remove button (#11)
-- **label-info**: incorrect clear data button text color in light mode
-- **components**: unexpected `displayName`
-- **label-info**: label info box being blocked by YouTube preview
-- **mutation**: incorrect `AddLabelButton` usage
-- **subscription**: missing `href` in homepage button
-- **modal**: unexpected focus trap deactivation
-
 ## v3.4.1 (2022-04-05)
 
 ### Fix
@@ -174,14 +184,6 @@
 
 ## v3.4.0 (2022-04-04)
 
-### Fix
-
-- **cloud-sync**: issue of empty storage being uploaded to cloud after clearing local data
-- **cloud-sync**: unexpected sync action due to uncanceled sync registration
-- **editor**: missing dependency `onChange`
-- **store**: incorrect data loading logic
-- **components**: incorrect toggle button `input` selectors
-
 ### Feat
 
 - **editor**: update data set editor layout
@@ -191,11 +193,25 @@
 - **editor**: enhance `filterLabelsGroupsByKeyword`
 - **cloud-sync**: update `SycnWithGoogleDrive`
 
+### Fix
+
+- **cloud-sync**: issue of empty storage being uploaded to cloud after clearing local data
+- **cloud-sync**: unexpected sync action due to uncanceled sync registration
+- **editor**: missing dependency `onChange`
+- **store**: incorrect data loading logic
+- **components**: incorrect toggle button `input` selectors
+
 ### Refactor
 
 - expose `bootstrap()`
 
 ## v3.3.0 (2022-04-03)
+
+### Feat
+
+- **components**: update add label button icon
+- **components**: update `BaseIconButton` to support custom icon element
+- **mutation**: move add label button to beside of the reply button
 
 ### Fix
 
@@ -203,12 +219,6 @@
 - **mutation**: recover user card modal mutation
 - **dependencies**: incorrect `@types/redux-state-sync` version
 - **mutation**: conflicts with "LIHKG Show User Info"
-
-### Feat
-
-- **components**: update add label button icon
-- **components**: update `BaseIconButton` to support custom icon element
-- **mutation**: move add label button to beside of the reply button
 
 ### Refactor
 
@@ -229,6 +239,16 @@
 - **components**: update floating position on mouse enter
 - **components**: add prop `icon` to `TextInput`
 - **editor**: remove row
+
+### Fix
+
+- **editor**: missing `handleKeywordChange` dependencies
+- **mutation**: issue of not rendering label list and snipe button for blocked users
+- **components**: unexpected hardcoded `true` condition
+- **mutation**: missing snipe button
+- **modal**: issue of `Footer` being shrinked
+- **dependencies**: incorrect `identity-obj-proxy` version
+- **label-info**: missing subscription color
 
 ### Refactor
 
@@ -254,16 +274,6 @@
 - **sniping**: rename and move files
 - **models**: update `Singleton`
 
-### Fix
-
-- **editor**: missing `handleKeywordChange` dependencies
-- **mutation**: issue of not rendering label list and snipe button for blocked users
-- **components**: unexpected hardcoded `true` condition
-- **mutation**: missing snipe button
-- **modal**: issue of `Footer` being shrinked
-- **dependencies**: incorrect `identity-obj-proxy` version
-- **label-info**: missing subscription color
-
 ## v3.1.1 (2022-03-21)
 
 ### Fix
@@ -271,6 +281,10 @@
 - **sniping**: missing snipe button
 
 ## v3.1.0 (2022-03-20)
+
+### Feat
+
+- **file**: update `_export` to not compress to the JSON
 
 ### Fix
 
@@ -286,11 +300,35 @@
 - update imports
 - **helpers**: move rendering-related methods from `lihkg.ts` to `mutation.ts`
 
+## v3.0.0 (2022-03-21)
+
 ### Feat
 
-- **file**: update `_export` to not compress to the JSON
-
-## v3.0.0 (2022-03-21)
+- **label-list**: update label list layout
+- **label-list**: update label list layout
+- **label-list**: update label list layout
+- **components**: update label list and label item info display
+- **stylesheets**: add element mixin
+- **settings**: add subscription maker
+- **components**: add prop `fullWidth` to `ToggleButton`
+- **editor**: remove row headers
+- **merge**: update merge logic
+- **models**: add property `id` to `Label`
+- **counter**: accept optional argument `initial`
+- **sniping**: move snipe button to beside the reply button
+- **components**: update data set editor and manage data section
+- **editor**: update data set editor
+- **editor**: add data set editor (to be continued)
+- **settings**: add stats to `<Footer />`
+- **store**: add clear data (local/cloud) feature
+- **gapi**: add hook `useGoogleAuthorization`
+- **ga**: update event tags
+- **file**: data compression
+- **ga**: update event tags
+- **ga**: update event tags
+- **ga**: add event tags
+- **cloud-sync**: data compression
+- **label-form**: enable autocomplete on `text` and `reason` inputs
 
 ### Fix
 
@@ -354,34 +392,6 @@
 - **gapi**: singleton
 - **ga**: update Google Analytics
 - typings and exports
-
-### Feat
-
-- **label-list**: update label list layout
-- **label-list**: update label list layout
-- **label-list**: update label list layout
-- **components**: update label list and label item info display
-- **stylesheets**: add element mixin
-- **settings**: add subscription maker
-- **components**: add prop `fullWidth` to `ToggleButton`
-- **editor**: remove row headers
-- **merge**: update merge logic
-- **models**: add property `id` to `Label`
-- **counter**: accept optional argument `initial`
-- **sniping**: move snipe button to beside the reply button
-- **components**: update data set editor and manage data section
-- **editor**: update data set editor
-- **editor**: add data set editor (to be continued)
-- **settings**: add stats to `<Footer />`
-- **store**: add clear data (local/cloud) feature
-- **gapi**: add hook `useGoogleAuthorization`
-- **ga**: update event tags
-- **file**: data compression
-- **ga**: update event tags
-- **ga**: update event tags
-- **ga**: add event tags
-- **cloud-sync**: data compression
-- **label-form**: enable autocomplete on `text` and `reason` inputs
 
 ## v2.2.2 (2022-01-16)
 
