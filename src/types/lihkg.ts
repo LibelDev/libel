@@ -248,7 +248,7 @@ export interface IUser {
   level: string;
   gender: Gender;
   status: string;
-  create_time: number;
+  // create_time: number;
   level_name: LevelName;
   is_following: boolean;
   is_blocked: boolean;
