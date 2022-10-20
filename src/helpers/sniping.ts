@@ -1,9 +1,9 @@
-import format from 'date-fns/format';
+// import format from 'date-fns/format';
 import { render } from 'mustache';
 import cache from '../cache';
-import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING, USER_REGISTRATION_DATE_FORMAT } from '../constants/sniping';
+import { SNIPING_TEMPLATE_DRAFT_TITLE, SNIPING_TEMPLATE_VARIABLES_MAPPING } from '../constants/sniping';
 import { DRAFTS_KEY } from '../constants/storage';
-import { getUserRegistrationDate } from '../helpers/lihkg';
+// import { getUserRegistrationDate } from '../helpers/lihkg';
 import type { ILabel } from '../models/Label';
 import type Personal from '../models/Personal';
 import Subscription from '../models/Subscription';
@@ -56,7 +56,7 @@ export const renderSnipingBody = (userId: string, personal: Personal, subscripti
     const view = {
       user: {
         ...user,
-        registrationDate: format(getUserRegistrationDate(user), USER_REGISTRATION_DATE_FORMAT)
+        // registrationDate: format(getUserRegistrationDate(user), USER_REGISTRATION_DATE_FORMAT)
       },
       snipingItems,
       subscriptions: _subscriptions
