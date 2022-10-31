@@ -3,7 +3,7 @@ import html2canvas, { Options } from 'html2canvas';
 export const toCanvas = (element: HTMLElement, options?: Partial<Options>) => {
   const _options = {
     allowTaint: true,
-    useCORS: true,
+    useCORS: false,
     ...options
   };
   return html2canvas(element, _options);

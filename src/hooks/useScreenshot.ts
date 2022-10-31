@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { imageProxyURL } from '../../config/config';
 import { toCanvas, toImageURL } from '../helpers/canvas';
 
 type TToCanvasOptions = NonNullable<Parameters<typeof toCanvas>[1]>;
@@ -38,6 +39,7 @@ const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, op
 
   const _options: TToCanvasOptions = useMemo(() => ({
     ...options,
+    proxy: imageProxyURL,
     onclone: (document, element) => {
       if (screenshotHeight) {
         element.style.height = `${screenshotHeight}px`;
