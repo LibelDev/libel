@@ -1,3 +1,13 @@
+## v3.8.0-alpha (2022-11-01)
+
+### Feat
+
+- **screenshot**: use proxy for cross-origin images
+
+### Refactor
+
+- **hooks**: update `useScreenshot`
+
 ## v3.7.0 (2022-10-21)
 
 ### Feat
