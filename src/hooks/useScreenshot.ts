@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { imageProxyURL } from '../../config/config';
 import { toCanvas, toImageURL } from '../helpers/canvas';
+
+type TToCanvasOptions = NonNullable<Parameters<typeof toCanvas>[1]>;
 
 export namespace UseScreenshot {
   /**
    * `useScreenshot` hook options, it needs to be memoized
    */
-  export type TOptions = Parameters<typeof toCanvas>[1];
+  export type TOptions = TToCanvasOptions & {
+    screenshotHeight?: number;
+    screenshotWidth?: number;
+  };
   /**
    * `useScreenshot` hook result
    */
@@ -28,12 +34,28 @@ const initialResult: UseScreenshot.IResult = {
 
 const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
   const [result, setResult] = useState(initialResult);
+
+  const { screenshotHeight, screenshotWidth } = options || {};
+
+  const _options: TToCanvasOptions = useMemo(() => ({
+    ...options,
+    proxy: imageProxyURL,
+    onclone: (document, element) => {
+      if (screenshotHeight) {
+        element.style.height = `${screenshotHeight}px`;
+      }
+      if (screenshotWidth) {
+        element.style.width = `${screenshotWidth}px`;
+      }
+    }
+  }), [screenshotHeight, screenshotWidth]);
+
   useEffect(() => {
     (async () => {
       if (enabled && element) {
-        setResult({ ...result, loading: true });
+        setResult({ ...initialResult, loading: true });
         try {
-          const canvas = await toCanvas(element, options);
+          const canvas = await toCanvas(element, _options);
           const [url, blob] = await toImageURL(canvas);
           setResult({ loading: false, error: null, url, blob, canvas });
         } catch (err) {
@@ -43,7 +65,8 @@ const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, op
         setResult(initialResult);
       }
     })();
-  }, [enabled, element, options]);
+  }, [enabled, element, _options]);
+
   return result;
 };
 
