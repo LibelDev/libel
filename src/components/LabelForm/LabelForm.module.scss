@@ -88,3 +88,10 @@
     }
   }
 }
+
+.screenshot {
+  /* remove the enlarge button */
+  :global(#{$lihkg-selector-quoted-image-enlarge-button}) {
+    @apply hidden;
+  }
+}

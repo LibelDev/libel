@@ -98,9 +98,13 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
   const [formError, setFormError] = useState('');
 
-  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, {
-    screenshotWidth: SCREENSHOT_WIDTH
-  });
+  const useScreenshotOptions: UseScreenshot.TOptions = useMemo(() => ({
+    screenshotWidth: SCREENSHOT_WIDTH,
+    onclone: (document, element) => {
+      element.classList.add(styles.screenshot);
+    }
+  }), []);
+  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, useScreenshotOptions);
 
   const previewImageStyle = useMemo(() => ({
     backgroundImage: `url(${screenshot.url})`

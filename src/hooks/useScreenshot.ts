@@ -35,20 +35,19 @@ const initialResult: UseScreenshot.IResult = {
 const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
   const [result, setResult] = useState(initialResult);
 
-  const { screenshotHeight, screenshotWidth } = options || {};
+  const { screenshotHeight, screenshotWidth, onclone } = options || {};
 
   const _options: TToCanvasOptions = useMemo(() => ({
-    ...options,
     proxy: imageProxyURL,
+    ...options,
     onclone: (document, element) => {
-      if (screenshotHeight) {
-        element.style.height = `${screenshotHeight}px`;
-      }
-      if (screenshotWidth) {
-        element.style.width = `${screenshotWidth}px`;
+      element.style.height = screenshotHeight ? `${screenshotHeight}px` : '';
+      element.style.width = screenshotWidth ? `${screenshotWidth}px` : '';
+      if (onclone) {
+        onclone(document, element);
       }
     }
-  }), [screenshotHeight, screenshotWidth]);
+  }), [screenshotHeight, screenshotWidth, onclone]);
 
   useEffect(() => {
     (async () => {
