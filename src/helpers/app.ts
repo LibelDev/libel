@@ -31,3 +31,8 @@ export const isOffline = () => {
   const cloudflareWrapper = document.querySelector('#cf-wrapper');
   return !!cloudflareWrapper;
 };
+
+export const isMobileMode = () => {
+  const { body } = document;
+  return body.dataset.appMb === '';
+};

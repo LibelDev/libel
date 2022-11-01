@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { imageProxyURL } from '../../config/config';
-import { toCanvas, toImageURL } from '../helpers/canvas';
+import { useEffect, useState } from 'react';
+import { mergeCanvas, toCanvas, toImageURL } from '../helpers/canvas';
 
 type TToCanvasOptions = NonNullable<Parameters<typeof toCanvas>[1]>;
 
@@ -8,10 +7,7 @@ export namespace UseScreenshot {
   /**
    * `useScreenshot` hook options, it needs to be memoized
    */
-  export type TOptions = TToCanvasOptions & {
-    screenshotHeight?: number;
-    screenshotWidth?: number;
-  };
+  export type TOptions = TToCanvasOptions;
   /**
    * `useScreenshot` hook result
    */
@@ -32,29 +28,17 @@ const initialResult: UseScreenshot.IResult = {
   canvas: null
 };
 
-const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
+const useScreenshot = <E extends HTMLElement> (enabled: boolean, elements?: E[], options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
   const [result, setResult] = useState(initialResult);
-
-  const { screenshotHeight, screenshotWidth, onclone } = options || {};
-
-  const _options: TToCanvasOptions = useMemo(() => ({
-    proxy: imageProxyURL,
-    ...options,
-    onclone: (document, element) => {
-      element.style.height = screenshotHeight ? `${screenshotHeight}px` : '';
-      element.style.width = screenshotWidth ? `${screenshotWidth}px` : '';
-      if (onclone) {
-        onclone(document, element);
-      }
-    }
-  }), [screenshotHeight, screenshotWidth, onclone]);
 
   useEffect(() => {
     (async () => {
-      if (enabled && element) {
+      if (enabled && elements && elements.length) {
         setResult({ ...initialResult, loading: true });
         try {
-          const canvas = await toCanvas(element, _options);
+          const promises = elements.map((element) => toCanvas(element, options));
+          const canvases = await Promise.all(promises);
+          const canvas = mergeCanvas(canvases[0], canvases[1]);
           const [url, blob] = await toImageURL(canvas);
           setResult({ loading: false, error: null, url, blob, canvas });
         } catch (err) {
@@ -64,7 +48,7 @@ const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, op
         setResult(initialResult);
       }
     })();
-  }, [enabled, element, _options]);
+  }, [enabled, elements, options]);
 
   return result;
 };
