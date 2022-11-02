@@ -1,3 +1,25 @@
+## v3.8.0-alpha.2 (2022-11-02)
+
+### Feat
+
+- **label**: support capturing thread title for screenshot
+- **label**: remove image enlarge buttons in screenshot
+- **auth**: prompt user to select account
+
+### Refactor
+
+- **typings**: update `useGoogleAuthorization`
+
+## v3.8.0-alpha (2022-11-01)
+
+### Feat
+
+- **screenshot**: use proxy for cross-origin images
+
+### Refactor
+
+- **hooks**: update `useScreenshot`
+
 ## v3.7.0 (2022-10-21)
 
 ### Feat

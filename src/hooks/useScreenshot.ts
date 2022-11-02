@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { toCanvas, toImageURL } from '../helpers/canvas';
+import { mergeCanvas, toCanvas, toImageURL } from '../helpers/canvas';
+
+type TToCanvasOptions = NonNullable<Parameters<typeof toCanvas>[1]>;
 
 export namespace UseScreenshot {
   /**
    * `useScreenshot` hook options, it needs to be memoized
    */
-  export type TOptions = Parameters<typeof toCanvas>[1];
+  export type TOptions = TToCanvasOptions;
   /**
    * `useScreenshot` hook result
    */
@@ -26,14 +28,17 @@ const initialResult: UseScreenshot.IResult = {
   canvas: null
 };
 
-const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
+const useScreenshot = <E extends HTMLElement> (enabled: boolean, elements?: E[], options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
   const [result, setResult] = useState(initialResult);
+
   useEffect(() => {
     (async () => {
-      if (enabled && element) {
-        setResult({ ...result, loading: true });
+      if (enabled && elements && elements.length) {
+        setResult({ ...initialResult, loading: true });
         try {
-          const canvas = await toCanvas(element, options);
+          const promises = elements.map((element) => toCanvas(element, options));
+          const canvases = await Promise.all(promises);
+          const canvas = mergeCanvas(canvases[0], canvases[1]);
           const [url, blob] = await toImageURL(canvas);
           setResult({ loading: false, error: null, url, blob, canvas });
         } catch (err) {
@@ -43,7 +48,8 @@ const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, op
         setResult(initialResult);
       }
     })();
-  }, [enabled, element, options]);
+  }, [enabled, elements, options]);
+
   return result;
 };
 

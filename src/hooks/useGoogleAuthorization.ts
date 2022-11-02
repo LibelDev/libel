@@ -4,6 +4,9 @@ import { ready } from '../helpers/gapi';
 import * as gtag from '../helpers/gtag';
 import * as LIHKG from '../helpers/lihkg';
 import { EventAction, EventCategory } from '../types/ga';
+import { SignInPrompt } from '../types/google';
+
+type TSignInOptions = Parameters<gapi.auth2.GoogleAuth['signIn']>[0];
 
 module UseGoogleAuthorization {
   /**
@@ -12,21 +15,25 @@ module UseGoogleAuthorization {
   export type TResult = [
     gapi.auth2.GoogleAuth | undefined,
     gapi.auth2.GoogleUser | undefined,
-    (options?: gapi.auth2.SigninOptions | gapi.auth2.SigninOptionsBuilder) => Promise<gapi.auth2.GoogleUser | undefined>,
+    (options?: TSignInOptions) => Promise<gapi.auth2.GoogleUser | undefined>,
     () => void,
     boolean
   ];
 }
 
-const useGoogleAuthorization = (): UseGoogleAuthorization.TResult => {
+const defaultSignInOptions: TSignInOptions = {
+  prompt: SignInPrompt.SelectAccount
+};
+
+const useGoogleAuthorization = (options = defaultSignInOptions): UseGoogleAuthorization.TResult => {
   const [auth, setAuth] = useState<gapi.auth2.GoogleAuth>();
   const [user, setUser] = useState<gapi.auth2.GoogleUser>();
   const [signedIn, setSignedIn] = useState(false);
 
-  const signIn = useCallback(async (options?: gapi.auth2.SigninOptions | gapi.auth2.SigninOptionsBuilder) => {
+  const signIn = useCallback(async (_options?: TSignInOptions) => {
     try {
       if (auth) {
-        const user = await auth.signIn(options);
+        const user = await auth.signIn({ ...options, ..._options });
         const notification = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_GOOGLE_DRIVE_SIGNIN_SUCCESS);
         LIHKG.showNotification(notification);
         return user;
@@ -64,11 +71,8 @@ const useGoogleAuthorization = (): UseGoogleAuthorization.TResult => {
       auth.isSignedIn.listen((signedIn) => {
         setSignedIn(signedIn);
         // analytics
-        if (signedIn) {
-          gtag.event(EventAction.SignIn, { event_label: EventCategory.Google });
-        } else {
-          gtag.event(EventAction.SignOut, { event_label: EventCategory.Google });
-        }
+        const eventAction = signedIn ? EventAction.SignIn : EventAction.SignOut;
+        gtag.event(eventAction, { event_label: EventCategory.Google });
       });
       auth.currentUser.listen(setUser);
     }

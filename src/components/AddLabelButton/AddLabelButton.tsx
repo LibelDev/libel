@@ -28,14 +28,14 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   const dispatch = useTypedDispatch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [target, setTarget] = useState<HTMLElement | null>(null);
+  const [targetReply, setTargetReply] = useState<HTMLElement | null>(null);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
     if (!loading) {
       const targetReplySelector = `[${ATTRIBUTES.DATA_POST_ID}="${post.post_id}"]`;
       const targetReply = document.querySelector<HTMLDivElement>(targetReplySelector);
-      setTarget(targetReply);
+      setTargetReply(targetReply);
       setOpen(true);
       // analytics
       gtag.event(EventAction.Open, { event_category: EventCategory.Modal, event_label: EventLabel.AddLabel });
@@ -96,14 +96,14 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
         onClick={handleClick}
       />
       {
-        target && (
+        targetReply && (
           <LabelFormModal
             open={open}
             user={user}
             escape={false}
             fragile={false}
             loading={loading}
-            target={target}
+            targetReply={targetReply}
             onClose={handleLabelFormModalClose}
             onSubmit={handleLabelFormSubmit}
           />
