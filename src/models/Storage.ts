@@ -36,7 +36,7 @@ const _ready = Symbol('ready');
 
 /**
  * Storage model
- * @description the middleman between the store and storage
+ * @description the middleman between the store and browser storage
  * @implements IStorage
  */
 class Storage implements IStorage {
