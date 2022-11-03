@@ -24,21 +24,30 @@ type TProps = IProps & TComponentProps;
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
 
-  const style = useMemo(() => {
-    const { color } = subscription;
-    return { backgroundColor: color };
-  }, [subscription]);
+  const { color } = subscription;
+
+  const themeBarStyle = useMemo(() => {
+    return !color ? undefined : {
+      backgroundColor: color
+    };
+  }, [color]);
 
   return (
     <div className={classNames(className, styles.subscription)}>
-      <i
-        className={styles.bar}
-        style={style}
-        aria-hidden
-      />
       <span className={styles.name}>
         <a href={subscription.url} target="_blank">
-          {subscription.name || subscription.url}
+          <span>
+            {subscription.name || subscription.url}
+          </span>
+          {
+            color && (
+              <i
+                className={styles.themeBar}
+                style={themeBarStyle}
+                aria-hidden
+              />
+            )
+          }
         </a>
         {
           subscription.error ? (

@@ -3,33 +3,38 @@
 .subscription {
   @apply flex flex-wrap items-center justify-start;
 
-  .bar {
-    @apply w-1;
-    @apply self-stretch;
-    @apply rounded-sm;
-  }
-
   .name {
-    @apply flex items-center;
+    @apply flex items-center justify-between;
     @apply flex-1;
 
-    @screen md {
-      max-width: 250px;
-    }
-
     > a {
-      @apply inline-block;
-      @apply mr-4;
-      @include text-ellipsis();
+      @apply relative;
+      @apply flex;
       color: $color-grey09;
 
       @include dark-mode() {
         color: $color-white;
       }
+
+      @screen md {
+        max-width: 250px;
+      }
+
+      > span {
+        @include text-ellipsis();
+      }
+
+      .theme-bar {
+        @apply absolute;
+        @apply -bottom-1 left-0;
+        height: 2px;
+        @apply w-full;
+        @apply rounded-sm;
+      }
     }
 
     .status {
-      @apply ml-auto;
+      @apply ml-2;
 
       &.error {
         color: $color-red02;
