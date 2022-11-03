@@ -15,13 +15,13 @@ const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
   const { url, ...otherProps } = props;
   return url ? (
     <IconLink
-      {...otherProps}
       icon={IconName.Link}
       href={url}
       target="_blank"
       aria-label={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
       data-tip={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
       title={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
+      {...otherProps}
     />
   ) : null;
 };

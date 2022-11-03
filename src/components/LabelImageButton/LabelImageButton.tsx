@@ -17,13 +17,13 @@ const LabelImageButton: React.FunctionComponent<TProps> = (props) => {
   const { image } = label;
   return image ? (
     <IconLink
-      {...otherProps}
       icon={IconName.Image}
       href={image}
       target="_blank"
       aria-label={TEXTS.BUTTON_TEXT_LABEL_IMAGE}
       data-tip={TEXTS.BUTTON_TEXT_LABEL_IMAGE}
       title={TEXTS.BUTTON_TEXT_LABEL_IMAGE}
+      {...otherProps}
     />
   ) : null;
 };

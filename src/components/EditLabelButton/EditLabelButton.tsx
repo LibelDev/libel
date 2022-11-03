@@ -21,7 +21,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'button'>;
 type TProps = IProps & TComponentProps;
 
 const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, index, label } = props;
+  const { user, index, label, ...otherProps } = props;
 
   const dispatch = useTypedDispatch();
   const [open, setOpen] = useState(false);
@@ -50,12 +50,12 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
   return (
     <>
       <IconButton
-        className={className}
         icon={IconName.Pencil}
         aria-label={TEXTS.BUTTON_TEXT_LABEL_EDIT}
         data-tip={TEXTS.BUTTON_TEXT_LABEL_EDIT}
         title={TEXTS.BUTTON_TEXT_LABEL_EDIT}
         onClick={handleClick}
+        {...otherProps}
       />
       <LabelFormModal
         open={open}

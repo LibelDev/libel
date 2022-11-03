@@ -23,7 +23,7 @@ type TComponentProps = React.ComponentPropsWithoutRef<'button'>;
 type TProps = IProps & TComponentProps;
 
 const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
-  const { className, user, index, label } = props;
+  const { user, index, label, ...otherProps } = props;
 
   const dispatch = useTypedDispatch();
 
@@ -41,12 +41,12 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
 
   return (
     <IconButton
-      className={className}
       icon={IconName.DeleteForever}
       aria-label={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
       data-tip={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
       title={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
       onClick={handleClick}
+      {...otherProps}
     />
   );
 };
