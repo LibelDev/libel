@@ -5,7 +5,7 @@
   @apply border border-solid rounded;
   @apply text-base;
   @apply text-center;
-  @apply px-4 py-2;
+  @apply px-4;
   @apply w-full;
   max-width: 12rem;
   background-color: $color-white;
@@ -16,20 +16,15 @@
     background-color: $color-black02;
   }
 
-  .name {
-    @apply flex items-center justify-center;
-
-    a {
-      @include text-ellipsis();
-      @apply text-current;
-      @apply ml-2;
-    }
-  }
-
   .reason,
   .buttons {
-    &:not(:first-child) {
-      @apply mt-2;
+    @apply my-2;
+  }
+
+  .reason {
+    &.empty {
+      @apply opacity-50;
+      @apply text-sm;
     }
   }
 

@@ -47,7 +47,7 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = memo((props) => {
     position: strategy,
     top: y ?? '',
     left: x ?? ''
-  }), [strategy, x, y, fadeoutScrollStyle]);
+  }), [x, y, strategy, fadeoutScrollStyle]);
 
   useEffect(() => {
     floating(labelInfoListRef.current);
