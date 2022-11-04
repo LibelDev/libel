@@ -23,6 +23,7 @@ import { IconName } from '../Icon/types';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.module.scss';
+import LabelImageButton from '../LabelImageButton/LabelImageButton';
 
 type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
@@ -279,7 +280,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       {/* image */}
       {
         label && !isScreenshotEnabled && (
-          <div className={styles.inputField}>
+          <div className={classNames(styles.inputField, styles.image)}>
             <TextInput
               className={styles.textInput}
               disabled={loading}
@@ -289,6 +290,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               value={formData.image || ''}
               error={inputErrors.image}
               onChange={handleInputChange}
+            />
+            <LabelImageButton
+              className={styles.imageButton}
+              label={label}
             />
           </div>
         )

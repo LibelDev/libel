@@ -78,6 +78,17 @@
     }
   }
 
+  &.image {
+    @apply flex items-center;
+
+    .image-button {
+      @apply ml-4;
+      @apply no-underline;
+      color: $color-blue01;
+      font-size: 1.5em;
+    }
+  }
+
   .text-input {
     .error {
       @apply mt-4;
