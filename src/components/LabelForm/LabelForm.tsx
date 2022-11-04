@@ -12,7 +12,7 @@ import * as gtag from '../../helpers/gtag';
 import * as LIHKG from '../../helpers/lihkg';
 import { mapValidationError } from '../../helpers/validation';
 import useScreenshot, { UseScreenshot } from '../../hooks/useScreenshot';
-import useTargetPost from '../../hooks/useTargetPost';
+import useLabelSourcePost from '../../hooks/useLabelSourcePost';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
@@ -106,7 +106,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [isScreenshotEnabled, setIsScreenshotEnabled] = useState(false);
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
 
-  const post = useTargetPost();
+  const post = useLabelSourcePost();
   const threadTitleBar = document.querySelector<HTMLDivElement>(lihkgSelectors.threadTitleBar)!;
   const replyItemInner = post && LIHKG.getReplyItemInnerElementByPostId(post.post_id);
   const elements = useMemo(() => [threadTitleBar, replyItemInner!], [threadTitleBar, replyItemInner]);

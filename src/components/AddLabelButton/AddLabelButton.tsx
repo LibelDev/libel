@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
-import useTargetPost from '../../hooks/useTargetPost';
+import useLabelSourcePost from '../../hooks/useLabelSourcePost';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
 import { EventAction, EventCategory, EventLabel } from '../../types/ga';
@@ -24,7 +24,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
   const { user } = props;
 
   const dispatch = useTypedDispatch();
-  const post = useTargetPost()!;
+  const post = useLabelSourcePost()!;
   const [open, setOpen] = useState(false);
   const [loading, submit] = useLabelForm();
 
@@ -47,7 +47,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
     const { text, reason, color } = data;
     const image = await submit(data);
     const source = mapPostToSource(post);
-    const payload: IAddLabelPayload = { user, text, reason, color, image, source };
+    const payload: IAddLabelPayload = { user, text, reason, source, color, image };
     dispatch(personalActions.add(payload));
     handleLabelFormModalClose();
     // analytics

@@ -3,8 +3,8 @@ import type { IPost } from '../types/lihkg';
 
 export const Context = createContext<IPost | null>(null);
 
-const useTargetPost = () => {
+const useLabelSourcePost = () => {
   return useContext(Context);
 };
 
-export default useTargetPost;
+export default useLabelSourcePost;

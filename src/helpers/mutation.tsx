@@ -23,7 +23,7 @@ import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleBu
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
-import { Context as TargetPostContext } from '../hooks/useTargetPost';
+import { Context as LabelSourcePostContext } from '../hooks/useLabelSourcePost';
 import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
@@ -153,12 +153,12 @@ const renderLabelList = (user: string, postId: string | undefined, floatingConfi
   root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <TargetPostContext.Provider value={post}>
+        <LabelSourcePostContext.Provider value={post}>
           <LabelList
             user={user}
             floatingConfig={floatingConfig}
           />
-        </TargetPostContext.Provider>
+        </LabelSourcePostContext.Provider>
       </PersistGate>
     </Provider>
   );
@@ -174,9 +174,9 @@ const renderAddLabelButton = (user: string, postId: string | undefined, store: T
     root.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <TargetPostContext.Provider value={post}>
+          <LabelSourcePostContext.Provider value={post}>
             <AddLabelButton user={user} />
-          </TargetPostContext.Provider>
+          </LabelSourcePostContext.Provider>
         </PersistGate>
       </Provider>
     );
