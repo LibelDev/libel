@@ -13,7 +13,7 @@ interface IProps extends Pick<IGroupedLabelItemProps, 'floatingConfig'> {
 type TProps = IProps;
 
 const LabelList: React.FunctionComponent<TProps> = memo((props) => {
-  const { user, floatingConfig } = props;
+  const { user, ...otherProps } = props;
   const personal = useTypedSelector(createUserPersonalSelector(user));
   const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
@@ -38,7 +38,7 @@ const LabelList: React.FunctionComponent<TProps> = memo((props) => {
               <GroupedLabelItem
                 text={text}
                 items={items}
-                floatingConfig={floatingConfig}
+                {...otherProps}
               />
             </li>
           );
