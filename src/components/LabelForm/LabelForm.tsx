@@ -33,7 +33,7 @@ export type TFormData = TLabelData & {
 };
 
 enum ToggleButtonName {
-  CustomColor = 'isCustomColorEnabled',
+  Color = 'isCustomColorEnabled',
   Screenshot = 'isScreenshotEnabled'
 }
 
@@ -102,7 +102,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const { id, className, user, label, loading, onSubmit, ...otherProps } = props;
 
   const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
-  const [isCustomColorEnabled, setIsCustomColorEnabled] = useState(!!formData.color);
+  const [isColorEnabled, setIsColorEnabled] = useState(!!formData.color);
   const [isScreenshotEnabled, setIsScreenshotEnabled] = useState(false);
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
 
@@ -131,7 +131,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const handleToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { checked, name } = event.target;
     const mapping = {
-      [ToggleButtonName.CustomColor]: setIsCustomColorEnabled,
+      [ToggleButtonName.Color]: setIsColorEnabled,
       [ToggleButtonName.Screenshot]: setIsScreenshotEnabled
     };
     const setState = mapping[name as ToggleButtonName];
@@ -143,7 +143,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     const { image, meta } = formData;
     const _formData: TFormData = {
       ...formData,
-      color: isCustomColorEnabled ? formData.color : undefined, // unset if custom color is disabled
+      color: isColorEnabled ? formData.color : undefined, // unset if color is disabled
       image: isScreenshotEnabled ? '' : image, // unset if screenshot is enabled
       meta: { ...meta, screenshot }
     };
@@ -165,7 +165,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         }
       }
     }
-  }, [onSubmit, formData, isCustomColorEnabled, isScreenshotEnabled, inputErrors, screenshot]);
+  }, [onSubmit, formData, isColorEnabled, isScreenshotEnabled, inputErrors, screenshot]);
 
   useEffect(() => {
     if (screenshot.error) {
@@ -224,14 +224,14 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
           className={styles.toggleButton}
-          checked={isCustomColorEnabled}
-          name={ToggleButtonName.CustomColor}
+          checked={isColorEnabled}
+          name={ToggleButtonName.Color}
           disabled={loading}
           onChange={handleToggleButtonChange}
         >
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
           {
-            isCustomColorEnabled && (
+            isColorEnabled && (
               <ColorPicker
                 className={styles.colorPicker}
                 border
