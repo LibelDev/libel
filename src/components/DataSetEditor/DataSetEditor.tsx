@@ -6,12 +6,12 @@ import { useCallback, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { filterLabelsGroupsByKeyword, findLabelsGroupByUser, mapDataSetToLabelsGroupsGroupedByUser, mapLabelsGroupsGroupedByUserToDataSet } from '../../helpers/dataSetEditor';
+import * as LIHKG from '../../helpers/lihkg';
 import useFadeoutScroll from '../../hooks/useFadeoutScroll';
 import type DataSet from '../../models/DataSet';
 import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
 import schema from '../../schemas/dataSet';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import styles from './DataSetEditor.module.scss';
 import Filter, { IProps as IFilterProps } from './Filter/Filter';
 import UserLabelsEditor, { IProps as IUserLabelsEditorProps } from './UserLabelsEditor/UserLabelsEditor';
@@ -40,7 +40,6 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
   const [labelsGroups, setLabelsGroups] = useState(mapDataSetToLabelsGroupsGroupedByUser(dataSet));
   const filteredLabelsGroups = useMemo(() => filterLabelsGroupsByKeyword(labelsGroups, keyword), [labelsGroups, keyword]);
   const [autoScrollUserItemIndex, setAutoScrollUserItemIndex] = useState<IAutoScrollUserItemIndex>();
-  const [error, setError] = useState<string | null>(null);
   const [innerRef, fadeoutScrollStyle] = useFadeoutScroll<HTMLDivElement>({ yFadingRate: 0.3 });
 
   const name = `${namespace}-${DataSetEditor.displayName!}`;
@@ -102,7 +101,8 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
     debug('handleSubmit:dataSet', dataSet);
     const { error } = schema.validate(dataSet);
     if (error) {
-      setError(TEXTS.DATA_SET_EDITOR_ERROR_INVALID);
+      const notification = LIHKG.createLocalNotification(TEXTS.DATA_SET_EDITOR_ERROR_INVALID);
+      LIHKG.showNotification(notification);
       debug('handleSubmit:error', error);
       const { details } = error;
       const { path } = details[0];
@@ -111,7 +111,6 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
       const _labelIndex = labelIndex as number;
       setAutoScrollUserItemIndex({ [_user]: _labelIndex });
     } else {
-      setError(null);
       onSubmit(dataSet);
     }
   }, [onSubmit, labelsGroups]);
@@ -159,13 +158,6 @@ const DataSetEditor: React.FunctionComponent<TProps> = (props) => {
           )
         }
       </div>
-      {
-        !!error && (
-          <ErrorMessage className={styles.error}>
-            {error}
-          </ErrorMessage>
-        )
-      }
     </form>
   );
 };
