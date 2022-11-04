@@ -4,11 +4,12 @@ import { dev } from '../../config/config';
 import { displayName } from '../../package.json';
 import type { TActions } from '../actions/lihkg';
 import * as lihkgActions from '../actions/lihkg';
+import * as ATTRIBUTES from '../constants/attributes';
 import * as TEXTS from '../constants/texts';
 import DataSet from '../models/DataSet';
 import Label, { ISource } from '../models/Label';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
-import { IBlockedUser, IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IState, IUser, NotificationType, TNotification } from '../types/lihkg';
+import { IBlockedUser, IIconMap, ILocalNotifcation, ILocalNotifcationPayload, IState, NotificationType, TNotification } from '../types/lihkg';
 import { counter } from './counter';
 import { waitForElement } from './dom';
 import { findReduxStore } from './redux';
@@ -171,6 +172,12 @@ export const mapBlockedUsersToDataSet = (blockedUsers: IBlockedUser[]) => {
     data[user_id] = [label];
   }
   return dataSet;
+};
+
+export const getReplyItemInnerElementByPostId = (postId: string) => {
+  const selector = `[${ATTRIBUTES.DATA_POST_ID}="${postId}"]`;
+  const element = document.querySelector<HTMLDivElement>(selector);
+  return element;
 };
 
 /* debug */

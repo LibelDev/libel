@@ -23,6 +23,7 @@ import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleBu
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
+import { Context as TargetPostContext } from '../hooks/useTargetPost';
 import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
@@ -145,32 +146,37 @@ const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, co
   return root;
 };
 
-const renderLabelList = (user: string, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
+const renderLabelList = (user: string, postId: string | undefined, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(labelListStyles.container);
+  const post = postId && cache.getReply(postId) || null;
   const root = createRoot(container);
   root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <LabelList
-          user={user}
-          floatingConfig={floatingConfig}
-        />
+        <TargetPostContext.Provider value={post}>
+          <LabelList
+            user={user}
+            floatingConfig={floatingConfig}
+          />
+        </TargetPostContext.Provider>
       </PersistGate>
     </Provider>
   );
   return root;
 };
 
-const renderAddLabelButton = (user: string, postID: string | null | undefined, store: TStore, persistor: Persistor, container: Element) => {
+const renderAddLabelButton = (user: string, postId: string | undefined, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(lihkgCssClasses.replyToolbarButton);
   container.classList.add(addLabelButtonStyles.container);
-  const post = postID && cache.getReply(postID);
+  const post = postId && cache.getReply(postId) || null;
   const root = createRoot(container);
   if (post) {
     root.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <AddLabelButton user={user} post={post} />
+          <TargetPostContext.Provider value={post}>
+            <AddLabelButton user={user} />
+          </TargetPostContext.Provider>
         </PersistGate>
       </Provider>
     );
@@ -261,7 +267,7 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
       if (threadItemInner) {
         const container = document.createElement('div');
         threadItemInner.insertAdjacentElement('afterbegin', container);
-        renderLabelList(user, undefined, store, persistor, container);
+        renderLabelList(user, undefined, undefined, store, persistor, container);
       }
     }
   }
@@ -279,7 +285,7 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
       const container = document.createElement('div');
       modelContentInner.appendChild(container);
       const floatingConfig: TFloatingConfig = { strategy: 'fixed' };
-      renderLabelList(user, floatingConfig, store, persistor, container);
+      renderLabelList(user, undefined, floatingConfig, store, persistor, container);
     }
   }
 };
@@ -336,29 +342,31 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
     if (replyItemInnerBody) {
       /* label list */
       _handleUnmountableMutation(replyItemInnerBody, labelListMutationCacheSymbol, (reference) => {
+        const replyItemInner = node.parentElement?.parentElement;
+        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
         const container = document.createElement('div');
         reference.insertAdjacentElement('afterbegin', container);
         const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
-        const root = renderLabelList(user, floatingConfig, store, persistor, container);
+        const root = renderLabelList(user, postId, floatingConfig, store, persistor, container);
         return { container, root };
       });
     }
     const replyButton = node.querySelector(`.${IconName.Reply}`);
     if (replyButton) {
-      /* add label button */
-      const { container: addLabelButtonContainer } = _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
-        const replyItemInner = node.parentElement?.parentElement;
-        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-        const container = document.createElement('div');
-        insertAfter(container, reference);
-        const root = renderAddLabelButton(user, postId, store, persistor, container);
-        return { container, root };
-      });
       /* snipe button */
       _handleUnmountableMutation(replyButton, snipeButtonMutationCacheSymbol, (reference) => {
         const container = document.createElement('div');
-        insertAfter(container, addLabelButtonContainer);
+        insertAfter(container, reference);
         const root = renderSnipeButton(user, store, persistor, container);
+        return { container, root };
+      });
+      /* add label button */
+      _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
+        const replyItemInner = node.parentElement?.parentElement;
+        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
+        const container = document.createElement('div');
+        insertAfter(container, reference);
+        const root = renderAddLabelButton(user, postId, store, persistor, container);
         return { container, root };
       });
     }

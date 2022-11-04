@@ -12,12 +12,12 @@ type TComponentProps = Omit<TModalProps, keyof ILabelFormProps>;
 type TProps = IProps & TComponentProps & TLabelFormProps;
 
 const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
-  const { onClose, user, label, loading, targetReply, onSubmit, ...otherProps } = props;
+  const { user, label, loading, onSubmit, ...otherProps } = props;
 
   const _formId = useId();
 
   return (
-    <Modal {...otherProps} onClose={onClose}>
+    <Modal {...otherProps}>
       <Modal.Header>
         {
           label ?
@@ -31,7 +31,6 @@ const LabelFormModal: React.FunctionComponent<TProps> = (props) => {
           user={user}
           label={label}
           loading={loading}
-          targetReply={targetReply}
           onSubmit={onSubmit}
         />
       </Modal.Body>
