@@ -13,8 +13,6 @@ import announcementStyles from '../components/Announcement/Announcement.module.s
 import { IconName } from '../components/Icon/types';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.module.scss';
-// import Settings from '../components/Settings/Settings';
-// import settingsStyles from '../components/Settings/Settings.module.scss';
 import SettingsModalToggleButton from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
 import SnipeButton from '../components/SnipeButton/SnipeButton';
 import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
@@ -81,10 +79,6 @@ const isThreadItem = (node: Element) => {
 const isUserCardModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.LIHKG_MODAL_TITLE_USER_CARD);
 };
-
-// const isSettingsModal = (node: Element) => {
-//   return isModalTitleMatched(node, TEXTS.LIHKG_SETTINGS_MODAL_TITLE);
-// };
 
 const isEmoteMenu = (node: Element) => {
   return node.matches(lihkgSelectors.emoteMenu);
@@ -220,19 +214,6 @@ const renderSourcePostScreenshotButton = (user: string, postId: string | undefin
   return root;
 };
 
-// const renderSettings = (store: TStore, persistor: Persistor, container: Element) => {
-//   container.classList.add(settingsStyles.container);
-//   const root = createRoot(container);
-//   root.render(
-//     <Provider store={store}>
-//       <PersistGate persistor={persistor}>
-//         <Settings />
-//       </PersistGate>
-//     </Provider>
-//   );
-//   return root;
-// };
-
 const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
   root.render(
@@ -311,15 +292,6 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
     }
   }
 };
-
-// const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-//   const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
-//   if (modelContentInner) {
-//     const container = document.createElement('div');
-//     modelContentInner.appendChild(container);
-//     renderSettings(store, persistor, container);
-//   }
-// };
 
 const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
@@ -425,8 +397,6 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   if (isThreadItem(node)) return handleThreadItemMutation;
   /** when render the user card modal */
   if (isUserCardModal(node)) return handleUserCardModalMutation;
-  // /** when render the settings modal */
-  // if (isSettingsModal(node)) return handleSettingsModalMutation;
   /** when render the emote menu */
   if (isEmoteMenu(node)) return handleEmoteMenuMutation;
   /** when render the reply list (probably when enter the thread or go to next page) */
