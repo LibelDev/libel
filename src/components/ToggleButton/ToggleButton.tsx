@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import type React from 'react';
-import { useId } from 'react';
+import { forwardRef, useId } from 'react';
 import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import styles from './ToggleButton.module.scss';
@@ -26,7 +26,7 @@ interface IProps {
 
 type TProps = IProps & TBaseInputProps;
 
-const ToggleButton: React.FunctionComponent<TProps> = (props) => {
+const ToggleButton = forwardRef<HTMLInputElement, TProps>((props, ref) => {
   const { id, className, children, checked, disabled, loading, simple, small, flip, ...otherProps } = props;
 
   const _id = id || useId();
@@ -57,6 +57,7 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
       </label>
       <BaseInput
         {...otherProps}
+        ref={ref}
         id={_id}
         className={styles.input}
         type="checkbox"
@@ -70,7 +71,7 @@ const ToggleButton: React.FunctionComponent<TProps> = (props) => {
       />
     </div>
   );
-};
+});
 
 ToggleButton.displayName = 'ToggleButton';
 
