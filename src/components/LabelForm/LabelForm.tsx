@@ -2,41 +2,32 @@ import classNames from 'classnames';
 import joi from 'joi';
 import type React from 'react';
 import { useCallback, useEffect, useId, useMemo, useState } from 'react';
-import { imageProxyURL } from '../../../config/config';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
-import { SCREENSHOT_WIDTH } from '../../constants/label';
 import * as TEXTS from '../../constants/texts';
-import { isMobileMode } from '../../helpers/app';
 import * as gtag from '../../helpers/gtag';
 import * as LIHKG from '../../helpers/lihkg';
 import { mapValidationError } from '../../helpers/validation';
-import useScreenshot, { UseScreenshot } from '../../hooks/useScreenshot';
 import useLabelSourcePost from '../../hooks/useLabelSourcePost';
+import useSourcePostScreenshot from '../../hooks/useSourcePostScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
-import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { EventAction, EventCategory } from '../../types/ga';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
+import LabelImageButton from '../LabelImageButton/LabelImageButton';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.module.scss';
-import LabelImageButton from '../LabelImageButton/LabelImageButton';
 
 type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
 export type TFormData = TLabelData & {
   meta: {
-    screenshot?: UseScreenshot.IResult;
+    screenshot?: ReturnType<typeof useSourcePostScreenshot>[0];
   };
 };
-
-enum ToggleButtonName {
-  Color = 'isCustomColorEnabled',
-  Screenshot = 'isScreenshotEnabled'
-}
 
 interface IInputErrors {
   [name: string]: string | undefined;
@@ -88,17 +79,6 @@ const initialFormData: TFormData = {
   meta: {}
 };
 
-const useScreenshotOptions: UseScreenshot.TOptions = {
-  proxy: imageProxyURL,
-  onclone: (document, element) => {
-    const app = document.querySelector(lihkgSelectors.app)!;
-    app.classList.add(styles.screenshot);
-    if (!isMobileMode()) {
-      element.style.width = `${SCREENSHOT_WIDTH}px`;
-    }
-  }
-};
-
 const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const { id, className, user, label, loading, onSubmit, ...otherProps } = props;
 
@@ -108,10 +88,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
 
   const post = useLabelSourcePost();
-  const threadTitleBar = document.querySelector<HTMLDivElement>(lihkgSelectors.threadTitleBar)!;
-  const replyItemInner = post && LIHKG.getReplyItemInnerElementByPostId(post.post_id);
-  const elements = useMemo(() => [threadTitleBar, replyItemInner!], [threadTitleBar, replyItemInner]);
-  const screenshot = useScreenshot(!!replyItemInner && isScreenshotEnabled, elements, useScreenshotOptions);
+  const [screenshot, capture] = useSourcePostScreenshot(post);
 
   const previewImageStyle = useMemo(() => ({
     backgroundImage: `url(${screenshot.url})`
@@ -129,15 +106,16 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     setInputErrors({ ...inputErrors, [name]: undefined });
   }, [formData, inputErrors]);
 
-  const handleToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
-    const { checked, name } = event.target;
-    const mapping = {
-      [ToggleButtonName.Color]: setIsColorEnabled,
-      [ToggleButtonName.Screenshot]: setIsScreenshotEnabled
-    };
-    const setState = mapping[name as ToggleButtonName];
-    setState(checked);
+  const handleColorToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+    const { checked } = event.target;
+    setIsColorEnabled(checked);
   }, []);
+
+  const handleScreenshotToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (event) => {
+    const { checked } = event.target;
+    setIsScreenshotEnabled(checked);
+    await capture(checked);
+  }, [capture]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -171,7 +149,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   useEffect(() => {
     if (screenshot.error) {
       setIsScreenshotEnabled(false);
-      const notification = LIHKG.createLocalNotification(TEXTS.LABEL_FORM_CAPTURE_ERROR);
+      const notification = LIHKG.createLocalNotification(TEXTS.LABEL_FORM_SCREENSHOT_ERROR);
       LIHKG.showNotification(notification);
     }
   }, [screenshot.error]);
@@ -226,9 +204,8 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         <ToggleButton
           className={styles.toggleButton}
           checked={isColorEnabled}
-          name={ToggleButtonName.Color}
           disabled={loading}
-          onChange={handleToggleButtonChange}
+          onChange={handleColorToggleButtonChange}
         >
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
           {
@@ -253,11 +230,10 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           className={styles.toggleButton}
           checked={isScreenshotEnabled}
           disabled={loading}
-          name={ToggleButtonName.Screenshot}
           loading={screenshot.loading}
-          onChange={handleToggleButtonChange}
+          onChange={handleScreenshotToggleButtonChange}
         >
-          {TEXTS.LABEL_FORM_FIELD_LABEL_CAPTURE}
+          {TEXTS.LABEL_FORM_FIELD_LABEL_SCREENSHOT}
         </ToggleButton>
         {
           !screenshot.loading && !!screenshot.url && (
@@ -268,7 +244,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
                   href={screenshot.url}
                   target="_blank"
                   style={previewImageStyle}
-                  aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
+                  aria-label={TEXTS.LABEL_FORM_SCREENSHOT_PREVIEW_LABEL_TEXT}
                 >
                   <Icon className={styles.icon} icon={IconName.Expand} />
                 </a>
