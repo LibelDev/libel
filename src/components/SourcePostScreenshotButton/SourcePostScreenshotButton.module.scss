@@ -1,0 +1,22 @@
+@import '../../stylesheets/base';
+
+.container {
+  @apply cursor-default;
+
+  &:empty {
+    @apply hidden;
+  }
+}
+
+.source-post-screenshot-button {
+  font-size: 1em;
+
+  &:focus,
+  &:hover {
+    color: $color-black;
+
+    @include dark-mode() {
+      color: $color-white;
+    }
+  }
+}

@@ -18,6 +18,8 @@ import labelListStyles from '../components/LabelList/LabelList.module.scss';
 import SettingsModalToggleButton from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
 import SnipeButton from '../components/SnipeButton/SnipeButton';
 import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
+import SourcePostScreenshotButton from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
+import sourcePostScreenshotButtonStyles from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton.module.scss';
 import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
 import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton.module.scss';
 import * as ATTRIBUTES from '../constants/attributes';
@@ -35,13 +37,15 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 const debug = debugFactory('libel:helper:mutation');
 
 const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const sourcePostScreenshotButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 
 type TMutationCacheSymbol = (
   typeof labelListMutationCacheSymbol |
+  typeof snipeButtonMutationCacheSymbol |
   typeof addLabelButtonMutationCacheSymbol |
-  typeof snipeButtonMutationCacheSymbol
+  typeof sourcePostScreenshotButtonMutationCacheSymbol
 );
 
 interface IMutationCache {
@@ -60,8 +64,9 @@ type TUnmontableMutationHandler = (
 declare global {
   interface Element {
     [labelListMutationCacheSymbol]?: IMutationCache;
-    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
     [snipeButtonMutationCacheSymbol]?: IMutationCache;
+    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
+    [sourcePostScreenshotButtonMutationCacheSymbol]?: IMutationCache;
   }
 }
 
@@ -195,6 +200,23 @@ const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, co
       </PersistGate>
     </Provider>
   );
+  return root;
+};
+
+const renderSourcePostScreenshotButton = (user: string, postId: string | undefined, store: TStore, persistor: Persistor, container: Element) => {
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(sourcePostScreenshotButtonStyles.container);
+  const post = postId && cache.getReply(postId) || null;
+  const root = createRoot(container);
+  if (post) {
+    root.render(
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <SourcePostScreenshotButton post={post} />
+        </PersistGate>
+      </Provider>
+    );
+  }
   return root;
 };
 
@@ -338,12 +360,12 @@ const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persisto
 const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   if (user) {
+    const replyItemInner = node.parentElement?.parentElement;
+    const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
     const replyItemInnerBody = node.parentElement;
     if (replyItemInnerBody) {
       /* label list */
       _handleUnmountableMutation(replyItemInnerBody, labelListMutationCacheSymbol, (reference) => {
-        const replyItemInner = node.parentElement?.parentElement;
-        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
         const container = document.createElement('div');
         reference.insertAdjacentElement('afterbegin', container);
         const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
@@ -362,11 +384,16 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
       });
       /* add label button */
       _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
-        const replyItemInner = node.parentElement?.parentElement;
-        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
         const container = document.createElement('div');
         insertAfter(container, reference);
         const root = renderAddLabelButton(user, postId, store, persistor, container);
+        return { container, root };
+      });
+      /* source post screenshot button */
+      _handleUnmountableMutation(replyButton, sourcePostScreenshotButtonMutationCacheSymbol, (reference) => {
+        const container = document.createElement('div');
+        insertAfter(container, reference);
+        const root = renderSourcePostScreenshotButton(user, postId, store, persistor, container);
         return { container, root };
       });
     }

@@ -3,3 +3,11 @@ export const sleep = (ms: number) => {
     setTimeout(resolve, ms);
   });
 };
+
+export const getElementLabelTipProps = (label: string) => {
+  return {
+    'aria-label': label,
+    'data-tip': label,
+    title: label
+  };
+};

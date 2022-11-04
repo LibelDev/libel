@@ -146,3 +146,6 @@ export const BUTTON_TEXT_LICENSE = 'MIT License';
 
 /* emote menu */
 export const BUTTON_TEXT_UNLOCK_ICON_MAP = '解鎖全部表情';
+
+/* screenshot */
+export const SOURCE_PORT_SCREENSHOT_BUTTON_TEXT = '對此回覆進行截圖';
