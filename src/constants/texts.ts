@@ -20,6 +20,7 @@ export const BUTTON_TEXT_SNIPE = '一鍵狙擊';
 
 /* label */
 export const BLOCKED_USER_DEFAULT_LABEL_TEXT = '封鎖會員';
+export const LABEL_REASON_EMPTY_TEXT = '未有記錄標籤原因';
 
 /* label form */
 export const LABEL_FORM_MODAL_TITLE_ADD_LABEL = '新增標籤';
@@ -27,10 +28,10 @@ export const LABEL_FORM_MODAL_TITLE_EDIT_LABEL = '修改標籤';
 export const LABEL_FORM_FIELD_LABEL_TEXT = '標籤';
 export const LABEL_FORM_FIELD_LABEL_REASON = '原因';
 export const LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR = '自訂顏色';
-export const LABEL_FORM_FIELD_LABEL_CAPTURE = '自動將目標留言截圖';
+export const LABEL_FORM_FIELD_LABEL_SCREENSHOT = '自動將目標留言截圖';
 export const LABEL_FORM_FIELD_LABEL_IMAGE = '相關圖片網址';
-export const LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT = '預覽截圖';
-export const LABEL_FORM_CAPTURE_ERROR = '截圖失敗，請重新嘗試。';
+export const LABEL_FORM_SCREENSHOT_PREVIEW_LABEL_TEXT = '預覽截圖';
+export const LABEL_FORM_SCREENSHOT_ERROR = '截圖失敗，請重新嘗試。';
 export const LABEL_FORM_FIELD_PLACEHOLDER_REASON = '如無需要可留空';
 export const LABEL_FORM_FIELD_PLACEHOLDER_IMAGE = '如無需要可留空';
 export const LABEL_FORM_FIELD_ERROR_TEXT_REQUIRED = '必須填寫標籤名稱';
@@ -145,3 +146,6 @@ export const BUTTON_TEXT_LICENSE = 'MIT License';
 
 /* emote menu */
 export const BUTTON_TEXT_UNLOCK_ICON_MAP = '解鎖全部表情';
+
+/* screenshot */
+export const SOURCE_PORT_SCREENSHOT_BUTTON_TEXT = '對此回覆進行截圖';

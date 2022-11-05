@@ -1,24 +1,23 @@
-import { useEffect, useState } from 'react';
-import { toCanvas, toImageURL } from '../helpers/canvas';
+import { useCallback, useState } from 'react';
+import { mergeCanvas, toCanvas, toImageURL } from '../helpers/canvas';
 
-export namespace UseScreenshot {
-  /**
-   * `useScreenshot` hook options, it needs to be memoized
-   */
-  export type TOptions = Parameters<typeof toCanvas>[1];
-  /**
-   * `useScreenshot` hook result
-   */
-  export interface IResult {
-    loading: boolean;
-    error: unknown | null;
-    url: string | null;
-    blob: Blob | null;
-    canvas: HTMLCanvasElement | null;
-  }
+type TToCanvasOptions = NonNullable<Parameters<typeof toCanvas>[1]>;
+
+export type TOptions = TToCanvasOptions;
+
+interface IState {
+  loading: boolean;
+  error: unknown | null;
+  url: string | null;
+  blob: Blob | null;
+  canvas: HTMLCanvasElement | null;
 }
 
-const initialResult: UseScreenshot.IResult = {
+type TCaptureFunction = (enabled?: boolean) => Promise<void>;
+
+type TResult = [IState, TCaptureFunction];
+
+const initialState: IState = {
   loading: false,
   error: null,
   url: null,
@@ -26,25 +25,27 @@ const initialResult: UseScreenshot.IResult = {
   canvas: null
 };
 
-const useScreenshot = <E extends HTMLElement> (enabled: boolean, element?: E, options?: UseScreenshot.TOptions): UseScreenshot.IResult => {
-  const [result, setResult] = useState(initialResult);
-  useEffect(() => {
-    (async () => {
-      if (enabled && element) {
-        setResult({ ...result, loading: true });
-        try {
-          const canvas = await toCanvas(element, options);
-          const [url, blob] = await toImageURL(canvas);
-          setResult({ loading: false, error: null, url, blob, canvas });
-        } catch (err) {
-          setResult({ ...initialResult, error: err });
-        }
-      } else {
-        setResult(initialResult);
+const useScreenshot = <E extends HTMLElement> (elements?: E[], options?: TOptions): TResult => {
+  const [state, setState] = useState(initialState);
+
+  const capture = useCallback(async (enabled = true) => {
+    if (enabled && elements && elements.length) {
+      setState({ ...initialState, loading: true });
+      try {
+        const promises = elements.map((element) => toCanvas(element, options));
+        const canvases = await Promise.all(promises);
+        const canvas = mergeCanvas(canvases[0], canvases[1]);
+        const [url, blob] = await toImageURL(canvas);
+        setState({ loading: false, error: null, url, blob, canvas });
+      } catch (err) {
+        setState({ ...initialState, error: err });
       }
-    })();
-  }, [enabled, element, options]);
-  return result;
+    } else {
+      setState(initialState);
+    }
+  }, [elements, options]);
+
+  return [state, capture];
 };
 
 export default useScreenshot;

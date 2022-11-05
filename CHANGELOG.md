@@ -1,3 +1,50 @@
+## v3.8.0 (2022-11-05)
+
+### Feat
+
+- **components**: forward ref for `ToggleButton`
+- **components**: add `SourcePostScreenshotButton`
+- **label-form**: add image button
+- **label-form**: change error message to error notification
+- **editor**: change error message to error notification
+- **label-form**: support screenshot in edit label form
+- **helpers**: add `sleep()`
+- **subscription**: revise `SubscriptionItem` layout
+- **label**: revise `LabelInfo` layout
+
+### Fix
+
+- **label-form**: show screenshot toggle button only when the post is available
+
+### Refactor
+
+- **components**: update tooltip props
+- **hooks**: add `useSourcePostScreenshot`
+- **components**: spread props
+- **components**: destructure and spread the remaining props
+
+## v3.8.0-alpha.2 (2022-11-02)
+
+### Feat
+
+- **label**: support capturing thread title for screenshot
+- **label**: remove image enlarge buttons in screenshot
+- **auth**: prompt user to select account
+
+### Refactor
+
+- **typings**: update `useGoogleAuthorization`
+
+## v3.8.0-alpha (2022-11-01)
+
+### Feat
+
+- **screenshot**: use proxy for cross-origin images
+
+### Refactor
+
+- **hooks**: update `useScreenshot`
+
 ## v3.7.0 (2022-10-21)
 
 ### Feat

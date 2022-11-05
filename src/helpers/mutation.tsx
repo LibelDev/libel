@@ -13,16 +13,17 @@ import announcementStyles from '../components/Announcement/Announcement.module.s
 import { IconName } from '../components/Icon/types';
 import LabelList from '../components/LabelList/LabelList';
 import labelListStyles from '../components/LabelList/LabelList.module.scss';
-// import Settings from '../components/Settings/Settings';
-// import settingsStyles from '../components/Settings/Settings.module.scss';
 import SettingsModalToggleButton from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
 import SnipeButton from '../components/SnipeButton/SnipeButton';
 import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
+import SourcePostScreenshotButton from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
+import sourcePostScreenshotButtonStyles from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton.module.scss';
 import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
 import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton.module.scss';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
+import { Context as LabelSourcePostContext } from '../hooks/useLabelSourcePost';
 import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
@@ -34,13 +35,15 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 const debug = debugFactory('libel:helper:mutation');
 
 const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const sourcePostScreenshotButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 
 type TMutationCacheSymbol = (
   typeof labelListMutationCacheSymbol |
+  typeof snipeButtonMutationCacheSymbol |
   typeof addLabelButtonMutationCacheSymbol |
-  typeof snipeButtonMutationCacheSymbol
+  typeof sourcePostScreenshotButtonMutationCacheSymbol
 );
 
 interface IMutationCache {
@@ -59,8 +62,9 @@ type TUnmontableMutationHandler = (
 declare global {
   interface Element {
     [labelListMutationCacheSymbol]?: IMutationCache;
-    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
     [snipeButtonMutationCacheSymbol]?: IMutationCache;
+    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
+    [sourcePostScreenshotButtonMutationCacheSymbol]?: IMutationCache;
   }
 }
 
@@ -75,10 +79,6 @@ const isThreadItem = (node: Element) => {
 const isUserCardModal = (node: Element) => {
   return isModalTitleMatched(node, TEXTS.LIHKG_MODAL_TITLE_USER_CARD);
 };
-
-// const isSettingsModal = (node: Element) => {
-//   return isModalTitleMatched(node, TEXTS.LIHKG_SETTINGS_MODAL_TITLE);
-// };
 
 const isEmoteMenu = (node: Element) => {
   return node.matches(lihkgSelectors.emoteMenu);
@@ -145,32 +145,37 @@ const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, co
   return root;
 };
 
-const renderLabelList = (user: string, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
+const renderLabelList = (user: string, postId: string | undefined, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(labelListStyles.container);
+  const post = postId && cache.getReply(postId) || null;
   const root = createRoot(container);
   root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <LabelList
-          user={user}
-          floatingConfig={floatingConfig}
-        />
+        <LabelSourcePostContext.Provider value={post}>
+          <LabelList
+            user={user}
+            floatingConfig={floatingConfig}
+          />
+        </LabelSourcePostContext.Provider>
       </PersistGate>
     </Provider>
   );
   return root;
 };
 
-const renderAddLabelButton = (user: string, postID: string | null | undefined, store: TStore, persistor: Persistor, container: Element) => {
+const renderAddLabelButton = (user: string, postId: string | undefined, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(lihkgCssClasses.replyToolbarButton);
   container.classList.add(addLabelButtonStyles.container);
-  const post = postID && cache.getReply(postID);
+  const post = postId && cache.getReply(postId) || null;
   const root = createRoot(container);
   if (post) {
     root.render(
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <AddLabelButton user={user} post={post} />
+          <LabelSourcePostContext.Provider value={post}>
+            <AddLabelButton user={user} />
+          </LabelSourcePostContext.Provider>
         </PersistGate>
       </Provider>
     );
@@ -192,18 +197,22 @@ const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, co
   return root;
 };
 
-// const renderSettings = (store: TStore, persistor: Persistor, container: Element) => {
-//   container.classList.add(settingsStyles.container);
-//   const root = createRoot(container);
-//   root.render(
-//     <Provider store={store}>
-//       <PersistGate persistor={persistor}>
-//         <Settings />
-//       </PersistGate>
-//     </Provider>
-//   );
-//   return root;
-// };
+const renderSourcePostScreenshotButton = (user: string, postId: string | undefined, store: TStore, persistor: Persistor, container: Element) => {
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(sourcePostScreenshotButtonStyles.container);
+  const post = postId && cache.getReply(postId) || null;
+  const root = createRoot(container);
+  if (post) {
+    root.render(
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <SourcePostScreenshotButton post={post} />
+        </PersistGate>
+      </Provider>
+    );
+  }
+  return root;
+};
 
 const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
@@ -261,7 +270,7 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
       if (threadItemInner) {
         const container = document.createElement('div');
         threadItemInner.insertAdjacentElement('afterbegin', container);
-        renderLabelList(user, undefined, store, persistor, container);
+        renderLabelList(user, undefined, undefined, store, persistor, container);
       }
     }
   }
@@ -279,19 +288,10 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
       const container = document.createElement('div');
       modelContentInner.appendChild(container);
       const floatingConfig: TFloatingConfig = { strategy: 'fixed' };
-      renderLabelList(user, floatingConfig, store, persistor, container);
+      renderLabelList(user, undefined, floatingConfig, store, persistor, container);
     }
   }
 };
-
-// const handleSettingsModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-//   const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
-//   if (modelContentInner) {
-//     const container = document.createElement('div');
-//     modelContentInner.appendChild(container);
-//     renderSettings(store, persistor, container);
-//   }
-// };
 
 const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
@@ -332,6 +332,8 @@ const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persisto
 const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   if (user) {
+    const replyItemInner = node.parentElement?.parentElement;
+    const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
     const replyItemInnerBody = node.parentElement;
     if (replyItemInnerBody) {
       /* label list */
@@ -339,26 +341,31 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
         const container = document.createElement('div');
         reference.insertAdjacentElement('afterbegin', container);
         const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
-        const root = renderLabelList(user, floatingConfig, store, persistor, container);
+        const root = renderLabelList(user, postId, floatingConfig, store, persistor, container);
         return { container, root };
       });
     }
     const replyButton = node.querySelector(`.${IconName.Reply}`);
     if (replyButton) {
+      /* snipe button */
+      _handleUnmountableMutation(replyButton, snipeButtonMutationCacheSymbol, (reference) => {
+        const container = document.createElement('div');
+        insertAfter(container, reference);
+        const root = renderSnipeButton(user, store, persistor, container);
+        return { container, root };
+      });
       /* add label button */
-      const { container: addLabelButtonContainer } = _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
-        const replyItemInner = node.parentElement?.parentElement;
-        const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID);
+      _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
         const container = document.createElement('div');
         insertAfter(container, reference);
         const root = renderAddLabelButton(user, postId, store, persistor, container);
         return { container, root };
       });
-      /* snipe button */
-      _handleUnmountableMutation(replyButton, snipeButtonMutationCacheSymbol, (reference) => {
+      /* source post screenshot button */
+      _handleUnmountableMutation(replyButton, sourcePostScreenshotButtonMutationCacheSymbol, (reference) => {
         const container = document.createElement('div');
-        insertAfter(container, addLabelButtonContainer);
-        const root = renderSnipeButton(user, store, persistor, container);
+        insertAfter(container, reference);
+        const root = renderSourcePostScreenshotButton(user, postId, store, persistor, container);
         return { container, root };
       });
     }
@@ -390,8 +397,6 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   if (isThreadItem(node)) return handleThreadItemMutation;
   /** when render the user card modal */
   if (isUserCardModal(node)) return handleUserCardModalMutation;
-  // /** when render the settings modal */
-  // if (isSettingsModal(node)) return handleSettingsModalMutation;
   /** when render the emote menu */
   if (isEmoteMenu(node)) return handleEmoteMenuMutation;
   /** when render the reply list (probably when enter the thread or go to next page) */

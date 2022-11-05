@@ -39,7 +39,7 @@
       @apply p-2;
       @apply rounded;
       @apply box-content;
-      @apply max-w-xs;
+      // @apply max-w-xs;
       border: solid 1px $color-grey02;
 
       @include dark-mode() {
@@ -75,6 +75,17 @@
           font-size: 1.2rem;
         }
       }
+    }
+  }
+
+  &.image {
+    @apply flex items-center;
+
+    .image-button {
+      @apply ml-4;
+      @apply no-underline;
+      color: $color-blue01;
+      font-size: 1.5em;
     }
   }
 

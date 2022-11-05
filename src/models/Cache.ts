@@ -32,8 +32,8 @@ class Cache {
   addReplies (data: APIv2.IReplyListResponseBody | APIv2.IQuoteListResponseBody) {
     const { item_data: items } = data.response;
     for (const item of items) {
-      const { post_id: postID } = item;
-      this.replies[postID] = item;
+      const { post_id: postId } = item;
+      this.replies[postId] = item;
     }
   }
 

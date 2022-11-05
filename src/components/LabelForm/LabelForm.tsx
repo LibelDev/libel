@@ -1,37 +1,33 @@
 import classNames from 'classnames';
 import joi from 'joi';
 import type React from 'react';
-import { useCallback, useId, useMemo, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
 import cache from '../../cache';
-import { SCREENSHOT_WIDTH } from '../../constants/label';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
+import * as LIHKG from '../../helpers/lihkg';
 import { mapValidationError } from '../../helpers/validation';
-import useScreenshot, { UseScreenshot } from '../../hooks/useScreenshot';
+import useLabelSourcePost from '../../hooks/useLabelSourcePost';
+import useSourcePostScreenshot from '../../hooks/useSourcePostScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
 import { EventAction, EventCategory } from '../../types/ga';
 import ColorPicker from '../ColorPicker/ColorPicker';
-import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
+import LabelImageButton from '../LabelImageButton/LabelImageButton';
 import TextInput from '../TextInput/TextInput';
 import ToggleButton from '../ToggleButton/ToggleButton';
 import styles from './LabelForm.module.scss';
 
 type TLabelData = Pick<ILabel, 'text' | 'reason' | 'color' | 'image'>;
 
-type TFormData = TLabelData & {
+export type TFormData = TLabelData & {
   meta: {
-    screenshot?: UseScreenshot.IResult;
+    screenshot?: ReturnType<typeof useSourcePostScreenshot>[0];
   };
 };
-
-interface IToggleButtonState {
-  useCustomColor: boolean;
-  useScreenshot: boolean;
-}
 
 interface IInputErrors {
   [name: string]: string | undefined;
@@ -50,10 +46,6 @@ export interface IProps {
    * the loading state
    */
   loading?: boolean;
-  /**
-   * the target reply element for screenshot
-   */
-  target?: HTMLElement;
   /**
    * custom onSubmit event handler
    * @async
@@ -88,22 +80,15 @@ const initialFormData: TFormData = {
 };
 
 const LabelForm: React.FunctionComponent<TProps> = (props) => {
-  const { id, className, user, label, loading, target, onSubmit, ...otherProps } = props;
+  const { id, className, user, label, loading, onSubmit, ...otherProps } = props;
 
   const [formData, setFormData] = useState<TFormData>(label as TFormData || initialFormData);
-  const [toggleButtonState, setToggleButtonState] = useState<IToggleButtonState>({
-    useCustomColor: !!formData.color,
-    useScreenshot: false
-  });
+  const [isColorEnabled, setIsColorEnabled] = useState(!!formData.color);
+  const [isScreenshotEnabled, setIsScreenshotEnabled] = useState(false);
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
-  const [formError, setFormError] = useState('');
 
-  const useScreenshotOptions: NonNullable<UseScreenshot.TOptions> = useMemo(() => ({
-    onclone: (document, element) => {
-      element.style.width = SCREENSHOT_WIDTH;
-    }
-  }), []);
-  const screenshot = useScreenshot(toggleButtonState.useScreenshot, target, useScreenshotOptions);
+  const post = useLabelSourcePost();
+  const [screenshot, capture] = useSourcePostScreenshot(post);
 
   const previewImageStyle = useMemo(() => ({
     backgroundImage: `url(${screenshot.url})`
@@ -121,17 +106,25 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
     setInputErrors({ ...inputErrors, [name]: undefined });
   }, [formData, inputErrors]);
 
-  const handleToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
-    const { checked, name } = event.target;
-    setToggleButtonState({ ...toggleButtonState, [name]: checked });
-  }, [toggleButtonState]);
+  const handleColorToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
+    const { checked } = event.target;
+    setIsColorEnabled(checked);
+  }, []);
+
+  const handleScreenshotToggleButtonChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(async (event) => {
+    const { checked } = event.target;
+    setIsScreenshotEnabled(checked);
+    await capture(checked);
+  }, [capture]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(async (event) => {
     event.preventDefault();
+    const { image, meta } = formData;
     const _formData: TFormData = {
       ...formData,
-      color: toggleButtonState.useCustomColor ? formData.color : undefined, // unset if it is disabled
-      meta: { ...formData.meta, screenshot }
+      color: isColorEnabled ? formData.color : undefined, // unset if color is disabled
+      image: isScreenshotEnabled ? '' : image, // unset if screenshot is enabled
+      meta: { ...meta, screenshot }
     };
     const { value, error } = schema.validate(_formData);
     if (error) {
@@ -146,11 +139,20 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         await onSubmit(value);
       } catch (err) {
         if (typeof err === 'string') {
-          setFormError(err);
+          const notification = LIHKG.createLocalNotification(err);
+          LIHKG.showNotification(notification);
         }
       }
     }
-  }, [onSubmit, formData, toggleButtonState, inputErrors, screenshot]);
+  }, [onSubmit, formData, isColorEnabled, isScreenshotEnabled, inputErrors, screenshot]);
+
+  useEffect(() => {
+    if (screenshot.error) {
+      setIsScreenshotEnabled(false);
+      const notification = LIHKG.createLocalNotification(TEXTS.LABEL_FORM_SCREENSHOT_ERROR);
+      LIHKG.showNotification(notification);
+    }
+  }, [screenshot.error]);
 
   return (
     <form
@@ -169,6 +171,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           </div>
         )
       }
+      {/* text */}
       <div className={styles.inputField}>
         <TextInput
           className={styles.textInput}
@@ -182,6 +185,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           autoComplete="on"
         />
       </div>
+      {/* reason */}
       <div className={styles.inputField}>
         <TextInput
           className={styles.textInput}
@@ -195,17 +199,17 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           autoComplete="on"
         />
       </div>
+      {/* color */}
       <div className={classNames(styles.inputField, styles.color)}>
         <ToggleButton
           className={styles.toggleButton}
-          checked={toggleButtonState.useCustomColor}
-          name="useCustomColor"
+          checked={isColorEnabled}
           disabled={loading}
-          onChange={handleToggleButtonChange}
+          onChange={handleColorToggleButtonChange}
         >
           {TEXTS.LABEL_FORM_FIELD_LABEL_CUSTOM_COLOR}
           {
-            toggleButtonState.useCustomColor && (
+            isColorEnabled && (
               <ColorPicker
                 className={styles.colorPicker}
                 border
@@ -220,10 +224,43 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
           }
         </ToggleButton>
       </div>
+      {/* screenshot */}
       {
-        label ? (
-          /** edit label */
-          <div className={styles.inputField}>
+        post && (
+          <div className={classNames(styles.inputField, styles.screenshot)}>
+            <ToggleButton
+              className={styles.toggleButton}
+              checked={isScreenshotEnabled}
+              disabled={loading}
+              loading={screenshot.loading}
+              onChange={handleScreenshotToggleButtonChange}
+            >
+              {TEXTS.LABEL_FORM_FIELD_LABEL_SCREENSHOT}
+            </ToggleButton>
+            {
+              !screenshot.loading && !!screenshot.url && (
+                <div className={styles.preview}>
+                  {
+                    <a
+                      className={styles.image}
+                      href={screenshot.url}
+                      target="_blank"
+                      style={previewImageStyle}
+                      aria-label={TEXTS.LABEL_FORM_SCREENSHOT_PREVIEW_LABEL_TEXT}
+                    >
+                      <Icon className={styles.icon} icon={IconName.Expand} />
+                    </a>
+                  }
+                </div>
+              )
+            }
+          </div>
+        )
+      }
+      {/* image */}
+      {
+        label && !isScreenshotEnabled && (
+          <div className={classNames(styles.inputField, styles.image)}>
             <TextInput
               className={styles.textInput}
               disabled={loading}
@@ -234,53 +271,11 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
               error={inputErrors.image}
               onChange={handleInputChange}
             />
+            <LabelImageButton
+              className={styles.imageButton}
+              label={label}
+            />
           </div>
-        ) : (
-          /** add label */
-          <div className={classNames(styles.inputField, styles.screenshot)}>
-            <ToggleButton
-              className={styles.toggleButton}
-              checked={toggleButtonState.useScreenshot}
-              disabled={loading}
-              name="useScreenshot"
-              loading={screenshot.loading}
-              onChange={handleToggleButtonChange}
-            >
-              {TEXTS.LABEL_FORM_FIELD_LABEL_CAPTURE}
-            </ToggleButton>
-            {
-              !screenshot.loading && !!(screenshot.error || screenshot.url) && (
-                <div className={styles.preview}>
-                  {
-                    !!screenshot.error ? (
-                      <ErrorMessage className={styles.error}>
-                        {TEXTS.LABEL_FORM_CAPTURE_ERROR}
-                      </ErrorMessage>
-                    ) : (
-                      screenshot.url && (
-                        <a
-                          className={styles.image}
-                          href={screenshot.url}
-                          target="_blank"
-                          style={previewImageStyle}
-                          aria-label={TEXTS.LABEL_FORM_CAPTURE_PREVIEW_LABEL_TEXT}
-                        >
-                          <Icon className={styles.icon} icon={IconName.Expand} />
-                        </a>
-                      )
-                    )
-                  }
-                </div>
-              )
-            }
-          </div>
-        )
-      }
-      {
-        !!formError && (
-          <ErrorMessage id={_errorId} className={styles.error}>
-            {formError}
-          </ErrorMessage>
         )
       }
     </form>

@@ -13,7 +13,7 @@ export interface IAddLabelPayload {
   image?: string;
 }
 
-interface IEditLabelPayload {
+export interface IEditLabelPayload {
   user: string;
   index: number;
   text: string;

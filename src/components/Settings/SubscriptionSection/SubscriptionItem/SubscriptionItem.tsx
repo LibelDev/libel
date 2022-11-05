@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import type React from 'react';
 import { useMemo } from 'react';
 import * as TEXTS from '../../../../constants/texts';
+import { getElementLabelTipProps } from '../../../../helpers/common';
 import type { ISubscription } from '../../../../models/Subscription';
 import Icon from '../../../Icon/Icon';
 import { IconName } from '../../../Icon/types';
@@ -24,21 +25,30 @@ type TProps = IProps & TComponentProps;
 const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
   const { className, subscription, index } = props;
 
-  const style = useMemo(() => {
-    const { color } = subscription;
-    return { backgroundColor: color };
-  }, [subscription]);
+  const { color } = subscription;
+
+  const themeBarStyle = useMemo(() => {
+    return !color ? undefined : {
+      backgroundColor: color
+    };
+  }, [color]);
 
   return (
     <div className={classNames(className, styles.subscription)}>
-      <i
-        className={styles.bar}
-        style={style}
-        aria-hidden
-      />
       <span className={styles.name}>
         <a href={subscription.url} target="_blank">
-          {subscription.name || subscription.url}
+          <span>
+            {subscription.name || subscription.url}
+          </span>
+          {
+            color && (
+              <i
+                className={styles.themeBar}
+                style={themeBarStyle}
+                aria-hidden
+              />
+            )
+          }
         </a>
         {
           subscription.error ? (
@@ -46,9 +56,7 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
               className={classNames(styles.status, styles.error)}
               icon={IconName.CommentAlert}
               aria-hidden={false}
-              aria-label={subscription.error}
-              data-tip={subscription.error}
-              title={subscription.error}
+              {...getElementLabelTipProps(subscription.error)}
             />
           ) : (
             subscription.loading ? (
@@ -59,9 +67,7 @@ const SubscriptionItem: React.FunctionComponent<TProps> = (props) => {
                   className={styles.status}
                   icon={IconName.Verified}
                   aria-hidden={false}
-                  aria-label={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
-                  data-tip={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
-                  title={TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS}
+                  {...getElementLabelTipProps(TEXTS.SUBSCRIPTION_MESSAGE_LOAD_SUCCESS)}
                 />
               )
             )

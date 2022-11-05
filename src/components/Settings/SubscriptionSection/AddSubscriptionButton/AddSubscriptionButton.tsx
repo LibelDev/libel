@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
+import { getElementLabelTipProps } from '../../../../helpers/common';
 import * as gtag from '../../../../helpers/gtag';
 import { prompt } from '../../../../helpers/subscription';
 import Subscription from '../../../../models/Subscription';
@@ -43,9 +44,7 @@ const AddSubscriptionButton: React.FunctionComponent = () => {
     <IconButton
       className={lihkgCssClasses.settingOptionButton}
       icon={IconName.Plus}
-      aria-label={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
-      data-tip={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
-      title={TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}
+      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION)}
       onClick={handleClick}
     >
       {TEXTS.BUTTON_TEXT_ADD_SUBSCRIPTION}

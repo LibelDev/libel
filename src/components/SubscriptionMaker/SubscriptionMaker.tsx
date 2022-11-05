@@ -5,6 +5,7 @@ import type React from 'react';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { namespace } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
+import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import { mapValidationError } from '../../helpers/validation';
 import type { IDataSet } from '../../models/DataSet';
@@ -191,7 +192,7 @@ const SubscriptionMaker: React.FunctionComponent<TProps> = (props) => {
             <IconButton
               className={styles.remove}
               icon={IconName.DeleteForever}
-              aria-label={TEXTS.BUTTON_TEXT_SUBSCRIPTION_MAKER_REMOVE_TEMPLATE}
+              {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_SUBSCRIPTION_MAKER_REMOVE_TEMPLATE)}
               onClick={handleSubscriptionTemplateRemoveButtonClick}
             />
           )
