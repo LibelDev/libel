@@ -225,34 +225,38 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
         </ToggleButton>
       </div>
       {/* screenshot */}
-      <div className={classNames(styles.inputField, styles.screenshot)}>
-        <ToggleButton
-          className={styles.toggleButton}
-          checked={isScreenshotEnabled}
-          disabled={loading}
-          loading={screenshot.loading}
-          onChange={handleScreenshotToggleButtonChange}
-        >
-          {TEXTS.LABEL_FORM_FIELD_LABEL_SCREENSHOT}
-        </ToggleButton>
-        {
-          !screenshot.loading && !!screenshot.url && (
-            <div className={styles.preview}>
-              {
-                <a
-                  className={styles.image}
-                  href={screenshot.url}
-                  target="_blank"
-                  style={previewImageStyle}
-                  aria-label={TEXTS.LABEL_FORM_SCREENSHOT_PREVIEW_LABEL_TEXT}
-                >
-                  <Icon className={styles.icon} icon={IconName.Expand} />
-                </a>
-              }
-            </div>
-          )
-        }
-      </div>
+      {
+        post && (
+          <div className={classNames(styles.inputField, styles.screenshot)}>
+            <ToggleButton
+              className={styles.toggleButton}
+              checked={isScreenshotEnabled}
+              disabled={loading}
+              loading={screenshot.loading}
+              onChange={handleScreenshotToggleButtonChange}
+            >
+              {TEXTS.LABEL_FORM_FIELD_LABEL_SCREENSHOT}
+            </ToggleButton>
+            {
+              !screenshot.loading && !!screenshot.url && (
+                <div className={styles.preview}>
+                  {
+                    <a
+                      className={styles.image}
+                      href={screenshot.url}
+                      target="_blank"
+                      style={previewImageStyle}
+                      aria-label={TEXTS.LABEL_FORM_SCREENSHOT_PREVIEW_LABEL_TEXT}
+                    >
+                      <Icon className={styles.icon} icon={IconName.Expand} />
+                    </a>
+                  }
+                </div>
+              )
+            }
+          </div>
+        )
+      }
       {/* image */}
       {
         label && !isScreenshotEnabled && (
