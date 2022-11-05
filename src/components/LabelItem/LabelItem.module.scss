@@ -6,6 +6,8 @@
   @apply pl-3;
   color: $color-grey05;
 
+  $height: 30px;
+
   // when it is inside thread item inner {
   :global(#{$lihkg-selector-thread-item-inner}) & {
     color: $color-grey12;
@@ -27,13 +29,15 @@
   }
 
   .inner {
+    @apply flex items-center;
     @apply relative;
-    @apply px-3 py-1;
+    @apply px-3;
     @apply border-solid border;
     border-color: $color-grey05;
     border-left-color: transparent;
     @apply rounded;
     @apply text-sm;
+    height: $height;
   }
 
   &:before {
@@ -44,8 +48,8 @@
      * => a*a = 450
      * => a = math.sqrt(450)
      */
-    $height: 30; // 1.25rem + 0.25rem * 2 + 2px
-    $size: #{math.sqrt(math.div(math.pow($height, 2), 2))}px;
+    $height-raw: $height / 1px;
+    $size: #{math.sqrt(math.div(math.pow($height-raw, 2), 2))}px;
     content: '';
     @apply absolute;
     @apply top-0 -left-2;

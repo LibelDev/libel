@@ -7,6 +7,7 @@ import type { IDataSet } from '../../models/DataSet';
 import type { ILabel } from '../../models/Label';
 import Subscription, { ISubscription } from '../../models/Subscription';
 import EditLabelButton from '../EditLabelButton/EditLabelButton';
+import EmoticonTranslator from '../EmoticonTranslator/EmoticonTranslator';
 import LabelImageButton from '../LabelImageButton/LabelImageButton';
 import LabelSourceButton from '../LabelSourceButton/LabelSourceButton';
 import LabelSubscriptionButton from '../LabelSubscriptionButton/LabelSubscriptionButton';
@@ -48,7 +49,9 @@ const LabelInfo: React.FunctionComponent<TProps> = memo((props) => {
           )
         }
       >
-        {label.reason || TEXTS.LABEL_REASON_EMPTY_TEXT}
+        <EmoticonTranslator>
+          {label.reason || TEXTS.LABEL_REASON_EMPTY_TEXT}
+        </EmoticonTranslator>
       </div>
       <div className={styles.buttons}>
         {

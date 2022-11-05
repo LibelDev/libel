@@ -7,6 +7,10 @@
     @apply py-0;
   }
 
+  .emoticon {
+    @apply max-h-5;
+  }
+
   .badge {
     @apply absolute;
     @apply top-0 right-0;

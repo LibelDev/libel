@@ -23,7 +23,9 @@ import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleBu
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
+import * as LIHKG from '../helpers/lihkg';
 import { Context as LabelSourcePostContext } from '../hooks/useLabelSourcePost';
+import { Context as UnlockedIconMapContext } from '../hooks/useUnlockedIconMap';
 import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
@@ -148,15 +150,18 @@ const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, co
 const renderLabelList = (user: string, postId: string | undefined, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
   container.classList.add(labelListStyles.container);
   const post = postId && cache.getReply(postId) || null;
+  const iconMap = LIHKG.getUnlockedIconMap();
   const root = createRoot(container);
   root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <LabelSourcePostContext.Provider value={post}>
-          <LabelList
-            user={user}
-            floatingConfig={floatingConfig}
-          />
+          <UnlockedIconMapContext.Provider value={iconMap}>
+            <LabelList
+              user={user}
+              floatingConfig={floatingConfig}
+            />
+          </UnlockedIconMapContext.Provider>
         </LabelSourcePostContext.Provider>
       </PersistGate>
     </Provider>
