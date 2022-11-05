@@ -31,7 +31,7 @@ pnpm install
 
 For a smooth development experience, you may want to execute the following commands simultaneously:
 
-### Start development
+### Start development server
 
 ```bash
 pnpm dev:main
@@ -43,16 +43,15 @@ pnpm dev:main
 pnpm type:scss[:watch]
 ```
 
-### Install
+### Install development build
 
-When `webpack-dev-server` completed the first compilation, follow these steps to test on [LIHKG](https://lihkg.com/):
+1. Start the development server
+2. Install [Tampermonkey](https://www.tampermonkey.net/) (or your favourite userscript manager)
+3. Visit [http://localhost:8080/libel.proxy.user.js](http://localhost:8080/libel.proxy.user.js)
+4. Click **Install**
+5. Go back to [LIHKG](https://lihkg.com/) and reload the page
 
-1. Install [Tampermonkey](https://www.tampermonkey.net/) (or your favourite userscript manager)
-2. Visit [http://localhost:8080/libel.proxy.user.js](http://localhost:8080/libel.proxy.user.js)
-3. Click **Install** / **Reinstall** / **Update**
-4. Go back to [LIHKG](https://lihkg.com/) and reload the page
-
-Whenever you made changes and `webpack-dev-server` recompiled the files, repeat step 2 to 4.
+Whenever a file has changed, `webpack-dev-server` will recompile the code, and you can simply reload the page to see the changes.
 
 ***
 
@@ -77,6 +76,8 @@ This project only provides technical support for the [features](https://github.c
 ## Privacy Policy
 
 [Privacy Policy](https://github.com/kitce/libel/wiki/%E7%A7%81%E9%9A%B1%E6%94%BF%E7%AD%96)
+
+***
 
 ## License
 
