@@ -6,11 +6,22 @@ import * as LIHKG from '../../helpers/lihkg';
 import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
-import { IIconMap } from '../../types/lihkg';
 import ToggleButton from '../ToggleButton/ToggleButton';
 
-let originalIconMap: IIconMap | undefined;
-let unlockedIconMap: IIconMap | undefined;
+const unlockIconMap = (enabled: boolean) => {
+  const store = LIHKG.getStore(); // original LIHKG redux store
+  const { dispatch } = store!;
+  /* assuming this is the original `iconMap` since it should have not been unlocked yet */
+  const iconMap = LIHKG.getIconMap();
+  if (enabled) {
+    const unlockedIconMap = LIHKG.unlockIconMap(iconMap);
+    // spread the object due to object being not extensible
+    // otherwise it will lead to error in the LIHKG main script
+    dispatch(lihkgActions.setIconMap({ ...unlockedIconMap }));
+  } else {
+    dispatch(lihkgActions.setIconMap(iconMap));
+  }
+};
 
 const UnlockIconMapToggleButton = () => {
   const dispatch = useTypedDispatch();
@@ -22,24 +33,7 @@ const UnlockIconMapToggleButton = () => {
   }, []);
 
   useEffect(() => {
-    const store = LIHKG.getStore(); // original LIHKG redux store
-    const { dispatch, getState } = store!;
-    if (isIconMapUnlocked) {
-      const state = getState();
-      if (!originalIconMap) {
-        originalIconMap = state.app.iconMap;
-      }
-      if (!unlockedIconMap) {
-        unlockedIconMap = LIHKG.unlockIconMap(originalIconMap);
-      }
-      // spread the object due to object being not extensible
-      // otherwise it will lead to error in the LIHKG main script
-      dispatch(lihkgActions.setIconMap({ ...unlockedIconMap }));
-    } else {
-      if (originalIconMap) {
-        dispatch(lihkgActions.setIconMap(originalIconMap));
-      }
-    }
+    unlockIconMap(isIconMapUnlocked);
   }, [isIconMapUnlocked]);
 
   return (

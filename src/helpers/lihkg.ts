@@ -60,6 +60,27 @@ export const getStore = () => {
   return store;
 };
 
+export const getIconMap = (() => {
+  let iconMap: IIconMap | undefined;
+  return () => {
+    if (iconMap) { return iconMap; }
+    const store = getStore()!;
+    const state = store.getState();
+    iconMap = state.app.iconMap;
+    return iconMap;
+  };
+})();
+
+export const getUnlockedIconMap = (() => {
+  let unlockedIconMap: IIconMap | undefined;
+  return () => {
+    if (unlockedIconMap) { return unlockedIconMap; }
+    const iconMap = getIconMap();
+    unlockedIconMap = unlockIconMap(iconMap);
+    return unlockedIconMap;
+  };
+})();
+
 /**
  * unlock all icons
  * @param {IIconMap} iconMap the original LIHKG icon map
