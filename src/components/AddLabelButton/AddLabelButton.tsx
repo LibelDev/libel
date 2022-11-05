@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import * as TEXTS from '../../constants/texts';
+import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import { mapPostToSource } from '../../helpers/label';
 import useLabelSourcePost from '../../hooks/useLabelSourcePost';
@@ -59,9 +60,7 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         className={styles.addLabelButton}
         icon={<FontAwesomeIcon icon={faTag} />}
-        aria-label={TEXTS.BUTTON_TEXT_LABEL_ADD}
-        data-tip={TEXTS.BUTTON_TEXT_LABEL_ADD}
-        title={TEXTS.BUTTON_TEXT_LABEL_ADD}
+        {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_LABEL_ADD)}
         disabled={loading}
         onClick={handleClick}
       />

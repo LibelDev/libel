@@ -1,6 +1,7 @@
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import * as TEXTS from '../../constants/texts';
+import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import type { ILabel } from '../../models/Label';
 import { actions as personalActions, IEditLabelPayload } from '../../store/slices/personal';
@@ -55,9 +56,7 @@ const EditLabelButton: React.FunctionComponent<TProps> = (props) => {
     <>
       <IconButton
         icon={IconName.Pencil}
-        aria-label={TEXTS.BUTTON_TEXT_LABEL_EDIT}
-        data-tip={TEXTS.BUTTON_TEXT_LABEL_EDIT}
-        title={TEXTS.BUTTON_TEXT_LABEL_EDIT}
+        {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_LABEL_EDIT)}
         onClick={handleClick}
         {...otherProps}
       />

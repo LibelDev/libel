@@ -1,5 +1,6 @@
 import type React from 'react';
 import * as TEXTS from '../../constants/texts';
+import { getElementLabelTipProps } from '../../helpers/common';
 import { IconName } from '../Icon/types';
 import IconLink from '../IconLink/IconLink';
 
@@ -18,9 +19,7 @@ const LabelSourceButton: React.FunctionComponent<TProps> = (props) => {
       icon={IconName.Link}
       href={url}
       target="_blank"
-      aria-label={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
-      data-tip={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
-      title={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
+      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_LABEL_SOURCE)}
       {...otherProps}
     />
   ) : null;

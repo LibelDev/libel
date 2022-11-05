@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import type React from 'react';
 import { useCallback } from 'react';
 import * as TEXTS from '../../constants/texts';
+import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
@@ -56,9 +57,7 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
       className={classNames(className, styles.snipeButton)}
       icon={IconName.Hot}
       onClick={handleClick}
-      aria-label={TEXTS.BUTTON_TEXT_SNIPE}
-      data-tip={TEXTS.BUTTON_TEXT_SNIPE}
-      title={TEXTS.BUTTON_TEXT_SNIPE}
+      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_SNIPE)}
     />
   );
 };

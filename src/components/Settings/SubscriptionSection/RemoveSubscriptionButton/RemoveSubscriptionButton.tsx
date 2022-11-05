@@ -3,6 +3,7 @@ import { render } from 'mustache';
 import type React from 'react';
 import { useCallback } from 'react';
 import * as TEXTS from '../../../../constants/texts';
+import { getElementLabelTipProps } from '../../../../helpers/common';
 import * as gtag from '../../../../helpers/gtag';
 import type { ISubscription } from '../../../../models/Subscription';
 import { actions as subscriptionsActions } from '../../../../store/slices/subscriptions';
@@ -47,9 +48,7 @@ const RemoveSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       className={classNames(className, lihkgCssClasses.settingOptionButton)}
       disabled={subscription.loading}
       icon={IconName.Close}
-      aria-label={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}
-      data-tip={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}
-      title={TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION}
+      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_REMOVE_SUBSCRIPTION)}
       onClick={handleClick}
     />
   );

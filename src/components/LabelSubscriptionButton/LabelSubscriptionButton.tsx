@@ -1,4 +1,5 @@
 import type React from 'react';
+import { getElementLabelTipProps } from '../../helpers/common';
 import type { ISubscription } from '../../models/Subscription';
 import { IconName } from '../Icon/types';
 import IconLink from '../IconLink/IconLink';
@@ -27,9 +28,7 @@ const LabelSubscriptionButton: React.FunctionComponent<TProps> = (props) => {
       icon={IconName.InfoFill}
       href={subscription.url}
       target="_blank"
-      aria-label={subscription.name}
-      data-tip={subscription.name}
-      title={subscription.name}
+      {...getElementLabelTipProps(subscription.name)}
       {...otherProps}
     />
   );

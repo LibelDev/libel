@@ -3,6 +3,7 @@ import type React from 'react';
 import { useCallback } from 'react';
 import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
+import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import type { ILabel } from '../../models/Label';
 import { actions as personalActions } from '../../store/slices/personal';
@@ -42,10 +43,8 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
   return (
     <IconButton
       icon={IconName.DeleteForever}
-      aria-label={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
-      data-tip={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
-      title={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
       onClick={handleClick}
+      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_LABEL_REMOVE)}
       {...otherProps}
     />
   );

@@ -7,6 +7,7 @@ import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
 import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
+import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import { isViewport, Viewport } from '../../helpers/responsive';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
@@ -103,7 +104,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
       <IconButton
         icon={IconName.Close}
         onClick={handleClose}
-        aria-label={TEXTS.BUTTON_TEXT_CLOSE_ANNOUNCEMENT}
+        {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_CLOSE_ANNOUNCEMENT)}
       />
     </div>
   );

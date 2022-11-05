@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import type React from 'react';
 import * as TEXTS from '../../../../constants/texts';
+import { getElementLabelTipProps } from '../../../../helpers/common';
 import type { ISubscription } from '../../../../models/Subscription';
 import lihkgCssClasses from '../../../../stylesheets/variables/lihkg/classes.module.scss';
 import { IconName } from '../../../Icon/types';
@@ -32,9 +33,7 @@ const SubscriptionHomepageButton: React.FunctionComponent<TProps> = (props) => {
       href={!disabled ? homepage : undefined}
       target="_blank"
       disabled={disabled}
-      aria-label={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
-      data-tip={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
-      title={TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE}
+      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_SUBSCRIPTION_HOMEPAGE)}
       {...otherProps}
     />
   );

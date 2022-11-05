@@ -4,6 +4,7 @@ import type React from 'react';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Key } from 'ts-key-enum';
 import * as TEXTS from '../../../constants/texts';
+import { getElementLabelTipProps } from '../../../helpers/common';
 import { ILabelsGroupItem, mapLabelsGroupItemsToErrorStates } from '../../../helpers/dataSetEditor';
 import { getShareURL } from '../../../helpers/label';
 import useVisibility, { UseVisibility } from '../../../hooks/useVisibility';
@@ -129,7 +130,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
                       className={styles.remove}
                       value={index}
                       icon={removed ? IconName.DeleteForever : IconName.Delete}
-                      aria-label={TEXTS.BUTTON_TEXT_LABEL_REMOVE}
+                      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_LABEL_REMOVE)}
                       onClick={handleRemoveButtonClick}
                     />
                     <TextInput
@@ -167,7 +168,7 @@ const UserLabelsEditor: React.FunctionComponent<TProps> = memo((props) => {
                     <LabelSourceButton
                       className={classNames(styles.link, styles.source)}
                       url={getShareURL(draft)}
-                      aria-label={TEXTS.BUTTON_TEXT_LABEL_SOURCE}
+                      {...getElementLabelTipProps(TEXTS.BUTTON_TEXT_LABEL_SOURCE)}
                     />
                     {
                       removed && (
