@@ -1,5 +1,6 @@
 // import debugFactory from 'debug';
 import produce from 'immer';
+import mem from 'mem';
 import { dev } from '../../config/config';
 import { displayName } from '../../package.json';
 import type { TActions } from '../actions/lihkg';
@@ -60,26 +61,16 @@ export const getStore = () => {
   return store;
 };
 
-export const getIconMap = (() => {
-  let iconMap: IIconMap | undefined;
-  return () => {
-    if (iconMap) { return iconMap; }
-    const store = getStore()!;
-    const state = store.getState();
-    iconMap = state.app.iconMap;
-    return iconMap;
-  };
-})();
+export const getIconMap = mem(() => {
+  const store = getStore()!;
+  const state = store.getState();
+  return state.app.iconMap;
+});
 
-export const getUnlockedIconMap = (() => {
-  let unlockedIconMap: IIconMap | undefined;
-  return () => {
-    if (unlockedIconMap) { return unlockedIconMap; }
-    const iconMap = getIconMap();
-    unlockedIconMap = unlockIconMap(iconMap);
-    return unlockedIconMap;
-  };
-})();
+export const getUnlockedIconMap = mem(() => {
+  const iconMap = getIconMap();
+  return unlockIconMap(iconMap);
+});
 
 /**
  * unlock all icons
