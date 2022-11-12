@@ -7,6 +7,7 @@ import { IPost } from '../../types/lihkg';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import styles from './SourcePostScreenshotButton.module.scss';
 
 /**
  * original props
@@ -62,3 +63,5 @@ const SourcePostScreenshotButton: React.FunctionComponent<TProps> = (props) => {
 SourcePostScreenshotButton.displayName = 'SourcePostScreenshotButton';
 
 export default SourcePostScreenshotButton;
+
+export { styles };

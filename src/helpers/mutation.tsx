@@ -7,30 +7,24 @@ import type { Persistor } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { namespace } from '../../package.json';
 import cache from '../cache';
-import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
-import addLabelButtonStyles from '../components/AddLabelButton/AddLabelButton.module.scss';
-import announcementStyles from '../components/Announcement/Announcement.module.scss';
+import AddLabelButton, { styles as addLabelButtonStyles } from '../components/AddLabelButton/AddLabelButton';
+import { styles as announcementStyles } from '../components/Announcement/Announcement';
 import { IconName } from '../components/Icon/types';
-import LabelList from '../components/LabelList/LabelList';
-import labelListStyles from '../components/LabelList/LabelList.module.scss';
+import LabelList, { styles as labelListStyles } from '../components/LabelList/LabelList';
 import SettingsModalToggleButton from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
-import SnipeButton from '../components/SnipeButton/SnipeButton';
-import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
-import SourcePostScreenshotButton from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
-import sourcePostScreenshotButtonStyles from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton.module.scss';
-import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
-import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton.module.scss';
+import SnipeButton, { styles as snipeButtonStyles } from '../components/SnipeButton/SnipeButton';
+import SourcePostScreenshotButton, { styles as sourcePostScreenshotButtonStyles } from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
+import UnlockIconMapToggleButton, { styles as unlockIconMapToggleButtonStyles } from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
-import * as LIHKG from '../helpers/lihkg';
 import { Context as LabelSourcePostContext } from '../hooks/useLabelSourcePost';
 import { Context as UnlockedIconMapContext } from '../hooks/useUnlockedIconMap';
 import type { TStore } from '../store/store';
 import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
 import { insertAfter } from './dom';
-import { waitForRightPanelContainer } from './lihkg';
+import * as LIHKG from './lihkg';
 
 type TFloatingConfig = Parameters<typeof useFloating>[0];
 
@@ -234,7 +228,7 @@ const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, co
 export const renderAnnouncement = async (announcement: React.ReactElement) => {
   const container = document.createElement('div');
   container.classList.add(announcementStyles.container);
-  const rightPanelContainer = await waitForRightPanelContainer();
+  const rightPanelContainer = await LIHKG.waitForRightPanelContainer();
   rightPanelContainer?.insertBefore(container, rightPanelContainer.firstChild);
   const root = createRoot(container);
   root.render(announcement);

@@ -51,3 +51,5 @@ const LabelList: React.FunctionComponent<TProps> = memo((props) => {
 LabelList.displayName = 'LabelList';
 
 export default LabelList;
+
+export { styles };

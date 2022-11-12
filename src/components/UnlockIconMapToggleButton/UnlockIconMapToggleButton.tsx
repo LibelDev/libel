@@ -7,6 +7,7 @@ import { selectConfig } from '../../store/selectors';
 import { actions as configActions } from '../../store/slices/config';
 import { useTypedDispatch, useTypedSelector } from '../../store/store';
 import ToggleButton from '../ToggleButton/ToggleButton';
+import styles from './UnlockIconMapToggleButton.module.scss';
 
 const unlockIconMap = (enabled: boolean) => {
   const store = LIHKG.getStore(); // original LIHKG redux store
@@ -46,3 +47,5 @@ const UnlockIconMapToggleButton = () => {
 UnlockIconMapToggleButton.displayName = 'UnlockIconMapToggleButton';
 
 export default UnlockIconMapToggleButton;
+
+export { styles };

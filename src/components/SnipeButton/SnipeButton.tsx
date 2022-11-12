@@ -65,3 +65,5 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
 SnipeButton.displayName = 'SnipeButton';
 
 export default SnipeButton;
+
+export { styles };
