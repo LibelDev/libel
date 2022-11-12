@@ -1,4 +1,4 @@
-import Singleton from '../models/Singleton';
+import mem from 'mem';
 import { appendScriptToBody } from './dom';
 
 type TClientDriveFilesGetRequestWithoutFileId = Omit<Parameters<typeof gapi.client.drive.files.get>[0], 'fileId'>;
@@ -21,9 +21,8 @@ const initClient = (apiKey: string, discoveryDocs: string[], clientId: string, s
   });
 };
 
-const init = () => {
+const init = mem(() => {
   return new Promise<typeof gapi>((resolve) => {
-    const body = document.querySelector('body')!;
     const src = 'https://apis.google.com/js/api.js';
     const script = appendScriptToBody(src);
     script.addEventListener('load', async () => {
@@ -36,11 +35,9 @@ const init = () => {
       resolve(window.gapi);
     });
   });
-};
+});
 
-const source = init();
-const singleton = new Singleton(source);
-export const ready = () => singleton.get();
+export const ready = () => init();
 
 /**
  * Google Drive V3 API wrapper
