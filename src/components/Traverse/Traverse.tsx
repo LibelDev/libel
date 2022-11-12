@@ -1,6 +1,6 @@
 import React from 'react';
 
-type TTransformNode = string | number | boolean | null | undefined;
+type TTransformNode = string | number | boolean | React.ReactFragment | null | undefined;
 export type TTransformFunction<P> = (node: TTransformNode, props: P) => React.ReactNode | null;
 
 function traverse<P> (transform: TTransformFunction<P>, children: React.ReactNode, props: P): React.ReactElement {
@@ -12,7 +12,7 @@ function traverse<P> (transform: TTransformFunction<P>, children: React.ReactNod
             const { children } = child.props;
             return React.cloneElement(child, {}, traverse<P>(transform, children, props));
           }
-          return transform(child as TTransformNode, props);
+          return transform(child, props);
         })
       }
     </>
