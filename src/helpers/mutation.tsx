@@ -388,7 +388,8 @@ export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, 
   handleReplyItemInnerMutation(node, store, persistor);
 };
 
-export const addedNodeMutationHandlerFactory = (node: Element) => {
+/** mutation handler factory */
+export const createAddedNodeMutationHandler = (node: Element) => {
   debug('addedNodeMutationHandlerFactory', node);
   /** when render the drawer */
   if (isDrawer(node)) return handleDrawerMutation;

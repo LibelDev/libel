@@ -5,7 +5,7 @@ import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVers
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import { hasRead } from '../helpers/announecement';
-import { addedNodeMutationHandlerFactory, handleDataPostIdAttributeMutation, renderAnnouncement } from '../helpers/mutation';
+import { createAddedNodeMutationHandler, handleDataPostIdAttributeMutation, renderAnnouncement } from '../helpers/mutation';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
 import type { TStore } from '../store/store';
@@ -50,10 +50,10 @@ class App {
             const nodes = Array.from(mutation.addedNodes);
             for (const node of nodes) {
               if (node.nodeType === document.ELEMENT_NODE) {
-                const handle = addedNodeMutationHandlerFactory(node as Element);
-                if (handle) {
+                const handleMutation = createAddedNodeMutationHandler(node as Element);
+                if (handleMutation) {
                   window.requestAnimationFrame(() => {
-                    handle(node as Element, store, persistor);
+                    handleMutation(node as Element, store, persistor);
                   });
                 }
               }
