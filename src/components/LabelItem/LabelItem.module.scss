@@ -48,14 +48,13 @@
      * => a*a = 450
      * => a = math.sqrt(450)
      */
-    $height-raw: $height / 1px;
-    $size: #{math.sqrt(math.div(math.pow($height-raw, 2), 2))}px;
+    $size: math.sqrt(math.div(math.pow(strip-unit($height), 2), 2));
     content: '';
     @apply absolute;
     @apply top-0 -left-2;
     @apply block;
-    height: $size;
-    width: $size;
+    height: #{$size}px;
+    width: #{$size}px;
     @apply border-solid border;
     border-color: $color-grey05;
     border-right-color: transparent;
