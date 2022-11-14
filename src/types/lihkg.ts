@@ -232,8 +232,8 @@ interface IModeSetting {
 }
 
 export enum Gender {
-  F = 'F',
-  M = 'M',
+  Female = 'F',
+  Male = 'M',
 }
 
 export enum LevelName {
