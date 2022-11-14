@@ -2,8 +2,8 @@
 
 :export {
   app: $lihkg-selector-app;
-  drawer: $lihkg-selector-drawer;
   drawer-sidebar-top-items-container: $lihkg-selector-drawer-sidebar-top-items-container;
+  drawer: $lihkg-selector-drawer;
   emote-menu-toolbar: $lihkg-selector-emote-menu-toolbar;
   emote-menu: $lihkg-selector-emote-menu;
   left-panel: $lihkg-selector-left-panel;
@@ -29,9 +29,9 @@
   thread-item-inner: $lihkg-selector-thread-item-inner;
   thread-item: $lihkg-selector-thread-item;
   thread-link: $lihkg-selector-thread-link;
-  thread-title-bar: $lihkg-selector-thread-title-bar;
   thread-title-bar-left-column: $lihkg-selector-thread-title-bar-left-column;
   thread-title-bar-right-column: $lihkg-selector-thread-title-bar-right-column;
   thread-title-bar-vote-button: $lihkg-selector-thread-title-bar-vote-button;
+  thread-title-bar: $lihkg-selector-thread-title-bar;
   user-card-buttons-container: $lihkg-selector-user-card-buttons-container;
 }
