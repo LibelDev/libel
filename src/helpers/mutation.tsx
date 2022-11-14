@@ -356,8 +356,8 @@ const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, re
 };
 
 /**
- * centralized mutation handler
- * @description handle mutation in one go and share some necessary common variables
+ * centralized mutation handler for `replyItemInnerBodyHeading`
+ * @description handle mutation in one place
  * @private
  */
 const _handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
