@@ -15,6 +15,7 @@ import SettingsModalToggleButton from '../components/SettingsModalToggleButton/S
 import SnipeButton, { styles as snipeButtonStyles } from '../components/SnipeButton/SnipeButton';
 import SourcePostScreenshotButton, { styles as sourcePostScreenshotButtonStyles } from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
 import UnlockIconMapToggleButton, { styles as unlockIconMapToggleButtonStyles } from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
+import UserInfo, { createContainer as createUserInfoContainer } from '../components/UserInfo/UserInfo';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
@@ -30,12 +31,14 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
+const userInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const sourcePostScreenshotButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 
 type TMutationCacheSymbol = (
+  typeof userInfoMutationCacheSymbol |
   typeof labelListMutationCacheSymbol |
   typeof snipeButtonMutationCacheSymbol |
   typeof addLabelButtonMutationCacheSymbol |
@@ -57,6 +60,7 @@ type TUnmontableMutationHandler = (
 
 declare global {
   interface Element {
+    [userInfoMutationCacheSymbol]?: IMutationCache;
     [labelListMutationCacheSymbol]?: IMutationCache;
     [snipeButtonMutationCacheSymbol]?: IMutationCache;
     [addLabelButtonMutationCacheSymbol]?: IMutationCache;
@@ -104,10 +108,6 @@ const isReplyModal = (node: Element) => {
   return node.matches(lihkgSelectors.replyModal);
 };
 
-export const isNickname = (node: Element) => {
-  return node.matches(lihkgSelectors.nickname);
-};
-
 const getUserIDFromNode = (node: Element) => {
   const nicknameLinkSelector = `${lihkgSelectors.nickname} > a[href^="/profile"]`;
   const nicknameLink = node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
@@ -138,6 +138,17 @@ const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, co
       </PersistGate>
     </Provider>
   );
+  return root;
+};
+
+const renderUserInfo = (userId: string, container: Element) => {
+  const user = userId && cache.getUser(userId) || null;
+  const root = createRoot(container);
+  if (user) {
+    root.render(
+      <UserInfo user={user} />
+    );
+  }
   return root;
 };
 
@@ -235,19 +246,6 @@ export const renderAnnouncement = async (announcement: React.ReactElement) => {
   return root;
 };
 
-/**
- * handle unmountable mutation
- * @description unmount the root and remove the container from the previous mutation, then attach new mutation cache
- * @private
- */
-const _handleUnmountableMutation: TUnmontableMutationHandler = (reference, symbol, render) => {
-  reference[symbol]?.root.unmount();
-  reference[symbol]?.container.remove();
-  const cache = render(reference);
-  reference[symbol] = cache;
-  return cache;
-};
-
 const handleDrawerMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const drawerSidebarTopItemsContainer = node.querySelector(lihkgSelectors.drawerSidebarTopItemsContainer);
   if (drawerSidebarTopItemsContainer) {
@@ -324,16 +322,60 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
 const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading);
   if (replyItemInnerBodyHeading) {
-    handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+    _handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
   }
 };
 
-const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
+const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const replyItemInnerBodyHeading = node.parentElement!;
+  _handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+};
+
+const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
+  if (replyItemInner) {
+    handleReplyItemInnerMutation(replyItemInner, store, persistor);
+  }
+};
+
+export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  handleReplyItemInnerMutation(node, store, persistor);
+};
+
+/**
+ * handle unmountable mutation
+ * @description unmount the root and remove the container from the previous mutation, then attach new mutation cache
+ * @private
+ */
+const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, render) => {
+  node[symbol]?.root.unmount();
+  node[symbol]?.container.remove();
+  const cache = render(node);
+  node[symbol] = cache;
+  return cache;
+};
+
+/**
+ * centralized mutation handler
+ * @description handle mutation in one go and share some necessary common variables
+ * @private
+ */
+const _handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   if (user) {
     const replyItemInner = node.parentElement?.parentElement;
-    const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
     const replyItemInnerBody = node.parentElement;
+    const replyButton = node.querySelector(`.${IconName.Reply}`);
+    const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
+    if (replyItemInner) {
+      /* user info */
+      _handleUnmountableMutation(replyItemInner, userInfoMutationCacheSymbol, (reference) => {
+        const container = createUserInfoContainer();
+        reference.insertBefore(container, reference.firstChild);
+        const root = renderUserInfo(user, container);
+        return { container, root };
+      });
+    }
     if (replyItemInnerBody) {
       /* label list */
       _handleUnmountableMutation(replyItemInnerBody, labelListMutationCacheSymbol, (reference) => {
@@ -344,7 +386,6 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
         return { container, root };
       });
     }
-    const replyButton = node.querySelector(`.${IconName.Reply}`);
     if (replyButton) {
       /* snipe button */
       _handleUnmountableMutation(replyButton, snipeButtonMutationCacheSymbol, (reference) => {
@@ -369,23 +410,6 @@ const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, p
       });
     }
   }
-};
-
-const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInnerBodyHeading = node.parentElement!;
-  handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
-};
-
-
-const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
-  if (replyItemInner) {
-    handleReplyItemInnerMutation(replyItemInner, store, persistor);
-  }
-};
-
-export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  handleReplyItemInnerMutation(node, store, persistor);
 };
 
 /** mutation handler factory */

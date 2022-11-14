@@ -149,3 +149,8 @@ export const BUTTON_TEXT_UNLOCK_ICON_MAP = '解鎖全部表情';
 
 /* screenshot */
 export const SOURCE_PORT_SCREENSHOT_BUTTON_TEXT = '對此回覆進行截圖';
+
+/* user info */
+export const USER_ID_TOOLTIP_TEXT = '用戶編號 (ID)';
+export const CURRENT_USERNAME_TOOLTIP_TEXT = '目前的用戶名稱';
+
