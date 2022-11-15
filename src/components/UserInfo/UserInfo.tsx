@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 import * as TEXTS from '../../constants/texts';
 import { getElementLabelTipProps } from '../../helpers/common';
-import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
-import { Gender, IUser } from '../../types/lihkg';
+import type { IUser } from '../../types/lihkg';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
+import Username from '../Username/Username';
 import styles from './UserInfo.module.scss';
 
 /**
@@ -35,17 +35,10 @@ const UserInfo: React.FunctionComponent<TProps> = (props) => {
           #{user.user_id}
         </span>
       </span>
-      <span
-        className={
-          classNames({
-            [lihkgCssClasses.usernameFemale]: user.gender === Gender.Female,
-            [lihkgCssClasses.usernameMale]: user.gender === Gender.Male
-          })
-        }
+      <Username
+        user={user}
         {...getElementLabelTipProps(TEXTS.CURRENT_USERNAME_TOOLTIP_TEXT)}
-      >
-        {user.nickname}
-      </span>
+      />
     </small>
   );
 };
