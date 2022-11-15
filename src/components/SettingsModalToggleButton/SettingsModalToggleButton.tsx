@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import { getElementLabelTipProps } from '../../helpers/common';
+import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
 import IconButton from '../IconButton/IconButton';
 import SettingsModal from '../SettingsModal/SettingsModal';
 import styles from './SettingsModalToggleButton.module.scss';
@@ -38,5 +39,11 @@ const SettingsModalToggleButton: React.FunctionComponent = () => {
 };
 
 SettingsModalToggleButton.displayName = 'SettingsModalToggleButton';
+
+export const createContainer = () => {
+  const container = document.createElement('div');
+  container.classList.add(lihkgCssClasses.drawerSidebarItem);
+  return container;
+};
 
 export default SettingsModalToggleButton;

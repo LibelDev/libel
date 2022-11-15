@@ -116,4 +116,8 @@ Announcement.displayName = 'Announcement';
 
 export default Announcement;
 
-export { styles };
+export const createContainer = () => {
+  const container = document.createElement('div');
+  container.classList.add(styles.container);
+  return container;
+};

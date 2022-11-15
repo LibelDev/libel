@@ -3,6 +3,7 @@ import { useCallback, useEffect } from 'react';
 import * as TEXTS from '../../constants/texts';
 import { getElementLabelTipProps } from '../../helpers/common';
 import useSourcePostScreenshot from '../../hooks/useSourcePostScreenshot';
+import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
 import { IPost } from '../../types/lihkg';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
@@ -64,4 +65,9 @@ SourcePostScreenshotButton.displayName = 'SourcePostScreenshotButton';
 
 export default SourcePostScreenshotButton;
 
-export { styles };
+export const createContainer = () => {
+  const container = document.createElement('div');
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(styles.container);
+  return container;
+};
