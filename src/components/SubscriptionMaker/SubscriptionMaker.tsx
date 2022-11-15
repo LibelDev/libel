@@ -41,7 +41,6 @@ export interface IProps {
   dataSet: IDataSet;
   /**
    * custom onSubmit event handler
-   * @async
    * @throws {string} error message
    */
   onSubmit: (subscription: IBaseRemoteSubscription) => void;
