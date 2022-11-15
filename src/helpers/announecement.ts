@@ -15,7 +15,7 @@ export const hasRead = (id: string) => {
   return value || false;
 };
 
-export const dontShowAgain = (id: string, expires: number) => {
+export const handleDontShowAgain = (id: string, expires: number) => {
   const name = getCookieName(id);
   cookies.set(name, true, { expires });
 };

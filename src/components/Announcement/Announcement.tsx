@@ -6,7 +6,7 @@ import { useLocation } from 'react-use';
 import logo from '../../../assets/logos/libel.png';
 import { displayName } from '../../../package.json';
 import * as TEXTS from '../../constants/texts';
-import { dontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
+import { handleDontShowAgain, promptDontShowAgain } from '../../helpers/announecement';
 import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
 import { isViewport, Viewport } from '../../helpers/responsive';
@@ -55,7 +55,7 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
     event.preventDefault();
     setShowed(false);
     if (id && !forced && promptDontShowAgain()) {
-      dontShowAgain(id, 7);
+      handleDontShowAgain(id, 7);
     }
     // analytics
     gtag.event(EventAction.Close, { event_category: EventCategory.Announcement, event_label: id });
@@ -85,7 +85,9 @@ const Announcement: React.FunctionComponent<TProps> = (props) => {
     };
   }, [id]);
 
-  useEffect(updateLayout, [pathname]);
+  useEffect(() => {
+    updateLayout();
+  }, [pathname, showed]);
 
   if (!showed) {
     return null;
