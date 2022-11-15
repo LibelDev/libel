@@ -5,7 +5,7 @@ import NewVersionAnnouncement from '../components/NewVersionAnnouncement/NewVers
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import { hasRead } from '../helpers/announecement';
-import { createAddedNodeMutationHandler, handleDataPostIdAttributeMutation, renderAnnouncement } from '../helpers/mutation';
+import { handleMutation, renderAnnouncement } from '../helpers/mutation';
 import { checkUpdate } from '../helpers/version';
 import { intercept } from '../helpers/xhr';
 import type { TStore } from '../store/store';
@@ -44,33 +44,7 @@ class App {
 
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        switch (mutation.type) {
-          case 'childList': {
-            /** generic new nodes handling */
-            const nodes = Array.from(mutation.addedNodes);
-            for (const node of nodes) {
-              if (node.nodeType === document.ELEMENT_NODE) {
-                const handleMutation = createAddedNodeMutationHandler(node as Element);
-                if (handleMutation) {
-                  window.requestAnimationFrame(() => {
-                    handleMutation(node as Element, store, persistor);
-                  });
-                }
-              }
-            }
-            break;
-          }
-          case 'attributes': {
-            /** when navigate between the quotes */
-            if (mutation.attributeName === ATTRIBUTES.DATA_POST_ID) {
-              const { target } = mutation;
-              window.requestAnimationFrame(() => {
-                handleDataPostIdAttributeMutation(target as Element, store, persistor);
-              });
-            }
-            break;
-          }
-        }
+        handleMutation(mutation, store, persistor);
       }
     });
 
@@ -93,16 +67,20 @@ class App {
       const isThreadList = REGEXES.THREAD_LIST_API.test(responseURL);
       const isQuoteList = REGEXES.QUOTE_LIST_API.test(responseURL);
       const isReplyList = REGEXES.REPLY_LIST_API.test(responseURL);
-      if (isThreadList || isQuoteList || isReplyList) {
-        const data = JSON.parse(this.responseText) as APIv2.IThreadListResponseBody | APIv2.IQuoteListResponseBody | APIv2.IReplyListResponseBody;
+      const isQuotedPost = REGEXES.QUOTED_POST_API.test(responseURL);
+      if (isThreadList || isQuoteList || isReplyList || isQuotedPost) {
+        const data = JSON.parse(this.responseText) as APIv2.IBaseResponseBody;
         if (data.success === 1) {
           if (isThreadList) {
-            cache.addThreads(data as APIv2.IThreadListResponseBody);
+            cache.handleThreads(data as APIv2.IThreadListResponseBody);
           }
           if (isQuoteList || isReplyList) {
-            cache.addReplies(data as APIv2.IQuoteListResponseBody | APIv2.IReplyListResponseBody);
+            cache.handleReplies(data as APIv2.IQuoteListResponseBody | APIv2.IReplyListResponseBody);
           }
-          cache.addUsers(data as APIv2.IThreadListResponseBody & APIv2.IQuoteListResponseBody & APIv2.IReplyListResponseBody);
+          if (isQuotedPost) {
+            cache.handleQuotedPost(data as APIv2.IQuotedPostResponseBody);
+          }
+          cache.handleUsers(data as APIv2.IThreadListResponseBody | APIv2.IQuoteListResponseBody | APIv2.IReplyListResponseBody | APIv2.IQuotedPostResponseBody);
         }
       }
     });

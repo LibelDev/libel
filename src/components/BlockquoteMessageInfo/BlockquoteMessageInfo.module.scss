@@ -1,0 +1,68 @@
+@import '../../stylesheets/base';
+
+:global {
+  #{$lihkg-selector-inline-blockquote-box} {
+    @apply flex items-center;
+  }
+}
+
+.container {
+  /* inline blockquote */
+  :global(#{$lihkg-selector-inline-blockquote-box}) > & {
+    @apply ml-2;
+  }
+
+  /* normal blockquote */
+  :global(#{$lihkg-selector-blockquote}) > & {
+    @apply mb-2;
+  }
+
+  /* normal blockquote with unlinked nested blockquote */
+  :global(#{$lihkg-selector-reply-item-message-body}) > & {
+    /* offset for the first line break in the message body */
+    @apply -mb-6;
+  }
+
+  &.inline {
+    .icon,
+    .message-number,
+    .date {
+      @apply hidden;
+    }
+  }
+
+  &:not(.inline) {
+    @apply text-xs;
+  }
+}
+
+.blockquote-message-info {
+  @apply -mx-1;
+  font-size: 0.8rem;
+
+  > * {
+    @apply px-1;
+  }
+
+  &,
+  .date {
+    @apply inline-flex items-center;
+  }
+
+  .icon {
+    @apply text-base;
+  }
+
+  .date {
+    &:before {
+      content: '•';
+      @apply mr-2;
+    }
+  }
+
+  &.highlight {
+    .message-number {
+      color: $color-yellow01;
+    }
+  }
+}

@@ -1,7 +1,27 @@
 export module APIv2 {
-  interface IBaseResponseBody {
+  export interface IBaseResponseBody {
     success: number;
     server_time: number;
+  }
+
+  export interface IQuotedPostResponseBody extends IBaseResponseBody {
+    response: IQuotedPostResponse;
+  }
+
+  interface IQuotedPostResponse {
+    me?: IMeUser;
+    post: IPost;
+    thread: IThread;
+  }
+
+  export interface IReplyListResponseBody extends IBaseResponseBody {
+    response: IReplyListResponse;
+  }
+
+  interface IReplyListResponse extends IThread {
+    page: string;
+    item_data: IPost[];
+    me?: IMeUser;
   }
 
   export interface IQuoteListResponseBody extends IBaseResponseBody {
@@ -13,17 +33,7 @@ export module APIv2 {
     item_data: IPost[];
     thread: IThread;
     parent_post: IPost;
-    me: IMeUser;
-  }
-
-  export interface IReplyListResponseBody extends IBaseResponseBody {
-    response: IReplyListResponse;
-  }
-
-  interface IReplyListResponse extends IThread {
-    page: string;
-    item_data: IPost[];
-    me: IMeUser;
+    me?: IMeUser;
   }
 
   export interface IThreadListResponseBody extends IBaseResponseBody {
@@ -34,7 +44,7 @@ export module APIv2 {
     category: ICategory;
     is_pagination: boolean;
     items: IThread[];
-    me: IMeUser;
+    me?: IMeUser;
   }
 
   export interface IBlockedUserResponseBody extends IBaseResponseBody {

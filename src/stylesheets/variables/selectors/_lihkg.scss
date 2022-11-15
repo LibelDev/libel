@@ -1,8 +1,11 @@
 $lihkg-selector-app: unquote('#app');
+$lihkg-selector-blockquote: unquote('._31B9lsqlMMdzv-FSYUkXeV');
 $lihkg-selector-drawer-sidebar-top-items-container: unquote('._3chEw1COjDsJDNGekjbxKP');
 $lihkg-selector-drawer: unquote('._1H_MPAqZWxI0DjGT6LORkT');
 $lihkg-selector-emote-menu-toolbar: unquote('._2tG3UoD9Ve4lFfCrubml-v');
 $lihkg-selector-emote-menu: unquote('._1m7EaebkdoQj6IdUElH2nl');
+$lihkg-selector-inline-blockquote-box: unquote('._2aoK5X3DroSiz5lhKN4ksu');
+$lihkg-selector-inline-blockquote: unquote('._1d3Z5jQRq3WnuIm0hnMh0c');
 $lihkg-selector-left-panel: unquote('#leftPanel');
 $lihkg-selector-modal-content: unquote('._3dbMg7zkkTIVJ5VZ3ygu4-');
 $lihkg-selector-modal-title: unquote('._2b5VMoBy8yIXlX-wC8v57F');
@@ -13,9 +16,11 @@ $lihkg-selector-nav: unquote('._2QLPqUPPLd8fXI2JwZuY7A._2TGjRqy4HZOetvEnAViFOg')
 $lihkg-selector-nickname: unquote('.ZZtOrmcIRcvdpnW09DzFk');
 $lihkg-selector-notice: unquote('.notice');
 $lihkg-selector-quoted-image-enlarge-button: unquote('._1IRb72usJbuU0mijiA1s1X');
+$lihkg-selector-reply-item-inner-body-content: unquote('.GAagiRXJU88Nul1M7Ai0H');
 $lihkg-selector-reply-item-inner-body-heading: unquote('._1Hi94Pa6lplJ436NQaMbEt > ._1VcuFUmnOEK51TsshmrnJM');
 $lihkg-selector-reply-item-inner-body: unquote('._1Hi94Pa6lplJ436NQaMbEt');
 $lihkg-selector-reply-item-inner: unquote('._2bokd4pLvU5_-Lc97NVqzn');
+$lihkg-selector-reply-item-message-body: unquote('[data-ast-root]');
 $lihkg-selector-reply-item: unquote('._36ZEkSvpdj_igmog0nluzh');
 $lihkg-selector-reply-list: unquote('._3jxQCFWg9LDtkSkIVLzQ8L');
 $lihkg-selector-reply-modal: unquote('._15Y0ebHstpjSjX2xCZCZ8U');
