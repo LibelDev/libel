@@ -269,7 +269,7 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
   const threadLink = node.querySelector(lihkgSelectors.threadLink);
   const href = threadLink?.getAttribute('href');
   const threadId = href?.match(REGEXES.THREAD_URL)![1];
-  const thread = threadId && cache.getThread(threadId) || null;
+  const thread = cache.getThread(threadId);
   if (thread) {
     const { user_id: user } = thread;
     const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner);
@@ -323,7 +323,7 @@ const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persis
 
 const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const userId = getUserIDFromNode(node);
-  const user = userId && cache.getUser(userId) || null;
+  const user = cache.getUser(userId);
   if (user) {
     /* user info */
     _handleUnmountableMutation(node, userInfoMutationCacheSymbol, (node) => {
@@ -343,7 +343,7 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
 const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   const postId = node.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   if (user && post) {
     /* label list */
     _handleUnmountableMutation(node, labelListMutationCacheSymbol, (node) => {
@@ -388,7 +388,7 @@ const handleReplyItemInnerBodyContentMutation = (node: Element) => {
 const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node.parentElement!);
   const postId = node.parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   if (user && post) {
     /* snipe button */
     _handleUnmountableMutation(node, snipeButtonMutationCacheSymbol, (node) => {
@@ -426,14 +426,14 @@ const handleBlockquoteMutation = (node: Element) => {
   const { parentElement } = node;
   /* if it is nested blockquote, get its parent blockquote's post ID to get the quoted post */
   const postId = isBlockquote(parentElement) ? elementPostIdMapping.get(parentElement!) : parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   _handleBlockquoteMessageInfo(node, post?.quote_post_id, false);
 };
 
 const handleInlineBlockquoteMutation = (node: Element) => {
   const inlineBlockquoteBox = node.querySelector(lihkgSelectors.inlineBlockquoteBox)!;
   const postId = node.parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   _handleBlockquoteMessageInfo(inlineBlockquoteBox, post?.quote_post_id, true);
 };
 
@@ -467,7 +467,7 @@ const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, re
  * @private
  */
 const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: boolean) => {
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   if (post) {
     _handleUnmountableMutation(node, blockquoteMessageInfoMutationCacheSymbol, (node) => {
       const container = createBlockquoteMessageInfoContainer(inline);

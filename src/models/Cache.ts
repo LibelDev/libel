@@ -14,16 +14,16 @@ class Cache {
     return this.currentThreadPoster;
   }
 
-  getThread (id: string) {
-    return this.threads[id];
+  getThread (id?: string | null) {
+    return id && this.threads[id] || null;
   }
 
-  getReply (id: string) {
-    return this.replies[id];
+  getReply (id?: string | null) {
+    return id && this.replies[id] || null;
   }
 
-  getUser (id: string) {
-    return this.users[id];
+  getUser (id?: string | null) {
+    return id && this.users[id] || null;
   }
 
   private addPost (post: IPost, overwrite = false) {
