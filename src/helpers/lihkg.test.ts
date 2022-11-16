@@ -12,7 +12,7 @@ const generateBlockedUser = (id: string) => {
     user_id: id,
     nickname,
     level: '10',
-    gender: Gender.M,
+    gender: Gender.Male,
     status: '1',
     // create_time: chance.timestamp(),
     level_name: LevelName.Normal,

@@ -7,43 +7,45 @@ import type { Persistor } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { namespace } from '../../package.json';
 import cache from '../cache';
-import AddLabelButton from '../components/AddLabelButton/AddLabelButton';
-import addLabelButtonStyles from '../components/AddLabelButton/AddLabelButton.module.scss';
-import announcementStyles from '../components/Announcement/Announcement.module.scss';
+import AddLabelButton, { createContainer as createAddLabelButtonContainer } from '../components/AddLabelButton/AddLabelButton';
+import { createContainer as createAnnouncementContainer } from '../components/Announcement/Announcement';
+import BlockquoteMessageInfo, { createContainer as createBlockquoteMessageInfoContainer } from '../components/BlockquoteMessageInfo/BlockquoteMessageInfo';
 import { IconName } from '../components/Icon/types';
-import LabelList from '../components/LabelList/LabelList';
-import labelListStyles from '../components/LabelList/LabelList.module.scss';
-import SettingsModalToggleButton from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
-import SnipeButton from '../components/SnipeButton/SnipeButton';
-import snipeButtonStyles from '../components/SnipeButton/SnipeButton.module.scss';
-import SourcePostScreenshotButton from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
-import sourcePostScreenshotButtonStyles from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton.module.scss';
-import UnlockIconMapToggleButton from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
-import unlockIconMapToggleButtonStyles from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton.module.scss';
+import LabelList, { createContainer as createLabelListContainer } from '../components/LabelList/LabelList';
+import SettingsModalToggleButton, { createContainer as createSettingsModalToggleButtonContainer } from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
+import SnipeButton, { createContainer as createSnipeButtonContainer } from '../components/SnipeButton/SnipeButton';
+import SourcePostScreenshotButton, { createContainer as createSourcePostScreenshotButtonContainer } from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
+import UnlockIconMapToggleButton, { createContainer as createUnlockIconMapToggleButtonContainer } from '../components/UnlockIconMapToggleButton/UnlockIconMapToggleButton';
+import UserInfo, { createContainer as createUserInfoContainer } from '../components/UserInfo/UserInfo';
 import * as ATTRIBUTES from '../constants/attributes';
 import * as REGEXES from '../constants/regexes';
 import * as TEXTS from '../constants/texts';
 import { Context as LabelSourcePostContext } from '../hooks/useLabelSourcePost';
+import { Context as UnlockedIconMapContext } from '../hooks/useUnlockedIconMap';
 import type { TStore } from '../store/store';
-import lihkgCssClasses from '../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
+import type { IPost, IUser } from '../types/lihkg';
 import { insertAfter } from './dom';
-import { waitForRightPanelContainer } from './lihkg';
+import * as LIHKG from './lihkg';
 
 type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
+const userInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 const sourcePostScreenshotButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const blockquoteMessageInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 
 type TMutationCacheSymbol = (
+  typeof userInfoMutationCacheSymbol |
   typeof labelListMutationCacheSymbol |
   typeof snipeButtonMutationCacheSymbol |
   typeof addLabelButtonMutationCacheSymbol |
-  typeof sourcePostScreenshotButtonMutationCacheSymbol
+  typeof sourcePostScreenshotButtonMutationCacheSymbol |
+  typeof blockquoteMessageInfoMutationCacheSymbol
 );
 
 interface IMutationCache {
@@ -61,12 +63,16 @@ type TUnmontableMutationHandler = (
 
 declare global {
   interface Element {
+    [userInfoMutationCacheSymbol]?: IMutationCache;
     [labelListMutationCacheSymbol]?: IMutationCache;
     [snipeButtonMutationCacheSymbol]?: IMutationCache;
     [addLabelButtonMutationCacheSymbol]?: IMutationCache;
     [sourcePostScreenshotButtonMutationCacheSymbol]?: IMutationCache;
+    [blockquoteMessageInfoMutationCacheSymbol]?: IMutationCache;
   }
 }
+
+const elementPostIdMapping = new Map<Element, string>();
 
 const isDrawer = (node: Element) => {
   return node.matches(lihkgSelectors.drawer);
@@ -100,6 +106,10 @@ const isReplyItemInnerBody = (node: Element) => {
   return node.matches(lihkgSelectors.replyItemInnerBody);
 };
 
+const isReplyItemInnerBodyContent = (node: Element) => {
+  return node.matches(lihkgSelectors.replyItemInnerBodyContent);
+};
+
 const isReplyButton = (node: Element) => {
   return node.matches(`.${IconName.Reply}`);
 };
@@ -108,8 +118,8 @@ const isReplyModal = (node: Element) => {
   return node.matches(lihkgSelectors.replyModal);
 };
 
-export const isNickname = (node: Element) => {
-  return node.matches(lihkgSelectors.nickname);
+const isBlockquote = (node: Element | null) => {
+  return node?.matches(lihkgSelectors.blockquote) || false;
 };
 
 const getUserIDFromNode = (node: Element) => {
@@ -117,9 +127,7 @@ const getUserIDFromNode = (node: Element) => {
   const nicknameLink = node.querySelector<HTMLAnchorElement>(nicknameLinkSelector);
   const href = nicknameLink?.getAttribute('href');
   const matched = href?.match(REGEXES.PROFILE_URL);
-  if (matched) {
-    return matched[1];
-  }
+  return matched && matched[1];
 };
 
 const isModalTitleMatched = (node: Element, title: string) => {
@@ -133,7 +141,6 @@ const isModalTitleMatched = (node: Element, title: string) => {
 };
 
 const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
-  container.classList.add(lihkgCssClasses.drawerSidebarItem);
   const root = createRoot(container);
   root.render(
     <Provider store={store}>
@@ -145,18 +152,27 @@ const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, co
   return root;
 };
 
-const renderLabelList = (user: string, postId: string | undefined, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
-  container.classList.add(labelListStyles.container);
-  const post = postId && cache.getReply(postId) || null;
+const renderUserInfo = (user: IUser, container: Element) => {
+  const root = createRoot(container);
+  root.render(
+    <UserInfo user={user} />
+  );
+  return root;
+};
+
+const renderLabelList = (user: string, post: IPost | null, floatingConfig: TFloatingConfig, store: TStore, persistor: Persistor, container: Element) => {
+  const iconMap = LIHKG.getUnlockedIconMap();
   const root = createRoot(container);
   root.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <LabelSourcePostContext.Provider value={post}>
-          <LabelList
-            user={user}
-            floatingConfig={floatingConfig}
-          />
+          <UnlockedIconMapContext.Provider value={iconMap}>
+            <LabelList
+              user={user}
+              floatingConfig={floatingConfig}
+            />
+          </UnlockedIconMapContext.Provider>
         </LabelSourcePostContext.Provider>
       </PersistGate>
     </Provider>
@@ -164,10 +180,7 @@ const renderLabelList = (user: string, postId: string | undefined, floatingConfi
   return root;
 };
 
-const renderAddLabelButton = (user: string, postId: string | undefined, store: TStore, persistor: Persistor, container: Element) => {
-  container.classList.add(lihkgCssClasses.replyToolbarButton);
-  container.classList.add(addLabelButtonStyles.container);
-  const post = postId && cache.getReply(postId) || null;
+const renderAddLabelButton = (user: string, post: IPost | null, store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
   if (post) {
     root.render(
@@ -184,8 +197,6 @@ const renderAddLabelButton = (user: string, postId: string | undefined, store: T
 };
 
 const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
-  container.classList.add(lihkgCssClasses.replyToolbarButton);
-  container.classList.add(snipeButtonStyles.container);
   const root = createRoot(container);
   root.render(
     <Provider store={store}>
@@ -197,10 +208,7 @@ const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, co
   return root;
 };
 
-const renderSourcePostScreenshotButton = (user: string, postId: string | undefined, store: TStore, persistor: Persistor, container: Element) => {
-  container.classList.add(lihkgCssClasses.replyToolbarButton);
-  container.classList.add(sourcePostScreenshotButtonStyles.container);
-  const post = postId && cache.getReply(postId) || null;
+const renderSourcePostScreenshotButton = (user: string, post: IPost | null, store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
   if (post) {
     root.render(
@@ -226,33 +234,32 @@ const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, co
   return root;
 };
 
+const renderBlockquoteMessageInfo = (post: IPost, inline: boolean | undefined, container: Element) => {
+  const root = createRoot(container);
+  const currentThreadPoster = cache.getCurrentThreadPoster();
+  root.render(
+    <BlockquoteMessageInfo
+      post={post}
+      inline={inline}
+      highlight={currentThreadPoster?.user_id === post.user.user_id}
+    />
+  );
+  return root;
+};
+
 export const renderAnnouncement = async (announcement: React.ReactElement) => {
-  const container = document.createElement('div');
-  container.classList.add(announcementStyles.container);
-  const rightPanelContainer = await waitForRightPanelContainer();
-  rightPanelContainer?.insertBefore(container, rightPanelContainer.firstChild);
+  const container = createAnnouncementContainer();
+  const rightPanelContainer = await LIHKG.waitForRightPanelContainer();
+  rightPanelContainer.insertAdjacentElement('afterbegin', container);
   const root = createRoot(container);
   root.render(announcement);
   return root;
 };
 
-/**
- * handle unmountable mutation
- * @description unmount the root and remove the container from the previous mutation, then attach new mutation cache
- * @private
- */
-const _handleUnmountableMutation: TUnmontableMutationHandler = (reference, symbol, render) => {
-  reference[symbol]?.root.unmount();
-  reference[symbol]?.container.remove();
-  const cache = render(reference);
-  reference[symbol] = cache;
-  return cache;
-};
-
 const handleDrawerMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const drawerSidebarTopItemsContainer = node.querySelector(lihkgSelectors.drawerSidebarTopItemsContainer);
   if (drawerSidebarTopItemsContainer) {
-    const container = document.createElement('div');
+    const container = createSettingsModalToggleButtonContainer();
     drawerSidebarTopItemsContainer.appendChild(container);
     renderSettingsModalToggleButton(store, persistor, container);
   }
@@ -262,16 +269,14 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
   const threadLink = node.querySelector(lihkgSelectors.threadLink);
   const href = threadLink?.getAttribute('href');
   const threadId = href?.match(REGEXES.THREAD_URL)![1];
-  if (threadId) {
-    const thread = cache.getThread(threadId);
-    if (thread) {
-      const { user_id: user } = thread;
-      const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner);
-      if (threadItemInner) {
-        const container = document.createElement('div');
-        threadItemInner.insertAdjacentElement('afterbegin', container);
-        renderLabelList(user, undefined, undefined, store, persistor, container);
-      }
+  const thread = threadId && cache.getThread(threadId) || null;
+  if (thread) {
+    const { user_id: user } = thread;
+    const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner);
+    if (threadItemInner) {
+      const container = createLabelListContainer();
+      threadItemInner.insertAdjacentElement('afterbegin', container);
+      renderLabelList(user, null, undefined, store, persistor, container);
     }
   }
 };
@@ -285,23 +290,23 @@ const handleUserCardModalMutation = (node: Element, store: TStore, persistor: Pe
     const [, user] = matched;
     const modelContentInner = node.querySelector(`${lihkgSelectors.modalContent} > div`);
     if (modelContentInner) {
-      const container = document.createElement('div');
+      const container = createLabelListContainer();
       modelContentInner.appendChild(container);
       const floatingConfig: TFloatingConfig = { strategy: 'fixed' };
-      renderLabelList(user, undefined, floatingConfig, store, persistor, container);
+      renderLabelList(user, null, floatingConfig, store, persistor, container);
     }
   }
 };
 
 const handleEmoteMenuMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const toolbar = node.querySelector(lihkgSelectors.emoteMenuToolbar);
-  const container = document.createElement('div');
-  container.classList.add(unlockIconMapToggleButtonStyles.container);
+  const container = createUnlockIconMapToggleButtonContainer();
   toolbar!.appendChild(container);
   renderUnlockIconMapToggleButton(store, persistor, container);
 };
 
 const handleReplyListMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  /* drill down */
   const nodes = Array.from(node.querySelectorAll(lihkgSelectors.replyItem));
   for (const node of nodes) {
     handleReplyItemMutation(node, store, persistor);
@@ -309,6 +314,7 @@ const handleReplyListMutation = (node: Element, store: TStore, persistor: Persis
 };
 
 const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  /* drill down */
   const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
   if (replyItemInner) {
     handleReplyItemInnerMutation(replyItemInner, store, persistor);
@@ -316,6 +322,18 @@ const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persis
 };
 
 const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const userId = getUserIDFromNode(node);
+  const user = userId && cache.getUser(userId) || null;
+  if (user) {
+    /* user info */
+    _handleUnmountableMutation(node, userInfoMutationCacheSymbol, (node) => {
+      const container = createUserInfoContainer();
+      node.insertAdjacentElement('afterbegin', container);
+      const root = renderUserInfo(user, container);
+      return { container, root };
+    });
+  }
+  /* drill down */
   const replyItemInnerBody = node.querySelector(lihkgSelectors.replyItemInnerBody);
   if (replyItemInnerBody) {
     handleReplyItemInnerBodyMutation(replyItemInnerBody, store, persistor);
@@ -323,73 +341,165 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
 };
 
 const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  const user = getUserIDFromNode(node);
+  const postId = node.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
+  const post = postId && cache.getReply(postId) || null;
+  if (user && post) {
+    /* label list */
+    _handleUnmountableMutation(node, labelListMutationCacheSymbol, (node) => {
+      const container = createLabelListContainer();
+      node.insertAdjacentElement('afterbegin', container);
+      const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
+      const root = renderLabelList(user, post, floatingConfig, store, persistor, container);
+      return { container, root };
+    });
+  }
+  /* drill down */
   const replyItemInnerBodyHeading = node.querySelector(lihkgSelectors.replyItemInnerBodyHeading);
   if (replyItemInnerBodyHeading) {
     handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
   }
+  const replyItemInnerBodyContent = node.querySelector(lihkgSelectors.replyItemInnerBodyContent);
+  if (replyItemInnerBodyContent) {
+    handleReplyItemInnerBodyContentMutation(replyItemInnerBodyContent);
+  }
+  const inlineBlockquote = node.querySelector(lihkgSelectors.inlineBlockquote);
+  if (inlineBlockquote) {
+    handleInlineBlockquoteMutation(inlineBlockquote);
+  }
 };
 
 const handleReplyItemInnerBodyHeadingMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const user = getUserIDFromNode(node);
-  if (user) {
-    const replyItemInner = node.parentElement?.parentElement;
-    const postId = replyItemInner?.getAttribute(ATTRIBUTES.DATA_POST_ID) || undefined;
-    const replyItemInnerBody = node.parentElement;
-    if (replyItemInnerBody) {
-      /* label list */
-      _handleUnmountableMutation(replyItemInnerBody, labelListMutationCacheSymbol, (reference) => {
-        const container = document.createElement('div');
-        reference.insertAdjacentElement('afterbegin', container);
-        const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
-        const root = renderLabelList(user, postId, floatingConfig, store, persistor, container);
-        return { container, root };
-      });
-    }
-    const replyButton = node.querySelector(`.${IconName.Reply}`);
-    if (replyButton) {
-      /* snipe button */
-      _handleUnmountableMutation(replyButton, snipeButtonMutationCacheSymbol, (reference) => {
-        const container = document.createElement('div');
-        insertAfter(container, reference);
-        const root = renderSnipeButton(user, store, persistor, container);
-        return { container, root };
-      });
-      /* add label button */
-      _handleUnmountableMutation(replyButton, addLabelButtonMutationCacheSymbol, (reference) => {
-        const container = document.createElement('div');
-        insertAfter(container, reference);
-        const root = renderAddLabelButton(user, postId, store, persistor, container);
-        return { container, root };
-      });
-      /* source post screenshot button */
-      _handleUnmountableMutation(replyButton, sourcePostScreenshotButtonMutationCacheSymbol, (reference) => {
-        const container = document.createElement('div');
-        insertAfter(container, reference);
-        const root = renderSourcePostScreenshotButton(user, postId, store, persistor, container);
-        return { container, root };
-      });
-    }
+  /* drill down */
+  const replyButton = node.querySelector(`.${IconName.Reply}`);
+  if (replyButton) {
+    handleReplyButtonMutation(replyButton, store, persistor);
+  }
+};
+
+const handleReplyItemInnerBodyContentMutation = (node: Element) => {
+  /* drill down */
+  const blockquote = node.querySelector(lihkgSelectors.blockquote);
+  if (blockquote) {
+    handleBlockquoteMutation(blockquote);
   }
 };
 
 const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
-  const replyItemInnerBodyHeading = node.parentElement!;
-  handleReplyItemInnerBodyHeadingMutation(replyItemInnerBodyHeading, store, persistor);
+  const user = getUserIDFromNode(node.parentElement!);
+  const postId = node.parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
+  const post = postId && cache.getReply(postId) || null;
+  if (user && post) {
+    /* snipe button */
+    _handleUnmountableMutation(node, snipeButtonMutationCacheSymbol, (node) => {
+      const container = createSnipeButtonContainer();
+      insertAfter(container, node);
+      const root = renderSnipeButton(user, store, persistor, container);
+      return { container, root };
+    });
+    /* add label button */
+    _handleUnmountableMutation(node, addLabelButtonMutationCacheSymbol, (node) => {
+      const container = createAddLabelButtonContainer();
+      insertAfter(container, node);
+      const root = renderAddLabelButton(user, post, store, persistor, container);
+      return { container, root };
+    });
+    /* source post screenshot button */
+    _handleUnmountableMutation(node, sourcePostScreenshotButtonMutationCacheSymbol, (node) => {
+      const container = createSourcePostScreenshotButtonContainer();
+      insertAfter(container, node);
+      const root = renderSourcePostScreenshotButton(user, post, store, persistor, container);
+      return { container, root };
+    });
+  }
 };
 
-
 const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persistor) => {
+  /* drill down */
   const replyItemInner = node.querySelector(lihkgSelectors.replyItemInner);
   if (replyItemInner) {
     handleReplyItemInnerMutation(replyItemInner, store, persistor);
   }
 };
 
-export const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
+const handleBlockquoteMutation = (node: Element) => {
+  const { parentElement } = node;
+  /* if it is nested blockquote, get its parent blockquote's post ID to get the quoted post */
+  const postId = isBlockquote(parentElement) ? elementPostIdMapping.get(parentElement!) : parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
+  const post = postId && cache.getReply(postId) || null;
+  _handleBlockquoteMessageInfo(node, post?.quote_post_id, false);
+};
+
+const handleInlineBlockquoteMutation = (node: Element) => {
+  const inlineBlockquoteBox = node.querySelector(lihkgSelectors.inlineBlockquoteBox)!;
+  const postId = node.parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
+  const post = postId && cache.getReply(postId) || null;
+  _handleBlockquoteMessageInfo(inlineBlockquoteBox, post?.quote_post_id, true);
+};
+
+const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persistor: Persistor) => {
   handleReplyItemInnerMutation(node, store, persistor);
 };
 
-export const addedNodeMutationHandlerFactory = (node: Element) => {
+/**
+ * unmount and remove the components
+ * @private
+ */
+const _unmount = (node: Element, symbol: TMutationCacheSymbol) => {
+  node[symbol]?.root.unmount();
+  node[symbol]?.container.remove();
+  elementPostIdMapping.delete(node);
+};
+
+/**
+ * unmount and remove the container from the previous mutation, then attach new mutation cache
+ * @private
+ */
+const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, render) => {
+  _unmount(node, symbol);
+  const cache = render(node);
+  node[symbol] = cache;
+  return cache;
+};
+
+/**
+ * render blockquote message info recursively
+ * @private
+ */
+const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: boolean) => {
+  const post = postId && cache.getReply(postId) || null;
+  if (post) {
+    _handleUnmountableMutation(node, blockquoteMessageInfoMutationCacheSymbol, (node) => {
+      const container = createBlockquoteMessageInfoContainer(inline);
+      if (inline) {
+        /* insert to inline blockquote box */
+        node.insertAdjacentElement('beforeend', container);
+      } else {
+        /* normal blockquote, `node` is `<blockquote />` */
+        const unlinkedBlockquote = node.querySelector(`:scope > ${lihkgSelectors.replyItemMessageBody} > ${lihkgSelectors.blockquote}:first-child`);
+        if (unlinkedBlockquote) {
+          /* there is unlinked nested blockquote, insert after it */
+          insertAfter(container, unlinkedBlockquote);
+        } else {
+          node.insertBefore(container, node.lastChild);
+        }
+      }
+      const root = renderBlockquoteMessageInfo(post, inline, container);
+      elementPostIdMapping.set(node, post.post_id);
+      return { container, root };
+    });
+    const blockquote = node.querySelector(lihkgSelectors.blockquote);
+    if (blockquote) {
+      /* recursive */
+      _handleBlockquoteMessageInfo(blockquote, post.quote_post_id, false);
+    }
+  }
+};
+
+/**
+ * mutation handler factory
+ */
+const createChildListAddedNodeMutationHandler = (node: Element) => {
   debug('addedNodeMutationHandlerFactory', node);
   /** when render the drawer */
   if (isDrawer(node)) return handleDrawerMutation;
@@ -408,7 +518,52 @@ export const addedNodeMutationHandlerFactory = (node: Element) => {
   /** when show blocked user reply item */
   if (isReplyItemInnerBody(node)) return handleReplyItemInnerBodyMutation;
   /** when expand the short reply item */
+  if (isReplyItemInnerBodyContent(node)) return handleReplyItemInnerBodyContentMutation;
+  /** when expand the short reply item */
   if (isReplyButton(node)) return handleReplyButtonMutation;
   /** when render reply modal */
   if (isReplyModal(node)) return handleReplyModalMutation;
+  /** when render blockquote */
+  if (isBlockquote(node)) return handleBlockquoteMutation;
+};
+
+export const handleMutation = (mutation: MutationRecord, store: TStore, persistor: Persistor) => {
+  const addedNodes = Array.from(mutation.addedNodes);
+
+  if (isBlockquote(mutation.target as Element)) {
+    /* when navigate between nested blockquotes */
+    const [addedNode] = addedNodes;
+    const [removedNode] = Array.from(mutation.removedNodes);
+    if (isBlockquote(addedNode as Element) || isBlockquote(removedNode as Element)) {
+      /* avoid incorrect layout */
+      _unmount(mutation.target as Element, blockquoteMessageInfoMutationCacheSymbol);
+    }
+  }
+
+  switch (mutation.type) {
+    case 'childList': {
+      /** generic new nodes handling */
+      for (const addedNode of addedNodes) {
+        if (addedNode.nodeType === document.ELEMENT_NODE) {
+          const handleChildListAddedNodeMutation = createChildListAddedNodeMutationHandler(addedNode as Element);
+          if (handleChildListAddedNodeMutation) {
+            window.requestAnimationFrame(() => {
+              handleChildListAddedNodeMutation(addedNode as Element, store, persistor);
+            });
+          }
+        }
+      }
+      break;
+    }
+    case 'attributes': {
+      /** when navigate between the quotes */
+      if (mutation.attributeName === ATTRIBUTES.DATA_POST_ID) {
+        const { target } = mutation;
+        window.requestAnimationFrame(() => {
+          handleDataPostIdAttributeMutation(target as Element, store, persistor);
+        });
+      }
+      break;
+    }
+  }
 };

@@ -1,0 +1,26 @@
+@import '../../stylesheets/base';
+
+.container {
+  @apply mb-2;
+}
+
+.user-info {
+  @apply text-sm;
+  color: $color-grey05;
+
+  &,
+  > * {
+    @apply flex items-center;
+  }
+
+  .icon {
+    @apply mr-1;
+  }
+
+  > * + * {
+    &:before {
+      content: '•';
+      margin: 0 0.4rem;
+    }
+  }
+}

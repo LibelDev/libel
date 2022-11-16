@@ -3,6 +3,7 @@ import type React from 'react';
 import { memo, useEffect, useMemo } from 'react';
 import type { TLabelsGroupItem } from '../../../helpers/labelList';
 import useFadeoutScroll from '../../../hooks/useFadeoutScroll';
+import EmoticonTranslator from '../../EmoticonTranslator/EmoticonTranslator';
 import LabelItem from '../../LabelItem/LabelItem';
 import LabelInfoList from '../LabelInfoList/LabelInfoList';
 import Badge from './Badge';
@@ -28,7 +29,9 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = memo((props) => {
   if (!floatingConfig) {
     return (
       <LabelItem className={styles.labelItem}>
-        {text}
+        <EmoticonTranslator className={styles.emoticon}>
+          {text}
+        </EmoticonTranslator>
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
     );
@@ -64,7 +67,9 @@ const GroupedLabelItem: React.FunctionComponent<TProps> = memo((props) => {
   return (
     <>
       <LabelItem ref={reference} className={styles.labelItem} onMouseEnter={update}>
-        {text}
+        <EmoticonTranslator className={styles.emoticon}>
+          {text}
+        </EmoticonTranslator>
         <Badge className={styles.badge} quantity={items.length} />
       </LabelItem>
       <LabelInfoList

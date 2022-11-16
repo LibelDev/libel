@@ -9,6 +9,7 @@ import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
+import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
 import { EventAction } from '../../types/ga';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
@@ -65,3 +66,10 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
 SnipeButton.displayName = 'SnipeButton';
 
 export default SnipeButton;
+
+export const createContainer = () => {
+  const container = document.createElement('div');
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(styles.container);
+  return container;
+};

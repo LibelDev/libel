@@ -1,0 +1,4 @@
+@function strip-unit($num) {
+  $value: math.div($num, $num * 0 + 1);
+  @return $value;
+}

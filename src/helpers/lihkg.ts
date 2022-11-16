@@ -1,5 +1,6 @@
 // import debugFactory from 'debug';
 import produce from 'immer';
+import mem from 'mem';
 import { dev } from '../../config/config';
 import { displayName } from '../../package.json';
 import type { TActions } from '../actions/lihkg';
@@ -59,6 +60,17 @@ export const getStore = () => {
   const store = findReduxStore<IState, TActions>(app);
   return store;
 };
+
+export const getIconMap = mem(() => {
+  const store = getStore()!;
+  const state = store.getState();
+  return state.app.iconMap;
+});
+
+export const getUnlockedIconMap = mem(() => {
+  const iconMap = getIconMap();
+  return unlockIconMap(iconMap);
+});
 
 /**
  * unlock all icons

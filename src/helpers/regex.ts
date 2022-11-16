@@ -6,3 +6,7 @@ export const getSearchRegex = (search: string) => {
   const regex = new RegExp(pattern, 'i');
   return regex;
 };
+
+export const escape = (text: string) => {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};

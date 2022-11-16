@@ -2,10 +2,13 @@
 
 :export {
   app: $lihkg-selector-app;
-  drawer: $lihkg-selector-drawer;
+  blockquote: $lihkg-selector-blockquote;
   drawer-sidebar-top-items-container: $lihkg-selector-drawer-sidebar-top-items-container;
+  drawer: $lihkg-selector-drawer;
   emote-menu-toolbar: $lihkg-selector-emote-menu-toolbar;
   emote-menu: $lihkg-selector-emote-menu;
+  inline-blockquote-box: $lihkg-selector-inline-blockquote-box;
+  inline-blockquote: $lihkg-selector-inline-blockquote;
   left-panel: $lihkg-selector-left-panel;
   modal-content: $lihkg-selector-modal-content;
   modal-title: $lihkg-selector-modal-title;
@@ -16,10 +19,11 @@
   nickname: $lihkg-selector-nickname;
   notice: $lihkg-selector-notice;
   quoted-image-enlarge-button: $lihkg-selector-quoted-image-enlarge-button;
-  reply-item-blocked-user: $lihkg-selector-reply-item-blocked-user;
+  reply-item-inner-body-content: $lihkg-selector-reply-item-inner-body-content;
   reply-item-inner-body-heading: $lihkg-selector-reply-item-inner-body-heading;
   reply-item-inner-body: $lihkg-selector-reply-item-inner-body;
   reply-item-inner: $lihkg-selector-reply-item-inner;
+  reply-item-message-body: $lihkg-selector-reply-item-message-body;
   reply-item: $lihkg-selector-reply-item;
   reply-list: $lihkg-selector-reply-list;
   reply-modal: $lihkg-selector-reply-modal;
@@ -30,9 +34,9 @@
   thread-item-inner: $lihkg-selector-thread-item-inner;
   thread-item: $lihkg-selector-thread-item;
   thread-link: $lihkg-selector-thread-link;
-  thread-title-bar: $lihkg-selector-thread-title-bar;
   thread-title-bar-left-column: $lihkg-selector-thread-title-bar-left-column;
   thread-title-bar-right-column: $lihkg-selector-thread-title-bar-right-column;
   thread-title-bar-vote-button: $lihkg-selector-thread-title-bar-vote-button;
+  thread-title-bar: $lihkg-selector-thread-title-bar;
   user-card-buttons-container: $lihkg-selector-user-card-buttons-container;
 }

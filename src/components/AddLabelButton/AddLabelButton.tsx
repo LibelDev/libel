@@ -9,6 +9,7 @@ import { mapPostToSource } from '../../helpers/label';
 import useLabelSourcePost from '../../hooks/useLabelSourcePost';
 import { actions as personalActions, IAddLabelPayload } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
+import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
 import { EventAction, EventCategory, EventLabel } from '../../types/ga';
 import IconButton from '../IconButton/IconButton';
 import useLabelForm from '../LabelForm/useLabelForm';
@@ -80,3 +81,10 @@ const AddLabelButton: React.FunctionComponent<TProps> = (props) => {
 AddLabelButton.displayName = 'AddLabelButton';
 
 export default AddLabelButton;
+
+export const createContainer = () => {
+  const container = document.createElement('div');
+  container.classList.add(lihkgCssClasses.replyToolbarButton);
+  container.classList.add(styles.container);
+  return container;
+};
