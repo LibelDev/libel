@@ -473,13 +473,13 @@ const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: b
     _handleUnmountableRender(node, blockquoteMessageInfoRenderCacheSymbol, (node) => {
       const container = createBlockquoteMessageInfoContainer(inline);
       if (inline) {
-        /* insert to inline blockquote box */
+        /* inline quote, `node` is inline quote box */
         node.insertAdjacentElement('beforeend', container);
       } else {
-        /* normal blockquote, `node` is `<blockquote />` */
+        /* normal quote, `node` is `<blockquote />` */
         const unlinkedBlockquote = node.querySelector(`:scope > ${lihkgSelectors.replyItemMessageBody} > ${lihkgSelectors.blockquote}:first-child`);
         if (unlinkedBlockquote) {
-          /* there is unlinked nested blockquote, insert after it */
+          /* there is unlinked nested quote, insert after it */
           insertAfter(container, unlinkedBlockquote);
         } else {
           node.insertBefore(container, node.lastChild);
