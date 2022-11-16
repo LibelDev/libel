@@ -1,3 +1,13 @@
+## v3.9.1 (2022-11-17)
+
+### Fix
+
+- **mutation**: missing handling for the parent `<blockquote />` of expanded quotes
+
+### Refactor
+
+- **models**: update `Cache` getters
+
 ## v3.9.0 (2022-11-16)
 
 ### Feat

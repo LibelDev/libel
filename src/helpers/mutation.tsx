@@ -32,43 +32,43 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
-const userInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const sourcePostScreenshotButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const blockquoteMessageInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const userInfoRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const labelListRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const snipeButtonRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const addLabelButtonRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const sourcePostScreenshotButtonRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const blockquoteMessageInfoRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 
-type TMutationCacheSymbol = (
-  typeof userInfoMutationCacheSymbol |
-  typeof labelListMutationCacheSymbol |
-  typeof snipeButtonMutationCacheSymbol |
-  typeof addLabelButtonMutationCacheSymbol |
-  typeof sourcePostScreenshotButtonMutationCacheSymbol |
-  typeof blockquoteMessageInfoMutationCacheSymbol
+type TRenderCacheSymbol = (
+  typeof userInfoRenderCacheSymbol |
+  typeof labelListRenderCacheSymbol |
+  typeof snipeButtonRenderCacheSymbol |
+  typeof addLabelButtonRenderCacheSymbol |
+  typeof sourcePostScreenshotButtonRenderCacheSymbol |
+  typeof blockquoteMessageInfoRenderCacheSymbol
 );
 
-interface IMutationCache {
+interface IRenderCache {
   container: HTMLElement;
   root: Root;
 }
 
-type TUnmontableMutationHandler = (
+type TUnmountableRenderer = (
   /** the reference element to attach the mutation cache */
-  reference: Element,
-  /** the cache symbol key */
-  cacheSymbol: TMutationCacheSymbol,
-  render: (reference: Element) => IMutationCache
-) => IMutationCache;
+  node: Element,
+  /** the symbol key to save the cache */
+  symbol: TRenderCacheSymbol,
+  render: (node: Element) => IRenderCache
+) => IRenderCache;
 
 declare global {
   interface Element {
-    [userInfoMutationCacheSymbol]?: IMutationCache;
-    [labelListMutationCacheSymbol]?: IMutationCache;
-    [snipeButtonMutationCacheSymbol]?: IMutationCache;
-    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
-    [sourcePostScreenshotButtonMutationCacheSymbol]?: IMutationCache;
-    [blockquoteMessageInfoMutationCacheSymbol]?: IMutationCache;
+    [userInfoRenderCacheSymbol]?: IRenderCache;
+    [labelListRenderCacheSymbol]?: IRenderCache;
+    [snipeButtonRenderCacheSymbol]?: IRenderCache;
+    [addLabelButtonRenderCacheSymbol]?: IRenderCache;
+    [sourcePostScreenshotButtonRenderCacheSymbol]?: IRenderCache;
+    [blockquoteMessageInfoRenderCacheSymbol]?: IRenderCache;
   }
 }
 
@@ -269,7 +269,7 @@ const handleThreadItemMutation = (node: Element, store: TStore, persistor: Persi
   const threadLink = node.querySelector(lihkgSelectors.threadLink);
   const href = threadLink?.getAttribute('href');
   const threadId = href?.match(REGEXES.THREAD_URL)![1];
-  const thread = threadId && cache.getThread(threadId) || null;
+  const thread = cache.getThread(threadId);
   if (thread) {
     const { user_id: user } = thread;
     const threadItemInner = node.querySelector(lihkgSelectors.threadItemInner);
@@ -323,10 +323,10 @@ const handleReplyItemMutation = (node: Element, store: TStore, persistor: Persis
 
 const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const userId = getUserIDFromNode(node);
-  const user = userId && cache.getUser(userId) || null;
+  const user = cache.getUser(userId);
   if (user) {
     /* user info */
-    _handleUnmountableMutation(node, userInfoMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, userInfoRenderCacheSymbol, (node) => {
       const container = createUserInfoContainer();
       node.insertAdjacentElement('afterbegin', container);
       const root = renderUserInfo(user, container);
@@ -343,10 +343,10 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
 const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node);
   const postId = node.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   if (user && post) {
     /* label list */
-    _handleUnmountableMutation(node, labelListMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, labelListRenderCacheSymbol, (node) => {
       const container = createLabelListContainer();
       node.insertAdjacentElement('afterbegin', container);
       const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
@@ -388,24 +388,24 @@ const handleReplyItemInnerBodyContentMutation = (node: Element) => {
 const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Persistor) => {
   const user = getUserIDFromNode(node.parentElement!);
   const postId = node.parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   if (user && post) {
     /* snipe button */
-    _handleUnmountableMutation(node, snipeButtonMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, snipeButtonRenderCacheSymbol, (node) => {
       const container = createSnipeButtonContainer();
       insertAfter(container, node);
       const root = renderSnipeButton(user, store, persistor, container);
       return { container, root };
     });
     /* add label button */
-    _handleUnmountableMutation(node, addLabelButtonMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, addLabelButtonRenderCacheSymbol, (node) => {
       const container = createAddLabelButtonContainer();
       insertAfter(container, node);
       const root = renderAddLabelButton(user, post, store, persistor, container);
       return { container, root };
     });
     /* source post screenshot button */
-    _handleUnmountableMutation(node, sourcePostScreenshotButtonMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, sourcePostScreenshotButtonRenderCacheSymbol, (node) => {
       const container = createSourcePostScreenshotButtonContainer();
       insertAfter(container, node);
       const root = renderSourcePostScreenshotButton(user, post, store, persistor, container);
@@ -424,16 +424,16 @@ const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persi
 
 const handleBlockquoteMutation = (node: Element) => {
   const { parentElement } = node;
-  /* if it is nested blockquote, get its parent blockquote's post ID to get the quoted post */
+  /* if it is nested `<blockquote />`, its parent should have been handled before (i.e. mapped post ID), otherwise, get the post ID from the reply item inner element */
   const postId = isBlockquote(parentElement) ? elementPostIdMapping.get(parentElement!) : parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   _handleBlockquoteMessageInfo(node, post?.quote_post_id, false);
 };
 
 const handleInlineBlockquoteMutation = (node: Element) => {
   const inlineBlockquoteBox = node.querySelector(lihkgSelectors.inlineBlockquoteBox)!;
   const postId = node.parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   _handleBlockquoteMessageInfo(inlineBlockquoteBox, post?.quote_post_id, true);
 };
 
@@ -445,9 +445,10 @@ const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persist
  * unmount and remove the components
  * @private
  */
-const _unmount = (node: Element, symbol: TMutationCacheSymbol) => {
+const _unmount = (node: Element, symbol: TRenderCacheSymbol) => {
   node[symbol]?.root.unmount();
   node[symbol]?.container.remove();
+  delete node[symbol];
   elementPostIdMapping.delete(node);
 };
 
@@ -455,7 +456,7 @@ const _unmount = (node: Element, symbol: TMutationCacheSymbol) => {
  * unmount and remove the container from the previous mutation, then attach new mutation cache
  * @private
  */
-const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, render) => {
+const _handleUnmountableRender: TUnmountableRenderer = (node, symbol, render) => {
   _unmount(node, symbol);
   const cache = render(node);
   node[symbol] = cache;
@@ -467,18 +468,18 @@ const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, re
  * @private
  */
 const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: boolean) => {
-  const post = postId && cache.getReply(postId) || null;
+  const post = cache.getReply(postId);
   if (post) {
-    _handleUnmountableMutation(node, blockquoteMessageInfoMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, blockquoteMessageInfoRenderCacheSymbol, (node) => {
       const container = createBlockquoteMessageInfoContainer(inline);
       if (inline) {
-        /* insert to inline blockquote box */
+        /* inline quote, `node` is inline quote box */
         node.insertAdjacentElement('beforeend', container);
       } else {
-        /* normal blockquote, `node` is `<blockquote />` */
+        /* normal quote, `node` is `<blockquote />` */
         const unlinkedBlockquote = node.querySelector(`:scope > ${lihkgSelectors.replyItemMessageBody} > ${lihkgSelectors.blockquote}:first-child`);
         if (unlinkedBlockquote) {
-          /* there is unlinked nested blockquote, insert after it */
+          /* there is unlinked nested quote, insert after it */
           insertAfter(container, unlinkedBlockquote);
         } else {
           node.insertBefore(container, node.lastChild);
@@ -500,7 +501,7 @@ const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: b
  * mutation handler factory
  */
 const createChildListAddedNodeMutationHandler = (node: Element) => {
-  debug('addedNodeMutationHandlerFactory', node);
+  debug('createChildListAddedNodeMutationHandler', node);
   /** when render the drawer */
   if (isDrawer(node)) return handleDrawerMutation;
   /** when render the thread item */
@@ -529,17 +530,28 @@ const createChildListAddedNodeMutationHandler = (node: Element) => {
 
 export const handleMutation = (mutation: MutationRecord, store: TStore, persistor: Persistor) => {
   const addedNodes = Array.from(mutation.addedNodes);
-
   if (isBlockquote(mutation.target as Element)) {
-    /* when navigate between nested blockquotes */
+    /* when expand the hidden quotes */
     const [addedNode] = addedNodes;
     const [removedNode] = Array.from(mutation.removedNodes);
-    if (isBlockquote(addedNode as Element) || isBlockquote(removedNode as Element)) {
-      /* avoid incorrect layout */
-      _unmount(mutation.target as Element, blockquoteMessageInfoMutationCacheSymbol);
+    if (isBlockquote(removedNode as Element)) {
+      /**
+       * the `<blockquote />` of hidden quotes is being removed,
+       * unmount the parent and handle it again later (asynchronously)
+       * to avoid incorrect layout
+       */
+      _unmount(mutation.target as Element, blockquoteMessageInfoRenderCacheSymbol);
+    }
+    if (isBlockquote(addedNode as Element)) {
+      /**
+       * ***continuing from the above unmount logic***
+       * after fetching and rendering the quotes,
+       * the expanded `<blockquote />` is being added,
+       * handle the parent like normal `childList` mutation
+       */
+      handleBlockquoteMutation(mutation.target as Element);
     }
   }
-
   switch (mutation.type) {
     case 'childList': {
       /** generic new nodes handling */
