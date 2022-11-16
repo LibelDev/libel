@@ -32,43 +32,43 @@ type TFloatingConfig = Parameters<typeof useFloating>[0];
 
 const debug = debugFactory('libel:helper:mutation');
 
-const userInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const labelListMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const snipeButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const addLabelButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const sourcePostScreenshotButtonMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
-const blockquoteMessageInfoMutationCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const userInfoRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const labelListRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const snipeButtonRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const addLabelButtonRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const sourcePostScreenshotButtonRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
+const blockquoteMessageInfoRenderCacheSymbol: unique symbol = Symbol(`__${namespace}__cache__`);
 
-type TMutationCacheSymbol = (
-  typeof userInfoMutationCacheSymbol |
-  typeof labelListMutationCacheSymbol |
-  typeof snipeButtonMutationCacheSymbol |
-  typeof addLabelButtonMutationCacheSymbol |
-  typeof sourcePostScreenshotButtonMutationCacheSymbol |
-  typeof blockquoteMessageInfoMutationCacheSymbol
+type TRenderCacheSymbol = (
+  typeof userInfoRenderCacheSymbol |
+  typeof labelListRenderCacheSymbol |
+  typeof snipeButtonRenderCacheSymbol |
+  typeof addLabelButtonRenderCacheSymbol |
+  typeof sourcePostScreenshotButtonRenderCacheSymbol |
+  typeof blockquoteMessageInfoRenderCacheSymbol
 );
 
-interface IMutationCache {
+interface IRenderCache {
   container: HTMLElement;
   root: Root;
 }
 
-type TUnmontableMutationHandler = (
+type TUnmountableRenderer = (
   /** the reference element to attach the mutation cache */
-  reference: Element,
-  /** the cache symbol key */
-  cacheSymbol: TMutationCacheSymbol,
-  render: (reference: Element) => IMutationCache
-) => IMutationCache;
+  node: Element,
+  /** the symbol key to save the cache */
+  symbol: TRenderCacheSymbol,
+  render: (node: Element) => IRenderCache
+) => IRenderCache;
 
 declare global {
   interface Element {
-    [userInfoMutationCacheSymbol]?: IMutationCache;
-    [labelListMutationCacheSymbol]?: IMutationCache;
-    [snipeButtonMutationCacheSymbol]?: IMutationCache;
-    [addLabelButtonMutationCacheSymbol]?: IMutationCache;
-    [sourcePostScreenshotButtonMutationCacheSymbol]?: IMutationCache;
-    [blockquoteMessageInfoMutationCacheSymbol]?: IMutationCache;
+    [userInfoRenderCacheSymbol]?: IRenderCache;
+    [labelListRenderCacheSymbol]?: IRenderCache;
+    [snipeButtonRenderCacheSymbol]?: IRenderCache;
+    [addLabelButtonRenderCacheSymbol]?: IRenderCache;
+    [sourcePostScreenshotButtonRenderCacheSymbol]?: IRenderCache;
+    [blockquoteMessageInfoRenderCacheSymbol]?: IRenderCache;
   }
 }
 
@@ -326,7 +326,7 @@ const handleReplyItemInnerMutation = (node: Element, store: TStore, persistor: P
   const user = cache.getUser(userId);
   if (user) {
     /* user info */
-    _handleUnmountableMutation(node, userInfoMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, userInfoRenderCacheSymbol, (node) => {
       const container = createUserInfoContainer();
       node.insertAdjacentElement('afterbegin', container);
       const root = renderUserInfo(user, container);
@@ -346,7 +346,7 @@ const handleReplyItemInnerBodyMutation = (node: Element, store: TStore, persisto
   const post = cache.getReply(postId);
   if (user && post) {
     /* label list */
-    _handleUnmountableMutation(node, labelListMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, labelListRenderCacheSymbol, (node) => {
       const container = createLabelListContainer();
       node.insertAdjacentElement('afterbegin', container);
       const floatingConfig: TFloatingConfig = { strategy: 'absolute' };
@@ -391,21 +391,21 @@ const handleReplyButtonMutation = (node: Element, store: TStore, persistor: Pers
   const post = cache.getReply(postId);
   if (user && post) {
     /* snipe button */
-    _handleUnmountableMutation(node, snipeButtonMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, snipeButtonRenderCacheSymbol, (node) => {
       const container = createSnipeButtonContainer();
       insertAfter(container, node);
       const root = renderSnipeButton(user, store, persistor, container);
       return { container, root };
     });
     /* add label button */
-    _handleUnmountableMutation(node, addLabelButtonMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, addLabelButtonRenderCacheSymbol, (node) => {
       const container = createAddLabelButtonContainer();
       insertAfter(container, node);
       const root = renderAddLabelButton(user, post, store, persistor, container);
       return { container, root };
     });
     /* source post screenshot button */
-    _handleUnmountableMutation(node, sourcePostScreenshotButtonMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, sourcePostScreenshotButtonRenderCacheSymbol, (node) => {
       const container = createSourcePostScreenshotButtonContainer();
       insertAfter(container, node);
       const root = renderSourcePostScreenshotButton(user, post, store, persistor, container);
@@ -424,7 +424,7 @@ const handleReplyModalMutation = (node: Element, store: TStore, persistor: Persi
 
 const handleBlockquoteMutation = (node: Element) => {
   const { parentElement } = node;
-  /* if it is nested blockquote, get its parent blockquote's post ID to get the quoted post */
+  /* if it is nested `<blockquote />`, its parent should have been handled before (i.e. mapped post ID), otherwise, get the post ID from the reply item inner element */
   const postId = isBlockquote(parentElement) ? elementPostIdMapping.get(parentElement!) : parentElement?.parentElement?.parentElement?.getAttribute(ATTRIBUTES.DATA_POST_ID);
   const post = cache.getReply(postId);
   _handleBlockquoteMessageInfo(node, post?.quote_post_id, false);
@@ -445,7 +445,7 @@ const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persist
  * unmount and remove the components
  * @private
  */
-const _unmount = (node: Element, symbol: TMutationCacheSymbol) => {
+const _unmount = (node: Element, symbol: TRenderCacheSymbol) => {
   node[symbol]?.root.unmount();
   node[symbol]?.container.remove();
   delete node[symbol];
@@ -456,7 +456,7 @@ const _unmount = (node: Element, symbol: TMutationCacheSymbol) => {
  * unmount and remove the container from the previous mutation, then attach new mutation cache
  * @private
  */
-const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, render) => {
+const _handleUnmountableRender: TUnmountableRenderer = (node, symbol, render) => {
   _unmount(node, symbol);
   const cache = render(node);
   node[symbol] = cache;
@@ -470,7 +470,7 @@ const _handleUnmountableMutation: TUnmontableMutationHandler = (node, symbol, re
 const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: boolean) => {
   const post = cache.getReply(postId);
   if (post) {
-    _handleUnmountableMutation(node, blockquoteMessageInfoMutationCacheSymbol, (node) => {
+    _handleUnmountableRender(node, blockquoteMessageInfoRenderCacheSymbol, (node) => {
       const container = createBlockquoteMessageInfoContainer(inline);
       if (inline) {
         /* insert to inline blockquote box */
@@ -501,7 +501,7 @@ const _handleBlockquoteMessageInfo = (node: Element, postId?: string, inline?: b
  * mutation handler factory
  */
 const createChildListAddedNodeMutationHandler = (node: Element) => {
-  debug('addedNodeMutationHandlerFactory', node);
+  debug('createChildListAddedNodeMutationHandler', node);
   /** when render the drawer */
   if (isDrawer(node)) return handleDrawerMutation;
   /** when render the thread item */
