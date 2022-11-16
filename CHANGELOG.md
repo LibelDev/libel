@@ -1,3 +1,30 @@
+## v3.9.0 (2022-11-16)
+
+### Feat
+
+- **components**: show quoted message info
+- **mutation**: show user info at the top of reply item
+- **label-info**: show emoticons in label item
+
+### Fix
+
+- **announcement**: update layout on close
+
+### Refactor
+
+- **mutation**: implement its own `createContainer()` in the component file
+- **components**: update `UserInfo`
+- **stylesheets**: sort variables in ascending order
+- **helpers**: rename function
+- rename enum
+- **stylesheets**: add `strip-unit` function
+- **helpers**: change singleton to memoization
+- **helpers**: change singleton to memoization
+- **helpers**: update imports
+- **components**: update `Emoticon`
+- **components**: update typings
+- **components**: update `UnlockIconMapToggleButton`
+
 ## v3.8.0 (2022-11-05)
 
 ### Feat
