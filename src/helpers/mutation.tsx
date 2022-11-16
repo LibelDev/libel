@@ -448,6 +448,7 @@ const handleDataPostIdAttributeMutation = (node: Element, store: TStore, persist
 const _unmount = (node: Element, symbol: TMutationCacheSymbol) => {
   node[symbol]?.root.unmount();
   node[symbol]?.container.remove();
+  delete node[symbol];
   elementPostIdMapping.delete(node);
 };
 
@@ -529,17 +530,28 @@ const createChildListAddedNodeMutationHandler = (node: Element) => {
 
 export const handleMutation = (mutation: MutationRecord, store: TStore, persistor: Persistor) => {
   const addedNodes = Array.from(mutation.addedNodes);
-
   if (isBlockquote(mutation.target as Element)) {
-    /* when navigate between nested blockquotes */
+    /* when expand the hidden quotes */
     const [addedNode] = addedNodes;
     const [removedNode] = Array.from(mutation.removedNodes);
-    if (isBlockquote(addedNode as Element) || isBlockquote(removedNode as Element)) {
-      /* avoid incorrect layout */
-      _unmount(mutation.target as Element, blockquoteMessageInfoMutationCacheSymbol);
+    if (isBlockquote(removedNode as Element)) {
+      /**
+       * the `<blockquote />` of hidden quotes is being removed,
+       * unmount the parent and handle it again later (asynchronously)
+       * to avoid incorrect layout
+       */
+      _unmount(mutation.target as Element, blockquoteMessageInfoRenderCacheSymbol);
+    }
+    if (isBlockquote(addedNode as Element)) {
+      /**
+       * ***continuing from the above unmount logic***
+       * after fetching and rendering the quotes,
+       * the expanded `<blockquote />` is being added,
+       * handle the parent like normal `childList` mutation
+       */
+      handleBlockquoteMutation(mutation.target as Element);
     }
   }
-
   switch (mutation.type) {
     case 'childList': {
       /** generic new nodes handling */
