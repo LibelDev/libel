@@ -1,7 +1,8 @@
 import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
+import lihkgClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
-import { enabled, videoURL } from './config/config';
+import { caption, enabled, videoURL } from './config/config';
 import styles from './tiananmen-tank-man.module.scss';
 
 /**
@@ -9,22 +10,14 @@ import styles from './tiananmen-tank-man.module.scss';
  * @see https://www.nytimes.com/2019/06/03/world/asia/tiananmen-tank-man.html
  */
 const hatch = async () => {
-  const notice = await waitForElement(lihkgSelectors.notice);
-  const noticeImage = notice.querySelector('img')!;
-  const { height, width } = noticeImage.getBoundingClientRect();
-
-  const html = document.querySelector('html')!;
-  html.classList.add(styles.egg);
-
-  const imageRatio = height / width * 100;
-  const image = document.createElement('a');
-  image.setAttribute('href', videoURL);
-  image.setAttribute('target', '_blank');
-  image.classList.add(styles.image);
-  image.style.paddingTop = `${imageRatio}%`;
-
-  notice.insertBefore(image, noticeImage);
-  noticeImage.remove();
+  const board = await waitForElement(lihkgSelectors.newFeaturesBoard);
+  const egg = document.createElement('a');
+  egg.setAttribute('aria-label', caption);
+  egg.setAttribute('href', videoURL);
+  egg.setAttribute('target', '_blank');
+  egg.classList.add(lihkgClasses.newFeature);
+  egg.classList.add(styles.egg);
+  board.insertBefore(egg, board.firstChild);
 };
 
 const egg = new EasterEgg(hatch, enabled);

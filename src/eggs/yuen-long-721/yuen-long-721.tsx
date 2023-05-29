@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import Slideshow, { IImage as ISlideshowImage } from '../../components/Slideshow/Slideshow';
 import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
+import lihkgClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { caption, enabled, images, interval, referenceURL } from './config/config';
 import styles from './yuen-long-721.module.scss';
@@ -16,32 +17,24 @@ import styles from './yuen-long-721.module.scss';
  * @see https://zh.wikipedia.org/zh-hk/元朗襲擊事件
  */
 const hatch = async () => {
-  const notice = await waitForElement(lihkgSelectors.notice);
-  const noticeImage = notice.querySelector('img')!;
-  const { height, width } = noticeImage.getBoundingClientRect();
+  const board = await waitForElement(lihkgSelectors.newFeaturesBoard);
+  const egg = document.createElement('a');
+  egg.setAttribute('aria-label', caption);
+  egg.setAttribute('href', referenceURL);
+  egg.setAttribute('target', '_blank');
+  egg.classList.add(lihkgClasses.newFeature);
+  egg.classList.add(styles.egg);
+  board.insertBefore(egg, board.firstChild);
+  render(egg, images);
+};
 
-  const html = document.querySelector('html')!;
-  html.classList.add(styles.egg);
-
-  const imageRatio = height / width * 100;
-  const container = document.createElement('a');
-  container.setAttribute('aria-label', caption);
-  container.setAttribute('href', referenceURL);
-  container.setAttribute('target', '_blank');
-  container.classList.add(styles.container);
-  container.style.paddingTop = `${imageRatio}%`;
-
-  notice.insertBefore(container, noticeImage);
-  noticeImage.remove();
-
-  const _images: ISlideshowImage[] = images.map((src) => ({ src }));
-  const root = createRoot(container);
+const render = (egg: HTMLElement, images: string[]) => {
+  const root = createRoot(egg);
   root.render(
     <Slideshow
       className={styles.slideshow}
-      images={_images}
+      images={images.map((src) => ({ src }))}
       interval={interval}
-      fit
     />
   );
 };

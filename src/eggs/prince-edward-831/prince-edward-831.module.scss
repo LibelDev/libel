@@ -1,51 +1,27 @@
 @import '../../stylesheets/base';
 
-.egg :global(#{$lihkg-selector-notice}) {
+.egg {
   @apply relative;
+  @apply inline-block;
+  @apply overflow-hidden;
+  @apply w-full;
 
-  .container {
-    @apply relative;
-    @apply inline-block;
-    @apply overflow-hidden;
-    @apply w-full;
+  &:before {
+    @apply absolute;
+  }
 
-    &:before,
-    &:after {
-      @apply absolute;
-    }
+  // logo
+  &:before {
+    content: '';
+    @include logo();
+    z-index: 1;
+  }
 
-    // logo
-    &:before {
-      content: '';
-      @include logo();
-      z-index: 1;
-    }
+  // caption
+  @include caption();
 
-    // caption
-    &:after {
-      content: attr(aria-label);
-      @apply right-0 bottom-0 left-0;
-      @apply p-4;
-      @apply box-border;
-      @apply text-center text-xl;
-      color: $color-white;
-      @apply transform;
-      @apply translate-y-full;
-      @apply transition-transform;
-      @apply duration-500;
-      background-image: linear-gradient(transparent, #000);
-      z-index: 1;
-    }
-
-    &:hover {
-      &:after {
-        @apply translate-y-0;
-      }
-    }
-
-    .slideshow {
-      @apply absolute top-0 left-0;
-      @apply h-full w-full;
-    }
+  .slideshow {
+    @apply absolute top-0 left-0;
+    @apply h-full w-full;
   }
 }

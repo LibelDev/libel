@@ -11,7 +11,7 @@ import image10 from '../../../../assets/images/831/10.png';
 import image11 from '../../../../assets/images/831/11.jpg';
 import image12 from '../../../../assets/images/831/12.jpg';
 import image13 from '../../../../assets/images/831/13.png';
-import { isNoticePage } from '../../../helpers/app';
+import { isMainApp } from '../../../helpers/app';
 
 const now = new Date();
 const month = now.getMonth() + 1;
@@ -19,7 +19,7 @@ const date = now.getDate();
 export const enabled = (
   month === 8
   && date >= (31 - 7)
-  && isNoticePage()
+  && isMainApp()
 );
 
 export const images = [
