@@ -1,0 +1,25 @@
+@mixin caption () {
+  @apply relative;
+
+  &:after {
+    content: attr(aria-label);
+    @apply absolute;
+    @apply right-0 bottom-0 left-0;
+    @apply p-4;
+    @apply box-border;
+    @apply text-center text-xl;
+    color: $color-white;
+    @apply transform;
+    @apply translate-y-full;
+    @apply transition-transform;
+    @apply duration-500;
+    background-image: linear-gradient(transparent, #000);
+    z-index: 1;
+  }
+
+  &:hover {
+    &:after {
+      @apply translate-y-0;
+    }
+  }
+}

@@ -17,7 +17,7 @@ import image16 from '../../../../assets/images/721/16.jpg';
 import image17 from '../../../../assets/images/721/17.webp';
 import image18 from '../../../../assets/images/721/18.jpeg';
 import image19 from '../../../../assets/images/721/19.webp';
-import image20 from '../../../../assets/images/721/20.jpg';
+// import image20 from '../../../../assets/images/721/20.jpg';
 import image21 from '../../../../assets/images/721/21.jpg';
 import image22 from '../../../../assets/images/721/22.webp';
 import image23 from '../../../../assets/images/721/23.webp';
@@ -26,7 +26,7 @@ import image25 from '../../../../assets/images/721/25.webp';
 import image26 from '../../../../assets/images/721/26.jpg';
 import image27 from '../../../../assets/images/721/27.webp';
 import image28 from '../../../../assets/images/721/28.webp';
-import { isNoticePage } from '../../../helpers/app';
+import { isMainApp } from '../../../helpers/app';
 
 const now = new Date();
 const month = now.getMonth() + 1;
@@ -34,7 +34,7 @@ const date = now.getDate();
 export const enabled = (
   month === 7
   && date === 21
-  && isNoticePage()
+  && isMainApp()
 );
 
 export const images = [
@@ -57,7 +57,7 @@ export const images = [
   image17,
   image18,
   image19,
-  image20,
+  // image20,
   image21,
   image22,
   image23,

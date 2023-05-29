@@ -17,7 +17,7 @@ const isEditProfilePage = () => {
   return pathname === '/me/profile/edit';
 };
 
-export const isNoticePage = () => {
+const isNoticePage = () => {
   const { pathname } = window.location;
   return pathname === '/notice';
 };
