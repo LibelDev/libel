@@ -3,10 +3,10 @@ import { waitForElement } from '../../helpers/dom';
 import EasterEgg from '../../models/EasterEgg';
 import lihkgSelectors from '../../stylesheets/variables/lihkg/selectors.module.scss';
 import { enabled, images, referenceURL } from './config/config';
-import styles from './martyr-rip.module.scss';
+import styles from './rip.module.scss';
 
 /**
- * Martyr RIP
+ * RIP
  * @see https://zh.wikipedia.org/zh-hk/銅鑼灣刺警案
  */
 const hatch = async () => {
