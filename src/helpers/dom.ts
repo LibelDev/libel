@@ -1,3 +1,7 @@
+import debugFactory from 'debug';
+
+const debug = debugFactory('libel:helpers:dom');
+
 export const insertAfter = (newChild: Node, referenceChild: Node) => {
   return referenceChild.parentNode?.insertBefore(newChild, referenceChild.nextSibling);
 };
@@ -22,35 +26,47 @@ export const appendScriptToBody = (src?: string, async?: boolean) => {
   return appendScript(body, src, async);
 };
 
-export const waitForElement = <T extends HTMLElement> (selector: string): Promise<T> => {
-  const element = document.querySelector<T>(selector);
-  if (element) {
-    return Promise.resolve(element);
-  }
-  return new Promise((resolve) => {
-    const observer = new MutationObserver((mutations, observer) => {
-      for (const mutation of mutations) {
-        switch (mutation.type) {
-          case 'childList': {
-            const nodes = Array.from(mutation.addedNodes);
-            for (const node of nodes) {
-              if (node.nodeType === document.ELEMENT_NODE) {
-                window.requestAnimationFrame(() => {
-                  if ((node as T).matches(selector)) {
-                    observer.disconnect();
-                    return resolve(node as T);
-                  }
-                });
-              }
-            }
-            break;
-          }
-        }
-      }
-    });
-    observer.observe(document.body, {
-      subtree: true,
-      childList: true
+export const waitForElement = <T extends HTMLElement> (selector: string) => {
+  return new Promise<T>((resolve) => {
+    observerForElement<T>(selector, (element, observer) => {
+      observer.disconnect();
+      resolve(element);
     });
   });
+};
+
+export const observerForElement = <T extends HTMLElement> (selector: string, callback: (element: T, observer: MutationObserver) => void) => {
+  const observer = new MutationObserver((mutations, observer) => {
+    for (const mutation of mutations) {
+      switch (mutation.type) {
+        case 'childList': {
+          const nodes = Array.from(mutation.addedNodes);
+          debug('observerForElement: childList: addedNodes %O', nodes);
+          for (const node of nodes) {
+            if (node.nodeType === document.ELEMENT_NODE) {
+              window.requestAnimationFrame(() => {
+                const _node = node as T;
+                const element = _node.matches(selector) ? _node : _node.querySelector<T>(selector);
+                if (element) {
+                  debug('observerForElement: found %s %O', selector, element);
+                  callback(element, observer);
+                }
+              });
+            }
+          }
+          break;
+        }
+      }
+    }
+  });
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true
+  });
+  /* initial observation */
+  const element = document.querySelector<T>(selector);
+  if (element) {
+    callback(element, observer);
+  }
+  return observer;
 };
