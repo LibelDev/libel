@@ -2,9 +2,7 @@ import type { useFloating } from '@floating-ui/react-dom';
 import debugFactory from 'debug';
 import type React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import { Provider } from 'react-redux';
 import type { Persistor } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
 import { namespace } from '../../package.json';
 import cache from '../cache';
 import AddLabelButton, { createContainer as createAddLabelButtonContainer } from '../components/AddLabelButton/AddLabelButton';
@@ -12,6 +10,7 @@ import { createContainer as createAnnouncementContainer } from '../components/An
 import BlockquoteMessageInfo, { createContainer as createBlockquoteMessageInfoContainer } from '../components/BlockquoteMessageInfo/BlockquoteMessageInfo';
 import { IconName } from '../components/Icon/types';
 import LabelList, { createContainer as createLabelListContainer } from '../components/LabelList/LabelList';
+import Provider from '../components/Provider/Provider';
 import SettingsModalToggleButton, { createContainer as createSettingsModalToggleButtonContainer } from '../components/SettingsModalToggleButton/SettingsModalToggleButton';
 import SnipeButton, { createContainer as createSnipeButtonContainer } from '../components/SnipeButton/SnipeButton';
 import SourcePostScreenshotButton, { createContainer as createSourcePostScreenshotButtonContainer } from '../components/SourcePostScreenshotButton/SourcePostScreenshotButton';
@@ -143,10 +142,8 @@ const isModalTitleMatched = (node: Element, title: string) => {
 const renderSettingsModalToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
   root.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <SettingsModalToggleButton />
-      </PersistGate>
+    <Provider cache={cache} store={store} persistor={persistor}>
+      <SettingsModalToggleButton />
     </Provider>
   );
   return root;
@@ -164,17 +161,15 @@ const renderLabelList = (user: string, post: IPost | null, floatingConfig: TFloa
   const iconMap = LIHKG.getUnlockedIconMap();
   const root = createRoot(container);
   root.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <LabelSourcePostContext.Provider value={post}>
-          <UnlockedIconMapContext.Provider value={iconMap}>
-            <LabelList
-              user={user}
-              floatingConfig={floatingConfig}
-            />
-          </UnlockedIconMapContext.Provider>
-        </LabelSourcePostContext.Provider>
-      </PersistGate>
+    <Provider cache={cache} store={store} persistor={persistor}>
+      <LabelSourcePostContext.Provider value={post}>
+        <UnlockedIconMapContext.Provider value={iconMap}>
+          <LabelList
+            user={user}
+            floatingConfig={floatingConfig}
+          />
+        </UnlockedIconMapContext.Provider>
+      </LabelSourcePostContext.Provider>
     </Provider>
   );
   return root;
@@ -184,12 +179,10 @@ const renderAddLabelButton = (user: string, post: IPost | null, store: TStore, p
   const root = createRoot(container);
   if (post) {
     root.render(
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <LabelSourcePostContext.Provider value={post}>
-            <AddLabelButton user={user} />
-          </LabelSourcePostContext.Provider>
-        </PersistGate>
+      <Provider cache={cache} store={store} persistor={persistor}>
+        <LabelSourcePostContext.Provider value={post}>
+          <AddLabelButton user={user} />
+        </LabelSourcePostContext.Provider>
       </Provider>
     );
   }
@@ -199,10 +192,8 @@ const renderAddLabelButton = (user: string, post: IPost | null, store: TStore, p
 const renderSnipeButton = (user: string, store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
   root.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <SnipeButton user={user} />
-      </PersistGate>
+    <Provider cache={cache} store={store} persistor={persistor}>
+      <SnipeButton user={user} />
     </Provider>
   );
   return root;
@@ -212,10 +203,8 @@ const renderSourcePostScreenshotButton = (user: string, post: IPost | null, stor
   const root = createRoot(container);
   if (post) {
     root.render(
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <SourcePostScreenshotButton post={post} />
-        </PersistGate>
+      <Provider cache={cache} store={store} persistor={persistor}>
+        <SourcePostScreenshotButton post={post} />
       </Provider>
     );
   }
@@ -225,10 +214,8 @@ const renderSourcePostScreenshotButton = (user: string, post: IPost | null, stor
 const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, container: Element) => {
   const root = createRoot(container);
   root.render(
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <UnlockIconMapToggleButton />
-      </PersistGate>
+    <Provider cache={cache} store={store} persistor={persistor}>
+      <UnlockIconMapToggleButton />
     </Provider>
   );
   return root;
@@ -236,12 +223,10 @@ const renderUnlockIconMapToggleButton = (store: TStore, persistor: Persistor, co
 
 const renderBlockquoteMessageInfo = (post: IPost, inline: boolean | undefined, container: Element) => {
   const root = createRoot(container);
-  const currentThreadPoster = cache.getCurrentThreadPoster();
   root.render(
     <BlockquoteMessageInfo
       post={post}
       inline={inline}
-      highlight={currentThreadPoster?.user_id === post.user.user_id}
     />
   );
   return root;

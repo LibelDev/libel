@@ -7,6 +7,7 @@ import * as gtag from '../../helpers/gtag';
 import { waitForSubmissionForm } from '../../helpers/lihkg';
 import { findReactComponent } from '../../helpers/react';
 import { renderSnipingBody } from '../../helpers/sniping';
+import useResponseCache from '../../hooks/useResponseCache';
 import { createUserPersonalLabelsSelector, createUserPersonalSelector, createUserSubscriptionLabelsSelector, createUserSubscriptionsSelector } from '../../store/selectors';
 import { useTypedSelector } from '../../store/store';
 import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.scss';
@@ -30,6 +31,7 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
   const subscriptions = useTypedSelector(createUserSubscriptionsSelector(user));
   const personalLabels = useTypedSelector(createUserPersonalLabelsSelector(user));
   const subscriptionLabels = useTypedSelector(createUserSubscriptionLabelsSelector(user));
+  const cache = useResponseCache();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(async (event) => {
     event.preventDefault();
@@ -40,11 +42,14 @@ const SnipeButton: React.FunctionComponent<TProps> = (props) => {
       replyButton.click();
       const element = await awaiter;
       const formComponent = findReactComponent<SubmissionForm>(element, 1);
-      const body = renderSnipingBody(user, personal, subscriptions);
-      if (formComponent && body) {
-        formComponent.replaceEditorContent(body);
-        // analytics
-        gtag.event(EventAction.Snipe, { event_label: user });
+      if (formComponent) {
+        const _user = cache?.getUser(user);
+        if (_user) {
+          const body = renderSnipingBody(_user, personal, subscriptions);
+          formComponent.replaceEditorContent(body);
+          // analytics
+          gtag.event(EventAction.Snipe, { event_label: user });
+        }
       }
     }
   }, [personal, subscriptions]);

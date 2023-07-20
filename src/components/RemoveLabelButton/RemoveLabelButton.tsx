@@ -1,10 +1,10 @@
 import { render } from 'mustache';
 import type React from 'react';
 import { useCallback } from 'react';
-import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
 import { getElementLabelTipProps } from '../../helpers/common';
 import * as gtag from '../../helpers/gtag';
+import useResponseCache from '../../hooks/useResponseCache';
 import type { ILabel } from '../../models/Label';
 import { actions as personalActions } from '../../store/slices/personal';
 import { useTypedDispatch } from '../../store/store';
@@ -27,10 +27,11 @@ const RemoveLabelButton: React.FunctionComponent<TProps> = (props) => {
   const { user, index, label, ...otherProps } = props;
 
   const dispatch = useTypedDispatch();
+  const cache = useResponseCache();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     event.preventDefault();
-    const _user = cache.getUser(user);
+    const _user = cache?.getUser(user);
     const question = render(questions.remove.label, { user: _user, label });
     const yes = window.confirm(question);
     if (yes) {

@@ -3,12 +3,12 @@ import joi from 'joi';
 import type React from 'react';
 import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { namespace } from '../../../package.json';
-import cache from '../../cache';
 import * as TEXTS from '../../constants/texts';
 import * as gtag from '../../helpers/gtag';
 import * as LIHKG from '../../helpers/lihkg';
 import { mapValidationError } from '../../helpers/validation';
 import useLabelSourcePost from '../../hooks/useLabelSourcePost';
+import useResponseCache from '../../hooks/useResponseCache';
 import useSourcePostScreenshot from '../../hooks/useSourcePostScreenshot';
 import type { ILabel } from '../../models/Label';
 import { color, image, reason, text } from '../../schemas/label';
@@ -86,7 +86,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const [isColorEnabled, setIsColorEnabled] = useState(!!formData.color);
   const [isScreenshotEnabled, setIsScreenshotEnabled] = useState(false);
   const [inputErrors, setInputErrors] = useState<IInputErrors>({});
-
+  const cache = useResponseCache();
   const post = useLabelSourcePost();
   const [screenshot, capture] = useSourcePostScreenshot(post);
 
@@ -98,7 +98,7 @@ const LabelForm: React.FunctionComponent<TProps> = (props) => {
   const _errorId = `${_id}-error`;
   const name = `${namespace}-${LabelForm.displayName!}`;
 
-  const _user = cache.getUser(user);
+  const _user = cache?.getUser(user);
 
   const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const { name, value } = event.target;
