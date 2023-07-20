@@ -1,5 +1,5 @@
-import BaseButton, { TProps } from '../BaseButton/BaseButton';
+import BaseButton, { type TProps } from '../BaseButton/BaseButton';
 
 export default BaseButton;
 
-export { TProps };
+export { type TProps };

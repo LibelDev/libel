@@ -1,7 +1,7 @@
 import React from 'react';
 import { escape } from '../../helpers/regex';
 import { useEmoticonMap } from '../../hooks/useEmoticon';
-import Emoticon, { TProps as TEmoticonProps } from '../Emoticon/Emoticon';
+import Emoticon, { type TProps as TEmoticonProps } from '../Emoticon/Emoticon';
 import { withTraverse } from '../Traverse/Traverse';
 
 /**

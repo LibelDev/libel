@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import type React from 'react';
 import { forwardRef, useId } from 'react';
-import BaseInput, { TProps as TBaseInputProps } from '../BaseInput/BaseInput';
+import BaseInput, { type TProps as TBaseInputProps } from '../BaseInput/BaseInput';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';

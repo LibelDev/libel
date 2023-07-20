@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Key } from 'ts-key-enum';
 import useFocus from '../../../hooks/useFocus';
 import { IconName } from '../../Icon/types';
-import TextInput, { TProps as TTextInputProps } from '../../TextInput/TextInput';
+import TextInput, { type TProps as TTextInputProps } from '../../TextInput/TextInput';
 
 export interface IProps {
   onChange: (keyword: string) => void;

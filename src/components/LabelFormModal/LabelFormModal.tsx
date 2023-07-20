@@ -3,7 +3,7 @@ import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
 import LabelForm, { IProps as ILabelFormProps, TProps as TLabelFormProps } from '../LabelForm/LabelForm';
-import Modal, { TProps as TModalProps } from '../Modal/Modal';
+import Modal, { type TProps as TModalProps } from '../Modal/Modal';
 
 interface IProps { }
 

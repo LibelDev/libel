@@ -13,7 +13,7 @@ import lihkgCssClasses from '../../stylesheets/variables/lihkg/classes.module.sc
 import { EventAction, EventCategory, EventLabel } from '../../types/ga';
 import IconButton from '../IconButton/IconButton';
 import useLabelForm from '../LabelForm/useLabelForm';
-import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
+import LabelFormModal, { type TLabelFormProps } from '../LabelFormModal/LabelFormModal';
 import styles from './AddLabelButton.module.scss';
 
 interface IProps {
