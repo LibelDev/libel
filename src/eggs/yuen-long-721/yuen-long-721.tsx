@@ -10,7 +10,7 @@ import styles from './yuen-long-721.module.scss';
 /**
  * Yuen Long 721
  * @see https://theinitium.com/article/20190723-hongkong-yuenlong-incident-timeline/
- * @see https://www.hkcnews.com/antielab-conflicts/721/721.html
+ * @see https://web.archive.org/web/20230101152221/https://www.hkcnews.com/antielab-conflicts/721/721.html
  * @see https://www.bbc.com/zhongwen/trad/chinese-news-57526233
  * @see https://www.bbc.com/zhongwen/trad/chinese-news-49070742
  * @see https://www.rfa.org/mandarin/yataibaodao/gangtai/al1-07222019064649.html

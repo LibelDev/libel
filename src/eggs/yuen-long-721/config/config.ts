@@ -72,4 +72,4 @@ export const interval = 2000;
 
 export const caption = '點擊以勾起更多記憶';
 
-export const referenceURL = 'https://www.hkcnews.com/antielab-conflicts/721/721.html';
+export const referenceURL = 'https://web.archive.org/web/20230101152221/https://www.hkcnews.com/antielab-conflicts/721/721.html';
