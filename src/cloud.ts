@@ -10,7 +10,7 @@ import { EventAction, EventCategory } from './types/ga';
 const cloud = new Cloud(store, APP_DATA, SYNC_INTERVAL);
 
 cloud.on(SyncEvent.Sync, () => {
-  const notificationSyncInProgress = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_IN_PROGESS, 0);
+  const notificationSyncInProgress = LIHKG.createLocalNotification(TEXTS.CLOUD_SYNC_MESSAGE_SYNC_IN_PROGRESS, 0);
   LIHKG.showNotification(notificationSyncInProgress);
   cloud.once(SyncEvent.Finish, () => {
     LIHKG.removeNotification(notificationSyncInProgress.id);
