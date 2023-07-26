@@ -6,11 +6,12 @@ export interface IRemoteSubscription extends IBaseRemoteSubscription {
 }
 
 class RemoteSubscription extends BaseRemoteSubscription implements IRemoteSubscription {
-  readonly url: string;
-
-  constructor (name: string, version: string, url: string) {
+  constructor (
+    name: string,
+    version: string,
+    public readonly url: string
+  ) {
     super(name, version);
-    this.url = url;
   }
 
   static implements (object: any): object is IRemoteSubscription {

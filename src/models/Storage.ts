@@ -44,6 +44,7 @@ class Storage implements IStorage {
   private readonly [_configKey]: string;
   private readonly [_metaKey]: string;
   private readonly [_ready]: Promise<this>;
+
   config = Config.factory();
   meta = Meta.factory();
   personal = Personal.factory();

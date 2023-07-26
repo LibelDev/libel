@@ -6,11 +6,12 @@ const _hatch = Symbol('hatch');
 
 class EasterEgg {
   private readonly [_hatch]: THatch;
-  private enabled: boolean;
 
-  constructor (hatch: THatch, enabled: boolean) {
+  constructor (
+    hatch: THatch,
+    private enabled: boolean
+  ) {
     this[_hatch] = hatch;
-    this.enabled = enabled;
   }
 
   hatch () {

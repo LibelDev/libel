@@ -8,15 +8,18 @@ export interface ISubscription extends ISerializedSubscription, IRemoteSubscript
 }
 
 class Subscription extends RemoteSubscription implements ISubscription {
-  enabled: boolean;
   /* state */
   loaded = false;
   loading = false;
   error?: string;
 
-  constructor (name: string, version: string, url: string, enabled: boolean) {
+  constructor (
+    name: string,
+    version: string,
+    url: string,
+    public enabled: boolean
+  ) {
     super(name, version, url);
-    this.enabled = enabled;
   }
 
   static implements (object: any): object is ISubscription {

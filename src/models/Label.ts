@@ -28,40 +28,23 @@ export interface ILabelDatum {
 
 class Label implements ILabel {
   [immerable] = true;
-  /**
-   * the label ID
-   * - `-1` converted from blocked user
-   * @since 3.0.0
-   */
-  id?: string;
-  text: string;
-  reason?: string;
-  /** @deprecated */
-  url?: string;
-  date?: number;
-  source?: ISource;
-  color?: string;
-  image?: string;
 
   constructor (
-    id: string | undefined,
-    text: string,
-    reason?: string,
-    url?: string,
-    date?: number,
-    source?: ISource,
-    color?: string,
-    image?: string
-  ) {
-    this.id = id;
-    this.text = text;
-    this.reason = reason || undefined;
-    this.url = url || undefined;
-    this.date = date || undefined;
-    this.source = source || undefined;
-    this.color = color || undefined;
-    this.image = image || undefined;
-  }
+    /**
+     * the label ID
+     * - `-1` converted from blocked user
+     * @since 3.0.0
+     */
+    public id: string | undefined,
+    public text: string,
+    public reason?: string,
+    /** @deprecated */
+    public url?: string,
+    public date?: number,
+    public source?: ISource,
+    public color?: string,
+    public image?: string
+  ) { }
 
   static deserialize (label: Label | ILabel) {
     if (label instanceof Label) {
