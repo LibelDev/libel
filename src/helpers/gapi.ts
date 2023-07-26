@@ -1,4 +1,5 @@
 import mem from 'mem';
+import { googleApiKey, googleClientId, googleOAuthScopes } from './../../config/config';
 import { appendScriptToBody } from './dom';
 
 type TClientDriveFilesGetRequestWithoutFileId = Omit<Parameters<typeof gapi.client.drive.files.get>[0], 'fileId'>;
@@ -27,11 +28,8 @@ const init = mem(() => {
     const script = appendScriptToBody(src);
     script.addEventListener('load', async () => {
       await loadClient('client:auth2');
-      const apiKey = process.env.GOOGLE_API_KEY!;
       const discoveryDocs = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
-      const clientId = process.env.GOOGLE_CLIENT_ID!;
-      const scopes = ['https://www.googleapis.com/auth/drive.appdata'];
-      await initClient(apiKey, discoveryDocs, clientId, scopes);
+      await initClient(googleApiKey, discoveryDocs, googleClientId, googleOAuthScopes);
       resolve(window.gapi);
     });
   });

@@ -1,5 +1,3 @@
-export const id = process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID!;
-
 export enum EventAction {
   Add = 'add',
   Edit = 'edit',

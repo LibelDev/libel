@@ -1,5 +1,5 @@
 import mem from 'mem';
-import { id } from '../types/ga';
+import { googleAnalyticsMeasurementId } from './../../config/config';
 import { appendScriptToHead } from './dom';
 
 const createScriptInnerHTML = (id: string) => {
@@ -13,10 +13,10 @@ const createScriptInnerHTML = (id: string) => {
 
 const init = mem(() => {
   return new Promise<Gtag.Gtag>((resolve) => {
-    const src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    const src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsMeasurementId}`;
     appendScriptToHead(src, true);
     const script = appendScriptToHead();
-    script.innerHTML = createScriptInnerHTML(id);
+    script.innerHTML = createScriptInnerHTML(googleAnalyticsMeasurementId);
     resolve(window.gtag);
   });
 });
