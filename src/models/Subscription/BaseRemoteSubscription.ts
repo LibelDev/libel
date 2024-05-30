@@ -5,17 +5,13 @@ import type { IBaseSubscription } from './BaseSubscription';
 export interface IBaseRemoteSubscription extends IBaseSubscription, IBaseDataSet { }
 
 class BaseRemoteSubscription extends BaseDataSet implements IBaseRemoteSubscription {
-  name: string;
-  version: string;
-  homepage?: string;
-  color?: string;
-
-  constructor (name: string, version: string, homepage?: string, color?: string) {
+  constructor (
+    public name: string,
+    public version: string,
+    public homepage?: string,
+    public color?: string
+  ) {
     super();
-    this.name = name;
-    this.version = version;
-    this.homepage = homepage;
-    this.color = color;
   }
 
   /**

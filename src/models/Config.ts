@@ -12,15 +12,13 @@ export interface IConfig extends ISerializedConfig { }
 
 class Config implements IConfig {
   [immerable] = true;
-  /** @since 2.1.0 */
-  isIconMapUnlocked: boolean;
-  /** @since 3.1.0 */
-  subscriptionTemplates: IBaseSubscription[];
 
-  constructor (isIconMapUnlocked?: boolean, subscriptionTemplates?: IBaseSubscription[]) {
-    this.isIconMapUnlocked = isIconMapUnlocked || false;
-    this.subscriptionTemplates = subscriptionTemplates || [];
-  }
+  constructor (
+    /** @since 2.1.0 */
+    public isIconMapUnlocked: boolean = false,
+    /** @since 3.1.0 */
+    public subscriptionTemplates: IBaseSubscription[] = []
+  ) { }
 
   static factory () {
     return new Config();

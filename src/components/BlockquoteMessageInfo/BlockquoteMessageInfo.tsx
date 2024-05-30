@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { format } from 'date-fns';
 import React from 'react';
 import { DISPLAY_DATE_FORMAT } from '../../constants/label';
+import useResponseCache from '../../hooks/useResponseCache';
 import type { IPost } from '../../types/lihkg';
 import Icon from '../Icon/Icon';
 import { IconName } from '../Icon/types';
@@ -14,7 +15,6 @@ import styles from './BlockquoteMessageInfo.module.scss';
 interface IProps {
   post: IPost;
   inline?: boolean;
-  highlight?: boolean;
 }
 
 /**
@@ -28,10 +28,12 @@ type TComponentProps = TComponentPropsWithoutRef<'small', IProps>;
 type TProps = IProps & TComponentProps;
 
 const BlockquoteMessageInfo: React.FunctionComponent<TProps> = (props) => {
-  const { className, post, inline, highlight, ...otherProps } = props;
+  const { className, post, inline, ...otherProps } = props;
 
-  const { user } = post;
   const date = format(post.reply_time * 1000, DISPLAY_DATE_FORMAT);
+
+  const cache = useResponseCache();
+  const poster = cache?.getCurrentThreadPoster();
 
   return (
     <small
@@ -40,7 +42,7 @@ const BlockquoteMessageInfo: React.FunctionComponent<TProps> = (props) => {
           className,
           styles.blockquoteMessageInfo,
           {
-            [styles.highlight]: highlight
+            [styles.highlight]: poster?.user_id === post.user.user_id
           }
         )
       }
@@ -48,7 +50,7 @@ const BlockquoteMessageInfo: React.FunctionComponent<TProps> = (props) => {
     >
       <Icon className={styles.icon} icon={IconName.FormatQuoteClose} />
       <span className={styles.messageNumber}>#{post.msg_num}</span>
-      <Username user={user} />
+      <Username user={post.user} />
       <span className={styles.date}>{date}</span>
     </small>
   );

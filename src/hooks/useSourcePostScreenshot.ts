@@ -5,7 +5,7 @@ import { isMobileMode } from '../helpers/app';
 import * as LIHKG from '../helpers/lihkg';
 import lihkgSelectors from '../stylesheets/variables/lihkg/selectors.module.scss';
 import { IPost } from '../types/lihkg';
-import useScreenshot, { TOptions as TUseScreenshotOptions } from './useScreenshot';
+import useScreenshot, { type TOptions as TUseScreenshotOptions } from './useScreenshot';
 import styles from './useSourcePostScreenshot.module.scss';
 
 const options: TUseScreenshotOptions = {

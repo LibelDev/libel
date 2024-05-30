@@ -9,16 +9,15 @@ export interface IMeta extends ISerializedMeta { }
 
 class Meta implements IMeta {
   [immerable] = true;
-  lastModifiedTime: number;
-  lastSyncedTime?: number;
 
-  constructor (lastModifiedTime?: number, lastSyncedTime?: number) {
-    this.lastModifiedTime = lastModifiedTime || Date.now();
-    this.lastSyncedTime = lastSyncedTime;
-  }
+  constructor (
+    public lastModifiedTime: number,
+    public lastSyncedTime?: number
+  ) { }
 
   static factory () {
-    return new Meta();
+    const now = Date.now();
+    return new Meta(now);
   }
 
   static deserialize (meta: Meta | IMeta) {

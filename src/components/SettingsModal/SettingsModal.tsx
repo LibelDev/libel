@@ -1,6 +1,6 @@
 import type React from 'react';
 import { displayName } from '../../../package.json';
-import Modal, { TProps as TModalProps } from '../Modal/Modal';
+import Modal, { type TProps as TModalProps } from '../Modal/Modal';
 import Settings from '../Settings/Settings';
 import styles from './SettingsModal.module.scss';
 

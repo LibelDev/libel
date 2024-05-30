@@ -4,7 +4,7 @@ import { useId } from 'react';
 import * as TEXTS from '../../constants/texts';
 import Button from '../Button/Button';
 import DataSetEditor, { IProps as IDataSetEditorProps, TProps as TDataSetEditorProps } from '../DataSetEditor/DataSetEditor';
-import Modal, { TProps as TModalProps } from '../Modal/Modal';
+import Modal, { type TProps as TModalProps } from '../Modal/Modal';
 import styles from './DataSetEditorModal.module.scss';
 
 interface IProps { }

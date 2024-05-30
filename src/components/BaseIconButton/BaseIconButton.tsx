@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import type React from 'react';
-import Button, { TProps as TButtonProps } from '../Button/Button';
+import Button, { type TProps as TButtonProps } from '../Button/Button';
 import Icon from '../Icon/Icon';
 import type { IconName } from '../Icon/types';
 import styles from './BaseIconButton.module.scss';

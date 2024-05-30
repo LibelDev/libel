@@ -1,6 +1,6 @@
-import * as EGG from './constants/egg';
+// import * as EGG from './constants/egg';
 import { isMainApp, isOffline } from './helpers/app';
-import { appendScriptToBody } from './helpers/dom';
+// import { appendScriptToBody } from './helpers/dom';
 
 (async () => {
   if (!isOffline()) {
@@ -14,6 +14,6 @@ import { appendScriptToBody } from './helpers/dom';
       const ga = await import('./ga');
       ga.bootstrap();
     }
-    appendScriptToBody(EGG.SCRIPT_URL);
+    // appendScriptToBody(EGG.SCRIPT_URL);
   }
 })();

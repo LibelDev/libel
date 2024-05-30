@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        Libel
-// @version     3.9.1
-// @author      kitce <kitce.dev@gmail.com>
+// @version     3.10.0
+// @author      LibelDev <libel.lihkg@gmail.com>
 // @description Label users on LIHKG
-// @homepage    https://kitce.github.io/libel
-// @namespace   https://github.com/kitce/libel
+// @homepage    https://LibelDev.github.io/libel
+// @namespace   https://github.com/LibelDev/libel
 // @include     https://lihkg.com/*
 // @exclude     https://lihkg.com/me/*
 // @exclude     https://lihkg.com/stickers

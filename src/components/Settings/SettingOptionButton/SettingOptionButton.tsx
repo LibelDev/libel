@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import type React from 'react';
 import lihkgCssClasses from '../../../stylesheets/variables/lihkg/classes.module.scss';
-import Button, { TProps as TButtonProps } from '../../Button/Button';
+import Button, { type TProps as TButtonProps } from '../../Button/Button';
 
 export enum Variant {
   Warning = 'settingOptionButtonWarn'

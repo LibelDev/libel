@@ -13,15 +13,11 @@ import type { APIv2 } from '../types/lihkg';
 import type Cache from './Cache';
 
 class App {
-  private cache: Cache;
-  private store: TStore;
-  private persistor: Persistor;
-
-  constructor (cache: Cache, store: TStore, persistor: Persistor) {
-    this.cache = cache;
-    this.store = store;
-    this.persistor = persistor;
-  }
+  constructor (
+    private cache: Cache,
+    private store: TStore,
+    private persistor: Persistor
+  ) { }
 
   async bootstrap () {
     this.observe();

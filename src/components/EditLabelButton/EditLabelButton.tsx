@@ -10,7 +10,7 @@ import { EventAction, EventCategory, EventLabel } from '../../types/ga';
 import { IconName } from '../Icon/types';
 import IconButton from '../IconButton/IconButton';
 import useLabelForm from '../LabelForm/useLabelForm';
-import LabelFormModal, { TLabelFormProps } from '../LabelFormModal/LabelFormModal';
+import LabelFormModal, { type TLabelFormProps } from '../LabelFormModal/LabelFormModal';
 
 interface IProps {
   user: string;

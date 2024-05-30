@@ -3,11 +3,11 @@ import { persistReducer } from 'redux-persist';
 import { dev } from '../../config/config';
 import { DATA_KEY } from '../constants/storage';
 import storage from '../helpers/storage';
-import { persistedReducer as persistedConfigReducer, TActions as TConfigActions } from './slices/config';
-import { persistedReducer as persistedMetaReducer, TActions as TMetaActions } from './slices/meta';
-import personal, { SetTransform as PersonalSetTransform, TActions as TPersonalActions } from './slices/personal';
-import subscriptions, { SetTransform as SubscriptionsSetTransform, TActions as TSubscriptionsActions } from './slices/subscriptions';
-import sync, { TActions as TSyncActions } from './slices/sync';
+import { persistedReducer as persistedConfigReducer, type TActions as TConfigActions } from './slices/config';
+import { persistedReducer as persistedMetaReducer, type TActions as TMetaActions } from './slices/meta';
+import personal, { SetTransform as PersonalSetTransform, type TActions as TPersonalActions } from './slices/personal';
+import subscriptions, { SetTransform as SubscriptionsSetTransform, type TActions as TSubscriptionsActions } from './slices/subscriptions';
+import sync, { type TActions as TSyncActions } from './slices/sync';
 
 export type TActions = (
   TConfigActions |

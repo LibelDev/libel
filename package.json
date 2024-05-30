@@ -2,14 +2,14 @@
   "name": "libel",
   "namespace": "libel",
   "displayName": "Libel",
-  "version": "3.9.1",
+  "version": "3.10.0",
   "description": "Label users on LIHKG",
-  "author": "kitce <kitce.dev@gmail.com>",
+  "author": "LibelDev <libel.lihkg@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kitce/libel"
+    "url": "https://github.com/LibelDev/libel"
   },
-  "homepage": "https://kitce.github.io/libel",
+  "homepage": "https://LibelDev.github.io/libel",
   "license": "MIT",
   "engines": {
     "node": ">=14",

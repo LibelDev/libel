@@ -3,6 +3,7 @@ import * as cloud from '../helpers/cloud';
 import { ready } from '../helpers/gapi';
 import { selectSync } from '../store/selectors';
 import type { TStore } from '../store/store';
+import EventEmitter from 'events';
 
 export enum SyncEvent {
   Sync = 'sync',
@@ -19,16 +20,14 @@ interface IEvents {
 }
 
 class Cloud extends TypedEmitter<IEvents> {
-  private store: TStore;
-  private filename: string;
-  private interval: number;
   private timer: number | null = null;
 
-  constructor (store: TStore, filename: string, interval: number) {
+  constructor (
+    private store: TStore,
+    private filename: string,
+    private interval: number,
+  ) {
     super();
-    this.store = store;
-    this.filename = filename;
-    this.interval = interval;
   }
 
   private register (auth: gapi.auth2.GoogleAuth) {
