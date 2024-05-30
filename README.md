@@ -11,9 +11,9 @@
 
 ## Installation / Usage
 
-For the installation steps, usage and more details, please visit [Wiki](https://github.com/kitce/libel/wiki).
+For the installation steps, usage and more details, please visit [Wiki](https://github.com/LibelDev/libel/wiki).
 
-關於詳細介紹、安裝教學及使用教學，請閱讀 [Wiki](https://github.com/kitce/libel/wiki)。
+關於詳細介紹、安裝教學及使用教學，請閱讀 [Wiki](https://github.com/LibelDev/libel/wiki)。
 
 ***
 
@@ -63,19 +63,19 @@ Whenever a file has changed, `webpack-dev-server` will recompile the code, and y
 pnpm build
 ```
 
-The distributable files will be available in [`/dist`](https://github.com/kitce/libel/tree/master/dist)
+The distributable files will be available in [`/dist`](https://github.com/LibelDev/libel/tree/master/dist)
 
 ***
 
 ## Disclaimer
 
-This project only provides technical support for the [features](https://github.com/kitce/libel/wiki#%E5%8A%9F%E8%83%BD). The owner and contributors do not assume any legal responsibilities caused by the users. Users should be aware of and take the risks.
+This project only provides technical support for the [features](https://github.com/LibelDev/libel/wiki#%E5%8A%9F%E8%83%BD). The owner and contributors do not assume any legal responsibilities caused by the users. Users should be aware of and take the risks.
 
 ***
 
 ## Privacy Policy
 
-[Privacy Policy](https://github.com/kitce/libel/wiki/%E7%A7%81%E9%9A%B1%E6%94%BF%E7%AD%96)
+[Privacy Policy](https://github.com/LibelDev/libel/wiki/%E7%A7%81%E9%9A%B1%E6%94%BF%E7%AD%96)
 
 ***
 
