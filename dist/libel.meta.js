@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        Libel
-// @version     3.9.1
+// @version     3.10.0
 // @author      LibelDev <libel.lihkg@gmail.com>
 // @description Label users on LIHKG
 // @homepage    https://LibelDev.github.io/libel

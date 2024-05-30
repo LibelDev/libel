@@ -1,3 +1,23 @@
+## v3.10.0 (2024-05-30)
+
+### Feat
+
+- **egg**: adapt LIHKG changes
+
+### Fix
+
+- incorrect URL
+- **egg**: eggs not being hatched when back to homepage
+
+### Refactor
+
+- parameter properties
+- add ENV `GOOGLE_OAUTH_SCOPES`
+- typo
+- **mutation**: add `Provider` and `useResponseCache`
+- parameter properties
+- type only imports and exports
+
 ## v3.9.1 (2022-11-17)
 
 ### Fix
